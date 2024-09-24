@@ -1,30 +1,36 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const router = require('./routes/routes');
+const router = require("./routes/routes");
 
 const app = express();
 const port = 5001;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Define a route for the root path
+// Define the root route
 app.get("/", (req, res) => {
-  res.send("Welcome to the server!");
+  res.send("Welcome to the Injury Tracker API");
 });
 
-// Use the router for API routes
+// Define a test route to check server status
+app.get("/api", (req, res) => {
+  res.status(200).send({ message: "API is running" });
+});
+
+// Use API routes defined in the router
 app.use("/api", router);
 
 // Custom error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send({ error: "Something went wrong!" });
+  res.status(500).json({ error: "An internal server error occurred" });
 });
 
-// Start server
+// Database connection and server start
 const startServer = async () => {
   try {
     await mongoose.connect(process.env.DATABASE_URL);
