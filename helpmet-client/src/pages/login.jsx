@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from '../api/axios';
 import '../../src/index.css';
 
-const LOGIN_URL = '/auth';
+const LOGIN_URL = 'http://localhost:5001/auth/login';
 
 const login = () => {
   const { setAuth } = useContext(AuthContext);
@@ -34,11 +34,9 @@ const login = () => {
           withCredentials: true
         }
       );
-      console.log(JSON.stringify(response?.data));
-      // const accessToken = response?.data?.accessToken;
-      // const roles = response?.data?.roles;
-      // setAuth({ email, pwd, roles, accessToken });
-      setAuth({ email, pwd });
+
+      const accessToken = response?.data?.accessToken;
+      setAuth({ email, accessToken });
       setEmail('');
       setPwd('');
       setSuccess(true);

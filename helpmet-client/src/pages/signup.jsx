@@ -24,7 +24,7 @@ const signup = () => {
 
   const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-  const SIGNUP_URL = '/signup';
+  const SIGNUP_URL = 'http://localhost:5001/auth/signup';
 
   useEffect(() => {
     emailRef.current.focus();
@@ -32,15 +32,11 @@ const signup = () => {
 
   useEffect(() => {
     const result = EMAIL_REGEX.test(email);
-    console.log(result);
-    console.log(email);
     setValidEmail(result);
   }, [email])
 
   useEffect(() => {
     const result = PWD_REGEX.test(pwd);
-    console.log(result);
-    console.log(pwd);
     setValidPwd(result);
     const match = pwd === matchPwd;
     setValidMatch(match);
@@ -59,7 +55,7 @@ const signup = () => {
           withCredentials: true
         }
       );
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       setSuccess(true);
     } catch (err) {
       if(!err?.response) {

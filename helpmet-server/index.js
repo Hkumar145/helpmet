@@ -37,13 +37,18 @@ app.use((err, req, res, next) => {
 });
 
 // User authentication routes
-app.use(authRouter);
+app.use("/auth", authRouter);
 
 // Database connection and server start
 const startServer = async () => {
   try {
+    // Connect to the authentication database
     await mongoose.connect(process.env.DATABASE_AUTH_URL);
-    console.log("Connected to Database");
+    console.log("Connected to Authentication Database");
+
+    // Connect to the main database
+    const mainDbConnection = await mongoose.createConnection(process.env.DATABASE_URL);
+    console.log("Connected to Main Database");
 
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
