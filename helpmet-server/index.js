@@ -3,12 +3,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/routes");
+const authRouter = require("./routes/authRoutes");
 
 const app = express();
 const port = 5001;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Define the root route
@@ -30,11 +36,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "An internal server error occurred" });
 });
 
+// User authentication routes
+app.use("/auth", authRouter);
+
 // Database connection and server start
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL);
-    console.log("Connected to Database");
+    // Connect to the authentication database
+    await mongoose.connect(process.env.DATABASE_AUTH_URL);
+    console.log("Connected to Authentication Database");
+
+    // Connect to the main database
+    const mainDbConnection = await mongoose.createConnection(process.env.DATABASE_URL);
+    console.log("Connected to Main Database");
 
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
