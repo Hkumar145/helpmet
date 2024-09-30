@@ -59,11 +59,13 @@ font-family: 'Nunito', sans-serif;
 font-size: 22px;
 padding: 0.25rem;
 border-radius: 0.5rem;
+color: black
 }
 
 label,
 button {
 margin-top: 1rem;
+color: white;
 }
 
 button {
