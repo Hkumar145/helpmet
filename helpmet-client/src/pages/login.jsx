@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthProvider'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import '../../src/index.css';
 
@@ -10,6 +10,7 @@ const login = () => {
   const { setAuth } = useContext(AuthContext);
   const emailRef = useRef();
   const errRef = useRef();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
@@ -23,6 +24,17 @@ const login = () => {
   useEffect(() => {
     setErrMsg('');
   }, [email, pwd])
+
+  // Automatically navigate to homepage after showing success message
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        navigate('/');
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,18 +71,14 @@ const login = () => {
   return (
     <>
       {success ? (
-        <section>
+        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
           <h1>You are logged in!</h1>
-          <br/>
-          <p>
-            <a href="#">Go to Home</a>
-          </p>
         </section>
       ) : (
-      <section>
+      <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
         <p ref={errRef} className={errMsg ? 'errMsg' : 'offscreen'} aria-live='assertive'>{errMsg}</p>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
+        <h1 className='text-2xl text-center font-semibold'>Login</h1>
+        <form onSubmit={handleSubmit} className='flex flex-col justify-evenly flex-grow pb-4'>
           <label htmlFor="email">Email:</label>
           <input 
             type="email"
@@ -90,14 +98,18 @@ const login = () => {
             value={pwd}
             required
           />
-          <button>Login</button>
+          <button 
+            disabled={!email || !pwd ? true : false}
+            className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed'>
+              Login
+          </button>
         </form>
-        <p>
+        <div className='flex gap-2'>
           Need an Account? <br/>
-          <span className='line'>
-            <a href="signup">Sign Up</a>
-          </span>
-        </p>
+            <Link to='/signup' className='hover:underline'>
+              <span>Sign Up</span>
+            </Link>
+        </div>
       </section>
       )}
     </>
