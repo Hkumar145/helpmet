@@ -21,6 +21,10 @@ const userSchema = new Schema({
         required: [true, 'Please enter a password'],
         minlength: [4, 'Minimum password length is 4 characters']
     },
+    profilePicture: {
+        type: String,
+        default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/9-94702_user-outline-icon-clipart-png-download-profile-icon.png/593px-9-94702_user-outline-icon-clipart-png-download-profile-icon.png?20230806044655'
+    }
 });
 
 // userSchema.post('save', function(doc, next) {
@@ -37,3 +41,4 @@ userSchema.pre('save', async function(next) {
 const User = mongoose.model('user', userSchema);
 
 module.exports = User;
+// module.exports = (connection) => connection.model('User', userSchema);

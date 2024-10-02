@@ -61,3 +61,7 @@ exports.login_post = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.logout = (req, res) => {
+    res.clearCookie('access_token').status(200).json({ message: 'Logged out successfully'});
+};
