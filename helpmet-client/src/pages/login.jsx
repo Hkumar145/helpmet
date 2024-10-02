@@ -2,7 +2,10 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import '../../src/index.css';
+
 
 const LOGIN_URL = 'http://localhost:5001/auth/login';
 
@@ -10,12 +13,15 @@ const login = () => {
   const { setAuth } = useContext(AuthContext);
   const emailRef = useRef();
   const errRef = useRef();
-  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
+  const { loading, error } = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     emailRef.current.focus();
@@ -40,6 +46,7 @@ const login = () => {
     e.preventDefault();
 
     try {
+      dispatch(signInStart());
       const response = await axios.post(LOGIN_URL, JSON.stringify({ email, password: pwd }),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -49,6 +56,9 @@ const login = () => {
 
       const accessToken = response?.data?.accessToken;
       setAuth({ email, accessToken });
+
+      dispatch(signInSuccess(response.data));
+
       setEmail('');
       setPwd('');
       setSuccess(true);
@@ -59,13 +69,14 @@ const login = () => {
         setErrMsg('Missing Email or Password');
       } else if (err.response?.status === 401) {
         setErrMsg('Unauthorized');
+      } else if (err.response?.status === 404) {
+        setErrMsg('User not found');
       } else {
-        setErrMsg('Login Failed');
+        dispatch(signInFailure(err?.response?.data || 'Login Failed'));
+        setErrMsg('An unexpected error occurred. Please try again.');
       }
       errRef.current.focus();
     }
-
-    
   }
 
   return (
