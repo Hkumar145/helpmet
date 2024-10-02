@@ -54,7 +54,7 @@ exports.login_post = async (req, res, next) => {
 
         const accessToken = jwt.sign({ id: validUser._id }, process.env.ACCESS_TOKEN_SECRET);
         const { password: pwd, ...rest } = validUser._doc;
-        res.cookie('access_token', accessToken, { httpOnly: true }).status(200).json(rest);
+        res.cookie('access_token', accessToken, { httpOnly: true }).status(200).json(rest);     // Adding SameSite='None' to enable proper cookie handling across frontend and backend running on different ports
         // const expiryDate = new Date(Date.now() + 3600000);  // 1 hour
         // res.cookie('access_token', accessToken, { httpOnly: true, expires: expiryDate }).status(200).json(rest);
     } catch (err) {
