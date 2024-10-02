@@ -9,14 +9,14 @@
 }
 
 html {
-  font-family: 'Nunito', sans-serif;
+  font-family: sans-serif;
   font-size: 22px;
   color: #fff;
 }
 
 body {
   min-height: 100vh;
-  background-color: rgb(96, 20, 91);
+  background-color: rgb(52, 35, 113);
 }
 
 .App {
@@ -28,38 +28,26 @@ min-height: 100vh;
 padding: 1rem 0.5rem;
 }
 
-section {
-  width: 100%;
-  max-width: 420px;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 1rem;
-  background-color: rgba(0,0,0,0.4);
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  flex-grow: 1;
-  padding-bottom: 1rem;
-}
-
 a, a:visited {
   color: #fff;
 }
 
+input[type="text"],
 input[type="email"],
 input[type="password"],
 button,
 textarea {
-font-family: 'Nunito', sans-serif;
+font-family: sans-serif;
 font-size: 22px;
 padding: 0.25rem;
 border-radius: 0.5rem;
 color: black
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  color: #000;
 }
 
 label,
