@@ -97,3 +97,13 @@ module.exports = {
     Equipment,
     Circumstance
 };
+
+// module.exports = (connection) => {
+//     const Employee = connection.model('Employee', employeeSchema);
+//     const Report = connection.model('Report', reportSchema);
+//     const EmployeeReport = connection.model('EmployeeReport', employeeReportSchema);
+//     const Alert = connection.model('Alert', alertSchema);
+//     const Equipment = connection.model('Equipment', equipmentSchema);
+//     const Circumstance = connection.model('Circumstance', circumstanceSchema);
+//     return { Employee, Report };
+//   };

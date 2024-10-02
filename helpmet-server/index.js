@@ -30,26 +30,26 @@ app.get("/api", (req, res) => {
 // Use API routes defined in the router
 app.use("/api", router);
 
+// User authentication routes
+app.use("/auth", authRouter);
+
 // Custom error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "An internal server error occurred" });
 });
 
-// User authentication routes
-app.use("/auth", authRouter);
-
 // Database connection and server start
 const startServer = async () => {
   try {
-    // Connect to the authentication database
     await mongoose.connect(process.env.DATABASE_AUTH_URL);
     console.log("Connected to Authentication Database");
 
-    // Connect to the main database
     const mainDbConnection = await mongoose.createConnection(process.env.DATABASE_URL);
     console.log("Connected to Main Database");
 
+    // const User = require('./models/user')(authDbConnection);
+    // const { Employee, Report, EmployeeReport, Alert, Equipment, Circumstance } = require('./models/schemas')(mainDbConnection);
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });

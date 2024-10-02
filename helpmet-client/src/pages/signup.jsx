@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import OAuth from '../components/OAuth';
 import '../../src/index.css';
 
 const signup = () => {
+  const usernameRef = useRef();
   const emailRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const signup = () => {
   const SIGNUP_URL = 'http://localhost:5001/auth/signup';
 
   useEffect(() => {
-    emailRef.current.focus();
+    usernameRef.current.focus();
   }, [])
 
   useEffect(() => {
@@ -108,6 +110,7 @@ const signup = () => {
             <input
               type="text"
               id="username"
+              ref={usernameRef}
               autoComplete="off"
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -181,6 +184,7 @@ const signup = () => {
           className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed'>
             Sign Up
           </button>
+          {/* <OAuth /> */}
         </form>
         <div className='flex gap-2'>
           Have an Account? <br/>

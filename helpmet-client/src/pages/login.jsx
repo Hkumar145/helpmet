@@ -2,8 +2,9 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthProvider'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import { loginStart, loginSuccess, loginFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OAuth from '../components/OAuth';
 import '../../src/index.css';
 
 
@@ -46,7 +47,7 @@ const login = () => {
     e.preventDefault();
 
     try {
-      dispatch(signInStart());
+      dispatch(loginStart());
       const response = await axios.post(LOGIN_URL, JSON.stringify({ email, password: pwd }),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -57,7 +58,7 @@ const login = () => {
       const accessToken = response?.data?.accessToken;
       setAuth({ email, accessToken });
 
-      dispatch(signInSuccess(response.data));
+      dispatch(loginSuccess(response.data));
 
       setEmail('');
       setPwd('');
@@ -72,7 +73,7 @@ const login = () => {
       } else if (err.response?.status === 404) {
         setErrMsg('User not found');
       } else {
-        dispatch(signInFailure(err?.response?.data || 'Login Failed'));
+        dispatch(loginFailure(err?.response?.data || 'Login Failed'));
         setErrMsg('An unexpected error occurred. Please try again.');
       }
       errRef.current.focus();
@@ -114,6 +115,7 @@ const login = () => {
             className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed'>
               Login
           </button>
+          {/* <OAuth /> */}
         </form>
         <div className='flex gap-2'>
           Need an Account? <br/>
