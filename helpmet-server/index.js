@@ -5,6 +5,7 @@ const cors = require("cors");
 const router = require("./routes/routes");
 const authRouter = require("./routes/authRoutes");
 
+
 const app = express();
 const port = 5001;
 
@@ -28,7 +29,7 @@ app.get("/api", (req, res) => {
 });
 
 // Use API routes defined in the router
-app.use("/api", router);
+app.use("/", router);
 
 // User authentication routes
 app.use("/auth", authRouter);
@@ -42,14 +43,9 @@ app.use((err, req, res, next) => {
 // Database connection and server start
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_AUTH_URL);
+    await mongoose.connect(process.env.DATABASE_URL);
     console.log("Connected to Authentication Database");
 
-    const mainDbConnection = await mongoose.createConnection(process.env.DATABASE_URL);
-    console.log("Connected to Main Database");
-
-    // const User = require('./models/user')(authDbConnection);
-    // const { Employee, Report, EmployeeReport, Alert, Equipment, Circumstance } = require('./models/schemas')(mainDbConnection);
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });

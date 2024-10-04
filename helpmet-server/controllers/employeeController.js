@@ -27,10 +27,11 @@ exports.createEmployee = async (req, res) => {
     }
 };
 
-// Get all employees
-exports.getEmployees = async (req, res) => {
+// Get all employees by CompanyID
+exports.getEmployeesByCompany = async (req, res) => {
+    const { id: companyID } = req.params;
     try {
-        const employees = await Employee.find();
+        const employees = await Employee.find({ companyID: companyID });
         res.json(employees);
     } catch (error) {
         res.status(500).json({ error: error.message });
