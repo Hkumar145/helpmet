@@ -102,7 +102,7 @@ const signup = () => {
       ) : (
       <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
         <p ref={errRef} className={errMsg ? 'errMsg' : 'offscreen'} aria-live='assertive'>{errMsg}</p>
-        <h1 className='text-2xl text-center font-semibold'>Sign Up</h1>
+        <h1 className='text-2xl text-center font-semibold text-white'>Sign Up</h1>
         <form onSubmit={handleSubmit} className='flex flex-col justify-evenly flex-grow pb-4'>
           <label htmlFor="username">
             Username:
@@ -186,7 +186,7 @@ const signup = () => {
           </button>
           {/* <OAuth /> */}
         </form>
-        <div className='flex gap-2'>
+        <div className='flex gap-2 text-white'>
           Have an Account? <br/>
             <Link to='/login' className='hover:underline'>
               <span>Login</span>

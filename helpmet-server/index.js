@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     await mongoose.connect(process.env.DATABASE_URL);
-    console.log("Connected to Authentication Database");
+    console.log("Connected to Database");
 
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
