@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
     createEmployee,
-    getEmployees,
+    getEmployeesByCompany,
     getEmployeeByID,
     updateEmployeeByID,
     deleteEmployeeByID
@@ -36,8 +36,8 @@ const {
 // Create an employee
 router.post("/employees", createEmployee);
 
-// Get a list of all employees
-router.get("/employees", getEmployees);
+// Get a list of all employees by company ID
+router.get("/companies/:id/employees", getEmployeesByCompany);
 
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
