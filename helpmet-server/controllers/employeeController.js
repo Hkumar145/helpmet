@@ -27,8 +27,8 @@ exports.createEmployee = async (req, res) => {
     }
 };
 
-// Get all employees
-exports.getEmployees = async (req, res) => {
+// Get all employees by CompanyID
+exports.getEmployeesByCompany = async (req, res) => {
     try {
         const employees = await Employee.find();
         res.json(employees);

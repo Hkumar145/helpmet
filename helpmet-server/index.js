@@ -22,7 +22,7 @@ app.get("/api", (req, res) => {
 });
 
 // Use API routes defined in the router
-app.use("/api", router);
+app.use("/", router);
 
 // Custom error handler
 app.use((err, req, res, next) => {
