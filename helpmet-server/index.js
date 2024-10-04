@@ -28,7 +28,7 @@ app.get("/api", (req, res) => {
 });
 
 // Use API routes defined in the router
-app.use("/api", router);
+app.use("/", router);
 
 // User authentication routes
 app.use("/auth", authRouter);
