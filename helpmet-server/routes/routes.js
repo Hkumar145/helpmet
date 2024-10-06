@@ -10,7 +10,7 @@ const {
 
 const {
     createReport,
-    getReports,
+    getReportsByCompany,
     getReportByID,
     updateReportByID,
     deleteReportByID
@@ -18,7 +18,7 @@ const {
 
 const {
     createAlert,
-    getAlerts,
+    getAlertsByCompany,
     getAlertByID,
     updateAlertByID,
     deleteAlertByID
@@ -26,15 +26,39 @@ const {
 
 const {
     createEquipment,
-    getEquipments,
+    getEquipmentsByCompany,
     getEquipmentByID,
     updateEquipmentByID,
     deleteEquipmentByID
 } = require("../controllers/equipmentController");
 
+const {
+    createDepartment,
+    getDepartmentsByCompany,
+    getDepartmentByID,
+    updateDepartmentByID,
+    deleteDepartmentByID
+} = require("../controllers/departmentController");
+
+const {
+    createLocation,
+    getLocationsByCompany,
+    getLocationByID,
+    updateLocationByID,
+    deleteLocationByID
+} = require("../controllers/locationController");
+
+const {
+    createInjuryType,
+    getInjuryTypesByCompany,
+    getInjuryTypeByID,
+    updateInjuryTypeByID,
+    deleteInjuryTypeByID
+} = require("../controllers/injuryTypeController");
+
 /***************   Employee Routes   ***************/
 // Create an employee
-router.post("/employees", createEmployee);
+router.post("/companies/:id/employees", createEmployee);
 
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
@@ -50,10 +74,10 @@ router.delete("/employees/:id", deleteEmployeeByID);
 
 /***************   Report Routes   ***************/
 // Create a report
-router.post("/reports", createReport);
+router.post("/companies/:id/reports", createReport);
 
-// Get a list of all reports
-router.get("/reports", getReports);
+// Get a list of all reports by CompanyID
+router.get("/companies/:id/reports", getReportsByCompany);
 
 // Get report details by report ID
 router.get("/reports/:id", getReportByID);
@@ -66,10 +90,10 @@ router.delete("/reports/:id", deleteReportByID);
 
 /***************   Alert Routes   ***************/
 // Create an alert
-router.post("/alerts", createAlert);
+router.post("/companies/:id/alerts", createAlert);
 
-// Get a list of all alerts
-router.get("/alerts", getAlerts);
+// Get a list of all alerts by CompanyID
+router.get("/companies/:id/alerts", getAlertsByCompany);
 
 // Get alert details by alert ID
 router.get("/alerts/:id", getAlertByID);
@@ -82,10 +106,10 @@ router.delete("/alerts/:id", deleteAlertByID);
 
 /***************   Equipment Routes   ***************/
 // Create an equipment
-router.post("/equipments", createEquipment);
+router.post("/companies/:id/equipments", createEquipment);
 
-// Get a list of all equipments
-router.get("/equipments", getEquipments);
+// Get a list of all equipments by CompanyID
+router.get("/companies/:id/equipments", getEquipmentsByCompany);
 
 // Get equipment details by equipment ID
 router.get("/equipments/:id", getEquipmentByID);
@@ -95,5 +119,53 @@ router.put("/equipments/:id", updateEquipmentByID);
 
 // Delete equipment by equipment ID
 router.delete("/equipments/:id", deleteEquipmentByID);
+
+/***************   Department Routes   ***************/
+// Create a department
+router.post("/companies/:id/departments", createDepartment);
+
+// Get a list of all departments by company ID
+router.get("/companies/:id/departments", getDepartmentsByCompany);
+
+// Get department details by department ID
+router.get("/departments/:id", getDepartmentByID);
+
+// Update department details by department ID
+router.put("/departments/:id", updateDepartmentByID);
+
+// Delete department by department ID
+router.delete("/departments/:id", deleteDepartmentByID);
+
+/***************  Location Routes   ***************/
+// Create a location
+router.post("/companies/:id/locations", createLocation);
+
+// Get a list of all locations by company ID
+router.get("/companies/:id/locations", getLocationsByCompany);
+
+// Get location details by location ID
+router.get("/locations/:id", getLocationByID);
+
+// Update location details by location ID
+router.put("/locations/:id", updateLocationByID);
+
+// Delete location by location ID
+router.delete("/locations/:id", deleteLocationByID);
+
+/***************   InjuryType Routes   ***************/
+// Create an injury type
+router.post("/companies/:id/injurytypes", createInjuryType);
+
+// Get a list of all injury types by company ID
+router.get("/companies/:id/injurytypes", getInjuryTypesByCompany);
+
+// Get injury type details by injury type ID
+router.get("/injurytypes/:id", getInjuryTypeByID);
+
+// Update injury type details by injury type ID
+router.put("/injurytypes/:id", updateInjuryTypeByID);
+
+// Delete injury type by injury type ID
+router.delete("/injurytypes/:id", deleteInjuryTypeByID);
 
 module.exports = router;
