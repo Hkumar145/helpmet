@@ -1,0 +1,33 @@
+# Ignore node_modules
+node_modules
+
+# Ignore build output directories
+dist
+build
+public
+
+# Ignore system files and IDE-specific files
+.DS_Store
+.vscode
+.idea
+
+# Ignore test and temp files
+coverage
+*.log
+tmp
+temp
+
+# Ignore database dumps and configuration files that might change independently
+*.sqlite
+*.db
+*.env
+
+# Ignore client-side code (if it’s served separately, e.g., in React or Vue)
+client/
+*.css
+*.scss
+*.html
+*.js.map
+
+# Ignore uploads (for projects with file upload functionality)
+uploads

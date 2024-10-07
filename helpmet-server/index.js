@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/routes");
 const authRouter = require("./routes/authRoutes");
-
+const reportRouter = require("./routes/reportRoutes");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const port = 5001;
@@ -17,6 +18,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 // Define the root route
 app.get("/", (req, res) => {
@@ -33,6 +35,8 @@ app.use("/", router);
 
 // User authentication routes
 app.use("/auth", authRouter);
+
+app.use("/report", reportRouter);
 
 // Custom error handler
 app.use((err, req, res, next) => {

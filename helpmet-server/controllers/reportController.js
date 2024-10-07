@@ -6,28 +6,28 @@ const {
 } = require("../models/schemas");
 
 // Create a new injury report
-exports.createReport = async (req, res) => {
-    try {
-        // Check if the employee exists
-        const { injuredEmployeeID, dateOfInjury } = req.body;
-        const injuredEmployee = await Employee.findOne({ injuredEmployeeID });
-        if (!injuredEmployee) {
-            return res.status(404).json({ message: "Employee not found" });
-        }
+// exports.createReport = async (req, res) => {
+//     try {
+//         // Check if the employee exists
+//         const { injuredEmployeeID, dateOfInjury } = req.body;
+//         const injuredEmployee = await Employee.findOne({ injuredEmployeeID });
+//         if (!injuredEmployee) {
+//             return res.status(404).json({ message: "Employee not found" });
+//         }
 
-        // Check for duplicate report on the same date for the same employee
-        const duplicateReport = await Injury.findOne({ injuredEmployeeID, dateOfInjury });
-        if (duplicateReport) {
-            return res.status(400).json({ message: "Duplicate injury report for this employee on the same date" });
-        }
+//         // Check for duplicate report on the same date for the same employee
+//         const duplicateReport = await Injury.findOne({ injuredEmployeeID, dateOfInjury });
+//         if (duplicateReport) {
+//             return res.status(400).json({ message: "Duplicate injury report for this employee on the same date" });
+//         }
 
-        const report = new Report(req.body);
-        await report.save();
-        res.json({ message: "Injury report created successfully", report: report });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+//         const report = new Report(req.body);
+//         await report.save();
+//         res.json({ message: "Injury report created successfully", report: report });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
 // Get all reports for analytics
 exports.getReports = async (req, res) => {
@@ -83,5 +83,30 @@ exports.deleteReportByID = async (req, res) => {
         res.json({ message: "Report deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+exports.createReport = async (req, res, next) => {
+    try {
+        const report = await Report.create(req.body);
+        return res.status(201).json(report);
+        // // Check if the employee exists
+        // const { injuredEmployeeID, dateOfInjury } = req.body;
+        // const injuredEmployee = await Employee.findOne({ injuredEmployeeID });
+        // if (!injuredEmployee) {
+        //     return res.status(404).json({ message: "Employee not found" });
+        // }
+
+        // // Check for duplicate report on the same date for the same employee
+        // const duplicateReport = await Injury.findOne({ injuredEmployeeID, dateOfInjury });
+        // if (duplicateReport) {
+        //     return res.status(400).json({ message: "Duplicate injury report for this employee on the same date" });
+        // }
+
+        // const report = new Report(req.body);
+        // await report.save();
+        // res.json({ message: "Injury report created successfully", report: report });
+    } catch (error) {
+        next(error);
     }
 };
