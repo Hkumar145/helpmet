@@ -38,6 +38,16 @@ exports.getEmployeesByCompany = async (req, res) => {
     }
 };
 
+// Get all employees
+exports.getAllEmployees = async (req, res) => {
+    try {
+      const employees = await Employee.find();
+      res.status(200).json(employees);
+    } catch (err) {
+      res.status(500).json({ error: "Failed to retrieve employees" });
+    }
+  };
+
 // Get a specific employee by EmployeeID
 exports.getEmployeeByID = async (req, res) => {
     try {

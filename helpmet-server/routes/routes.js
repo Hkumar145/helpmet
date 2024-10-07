@@ -3,6 +3,7 @@ const router = express.Router();
 const {
     createEmployee,
     getEmployeesByCompany,
+    getAllEmployees,
     getEmployeeByID,
     updateEmployeeByID,
     deleteEmployeeByID
@@ -38,6 +39,9 @@ router.post("/employees", createEmployee);
 
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
+
+// Get all employees
+router.get("/employees", getAllEmployees);
 
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
