@@ -37,7 +37,11 @@ const {
 router.post("/employees", createEmployee);
 
 // Get a list of all employees
-router.get("/employees", getEmployees);
+// router.get("/employees", getEmployees);
+
+router.get('/employees', (req, res) => {
+    res.send(getEmployees);
+});
 
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
