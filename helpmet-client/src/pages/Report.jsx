@@ -1,13 +1,24 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import CreateReport from '../components/CreateReport'
 
 const Report = () => {
   return (
     <div className='flex flex-col gap-4'>
-      <h1 className='text-white'>Report</h1>
-      <Link className='bg-green-700 text-white p-3 rounded-lg text-center hover:opacity-95' to={"/create-report"}>
-        New Report
-      </Link>
+      <h1 className='text-white'>Reports</h1>
+      <Dialog>
+        <DialogTrigger asChild>
+          <button className='bg-green-700 text-white p-3 rounded-lg text-center hover:opacity-95'>
+            New Report
+          </button>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogTitle>New Incident Report</DialogTitle>
+          <DialogDescription>Create a incident report and add the relavant people to send the report to fill out</DialogDescription>
+          <CreateReport />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

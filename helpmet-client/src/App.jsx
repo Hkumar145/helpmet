@@ -8,7 +8,6 @@ import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
-import CreateReport from './pages/CreateReport';
 import Report from './pages/Report';
 
 function App() {
@@ -25,9 +24,8 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path="/create-report" element={<CreateReport />} /> */}
+            {/* <Route path="/report" element={<Report />} /> */}
           </Route>
-          <Route path="/create-report" element={<CreateReport />} />
         </Routes>
       </div>
     </Router>

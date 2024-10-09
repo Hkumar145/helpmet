@@ -1,17 +1,26 @@
 import React, { useState } from 'react'
 import { Combobox } from '@/components/ui/combobox'
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import axios from '../api/axios';
 import { useSelector } from 'react-redux';
 
+const DialogClose = DialogPrimitive.Close
+
 const CreateReport = () => {
-    const senderEmail = useSelector((state) => state.user.email);
-    const [selectedRecipients, setSelectedRecipients] = useState([]);
-    const [reportID, setReportID] = useState("");
-    const [remark, setRemark] = useState("");
+  const senderEmail = useSelector((state) => state.user.email);
+  const [selectedRecipients, setSelectedRecipients] = useState([]);
+  const [reportID, setReportID] = useState("");
+  const [remark, setRemark] = useState("");
+  const [currentSelection, setCurrentSelection] = useState(null);
 
   const handleSelectRecipient = (recipient) => {
-    if (!selectedRecipients.some((item) => item.email === recipient.email)) {
-      setSelectedRecipients((prev) => [...prev, recipient]);
+    setCurrentSelection(recipient);
+  };
+
+  const handleAddRecipient = () => {
+    if (currentSelection && !selectedRecipients.some((item) => item.email === currentSelection.email)) {
+      setSelectedRecipients((prev) => [...prev, currentSelection]);
+      setCurrentSelection(null);
     }
   };
 
@@ -45,8 +54,7 @@ const CreateReport = () => {
 
   return (
     <main>
-      <h1 className="text-2xl font-semibold text-center my-7 text-white">New Injury Report</h1>
-      <form className="flex flex-col" onSubmit={handleSubmit}> {/* onSubmit={handleSubmit} */}
+      <form className="flex flex-col" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Report ID"
@@ -56,9 +64,19 @@ const CreateReport = () => {
           value={reportID}
           onChange={(e) => setReportID(e.target.value)}
         />
-        <p className='mt-4 text-white'>Select recipient:</p>
-        <Combobox onSelectRecipient={handleSelectRecipient} />
-        <div className="mt-4 text-white">
+        <p className='mt-4'>Select recipient:</p>
+        <div className="flex items-center gap-4">
+          <Combobox onSelectRecipient={handleSelectRecipient} />
+          <button
+            type="button"
+            onClick={handleAddRecipient}
+            className="px-6 rounded text-black hover:cursor-pointer border"
+            disabled={!currentSelection}
+          >
+            Add
+          </button>
+        </div>
+        <div className="mt-4">
           {selectedRecipients.length === 0 ? (
             <div />
           ) : (
@@ -76,13 +94,23 @@ const CreateReport = () => {
             ))
           )}
         </div>
-        <textarea placeholder="Remark" id="remark" cols="30" className='min-h-[6rem] max-h-[12rem]' value={remark} onChange={(e) => setRemark(e.target.value)}></textarea>
-        <button
-          type='submit'
-          className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed'
-        >
-              Create & Send
-        </button>
+        <textarea placeholder="Remark" id="remark" cols="30" className='min-h-[6rem] max-h-[12rem] border' value={remark} onChange={(e) => setRemark(e.target.value)}></textarea>
+        <div className='flex flex-row justify-between gap-4'>
+          <DialogClose asChild>
+            <button
+              type="button"
+              className="text-black border px-6"
+            >
+              Close
+            </button>
+          </DialogClose>
+          <button
+            type='submit'
+            className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+          >
+                Send Links
+          </button>
+        </div>
       </form>
     </main>
   )

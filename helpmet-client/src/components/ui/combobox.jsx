@@ -23,10 +23,10 @@ export function Combobox({ onSelectRecipient }) {
     }, []);
   
     const handleSelect = (employee) => {
-        setValue(employee.email);
-        onSelectRecipient(employee);
-        setOpen(false);
-      };
+      setValue(employee.email);
+      onSelectRecipient(employee);
+      setOpen(false);
+    };
   
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -35,13 +35,13 @@ export function Combobox({ onSelectRecipient }) {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[400px] justify-between"
+            className="w-full justify-between text-black"
           >
             {value ? `${employees.find(e => e.email === value)?.firstName} - ${value}` : "Choose Recipient"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[400px] p-0">
+        <PopoverContent className="w-full p-0">
           <Command>
             <CommandInput placeholder="Search Recipient" />
             <CommandList>
