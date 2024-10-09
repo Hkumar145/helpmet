@@ -5,7 +5,9 @@ const cors = require("cors");
 const router = require("./routes/routes");
 const authRouter = require("./routes/authRoutes");
 const reportRouter = require("./routes/reportRoutes");
+const emailRouter = require('./routes/emailRoutes');
 const cookieParser = require("cookie-parser");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const port = 5001;
@@ -37,6 +39,8 @@ app.use("/", router);
 app.use("/auth", authRouter);
 
 app.use("/report", reportRouter);
+
+app.use("/email", emailRouter);
 
 // Custom error handler
 app.use((err, req, res, next) => {
