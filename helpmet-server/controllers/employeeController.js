@@ -5,23 +5,46 @@ const {
     Equipment
 } = require("../models/schemas");
 
+const generateEmployeeID = () => {
+    const randomNumber = Math.floor(1 + Math.random() * 99999);
+    const formattedRandomNumber = randomNumber.toString().padStart(5, "0");
+    return `1004${formattedRandomNumber}`;
+};
+
 // Create a new employee account
 exports.createEmployee = async (req, res) => {
     try {
-        // Check if an employee with the same email already exists
-        const { email } = req.body;
+        // Check if an employee with the same email and birthday already exists
+        const { departmentID, companyID, role, firstName, lastName, email, dateOfBirth } = req.body;
 
-        const existingEmployee = await Employee.findOne({ email });
+        const existingEmployee = await Employee.findOne({ email, dateOfBirth });
         if (existingEmployee) {
             return res.status(400).json({ message: "Employee with this email already exists" });
         }
 
-        const employee = new Employee(req.body);
-        if (!employee.firstName || !employee.lastName || !employee.DateOfBirth || !employee.email || !employee.role) {
-            return res.status(400).json({ message: "Please provide all required fields" });
+        // Generate a unique employeeID
+        let employeeID;
+        let idExists = true;
+        while (idExists) {
+            employeeID = generateEmployeeID();
+            const employeeWithID = await Employee.findOne({ employeeID });
+            if (!employeeWithID) {
+                idExists = false;
+            }
         }
-        await employee.save();
-        res.json(employee);
+
+        const newEmployee = new Employee({
+            employeeID: employeeID,
+            departmentID, 
+            companyID, 
+            role, 
+            firstName, 
+            lastName, 
+            email, 
+            dateOfBirth
+        });
+        await newEmployee.save();
+        res.json({ message: "Employee created successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -51,7 +74,7 @@ exports.getAllEmployees = async (req, res) => {
 // Get a specific employee by EmployeeID
 exports.getEmployeeByID = async (req, res) => {
     try {
-        const employee = await Employee.findOne({ ID: req.params.id });
+        const employee = await Employee.findOne({ employeeID: req.params.id });
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }
@@ -70,14 +93,14 @@ exports.updateEmployeeByID = async (req, res) => {
         }
 
         const updatedEmployee = await Employee.findByIdAndUpdate(
-            { ID: req.params.id },
+            { employeeID: req.params.id },
             updateFields,
             { new: true }
         );
         if (!updatedEmployee) {
             return res.status(404).json({ message: "Employee not found" });
         }
-        res.json(updatedEmployee);
+        res.json({ message: "Employee updated successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -86,7 +109,7 @@ exports.updateEmployeeByID = async (req, res) => {
 // Delete an employee account by EmployeeID
 exports.deleteEmployeeByID = async (req, res) => {
     try {
-        const employee = await Employee.findByIdAndDelete({ ID: req.params.id });
+        const employee = await Employee.findByIdAndDelete({ employeeID: req.params.id });
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }
