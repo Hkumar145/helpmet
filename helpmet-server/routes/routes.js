@@ -39,6 +39,8 @@ router.post("/employees", createEmployee);
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
 
+
+
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
 
