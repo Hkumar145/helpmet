@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
+import Report from './pages/Report';
 
 function App() {
   return (
@@ -19,12 +20,12 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/report" element={<Report />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
-          </Route>
-          {/* <Route element={<PrivateRoute />}> */}
             <Route path="/dashboard" element={<Dashboard />} />
-          {/* </Route> */}
+            {/* <Route path="/report" element={<Report />} /> */}
+          </Route>
         </Routes>
       </div>
     </Router>
