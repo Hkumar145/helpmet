@@ -3,13 +3,24 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/routes");
+const authRouter = require("./routes/authRoutes");
+const reportRouter = require("./routes/reportRoutes");
+const emailRouter = require('./routes/emailRoutes');
+const cookieParser = require("cookie-parser");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const port = 5001;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 // Define the root route
 app.get("/", (req, res) => {
@@ -23,6 +34,13 @@ app.get("/api", (req, res) => {
 
 // Use API routes defined in the router
 app.use("/", router);
+
+// User authentication routes
+app.use("/auth", authRouter);
+
+app.use("/report", reportRouter);
+
+app.use("/email", emailRouter);
 
 // Custom error handler
 app.use((err, req, res, next) => {

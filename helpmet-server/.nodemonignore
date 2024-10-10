@@ -1,0 +1,32 @@
+node_modules
+
+# build output directories
+dist
+build
+public
+
+# system files and IDE-specific files
+.DS_Store
+.vscode
+.idea
+
+# test and temp files
+coverage
+*.log
+tmp
+temp
+
+# database dumps and configuration files
+*.sqlite
+*.db
+*.env
+
+# client-side code
+client/
+*.css
+*.scss
+*.html
+*.js.map
+
+# uploads
+uploads

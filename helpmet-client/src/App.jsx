@@ -1,55 +1,34 @@
-import { useState } from 'react'
-import ReactApexChart from 'react-apexcharts';
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Signup from './pages/signup';
+import Login from './pages/login';
+import Profile from './pages/Profile';
+import Dashboard from './pages/Dashboard';
+import Header from './components/Header'
+import PrivateRoute from './components/PrivateRoute';
+import Report from './pages/Report';
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  const chartOptions = {
-    series: [{
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-    }],
-    options: {
-      chart: {
-        height: 350,
-        type: 'line',
-        zoom: {
-          enabled: false
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: 'straight'
-      },
-      title: {
-        text: 'Product Trends by Month',
-        align: 'left'
-      },
-      grid: {
-        row: {
-          colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-          opacity: 0.5
-        }
-      },
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-      }
-    }
-  };
-
   return (
-    <div className="App">
-      <h1>ApexCharts in React</h1>
-      <ReactApexChart 
-        options={chartOptions.options} 
-        series={chartOptions.series} 
-        type="line" 
-        height={350} 
-      />
-    </div>
+    <Router>
+      <Header />
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/report" element={<Report />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/report" element={<Report />} /> */}
+          </Route>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
