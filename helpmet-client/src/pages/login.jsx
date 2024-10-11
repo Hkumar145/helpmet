@@ -84,7 +84,7 @@ const login = () => {
     <>
       {success ? (
         <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1>You are logged in!</h1>
+          <h1 className='text-white'>You are logged in!</h1>
         </section>
       ) : (
       <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>

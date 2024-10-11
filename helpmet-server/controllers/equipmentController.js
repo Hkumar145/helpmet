@@ -2,31 +2,69 @@ const {
     Employee,
     Report,
     Alert,
-    Equipment
+    Equipment,
+    Company,
+    Location,
+    EmployeeEquipment
 } = require("../models/schemas");
 
 // Create a new equipment
 exports.createEquipment = async (req, res) => {
     try {
+        const { equipmentName, locationID, inspectionDate, inspectionInterval, inspectedBy, isChecked, status, description, image } = req.body;
         // Check if an equipment with the same name and in the same location already exists
-        const { name, location } = req.body;
-        const existingEquipment = await Equipment.findOne({ name, location });
+        const existingEquipment = await Equipment.findOne({ equipmentName, locationID, description });
         if (existingEquipment) {
             return res.status(400).json({ message: "Equipment in this location with this name already exists" });
         }
-        const equipment = new Equipment(req.body);
-        await equipment.save();
-        res.json(equipment);
+
+        const equipmentCount = await Equipment.countDocuments();
+        const nextEquipmentNumber = equipmentCount + 1;
+        const newEquipment = new new Equipment({
+            equipmentID: `E${nextEquipmentNumber.toString().padStart(4, "0")}`,
+            equipmentName,
+            locationID,
+            inspectionDate,
+            inspectionInterval,
+            inspectedBy,
+            isChecked,
+            status,
+            description,
+            image
+        });
+        await newEquipment.save();
+
+        // Update EmployeeEquipment table
+        if (inspectedBy) {
+            const employeeEquipmentEntry = {
+                equipmentID: newEquipment.equipmentID,
+                employeeID: inspectedBy
+            };
+            await EmployeeEquipment.create(employeeEquipmentEntry);
+        }
+
+        res.json({ message: "Equipment created successfully" });
     } catch (error) {
-        res.status(500).json({ error: "Error creating equipment" });
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Get all equipments
-exports.getEquipments = async (req, res) => {
+// Get all equipments by CompanyID
+exports.getEquipmentsByCompany = async (req, res) => {
+    const { id: companyID } = req.params;
     try {
-        const equipments = await Equipment.find();
-        res.json(equipments);
+       // Step 1: Find all locationIDs associated with the company
+       const locationRecords = await Location.find({ companyID }).distinct("locationID");
+       if (locationRecords.length === 0) {
+           return res.status(404).json({ message: "No locations found for this company" });
+       }
+
+       // Step 2: Fetch all equipment that belongs to these locations
+       const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
+       if (equipmentRecords.length === 0) {
+           return res.status(404).json({ message: "No equipment found for this company" });
+       }
+       res.json(equipmentRecords);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -35,7 +73,7 @@ exports.getEquipments = async (req, res) => {
 // Get a specific equipment by EquipmentID
 exports.getEquipmentByID = async (req, res) => {
     try {
-        const equipment = await Equipment.findOne({ ID: req.params.id });
+        const equipment = await Equipment.findOne({ equipmentID: req.params.id });
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
@@ -54,14 +92,14 @@ exports.updateEquipmentByID = async (req, res) => {
         }
 
         const updatedEquipment = await Equipment.findByIdAndUpdate(
-            { ID: req.params.id },
+            { equipmentIDID: req.params.id },
             updateFields,
             { new: true }
         );
         if (!updatedEquipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
-        res.json(updatedEquipment);
+        res.json({ message: "Equipment updated successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -70,10 +108,14 @@ exports.updateEquipmentByID = async (req, res) => {
 // Delete equipment record by EquipmentID
 exports.deleteEquipmentByID = async (req, res) => {
     try {
-        const equipment = await Equipment.findByIdAndDelete({ ID: req.params.id });
+        const equipment = await Equipment.findByIdAndDelete({ equipmentID: req.params.id });
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
+
+        // Delete related EmployeeEquipment entry
+        await EmployeeEquipment.deleteOne({ equipmentID: req.params.id });
+
         res.json({ message: "Equipment deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
