@@ -10,6 +10,7 @@ import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
 import Equipmentcheck from'./pages/Equipmentcheck.jsx';
 import Report from './pages/Report';
+import InjuryReport from './pages/InjuryReport';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/equipmentcheck" element={<Equipmentcheck />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/injury-report" element={<InjuryReport />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
