@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
+import Equipmentcheck from'./pages/Equipmentcheck.jsx';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/equipmentcheck" element={<Equipmentcheck />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
