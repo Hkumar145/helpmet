@@ -49,26 +49,52 @@ exports.createEquipment = async (req, res) => {
     }
 };
 
+// // Get all equipments by CompanyID
+// exports.getEquipmentsByCompany = async (req, res) => {
+//     const { id: companyID } = req.params.id;
+    // try {
+    //    // Step 1: Find all locationIDs associated with the company
+    //    const locationRecords = await Location.find({ companyID }).distinct("locationID");
+    //    if (locationRecords.length === 0) {
+    //        return res.status(404).json({ message: "No locations found for this company" });
+    //    }
+
+    //    // Step 2: Fetch all equipment that belongs to these locations
+    //    const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
+    //    if (equipmentRecords.length === 0) {
+    //        return res.status(404).json({ message: "No equipment found for this company" });
+    //    }
+    //    res.json(equipmentRecords);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
+// };
+
 // Get all equipments by CompanyID
 exports.getEquipmentsByCompany = async (req, res) => {
-    const { id: companyID } = req.params;
-    try {
-       // Step 1: Find all locationIDs associated with the company
-       const locationRecords = await Location.find({ companyID }).distinct("locationID");
-       if (locationRecords.length === 0) {
-           return res.status(404).json({ message: "No locations found for this company" });
-       }
+    const { id: companyID } = Number(req.params.id);  // Extract companyID from URL params
 
-       // Step 2: Fetch all equipment that belongs to these locations
-       const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
-       if (equipmentRecords.length === 0) {
-           return res.status(404).json({ message: "No equipment found for this company" });
-       }
-       res.json(equipmentRecords);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    // try {
+    //    // Step 1: Find all locationIDs associated with the company
+    //    const locationRecords = await Location.find({ companyID }).distinct("locationID");
+    //    if (locationRecords.length === 0) {
+    //        return res.status(404).json({ message: "No locations found for this company" });
+    //    }
+
+    //    // Step 2: Fetch all equipment that belongs to these locations
+    //    const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
+    //    if (equipmentRecords.length === 0) {
+    //        return res.status(404).json({ message: "No equipment found for this company" });
+    //    }
+
+    //    // Step 3: Return equipment data
+    //    res.json(equipmentRecords);
+    // } catch (error) {
+    //     // Catch and return any errors encountered
+    //     res.status(500).json({ error: error.message });
+    // }
 };
+
 
 // Get a specific equipment by EquipmentID
 exports.getEquipmentByID = async (req, res) => {
