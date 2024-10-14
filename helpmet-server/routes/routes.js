@@ -3,14 +3,16 @@ const router = express.Router();
 const {
     createEmployee,
     getEmployeesByCompany,
-    getAllEmployees,
     getEmployeeByID,
     updateEmployeeByID,
     deleteEmployeeByID
 } = require("../controllers/employeeController");
 
 const {
-    createReport,
+    submitReport,
+    reviewPendingReport,
+    getPendingReportsByCompany,
+    // createReport,
     getReportsByCompany,
     getReportByID,
     updateReportByID,
@@ -21,8 +23,8 @@ const {
     createAlert,
     getAlertsByCompany,
     getAlertByID,
-    updateAlertByID,
-    deleteAlertByID
+    // updateAlertByID,
+    // deleteAlertByID
 } = require("../controllers/alertController");
 
 const {
@@ -64,9 +66,6 @@ router.post("/companies/:id/employees", createEmployee);
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
 
-// Get all employees
-router.get("/employees", getAllEmployees);
-
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
 
@@ -77,8 +76,17 @@ router.put("/employees/:id", updateEmployeeByID);
 router.delete("/employees/:id", deleteEmployeeByID);
 
 /***************   Report Routes   ***************/
-// Create a report
-router.post("/companies/:id/reports", createReport);
+// Submit a new pending report
+router.post("/reports/submit", submitReport);
+
+// Review a pending report
+router.put("/reports/review", reviewPendingReport);
+
+// Get all pending reports by CompanyID
+router.get("/companies/:id/reports/pending", getPendingReportsByCompany);
+
+// // Create a report
+// router.post("/companies/:id/reports", createReport);
 
 // Get a list of all reports by CompanyID
 router.get("/companies/:id/reports", getReportsByCompany);
@@ -102,11 +110,11 @@ router.get("/companies/:id/alerts", getAlertsByCompany);
 // Get alert details by alert ID
 router.get("/alerts/:id", getAlertByID);
 
-// Update alert details by alert ID
-router.put("/alerts/:id", updateAlertByID);
+// // Update alert details by alert ID
+// router.put("/alerts/:id", updateAlertByID);
 
-// Delete alert by alert ID
-router.delete("/alerts/:id", deleteAlertByID);
+// // Delete alert by alert ID
+// router.delete("/alerts/:id", deleteAlertByID);
 
 /***************   Equipment Routes   ***************/
 // Create an equipment

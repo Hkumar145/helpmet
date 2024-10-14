@@ -14,8 +14,14 @@ const Header = () => {
                 <Link to='/'>
                   <li>Home</li>
                 </Link>
+                <Link to='/alert'>
+                  <li>Alert</li>
+                </Link>
                 <Link to='/about'>
                   <li>About</li>
+                </Link>
+                <Link to='/equipmentcheck'>
+                  <li>Equipmentcheck</li>
                 </Link>
                 <Link to='/profile'>
                   {currentUser ? (

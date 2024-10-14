@@ -1,12 +1,4 @@
-const {
-    Employee,
-    Report,
-    Alert,
-    Equipment,
-    Department,
-    Company,
-    Location
-} = require("../models/schemas");
+const { Location } = require("../models/schemas");
 
 // Create a new location under a specific company
 exports.createLocation = async (req, res) => {
@@ -51,7 +43,6 @@ exports.getLocationsByCompany = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 
 // Get specific location details by locationID
 exports.getLocationByID = async (req, res) => {
