@@ -61,7 +61,7 @@ exports.updateDepartmentByID = async (req, res) => {
             return res.status(400).json({ message: "No fields to update" });
         }
 
-        const updatedDepartment = await Department.findByIdAndUpdate(
+        const updatedDepartment = await Department.findOneAndUpdate(
             { departmentID: req.params.id },
             updateFields,
             { new: true }
