@@ -11,22 +11,25 @@ const Header = () => {
             </Link>
             
             <ul className='flex gap-4'>
-              <Link to='/report'>
-                { currentUser && <li>Report</li> }
-              </Link>
-              <Link to='/equipmentcheck'>
-              { currentUser && <li>Equipment</li> }
-              </Link>
-              <Link to='/about'>
-                <li>About</li>
-              </Link>
-              <Link to='/profile'>
-                {currentUser ? (
-                  <img src={currentUser.profilePicture} alt="profile" className='h-7 w-7 rounded-full object-cover'/>
-                ):(
-                  <li>Login</li>
-                )}
-              </Link>
+                <Link to='/report'>
+                  { currentUser && <li>Report</li> }
+                </Link>
+                <Link to='/equipmentcheck'>
+                  { currentUser && <li>Equipment</li> }
+                </Link>
+                <Link to='/alert'>
+                  <li>Alert</li>
+                </Link>
+                <Link to='/about'>
+                  <li>About</li>
+                </Link>
+                <Link to='/profile'>
+                  {currentUser ? (
+                    <img src={currentUser.profilePicture} alt="profile" className='h-7 w-7 rounded-full object-cover'/>
+                  ):(
+                    <li>Login</li>
+                  )}
+                </Link>
             </ul>
         </div>
     </div>

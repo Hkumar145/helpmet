@@ -1,16 +1,12 @@
 const {
-    Employee,
-    Report,
-    Alert,
     Equipment,
-    Company,
-    Location,
     EmployeeEquipment
 } = require("../models/schemas");
 
 // Create a new equipment
 exports.createEquipment = async (req, res) => {
     try {
+        const { id: companyID } = req.params;
         const { equipmentName, locationID, inspectionDate, inspectionInterval, inspectedBy, isChecked, status, description, image } = req.body;
         // Check if an equipment with the same name and in the same location already exists
         const existingEquipment = await Equipment.findOne({ equipmentName, locationID, description });
@@ -23,6 +19,7 @@ exports.createEquipment = async (req, res) => {
         const newEquipment = new new Equipment({
             equipmentID: `E${nextEquipmentNumber.toString().padStart(4, "0")}`,
             equipmentName,
+            companyID,
             locationID,
             inspectionDate,
             inspectionInterval,
@@ -49,26 +46,41 @@ exports.createEquipment = async (req, res) => {
     }
 };
 
+// // Get all equipments by CompanyID
+// exports.getEquipmentsByCompany = async (req, res) => {
+//     const { id: companyID } = req.params.id;
+    // try {
+    //    // Step 1: Find all locationIDs associated with the company
+    //    const locationRecords = await Location.find({ companyID }).distinct("locationID");
+    //    if (locationRecords.length === 0) {
+    //        return res.status(404).json({ message: "No locations found for this company" });
+    //    }
+
+    //    // Step 2: Fetch all equipment that belongs to these locations
+    //    const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
+    //    if (equipmentRecords.length === 0) {
+    //        return res.status(404).json({ message: "No equipment found for this company" });
+    //    }
+    //    res.json(equipmentRecords);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
+// };
+
 // Get all equipments by CompanyID
 exports.getEquipmentsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
     try {
-       // Step 1: Find all locationIDs associated with the company
-       const locationRecords = await Location.find({ companyID }).distinct("locationID");
-       if (locationRecords.length === 0) {
-           return res.status(404).json({ message: "No locations found for this company" });
-       }
-
-       // Step 2: Fetch all equipment that belongs to these locations
-       const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
-       if (equipmentRecords.length === 0) {
+       const equipments = await Equipment.find({ companyID });
+       if (equipments.length === 0) {
            return res.status(404).json({ message: "No equipment found for this company" });
        }
-       res.json(equipmentRecords);
+       res.json(equipments);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Get a specific equipment by EquipmentID
 exports.getEquipmentByID = async (req, res) => {
@@ -91,8 +103,8 @@ exports.updateEquipmentByID = async (req, res) => {
             return res.status(400).json({ message: "No fields to update" });
         }
 
-        const updatedEquipment = await Equipment.findByIdAndUpdate(
-            { equipmentIDID: req.params.id },
+        const updatedEquipment = await Equipment.findOneAndUpdate(
+            { equipmentID: req.params.id },
             updateFields,
             { new: true }
         );
@@ -108,7 +120,7 @@ exports.updateEquipmentByID = async (req, res) => {
 // Delete equipment record by EquipmentID
 exports.deleteEquipmentByID = async (req, res) => {
     try {
-        const equipment = await Equipment.findByIdAndDelete({ equipmentID: req.params.id });
+        const equipment = await Equipment.findOneAndDelete({ equipmentID: req.params.id });
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
