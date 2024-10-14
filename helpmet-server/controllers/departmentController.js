@@ -1,8 +1,5 @@
 const {
     Employee,
-    Report,
-    Alert,
-    Equipment,
     Department
 } = require("../models/schemas");
 

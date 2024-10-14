@@ -1,11 +1,7 @@
 const {
     Employee,
     Report,
-    Alert,
-    Equipment,
     Department,
-    Company,
-    Location,
     InjuryType
 } = require("../models/schemas");
 

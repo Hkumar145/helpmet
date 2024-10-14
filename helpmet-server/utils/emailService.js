@@ -25,4 +25,22 @@ const sendInjuryReportEmail = async (recipient, reportID, senderEmail, remark) =
   }
 };
 
-module.exports = { sendInjuryReportEmail };
+const sendAlertEmail = async ({ recipient, senderEmail, alertDetails }) => {
+  const mailOptions = {
+    from: senderEmail,
+    to: recipient.email,
+    cc: cc || [],
+    subject: alertDetails.alertName,
+    text: `${alertDetails.description}`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully to:", recipient.email);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw new Error("Could not send email");
+  }
+};
+
+module.exports = { sendInjuryReportEmail, sendAlertEmail };
