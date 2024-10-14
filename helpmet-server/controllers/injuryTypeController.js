@@ -76,7 +76,7 @@ exports.updateInjuryTypeByID = async (req, res) => {
             return res.status(400).json({ message: "No fields to update" });
         }
 
-        const updatedInjuryType = await InjuryType.findByIdAndUpdate(
+        const updatedInjuryType = await InjuryType.findOneAndUpdate(
             { injuryTypeID: req.params.id },
             updateFields,
             { new: true }
@@ -94,7 +94,7 @@ exports.updateInjuryTypeByID = async (req, res) => {
 // Delete injury type by injuryTypeID
 exports.deleteInjuryTypeByID = async (req, res) => { 
     try {
-        const deletedInjuryType = await InjuryType.findByIdAndDelete({ injuryTypeID: req.params.id });
+        const deletedInjuryType = await InjuryType.findOneAndDelete({ injuryTypeID: req.params.id });
         if (!deletedInjuryType) {
             return res.status(404).json({ message: "Injury type not found" });
         }

@@ -122,7 +122,7 @@ exports.getAlertByID = async (req, res) => {
 //         if (Object.keys(updateFields).length === 0) {
 //             return res.status(400).json({ message: "No fields to update" });
 //         }
-//         const updatedAlert = await Alert.findByIdAndUpdate(
+//         const updatedAlert = await Alert.findOneAndUpdate(
 //             { alertID: req.params.id },
 //             updateFields,
 //             { new: true }
@@ -139,7 +139,7 @@ exports.getAlertByID = async (req, res) => {
 // // Delete an alert by AlertID
 // exports.deleteAlertByID = async (req, res) => {
 //     try {
-//         const alert = await Alert.findByIdAndDelete({ alertID: req.params.id });
+//         const alert = await Alert.findOneAndDelete({ alertID: req.params.id });
 //         if (!alert) {
 //             return res.status(404).json({ message: "Alert not found" });
 //         }

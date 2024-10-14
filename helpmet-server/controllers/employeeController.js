@@ -87,7 +87,7 @@ exports.updateEmployeeByID = async (req, res) => {
             return res.status(400).json({ message: "No fields to update" });
         }
 
-        const updatedEmployee = await Employee.findByIdAndUpdate(
+        const updatedEmployee = await Employee.findOneAndUpdate(
             { employeeID: req.params.id },
             updateFields,
             { new: true }
@@ -104,7 +104,7 @@ exports.updateEmployeeByID = async (req, res) => {
 // Delete an employee account by EmployeeID
 exports.deleteEmployeeByID = async (req, res) => {
     try {
-        const employee = await Employee.findByIdAndDelete({ employeeID: req.params.id });
+        const employee = await Employee.findOneAndDelete({ employeeID: req.params.id });
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }

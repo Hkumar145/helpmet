@@ -208,7 +208,7 @@ exports.updateReportByID = async (req, res) => {
         if (Object.keys(updateFields).length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
-        const updatedReport = await Report.findByIdAndUpdate(
+        const updatedReport = await Report.findOneAndUpdate(
             { reportID: req.params.id },
             updateFields,
             { new: true }
@@ -225,7 +225,7 @@ exports.updateReportByID = async (req, res) => {
 // Delete an injury report by ReportID
 exports.deleteReportByID = async (req, res) => {
     try {
-        const report = await Report.findByIdAndDelete({ reportID: req.params.id });
+        const report = await Report.findOneAndDelete({ reportID: req.params.id });
         if (!report) {
             return res.status(404).json({ message: "Report not found" });
         }

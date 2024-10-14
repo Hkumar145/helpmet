@@ -81,7 +81,7 @@ exports.updateEquipmentByID = async (req, res) => {
             return res.status(400).json({ message: "No fields to update" });
         }
 
-        const updatedEquipment = await Equipment.findByIdAndUpdate(
+        const updatedEquipment = await Equipment.findOneAndUpdate(
             { equipmentID: req.params.id },
             updateFields,
             { new: true }
@@ -98,7 +98,7 @@ exports.updateEquipmentByID = async (req, res) => {
 // Delete equipment record by EquipmentID
 exports.deleteEquipmentByID = async (req, res) => {
     try {
-        const equipment = await Equipment.findByIdAndDelete({ equipmentID: req.params.id });
+        const equipment = await Equipment.findOneAndDelete({ equipmentID: req.params.id });
         if (!equipment) {
             return res.status(404).json({ message: "Equipment not found" });
         }
