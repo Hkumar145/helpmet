@@ -1,9 +1,4 @@
-const {
-    Employee,
-    Report,
-    Alert,
-    Equipment
-} = require("../models/schemas");
+const { Employee } = require("../models/schemas");
 
 const generateEmployeeID = () => {
     const randomNumber = Math.floor(1 + Math.random() * 99999);
@@ -67,7 +62,7 @@ exports.getAllEmployees = async (req, res) => {
       const employees = await Employee.find();
       res.status(200).json(employees);
     } catch (err) {
-      res.status(500).json({ error: "Failed to retrieve employees" });
+      res.status(500).json({ error: error.message });
     }
   };
 

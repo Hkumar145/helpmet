@@ -9,6 +9,8 @@ import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
 import Report from './pages/Report';
+import Alert from './pages/Alert'
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/alert" element={<Alert />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/report" element={<Report />} />
@@ -26,6 +29,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             {/* <Route path="/report" element={<Report />} /> */}
           </Route>
+
         </Routes>
       </div>
     </Router>

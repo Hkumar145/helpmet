@@ -22,23 +22,55 @@ const employeeSchema = new Schema({
     }
 });
 
-// Report Schema
-const reportSchema = new Schema({
-    reportID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
+// PendingReport Schema
+const pendingReportSchema = new Schema({
+    companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
     reportedBy: { type: Number, required: true, trim: true, ref: "Employee" },
     injuredEmployeeID: { type: Number, required: true, trim: true, ref: "Employee" },
     dateOfInjury: { type: Date, required: true },
     reportDate: { type: Date, required: true, default: Date.now },
     locationID: { type: String, required: true, ref: "Location", trim: true, maxlength: 10 },
     injuryTypeID: { type: String, required: true, ref: "InjuryType", trim: true, maxlength: 10 },
-    severity: { 
-        type: String, 
-        enum: ["Minor", "Severe", "Moderate", "Significant", "Fatal"],
+    severity: {
+        type: Number,
+        enum: [1, 2, 3, 4, 5], // 1: Minor, 2: Severe, 3: Moderate, 4: Significant, 5: Fatal
         required: true
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
     image: { type: String },
-    witnessID: { type: Number, trim: true, ref: "Employee" }
+    witnessID: { type: Number, trim: true, ref: "Employee" },
+    status: {
+        type: String,
+        enum: ["On going", "On hold", "Completed"],
+        default: "On going",
+        required: true
+    },
+    reviewDate: { type: Date, default: Date.now, required: true }
+});
+
+const reportSchema = new Schema({
+    reportID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
+    companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
+    reportedBy: { type: Number, required: true, trim: true, ref: "Employee" },
+    injuredEmployeeID: { type: Number, required: true, trim: true, ref: "Employee" },
+    dateOfInjury: { type: Date, required: true },
+    reportDate: { type: Date, required: true },
+    locationID: { type: String, required: true, ref: "Location", trim: true, maxlength: 10 },
+    injuryTypeID: { type: String, required: true, ref: "InjuryType", trim: true, maxlength: 10 },
+    severity: {
+        type: Number,
+        enum: [1, 2, 3, 4, 5], // 1: Minor, 2: Severe, 3: Moderate, 4: Significant, 5: Fatal
+        required: true
+    },
+    description: { type: String, required: true, trim: true, maxlength: 500 },
+    image: { type: String },
+    witnessID: { type: Number, trim: true, ref: "Employee" },
+    status: { 
+        type: String,
+        default: "Completed",
+        required: true 
+    },
+    reviewDate : { type: Date, required: true }
 });
 
 // Employee Report Schema
@@ -52,15 +84,8 @@ employeeReportSchema.index({ employeeID: 1, reportID: 1 }, { unique: true });
 const alertSchema = new Schema({
     alertID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
     alertName: { type: String, trim: true, required: true, maxlength: 30 }, 
-    type: { type: String, trim: true, required: true, maxlength: 30 }, 
-    triggerCondition: { type: String, trim: true, required: true, maxlength: 30 },
-    sentAt: { type: Date, default: Date.now, required: true },
-    scheduleTime: { type: Date,
-        validate: [
-          (date) => date > new Date(),
-          "Schedule Date must be in the future",
-        ],
-      },
+    companyID: { type: Number, ref: "Company", trim: true, required: true },
+    sentAt: { type: Date, required: true, },
     description: { type: String, trim: true, required: true, maxlength: 500 }
 });
 
@@ -75,6 +100,7 @@ employeeAlertSchema.index({ employeeID: 1, alertID: 1 }, { unique: true });
 const equipmentSchema = new Schema({
     equipmentID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
     equipmentName: { type: String, trim: true, required: true, maxlength: 30 },
+    companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
     locationID: { type: String, required: true, ref: "Location", trim: true, maxlength: 10 },
     inspectionDate: { type: Date, required: true },
     isChecked: {type: Boolean, required: true },
@@ -135,6 +161,7 @@ const injuryTypeSchema = new Schema({
 });
 
 const Employee = mongoose.model("Employee", employeeSchema);
+const PendingReport = mongoose.model("PendingReport", pendingReportSchema);
 const Report = mongoose.model("Report", reportSchema);
 const EmployeeReport = mongoose.model("EmployeeReport", employeeReportSchema);
 const Alert = mongoose.model("Alert", alertSchema);
@@ -150,6 +177,7 @@ const InjuryType = mongoose.model("InjuryType", injuryTypeSchema);
 
 module.exports = {
     Employee,
+    PendingReport,
     Report,
     EmployeeReport,
     Alert,
