@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import CreateReport from '../components/CreateReport'
+import { useSelector } from 'react-redux'
 import axios from '../api/axios'
 
 const Report = () => {
   const [report, setReport] = useState([]);
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
-    axios.get('/reports')
-    // Need to get a list of all reports by CompanyID      router.get("/companies/:id/reports", getReportsByCompany);
-      .then(response => {
-        const sortedReports = response.data.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate));
-        setReport(sortedReports);
-      })
-      .catch(error => {
-        console.error("Error fetching reports:", error);
-      });
-  }, []);
+    if (companyID) {
+      axios.get(`/companies/${companyID}/reports`)
+        .then(response => {
+          const sortedReports = response.data.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate));
+          setReport(sortedReports);
+        })
+        .catch(error => {
+          console.error("Error fetching reports:", error);
+        });
+    }
+  }, [companyID]);
 
   return (
     <div className='flex flex-col gap-4'>
