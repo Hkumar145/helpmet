@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
+import Equipmentcheck from'./pages/Equipmentcheck.jsx';
 import Report from './pages/Report';
 import Alert from './pages/Alert'
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/alert" element={<Alert />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/equipmentcheck" element={<Equipmentcheck />} />
           <Route path="/report" element={<Report />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />

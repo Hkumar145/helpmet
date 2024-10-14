@@ -46,6 +46,27 @@ exports.createEquipment = async (req, res) => {
     }
 };
 
+// // Get all equipments by CompanyID
+// exports.getEquipmentsByCompany = async (req, res) => {
+//     const { id: companyID } = req.params.id;
+    // try {
+    //    // Step 1: Find all locationIDs associated with the company
+    //    const locationRecords = await Location.find({ companyID }).distinct("locationID");
+    //    if (locationRecords.length === 0) {
+    //        return res.status(404).json({ message: "No locations found for this company" });
+    //    }
+
+    //    // Step 2: Fetch all equipment that belongs to these locations
+    //    const equipmentRecords = await Equipment.find({ locationID: { $in: locationRecords } });
+    //    if (equipmentRecords.length === 0) {
+    //        return res.status(404).json({ message: "No equipment found for this company" });
+    //    }
+    //    res.json(equipmentRecords);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    // }
+// };
+
 // Get all equipments by CompanyID
 exports.getEquipmentsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
@@ -59,6 +80,7 @@ exports.getEquipmentsByCompany = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Get a specific equipment by EquipmentID
 exports.getEquipmentByID = async (req, res) => {
