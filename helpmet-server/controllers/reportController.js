@@ -11,7 +11,8 @@ exports.submitReport = async (req, res) => {
         const { reportedBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, image, witnessID } = req.body;
 
         // Fetch the employee's companyID based on reportedBy (employeeID)
-        const employee = await Employee.findById(reportedBy);
+        const employee = await Employee.findOne({ employeeID: reportedBy });
+        // const employee = await Employee.findById(reportedBy);
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }
