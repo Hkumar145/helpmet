@@ -30,7 +30,7 @@ const ReportDetails = () => {
   if (!reportDetails) return <div>Loading...</div>;
 
   return (
-    <div className='text-white'>
+    <div className='text-white max-w-lg w-full p-6 bg-gray-800 rounded-lg'>
       <h1>Report Details</h1>
       <p>Report ID: {reportDetails.reportID}</p>
       <p>Reported by: {reportDetails.reportBy}</p>
@@ -42,7 +42,15 @@ const ReportDetails = () => {
       <p>Severity: {severityMapping[reportDetails.severity]}</p>
       <p>Description: {reportDetails.description}</p>
       <p>Witness ID: {reportDetails.witnessID}</p>
-      <p>Image: {reportDetails.image}</p>
+      <div>
+        <h3>Image:</h3>
+        {reportDetails.image ? (
+          <img src={reportDetails.image} alt="Injury Report" className="max-w-[40%] h-auto rounded-lg" />
+        ) : (
+          <p>No image available</p>
+        )}
+      </div>
+      <p>Status: {reportDetails.status}</p>
     </div>
   );
 };

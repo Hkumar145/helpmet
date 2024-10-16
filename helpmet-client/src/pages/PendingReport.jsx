@@ -46,7 +46,7 @@ const PendingReport = () => {
         <h1 className='text-white text-2xl'>Pending Report</h1>
         <button
             onClick={handleViewCompletedReports}
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
+            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'
           >
             Completed Report
           </button>

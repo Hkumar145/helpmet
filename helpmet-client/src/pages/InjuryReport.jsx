@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from '../api/axios';
 
 const InjuryReport = () => {
-  const [reportedBy, setReportedBy] = useState('');
+  const [reportBy, setReportBy] = useState('');
   const [injuredEmployeeID, setInjuredEmployeeID] = useState('');
   const [dateOfInjury, setDateOfInjury] = useState('');
   const [locationID, setLocationID] = useState('');
@@ -24,7 +24,7 @@ const InjuryReport = () => {
       reader.readAsDataURL(file);
     } else {
       const stateUpdateFunctions = {
-        reportedBy: setReportedBy,
+        reportBy: setReportBy,
         injuredEmployeeID: setInjuredEmployeeID,
         dateOfInjury: setDateOfInjury,
         locationID: setLocationID,
@@ -45,7 +45,7 @@ const InjuryReport = () => {
     e.preventDefault();
     const dataToSubmit = {
       companyID: 100001,
-      reportedBy: Number(reportedBy),
+      reportBy: Number(reportBy),
       injuredEmployeeID: Number(injuredEmployeeID),
       dateOfInjury: new Date(dateOfInjury),
       reportDate: new Date(),
@@ -62,6 +62,15 @@ const InjuryReport = () => {
     try {
       const response = await axios.post('/reports/submit', dataToSubmit);
       alert("Injury report submitted.");
+      setReportBy('');
+      setInjuredEmployeeID('');
+      setDateOfInjury('');
+      setLocationID('');
+      setInjuryTypeID('');
+      setSeverity('');
+      setDescription('');
+      setImage('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+      setWitnessID('');
     } catch (error) {
       console.error("Error submitting report:", error);
       alert("Failed to submit report. Please try again.");
@@ -76,8 +85,8 @@ const InjuryReport = () => {
         <label>Reported By (Employee ID)</label>
         <input
           type="number"
-          name="reportedBy"
-          value={reportedBy}
+          name="reportBy"
+          value={reportBy}
           onChange={handleChange}
           placeholder="Enter your employee ID"
           required

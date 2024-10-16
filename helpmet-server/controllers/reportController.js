@@ -8,11 +8,11 @@ const {
 // Submit a new pending report (Employee Submission)
 exports.submitReport = async (req, res) => {
     try {
-        const { reportedBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, image, witnessID } = req.body;
+        const { reportBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, image, witnessID } = req.body;
 
-        // Fetch the employee's companyID based on reportedBy (employeeID)
-        const employee = await Employee.findOne({ employeeID: reportedBy });
-        // const employee = await Employee.findById(reportedBy);
+        // Fetch the employee's companyID based on reportBy (employeeID)
+        const employee = await Employee.findOne({ employeeID: reportBy });
+        // const employee = await Employee.findById(reportBy);
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }
@@ -20,7 +20,7 @@ exports.submitReport = async (req, res) => {
 
         const newPendingReport = new PendingReport({
             companyID,
-            reportedBy,
+            reportBy,
             injuredEmployeeID,
             dateOfInjury,
             locationID,
@@ -64,7 +64,7 @@ exports.reviewPendingReport = async (req, res) => {
 
             const newReport = new Report({
                 reportID: `R${nextReportNumber.toString().padStart(4, "0")}`,
-                reportedBy: pendingReport.reportedBy,
+                reportBy: pendingReport.reportBy,
                 injuredEmployeeID: pendingReport.injuredEmployeeID,
                 dateOfInjury: pendingReport.dateOfInjury,
                 reportDate: pendingReport.reportDate,
@@ -107,7 +107,7 @@ exports.reviewPendingReport = async (req, res) => {
 exports.getPendingReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
     try {
-        const pendingReports = await PendingReport.find({ companyID: companyID, reviewStatus: "pending" })
+        const pendingReports = await PendingReport.find({ companyID: companyID, status: "On going" })
         if (pendingReports.length === 0) {
             return res.status(404).json({ message: "No pending reports" });
         }
@@ -122,9 +122,9 @@ exports.getPendingReportsByCompany = async (req, res) => {
 //     try {
 //         const { id: companyID } = req.params;
 //         // Check if the missing fields exist
-//         const { reportedBy, injuredEmployeeID, dateOfInjury, reportDate, locationID, injuryTypeID, severity, description, image } = req.body;
+//         const { reportBy, injuredEmployeeID, dateOfInjury, reportDate, locationID, injuryTypeID, severity, description, image } = req.body;
 
-//         const requiredFields = ["reportedBy", "injuredEmployeeID", "dateOfInjury", "reportDate", "locationID", "injuryTypeID", "severity", "description"];
+//         const requiredFields = ["reportBy", "injuredEmployeeID", "dateOfInjury", "reportDate", "locationID", "injuryTypeID", "severity", "description"];
 //         const missingFields = requiredFields.filter(field => !req.body[field]);
 
 //         if (missingFields.length > 0) {
@@ -148,7 +148,7 @@ exports.getPendingReportsByCompany = async (req, res) => {
 
 //         const newReport = new Report({
 //             reportID: `R${nextReportNumber.toString().padStart(4, '0')}`,
-//             reportedBy,
+//             reportBy,
 //             injuredEmployeeID,
 //             dateOfInjury,
 //             reportDate,
