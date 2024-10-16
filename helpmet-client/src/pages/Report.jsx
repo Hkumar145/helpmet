@@ -13,6 +13,9 @@ const severityMapping = {
   5: 'Fatal',
 };
 
+const injuryTypeMapping = {
+};
+
 const Report = () => {
   const [report, setReport] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);

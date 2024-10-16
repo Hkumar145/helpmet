@@ -16,7 +16,9 @@ const {
     getReportsByCompany,
     getReportByID,
     updateReportByID,
-    deleteReportByID
+    deleteReportByID,
+    getPendingReportByID,
+    updatePendingReportByID
 } = require("../controllers/reportController");
 
 const {
@@ -99,6 +101,12 @@ router.put("/reports/:id", updateReportByID);
 
 // Delete report by report ID
 router.delete("/reports/:id", deleteReportByID);
+
+// Get pending report details by MongoDB _id
+router.get("/reports/pending/:_id", getPendingReportByID);
+
+// Update pending report details by MongoDB _id
+router.put("/reports/pending/:_id", updatePendingReportByID);
 
 /***************   Alert Routes   ***************/
 // Create an alert

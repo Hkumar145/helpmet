@@ -11,6 +11,9 @@ const severityMapping = {
   5: 'Fatal',
 };
 
+const injuryTypeMapping = {
+};
+
 const PendingReport = () => {
   const [pendingReports, setPendingReports] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
@@ -29,8 +32,8 @@ const PendingReport = () => {
     }
   }, [companyID]);
 
-  const handleViewDetails = (reportID) => {
-    navigate(`/report/${reportID}`);
+  const handleViewDetails = (id) => {
+    navigate(`/pending-report/${id}`);
   };
 
   const handleViewCompletedReports = () => {
@@ -77,7 +80,7 @@ const PendingReport = () => {
                 <td className="px-4 py-2">{report.injuredEmployeeID}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => handleViewDetails(report.reportID)}
+                    onClick={() => handleViewDetails(report._id)}
                     className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800'
                   >
                     Details

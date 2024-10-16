@@ -13,6 +13,7 @@ import Report from './pages/Report';
 import ReportDetails from './pages/ReportDetails';
 import InjuryReport from './pages/InjuryReport';
 import PendingReport from './pages/PendingReport';
+import PendingReportDetails from './pages/PendingReportDetails';
 import Alert from './pages/Alert'
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/report" element={<Report />} />
           <Route path="/report/:id" element={<ReportDetails />} />
           <Route path="/pending-report" element={<PendingReport />} />
+          <Route path="/pending-report/:id" element={<PendingReportDetails />} />
           <Route path="/injury-report" element={<InjuryReport />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />

@@ -239,3 +239,43 @@ exports.deleteReportByID = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Get pending report details by MongoDB _id
+exports.getPendingReportByID = async (req, res) => {
+    const { _id } = req.params;
+    try {
+        const pendingReport = await PendingReport.findById(_id);
+        if (!pendingReport) {
+            return res.status(404).json({ message: "Pending report not found" });
+        }
+        res.json(pendingReport);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Update pending report details by MongoDB _id
+exports.updatePendingReportByID = async (req, res) => {
+    const { _id } = req.params;
+    const updateFields = req.body;
+
+    try {
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ message: "No fields to update" });
+        }
+
+        const updatedPendingReport = await PendingReport.findByIdAndUpdate(
+            _id,
+            updateFields,
+            { new: true }
+        );
+
+        if (!updatedPendingReport) {
+            return res.status(404).json({ message: "Pending report not found" });
+        }
+
+        res.json({ message: "Pending report updated successfully", updatedPendingReport });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

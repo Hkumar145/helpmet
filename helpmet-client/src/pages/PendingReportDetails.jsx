@@ -13,29 +13,26 @@ const severityMapping = {
 const injuryTypeMapping = {
 };
 
-const ReportDetails = () => {
+const PendingReportDetails = () => {
   const { id } = useParams();
   const [reportDetails, setReportDetails] = useState(null);
 
   useEffect(() => {
-    axios.get(`/reports/${id}`)
-      .then(response => {
-        setReportDetails(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching report details:", error);
-      });
+    axios.get(`/reports/pending/${id}`)  // Update API endpoint as needed
+      .then(response => setReportDetails(response.data))
+      .catch(error => console.error("Error fetching report details:", error));
   }, [id]);
 
-  if (!reportDetails) return <div>Loading...</div>;
+  if (!reportDetails) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='text-white'>
-      <h1>Report Details</h1>
-      <p>Report ID: {reportDetails.reportID}</p>
+      <h2>Report Details for {id}</h2>
       <p>Reported by: {reportDetails.reportBy}</p>
       <p>Injured Employee ID: {reportDetails.injuredEmployeeID}</p>
-      <p>Date of injury: {new Date(reportDetails.dateOfInjury).toLocaleDateString()}</p>
+      <p>Date of Injury: {new Date(reportDetails.dateOfInjury).toLocaleDateString()}</p>
       <p>Report Date: {new Date(reportDetails.reportDate).toLocaleDateString()}</p>
       <p>Location ID: {reportDetails.locationID}</p>
       <p>Injury type ID: {reportDetails.injuryTypeID}</p>
@@ -43,8 +40,9 @@ const ReportDetails = () => {
       <p>Description: {reportDetails.description}</p>
       <p>Witness ID: {reportDetails.witnessID}</p>
       <p>Image: {reportDetails.image}</p>
+      <p>Status: {reportDetails.status}</p>
     </div>
   );
 };
 
-export default ReportDetails;
+export default PendingReportDetails;
