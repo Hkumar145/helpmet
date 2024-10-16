@@ -20,12 +20,32 @@ const injuryTypeMapping = {
 const PendingReportDetails = () => {
   const { id } = useParams();
   const [reportDetails, setReportDetails] = useState(null);
+  const [holdReason, setHoldReason] = useState("");
 
   useEffect(() => {
     axios.get(`/reports/pending/${id}`)
       .then(response => setReportDetails(response.data))
       .catch(error => console.error("Error fetching report details:", error));
   }, [id]);
+
+  const confirmOnHold = async () => {
+    try {
+      await axios.post("/email/send-hold-email", {
+        reportDetails,
+        holdReason,
+      });
+      alert("Email sent successfully!");
+
+      setReportDetails((prevDetails) => ({
+        ...prevDetails,
+        status: "On hold",
+      }));
+      setHoldReason("");
+    } catch (error) {
+      console.error("Error sending hold email:", error);
+      alert("Could not send hold email.");
+    }
+  };
 
   if (!reportDetails) {
     return <div>Loading...</div>;
@@ -98,6 +118,8 @@ const PendingReportDetails = () => {
             <DialogDescription>Reason for putting this report on hold:</DialogDescription>
             <textarea 
               placeholder="Message" 
+              value={holdReason}
+              onChange={(e) => setHoldReason(e.target.value)}
               className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
             ></textarea>
             <div className='flex flex-row justify-between gap-4'>
@@ -110,7 +132,8 @@ const PendingReportDetails = () => {
                 </button>
               </DialogClose>
               <button
-                type='submit'
+                type='button'
+                onClick={confirmOnHold}
                 className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
               >
                 Confirm

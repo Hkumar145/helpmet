@@ -107,7 +107,7 @@ exports.reviewPendingReport = async (req, res) => {
 exports.getPendingReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
     try {
-        const pendingReports = await PendingReport.find({ companyID: companyID, status: "On going" })
+        const pendingReports = await PendingReport.find({ companyID: companyID, status: { $in: ["On going", "On hold"] } })
         if (pendingReports.length === 0) {
             return res.status(404).json({ message: "No pending reports" });
         }
