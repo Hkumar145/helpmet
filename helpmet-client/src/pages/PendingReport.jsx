@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import CreateReport from '../components/CreateReport'
-import { useSelector } from 'react-redux'
-import axios from '../api/axios'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const severityMapping = {
   1: 'Minor',
@@ -13,20 +11,20 @@ const severityMapping = {
   5: 'Fatal',
 };
 
-const Report = () => {
-  const [report, setReport] = useState([]);
+const PendingReport = () => {
+  const [pendingReports, setPendingReports] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (companyID) {
-      axios.get(`/companies/${companyID}/reports`)
+      axios.get(`/companies/${companyID}/reports/pending`)
         .then(response => {
-          const sortedReports = response.data.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate));
-          setReport(sortedReports);
+          const sortedPendingReports = response.data.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate));
+          setPendingReports(sortedPendingReports);
         })
         .catch(error => {
-          console.error("Error fetching reports:", error);
+          console.error("Error fetching pending reports:", error);
         });
     }
   }, [companyID]);
@@ -35,39 +33,24 @@ const Report = () => {
     navigate(`/report/${reportID}`);
   };
 
-  const handleViewPendingReports = () => {
-    navigate(`/pending-report`);
+  const handleViewCompletedReports = () => {
+    navigate(`/report`);
   };
 
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex flex-row items-center justify-between'>
-        <h1 className='text-white text-2xl'>Report</h1>
-        <div className='flex gap-2'>
-          <button
-            onClick={handleViewPendingReports}
+        <h1 className='text-white text-2xl'>Pending Report</h1>
+        <button
+            onClick={handleViewCompletedReports}
             className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
           >
-            Pending Report
+            Completed Report
           </button>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'>
-                New Report
-              </button>
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogTitle>New Incident Report</DialogTitle>
-              <DialogDescription>Create an incident report and add the relevant people to notify.</DialogDescription>
-              <CreateReport />
-            </DialogContent>
-          </Dialog>
-          </div>
       </div>
 
       <div className="overflow-x-auto">
-      <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg">
+        <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg">
           <thead>
             <tr>
               <th className="px-4 py-2">Report ID</th>
@@ -82,9 +65,9 @@ const Report = () => {
             </tr>
           </thead>
           <tbody>
-            {report.map((report) => (
-              <tr key={report.reportID} className="border-t border-gray-700">
-                <td className="px-4 py-2">{report.reportID}</td>
+            {pendingReports.map((report, index) => (
+              <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-gray-700">
+                <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td>
                 <td className="px-4 py-2">{severityMapping[report.severity]}</td>
                 <td className="px-4 py-2">{report.status}</td>
                 <td className="px-4 py-2">{report.locationID}</td>
@@ -106,7 +89,7 @@ const Report = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Report
+export default PendingReport;
