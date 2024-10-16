@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
-import Equipmentcheck from'./pages/Equipmentcheck.jsx';
+import Equipmentcheck from'./pages/EquipmentCheck.jsx';
 import Report from './pages/Report';
 import InjuryReport from './pages/InjuryReport';
 import Alert from './pages/Alert'
