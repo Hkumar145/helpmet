@@ -18,3 +18,5 @@ const EquipmentDetail = ({ equipment, onClose }) => {
 };
 
 export default EquipmentDetail;
+
+

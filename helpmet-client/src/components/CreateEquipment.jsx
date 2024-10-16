@@ -13,7 +13,7 @@ const CreateEquipment = ({ onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 rounded">
+    <form onSubmit={handleSubmit} className="bg-black p-4 rounded">
       <div className="mb-4">
         <label className="block text-sm font-bold">Equipment Name</label>
         <input

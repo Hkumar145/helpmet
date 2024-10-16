@@ -94,6 +94,7 @@ exports.getEquipmentByID = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+  
 
 // Update equipment details by EquipmentID
 exports.updateEquipmentByID = async (req, res) => {
