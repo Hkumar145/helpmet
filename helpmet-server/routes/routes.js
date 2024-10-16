@@ -130,7 +130,10 @@ router.get("/equipments/:id", getEquipmentByID);
 router.put("/equipments/:id", updateEquipmentByID);
 
 // Delete equipment by equipment ID
-router.delete("/equipments/:id", deleteEquipmentByID);
+// router.delete("/equipments/:id", deleteEquipmentByID);
+router.delete('/companies/:id/equipments/:equipmentID', deleteEquipmentByID);
+
+
 
 /***************   Department Routes   ***************/
 // Create a department
