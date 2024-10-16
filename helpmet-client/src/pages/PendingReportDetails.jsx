@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import axios from '../api/axios';
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+
+const DialogClose = DialogPrimitive.Close
 
 const severityMapping = {
   1: 'Minor',
@@ -18,7 +22,7 @@ const PendingReportDetails = () => {
   const [reportDetails, setReportDetails] = useState(null);
 
   useEffect(() => {
-    axios.get(`/reports/pending/${id}`)  // Update API endpoint as needed
+    axios.get(`/reports/pending/${id}`)
       .then(response => setReportDetails(response.data))
       .catch(error => console.error("Error fetching report details:", error));
   }, [id]);
@@ -50,12 +54,70 @@ const PendingReportDetails = () => {
       <p>Status: {reportDetails.status}</p>
 
       <div className='flex justify-between mt-6'>
-        <button className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'>
-            Approve
-        </button>
-        <button className='bg-purple-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'>
-            On Hold
-        </button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'>
+                Approve
+            </button>
+          </DialogTrigger>
+
+          <DialogContent>
+            <DialogTitle>Approve Injury Report</DialogTitle>
+            <DialogDescription>Remarks:</DialogDescription>
+            <textarea 
+              placeholder="Message" 
+              className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
+            ></textarea>
+            <div className='flex flex-row justify-between gap-4'>
+              <DialogClose asChild>
+                <button
+                  type="button"
+                  className="text-black border px-6"
+                >
+                  Close
+                </button>
+              </DialogClose>
+              <button
+                type='submit'
+                className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+              >
+                Confirm
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className='bg-purple-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'>
+              On Hold
+            </button>
+          </DialogTrigger>
+
+          <DialogContent>
+            <DialogTitle>Put Report On Hold</DialogTitle>
+            <DialogDescription>Reason for putting this report on hold:</DialogDescription>
+            <textarea 
+              placeholder="Message" 
+              className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
+            ></textarea>
+            <div className='flex flex-row justify-between gap-4'>
+              <DialogClose asChild>
+                <button
+                  type="button"
+                  className="text-black border px-6"
+                >
+                  Close
+                </button>
+              </DialogClose>
+              <button
+                type='submit'
+                className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+              >
+                Confirm
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
