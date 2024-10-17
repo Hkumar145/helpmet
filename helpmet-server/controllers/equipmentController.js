@@ -16,7 +16,7 @@ exports.createEquipment = async (req, res) => {
 
         const equipmentCount = await Equipment.countDocuments();
         const nextEquipmentNumber = equipmentCount + 1;
-        const newEquipment = new new Equipment({
+        const newEquipment = new Equipment({
             equipmentID: `E${nextEquipmentNumber.toString().padStart(4, "0")}`,
             equipmentName,
             companyID,
@@ -27,7 +27,7 @@ exports.createEquipment = async (req, res) => {
             isChecked,
             status,
             description,
-            image
+            image:URL
         });
         await newEquipment.save();
 
@@ -45,6 +45,58 @@ exports.createEquipment = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// // Create a new equipment
+// exports.createEquipment = async (req, res) => {
+//     try {
+//         const { id: companyID } = req.params;
+//         const { equipmentName, locationID, inspectionDate, inspectionInterval, inspectedBy, isChecked, status, description, image } = req.body;
+
+//         // Find the current highest equipment ID and increment it
+//         const lastEquipment = await Equipment.findOne({}).sort({ equipmentID: -1 });
+//         let nextEquipmentNumber;
+        
+//         if (lastEquipment) {
+//             const lastEquipmentID = parseInt(lastEquipment.equipmentID.substring(1), 10);
+//             nextEquipmentNumber = lastEquipmentID + 1;
+//         } else {
+//             nextEquipmentNumber = 1;  // If no equipment exists, start from 1
+//         }
+
+//         const newEquipmentID = `E${nextEquipmentNumber.toString().padStart(4, "0")}`;
+
+//         const newEquipment = new Equipment({
+//             equipmentID: newEquipmentID,
+//             equipmentName,
+//             companyID,
+//             locationID,
+//             inspectionDate,
+//             inspectionInterval,
+//             inspectedBy,
+//             isChecked,
+//             status,
+//             description,
+//             image
+//         });
+//         await newEquipment.save();
+
+//         // Update EmployeeEquipment table
+//         if (inspectedBy) {
+//             const employeeEquipmentEntry = {
+//                 equipmentID: newEquipment.equipmentID,
+//                 employeeID: inspectedBy
+//             };
+//             await EmployeeEquipment.create(employeeEquipmentEntry);
+//         }
+
+//         res.json({ message: "Equipment created successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
+
+
+
 
 // // Get all equipments by CompanyID
 // exports.getEquipmentsByCompany = async (req, res) => {
