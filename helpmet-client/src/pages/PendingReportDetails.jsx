@@ -52,20 +52,27 @@ const PendingReportDetails = () => {
 
   const confirmApprove = async () => {
     try {
+      // Send approval email
       await axios.post("/email/send-approval-email", {
         reportDetails,
         reportID
       });
-      setSuccessMessage(true);
+        
+      // Move the report from pendingReports to reports collection
+      await axios.post(`/reports/approve`, {
+        pendingReportId: reportDetails._id,
+        reportID: reportID,
+      });
   
       setReportDetails((prevDetails) => ({
         ...prevDetails,
         status: "Completed",
       }));
       setReportID("");
+      setSuccessMessage(true);
     } catch (error) {
-      console.error("Error sending approve email:", error);
-      alert("Could not send approve email.");
+      console.error("Error during approval process:", error);
+      alert("Could not process approval.");
     }
   };
   
