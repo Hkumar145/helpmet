@@ -43,10 +43,10 @@ const sendAlertEmail = async ({ recipient, senderEmail, alertDetails }) => {
   }
 };
 
-const sendHoldEmail = async (recipient, reportDetails, holdReason) => {
+const sendHoldEmail = async (recipient, senderEmail, reportDetails, holdReason) => {
   const pendingReportLink = `http://localhost:3000/update-report/${reportDetails._id}`;
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: senderEmail,
     to: recipient.email,
     subject: `Report #${reportDetails._id} placed on hold`,
     text: `Hello,

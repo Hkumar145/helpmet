@@ -19,7 +19,7 @@ emailRouter.post("/send-report-email", async (req, res) => {
 });
 
 emailRouter.post("/send-hold-email", async (req, res) => {
-  const { reportDetails, holdReason } = req.body;
+  const { senderEmail, reportDetails, holdReason } = req.body;
 
   try {
     const recipient = await Employee.findOne({ employeeID: reportDetails.reportBy });
@@ -27,7 +27,7 @@ emailRouter.post("/send-hold-email", async (req, res) => {
       return res.status(404).send({ error: "Employee not found" });
     }
 
-    await sendHoldEmail(recipient, reportDetails, holdReason);
+    await sendHoldEmail(recipient, senderEmail, reportDetails, holdReason);
     
     await PendingReport.findByIdAndUpdate(reportDetails._id, { status: "On hold" });
     res.status(200).send({ message: "Email sent and report status updated successfully" });
