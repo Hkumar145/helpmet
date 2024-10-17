@@ -11,72 +11,68 @@ const InjuryReport = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
   const [witnessID, setWitnessID] = useState('');
+  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
   
     if (type === 'file' && files.length > 0) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+        setFile(files[0]); // Set the file state without uploading
     } else {
-      const stateUpdateFunctions = {
-        reportBy: setReportBy,
-        injuredEmployeeID: setInjuredEmployeeID,
-        dateOfInjury: setDateOfInjury,
-        locationID: setLocationID,
-        injuryTypeID: setInjuryTypeID,
-        severity: setSeverity,
-        description: setDescription,
-        witnessID: setWitnessID,
-      };
-  
-      const updateFunction = stateUpdateFunctions[name];
-      if (updateFunction) {
-        updateFunction(value);
-      }
+        const stateUpdateFunctions = {
+            reportBy: setReportBy,
+            injuredEmployeeID: setInjuredEmployeeID,
+            dateOfInjury: setDateOfInjury,
+            locationID: setLocationID,
+            injuryTypeID: setInjuryTypeID,
+            severity: setSeverity,
+            description: setDescription,
+            witnessID: setWitnessID,
+        };
+
+        const updateFunction = stateUpdateFunctions[name];
+        if (updateFunction) {
+            updateFunction(value);
+        }
     }
   };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSubmit = {
-      companyID: 100001,
-      reportBy: Number(reportBy),
-      injuredEmployeeID: Number(injuredEmployeeID),
-      dateOfInjury: new Date(dateOfInjury),
-      reportDate: new Date(),
-      locationID,
-      injuryTypeID,
-      severity,
-      description,
-      image,
-      witnessID: witnessID ? Number(witnessID) : null,
-      status: "On going",
-      reviewDate: new Date()
-    };
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('reportBy', reportBy);
+    formData.append('injuredEmployeeID', injuredEmployeeID);
+    formData.append('dateOfInjury', dateOfInjury);
+    formData.append('locationID', locationID);
+    formData.append('injuryTypeID', injuryTypeID);
+    formData.append('severity', severity);
+    formData.append('description', description);
+    formData.append('witnessID', witnessID ? witnessID : null);
+    formData.append('status', "On going");
 
     try {
-      const response = await axios.post('/reports/submit', dataToSubmit);
-      alert("Injury report submitted.");
-      setReportBy('');
-      setInjuredEmployeeID('');
-      setDateOfInjury('');
-      setLocationID('');
-      setInjuryTypeID('');
-      setSeverity('');
-      setDescription('');
-      setImage('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
-      setWitnessID('');
+        const response = await axios.post('/reports/submit', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        alert("Injury report submitted.");
+        setReportBy('');
+        setInjuredEmployeeID('');
+        setDateOfInjury('');
+        setLocationID('');
+        setInjuryTypeID('');
+        setSeverity('');
+        setDescription('');
+        setImage('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+        setWitnessID('');
     } catch (error) {
-      console.error("Error submitting report:", error);
-      alert("Failed to submit report. Please try again.");
+        console.error("Error submitting report:", error);
+        alert("Failed to submit report. Please try again.");
     }
-  };
-
+};
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg max-w-lg mx-auto text-white">
@@ -180,7 +176,6 @@ const InjuryReport = () => {
           type="file"
           name="image"
           onChange={handleChange}
-          multiple
           className="p-2 rounded border text-white"
         />
 

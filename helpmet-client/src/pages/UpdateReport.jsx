@@ -15,6 +15,7 @@ const UpdateReport = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
   const [witnessID, setWitnessID] = useState('');
+  const [file, setFile] = useState(null);
   const [successMessage, setSuccessMessage] = useState(false);
 
   useEffect(() => {
@@ -44,52 +45,57 @@ const UpdateReport = () => {
     const { name, value, type, files } = e.target;
 
     if (type === 'file' && files.length > 0) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+        setFile(files[0]); // Set the file state without uploading
     } else {
-      const stateUpdateFunctions = {
-        reportBy: setReportBy,
-        injuredEmployeeID: setInjuredEmployeeID,
-        dateOfInjury: setDateOfInjury,
-        locationID: setLocationID,
-        injuryTypeID: setInjuryTypeID,
-        severity: setSeverity,
-        description: setDescription,
-        witnessID: setWitnessID,
-      };
+        const stateUpdateFunctions = {
+            reportBy: setReportBy,
+            injuredEmployeeID: setInjuredEmployeeID,
+            dateOfInjury: setDateOfInjury,
+            locationID: setLocationID,
+            injuryTypeID: setInjuryTypeID,
+            severity: setSeverity,
+            description: setDescription,
+            witnessID: setWitnessID,
+        };
 
-      const updateFunction = stateUpdateFunctions[name];
-      if (updateFunction) {
-        updateFunction(value);
-      }
+        const updateFunction = stateUpdateFunctions[name];
+        if (updateFunction) {
+            updateFunction(value);
+        }
     }
-  };
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSubmit = {
-      companyID: 100001,
-      reportBy: Number(reportBy),
-      injuredEmployeeID: Number(injuredEmployeeID),
-      dateOfInjury: new Date(dateOfInjury),
-      reportDate: new Date(),
-      locationID,
-      injuryTypeID,
-      severity,
-      description,
-      image,
-      witnessID: witnessID ? Number(witnessID) : null,
-      status: "On going",
-      reviewDate: new Date(),
-    };
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('reportBy', reportBy);
+    formData.append('injuredEmployeeID', injuredEmployeeID);
+    formData.append('dateOfInjury', dateOfInjury);
+    formData.append('locationID', locationID);
+    formData.append('injuryTypeID', injuryTypeID);
+    formData.append('severity', severity);
+    formData.append('description', description);
+    formData.append('witnessID', witnessID ? witnessID : null);
+    formData.append('status', "On going");
 
     try {
-      const response = await axios.put(`/update-report/${id}`, dataToSubmit);
-      setSuccessMessage(true);
+        const response = await axios.put(`/update-report/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        setReportBy('');
+        setInjuredEmployeeID('');
+        setDateOfInjury('');
+        setLocationID('');
+        setInjuryTypeID('');
+        setSeverity('');
+        setDescription('');
+        setImage('');
+        setWitnessID('');
+        setSuccessMessage(true);
     } catch (error) {
       console.error("Error updating report:", error);
       alert("Failed to update report. Please try again.");
@@ -218,7 +224,6 @@ const UpdateReport = () => {
             type="file"
             name="image"
             onChange={handleChange}
-            multiple
             className="p-2 rounded border text-white"
           />
 

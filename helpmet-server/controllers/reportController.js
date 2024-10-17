@@ -4,19 +4,25 @@ const {
     EmployeeReport,
     PendingReport
 } = require("../models/schemas");
+const { uploadToS3 } = require('../utils/s3Upload');
 
 // Submit a new pending report (Employee Submission)
 exports.submitReport = async (req, res) => {
     try {
-        const { reportBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, image, witnessID } = req.body;
+        const { reportBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, witnessID } = req.body;
 
         // Fetch the employee's companyID based on reportBy (employeeID)
         const employee = await Employee.findOne({ employeeID: reportBy });
-        // const employee = await Employee.findById(reportBy);
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }
         const companyID = employee.companyID;
+
+        // Upload the image file to S3
+        let imageUrl = null;
+        if (req.file) {
+            imageUrl = await uploadToS3(req.file);
+        }
 
         const newPendingReport = new PendingReport({
             companyID,
@@ -27,7 +33,7 @@ exports.submitReport = async (req, res) => {
             injuryTypeID,
             severity,
             description,
-            image,
+            image: imageUrl,
             witnessID,
             status: "On going"
         });
@@ -116,64 +122,6 @@ exports.getPendingReportsByCompany = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-// // Create a new injury report
-// exports.createReport = async (req, res) => {
-//     try {
-//         const { id: companyID } = req.params;
-//         // Check if the missing fields exist
-//         const { reportBy, injuredEmployeeID, dateOfInjury, reportDate, locationID, injuryTypeID, severity, description, image } = req.body;
-
-//         const requiredFields = ["reportBy", "injuredEmployeeID", "dateOfInjury", "reportDate", "locationID", "injuryTypeID", "severity", "description"];
-//         const missingFields = requiredFields.filter(field => !req.body[field]);
-
-//         if (missingFields.length > 0) {
-//             return res.status(400).json({ message: `Missing required fields: ${missingFields.join(', ')}` });
-//         }
-
-//         // Check if the employee exists
-//         const injuredEmployee = await Employee.findOne({ injuredEmployeeID });
-//         if (!injuredEmployee) {
-//             return res.status(404).json({ message: "Employee not found" });
-//         }
-
-//         // Check for duplicate report on the same date for the same employee
-//         const duplicateReport = await Injury.findOne({ injuredEmployeeID, dateOfInjury, injuryTypeID });
-//         if (duplicateReport) {
-//             return res.status(400).json({ message: "Duplicate injury report for this employee on the same date" });
-//         }
-
-//         const reportCount = await Report.countDocuments();
-//         const nextReportNumber = reportCount + 1;
-
-//         const newReport = new Report({
-//             reportID: `R${nextReportNumber.toString().padStart(4, '0')}`,
-//             reportBy,
-//             injuredEmployeeID,
-//             dateOfInjury,
-//             reportDate,
-//             locationID,
-//             injuryTypeID,
-//             severity,
-//             description,
-//             image
-//         });
-//         await newReport.save();
-
-//         // Update EmployeeReport table
-//         if (injuredEmployeeID) {
-//             const employeeReportEntry = {
-//                 reportID: newReport.reportID,
-//                 employeeID: injuredEmployeeID
-//             };
-//             await EmployeeReport.create(employeeReportEntry);
-//         }
-
-//         res.json({ message: "Injury report created successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
 
 // Get all reports by CompanyID
 exports.getReportsByCompany = async (req, res) => {
@@ -278,6 +226,15 @@ exports.getSubmittedReportByID = async (req, res) => {
 exports.updatePendingReportByID = async (req, res) => {
     const { _id } = req.params;
     const updateFields = req.body;
+
+    if (req.file) {
+        try {
+            const imageUrl = await uploadToS3(req.file);
+            updateFields.image = imageUrl;
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to upload image" });
+        }
+    }
 
     try {
         if (Object.keys(updateFields).length === 0) {
