@@ -11,17 +11,17 @@ const Header = () => {
             </Link>
             
             <ul className='flex gap-4'>
-                <Link to='/'>
-                  <li>Home</li>
+                <Link to='/report'>
+                  { currentUser && <li>Report</li> }
+                </Link>
+                <Link to='/equipmentcheck'>
+                  { currentUser && <li>Equipment</li> }
                 </Link>
                 <Link to='/alert'>
                   <li>Alert</li>
                 </Link>
                 <Link to='/about'>
                   <li>About</li>
-                </Link>
-                <Link to='/equipmentcheck'>
-                  <li>Equipmentcheck</li>
                 </Link>
                 <Link to='/profile'>
                   {currentUser ? (
