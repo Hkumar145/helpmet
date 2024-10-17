@@ -54,7 +54,6 @@ const sendHoldEmail = async (recipient, senderEmail, reportDetails, holdReason) 
 The following injury report has been placed on hold with the reason: "${holdReason}"
 
 Report Details:
-- Report ID: ${reportDetails._id}
 - Reported By: ${reportDetails.reportBy}
 - Injured Employee ID: ${reportDetails.injuredEmployeeID}
 - Date of Injury: ${new Date(reportDetails.dateOfInjury).toLocaleDateString()}
@@ -79,4 +78,35 @@ Thank you.`,
   }
 };
 
-module.exports = { sendInjuryReportEmail, sendAlertEmail, sendHoldEmail };
+const sendApprovalEmail = async (recipient, senderEmail, reportDetails, reportID) => {
+  const mailOptions = {
+    from: senderEmail,
+    to: recipient.email,
+    subject: `Report #${reportDetails._id} Approved`,
+    text: `Hello,
+
+The following injury report has been approved, its official report ID is ${reportID}.
+
+Report Details:
+- Reported By: ${reportDetails.reportBy}
+- Injured Employee ID: ${reportDetails.injuredEmployeeID}
+- Date of Injury: ${new Date(reportDetails.dateOfInjury).toLocaleDateString()}
+- Location ID: ${reportDetails.locationID}
+- Injury Type ID: ${reportDetails.injuryTypeID}
+- Severity: ${reportDetails.severity}
+- Description: ${reportDetails.description}
+- Witness ID: ${reportDetails.witnessID}
+
+Thank you.`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Approval email sent successfully to:", recipient.email);
+  } catch (error) {
+    console.error("Error sending approve email:", error);
+    throw new Error("Could not send approve email");
+  }
+};
+
+module.exports = { sendInjuryReportEmail, sendAlertEmail, sendHoldEmail, sendApprovalEmail };

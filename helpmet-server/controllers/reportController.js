@@ -248,6 +248,9 @@ exports.getPendingReportByID = async (req, res) => {
         if (!pendingReport) {
             return res.status(404).json({ message: "Pending report not found" });
         }
+        if (pendingReport.status === "Completed") {
+            return res.status(404).json({ message: "Report is approved" });
+        }
         res.json(pendingReport);
     } catch (error) {
         res.status(500).json({ error: error.message });
