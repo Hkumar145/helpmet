@@ -25,13 +25,14 @@ const sendInjuryReportEmail = async (recipient, reportID, senderEmail, remark) =
   }
 };
 
-const sendAlertEmail = async ({ recipient, senderEmail, alertDetails }) => {
+const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc = [], attachments = [] }) => {
   const mailOptions = {
     from: senderEmail,
     to: recipient.email,
-    cc: cc || [],
+    cc: cc.length > 0 ? cc : [],
     subject: alertDetails.alertName,
     text: `${alertDetails.description}`,
+    attachments,
   };
 
   try {

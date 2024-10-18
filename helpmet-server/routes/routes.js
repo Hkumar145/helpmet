@@ -122,7 +122,7 @@ router.post("/reports/approve", approveReport);
 
 /***************   Alert Routes   ***************/
 // Create an alert
-router.post("/companies/:id/alerts", createAlert);
+router.post("/companies/:id/alerts", upload.array("attachments"), createAlert);
 
 // Get a list of all alerts by CompanyID
 router.get("/companies/:id/alerts", getAlertsByCompany);
@@ -150,7 +150,10 @@ router.get("/equipments/:id", getEquipmentByID);
 router.put("/equipments/:id", updateEquipmentByID);
 
 // Delete equipment by equipment ID
-router.delete("/equipments/:id", deleteEquipmentByID);
+// router.delete("/equipments/:id", deleteEquipmentByID);
+router.delete('/companies/:id/equipments/:equipmentID', deleteEquipmentByID);
+
+
 
 /***************   Department Routes   ***************/
 // Create a department
