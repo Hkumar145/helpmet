@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 const {
     createEmployee,
     getEmployeesByCompany,
@@ -102,7 +104,7 @@ router.delete("/reports/:id", deleteReportByID);
 
 /***************   Alert Routes   ***************/
 // Create an alert
-router.post("/companies/:id/alerts", createAlert);
+router.post("/companies/:id/alerts", upload.array("attachments"), createAlert);
 
 // Get a list of all alerts by CompanyID
 router.get("/companies/:id/alerts", getAlertsByCompany);

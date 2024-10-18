@@ -33,20 +33,25 @@ const Alert = () => {
         } else if (viewMode === "departmentAlert") {
             return <CreateAlert alertType="department" companyID={companyID} onCancel={() => setViewMode("list")} />;
         } else {
-            return <AlertList alerts={alerts} companyID={companyID} fetchAlerts={fetchAlerts} />;
+            return <AlertList alerts={alerts} companyID={companyID} />;
         }
     };
 
     return (
-        <div>
-            <h1>Alert</h1>
-            {viewMode === "list" && (
-                <div style={{ textAlign: "right" }}>
-                    <button onClick={() => setViewMode("employeeAlert")}>New Employee Alert</button>
-                    <button onClick={() => setViewMode("departmentAlert")}>New Department Alert</button>
-                </div>
-            )}
-          
+        <div className="flex flex-col gap-4">
+            <div className="flex flex-row items-center justify-between">
+                <h1 className="text-white text-2xl">Alert</h1>
+                {viewMode === "list" && (
+                    <div className="space-x-2">
+                        <button 
+                        className="bg-green-700 text-white text-sm p-2 mt-0 rounded-lg text-center hover:opacity-95 max-w-40"
+                        onClick={() => setViewMode("employeeAlert")}>New Employee Alert</button>
+                        <button 
+                        className="bg-green-700 text-white text-sm p-2 mt-0 rounded-lg text-center hover:opacity-95 max-w-40"
+                        onClick={() => setViewMode("departmentAlert")}>New Department Alert</button>
+                    </div>
+                )}
+            </div>
             {renderContent()}
         </div>
     );

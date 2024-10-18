@@ -5,6 +5,7 @@ const {
     DepartmentAlert
 } = require("../models/schemas");
 const { sendEmail } = require("../utils/emailService");
+const path = require("path");
 
 // Create a new alert
 exports.createAlert = async (req, res) => {
@@ -67,7 +68,13 @@ exports.createAlert = async (req, res) => {
         }
 
         // Prepare CC emails
-        const ccEmails = cc ? cc.split(',').map(email => email.trim()) : [];
+        const ccEmails = cc ? cc.split(",").map(email => email.trim()) : [];
+
+        // File attachments
+        const attachments = req.files.map(file => ({
+            filename: file.originalname,
+            path: path.join(__dirname, "../", file.path),
+        }));
 
         // Send alert email using nodemailer to each recipient and CC
         for (const recipientEmail of recipientEmails) {
@@ -78,7 +85,8 @@ exports.createAlert = async (req, res) => {
                     description,
                 },
                 senderEmail: process.env.EMAIL_USER,
-                cc: ccEmails // Pass the CC emails here
+                cc: ccEmails,
+                attachments
             });
         }
 
@@ -92,7 +100,7 @@ exports.createAlert = async (req, res) => {
 exports.getAlertsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
     try {
-         const alerts = await Alert.find({ companyID });
+         const alerts = await Alert.find({ companyID }).sort({ sentAt: 1 });
         if (alerts.length === 0) {
             return res.status(404).json({ message: "No alerts found for this company" });
         }
