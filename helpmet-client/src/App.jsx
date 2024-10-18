@@ -12,6 +12,7 @@ import Equipmentcheck from'./pages/EquipmentCheck.jsx';
 import Report from './pages/Report';
 import InjuryReport from './pages/InjuryReport';
 import Alert from './pages/Alert'
+import Analytics from './pages/Analytics'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/equipmentcheck" element={<Equipmentcheck />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/analytics" element={<Analytics />} />
           <Route path="/injury-report" element={<InjuryReport />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
