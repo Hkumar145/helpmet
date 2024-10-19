@@ -62,7 +62,7 @@ const Report = () => {
 
             <DialogContent>
               <DialogTitle>New Incident Report</DialogTitle>
-              <DialogDescription>Create an incident report and add the relevant people to notify.</DialogDescription>
+              <DialogDescription>Notify the relevant people to submit incident report.</DialogDescription>
               <CreateReport />
             </DialogContent>
           </Dialog>

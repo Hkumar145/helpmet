@@ -9,7 +9,6 @@ const DialogClose = DialogPrimitive.Close
 const CreateReport = () => {
   const senderEmail = useSelector((state) => state.user.email);
   const [selectedRecipients, setSelectedRecipients] = useState([]);
-  const [reportID, setReportID] = useState("");
   const [remark, setRemark] = useState("");
   const [currentSelection, setCurrentSelection] = useState(null);
 
@@ -30,20 +29,18 @@ const CreateReport = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!reportID || selectedRecipients.length === 0) {
-      alert('Please enter a Report ID and select at least one recipient');
+    if (selectedRecipients.length === 0) {
+      alert('Please select at least one recipient');
       return;
     }
 
     try {
       await axios.post("/email/send-report-email", {
         selectedRecipients,
-        reportID,
         senderEmail,
         remark
       });
       alert("Injury report email sent to selected recipients.");
-      setReportID("");
       setRemark("");
       setSelectedRecipients([]);
     } catch (error) {
@@ -55,15 +52,6 @@ const CreateReport = () => {
   return (
     <main>
       <form className="flex flex-col" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Report ID"
-          className="border p-3 rounded-lg"
-          id="reportID"
-          required
-          value={reportID}
-          onChange={(e) => setReportID(e.target.value)}
-        />
         <p className='mt-4'>Select recipient:</p>
         <div className="flex items-center gap-4">
           <Combobox onSelectRecipient={handleSelectRecipient} />

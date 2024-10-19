@@ -8,12 +8,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendInjuryReportEmail = async (recipient, reportID, senderEmail, remark) => {
+const sendInjuryReportEmail = async (recipient, senderEmail, remark) => {
   const mailOptions = {
     from: senderEmail,   // email address can only be passed from the backend
     to: recipient.email,
     subject: "Please fill in this Injury Report",
-    text: `Hi,\n\nPlease fill in this Injury Report. The Report ID is ${reportID}.\n\nHere is the link to the injury report: http://localhost:3000/report\n\nRemark: ${remark}\n\nThank you.`,
+    text: `Hello,
+
+Please fill in this Injury Report.
+Here is the link to the injury report: http://localhost:3000/injury-report
+Remarks: ${remark}
+
+Thank you.`,
   };
 
   try {
