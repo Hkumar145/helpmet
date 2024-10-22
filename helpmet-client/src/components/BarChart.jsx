@@ -19,7 +19,7 @@ ChartJS.register(
     Legend
 );
 
-const BarChart = ({ chartData, injuryTypeName }) => {
+const BarChart = ({ chartData, barName, title }) => {
     const options = {
         responsive: true,
         plugins: {
@@ -28,7 +28,7 @@ const BarChart = ({ chartData, injuryTypeName }) => {
             },
             title: {
                 display: true,
-                text: 'Injury Category Projection',
+                text: title,
                 color: 'white',
                 font: {
                     size: 18,
@@ -38,7 +38,7 @@ const BarChart = ({ chartData, injuryTypeName }) => {
                 callbacks: {
                     title: (tooltipItems) => {
                         const item = tooltipItems[0];
-                        return injuryTypeName[item.label] || item.label;
+                        return barName[item.label] || item.label;
                     },
                     label: (tooltipItem) => {
                         const count = tooltipItem.raw;

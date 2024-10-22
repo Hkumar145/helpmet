@@ -55,7 +55,7 @@ const Dashboard = () => {
     <div className="flex flex-col text-white">
         <p>Hi, {username}!</p>
         <div>
-            <BarChart chartData={chartData} injuryTypeName={injuryTypeName} />
+            <BarChart chartData={chartData} barName={injuryTypeName} title="Injury Category Projection" />
             <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[60%] mx-auto">
                 <p className="text-emerald-400">30%</p>
                 <p className="text-[14px] text-center">Injuries have been reduced by 30% compared to last week</p>
