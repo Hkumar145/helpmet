@@ -25,7 +25,8 @@ const {
     getSubmittedReportByID,
     updatePendingReportByID,
     approveReport,
-    getInjuryTypeStats
+    getInjuryTypeStats,
+    getWeeklyInjuryStats
 } = require("../controllers/reportController");
 
 const {
@@ -123,6 +124,9 @@ router.post("/reports/approve", approveReport);
 
 // Get injury type data from reports collection
 router.get('/injury-type-stats', getInjuryTypeStats);
+
+// Get weekly injury data from reports collection
+router.get('/weekly-injury-stats', getWeeklyInjuryStats);
 
 /***************   Alert Routes   ***************/
 // Create an alert

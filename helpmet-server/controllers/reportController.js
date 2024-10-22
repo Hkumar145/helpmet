@@ -1,3 +1,4 @@
+const { DateTime } = require('luxon');
 const {
     Employee,
     Report,
@@ -294,5 +295,38 @@ exports.getInjuryTypeStats = async (req, res) => {
         res.status(200).json(stats);
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch data", error });
+    }
+};
+
+exports.getWeeklyInjuryStats = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();
+        // const startOfWeek = DateTime.now().startOf('week').toJSDate();
+        const endOfWeek = DateTime.now().endOf('week').toJSDate();
+
+        const weeklyReports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: parseInt(companyID),
+                    dateOfInjury: { $gte: startOfWeek, $lte: endOfWeek }
+                }
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$dateOfInjury" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(weeklyReports);
+    } catch (error) {
+        console.error("Error fetching weekly injury stats:", error);
+        res.status(500).json({ error: "Server error" });
     }
 };
