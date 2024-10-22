@@ -283,3 +283,16 @@ exports.approveReport = async (req, res) => {
         res.status(500).json({ message: "Error approving report." });
     }
 };
+
+exports.getInjuryTypeStats = async (req, res) => {
+    const { companyID } = req.query;
+    try {
+        const stats = await Report.aggregate([
+            { $match: { companyID: Number(companyID) } },
+            { $group: { _id: "$injuryTypeID", count: { $sum: 1 } } }
+        ]);
+        res.status(200).json(stats);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch data", error });
+    }
+};
