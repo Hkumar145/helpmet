@@ -127,8 +127,15 @@ exports.getPendingReportsByCompany = async (req, res) => {
 // Get all reports by CompanyID
 exports.getReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
+    const { injuryTypeID } = req.query;
+
     try {
-        const reports = await Report.find({ companyID });
+        const query = { companyID };
+        if (injuryTypeID) {
+            query.injuryTypeID = injuryTypeID;
+        }
+
+        const reports = await Report.find(query);
         if (reports.length === 0) {
             return res.status(404).json({ message: "No reports found for this company" });
         }
