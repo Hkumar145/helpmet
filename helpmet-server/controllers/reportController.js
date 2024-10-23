@@ -127,12 +127,19 @@ exports.getPendingReportsByCompany = async (req, res) => {
 // Get all reports by CompanyID
 exports.getReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
-    const { injuryTypeID } = req.query;
+    const { injuryTypeID, dateOfInjury } = req.query;
 
     try {
         const query = { companyID };
         if (injuryTypeID) {
             query.injuryTypeID = injuryTypeID;
+        }
+
+        if (dateOfInjury) {
+            query.dateOfInjury = {
+                $gte: new Date(dateOfInjury),
+                $lt: new Date(new Date(dateOfInjury).setDate(new Date(dateOfInjury).getDate() + 1))
+            };
         }
 
         const reports = await Report.find(query);
@@ -309,8 +316,8 @@ exports.getWeeklyInjuryStats = async (req, res) => {
     try {
         const { companyID } = req.query;
 
-        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();
-        // const startOfWeek = DateTime.now().startOf('week').toJSDate();
+        // Adjust by subtracting 1 day to account for the offset
+        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();    // const startOfWeek = DateTime.now().startOf('week').toJSDate();
         const endOfWeek = DateTime.now().endOf('week').toJSDate();
 
         const weeklyReports = await Report.aggregate([
