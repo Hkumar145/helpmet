@@ -1,3 +1,4 @@
+const { DateTime } = require('luxon');
 const {
     Employee,
     Report,
@@ -117,7 +118,25 @@ exports.getPendingReportsByCompany = async (req, res) => {
         if (pendingReports.length === 0) {
             return res.status(404).json({ message: "No pending reports" });
         }
-        res.json(pendingReports);
+
+        const employeeIDs = [
+            ...new Set(pendingReports.map(report => report.reportBy).concat(pendingReports.map(report => report.injuredEmployeeID))),
+        ];
+
+        const employees = await Employee.find({ employeeID: { $in: employeeIDs } }, 'employeeID firstName');
+
+        const employeeMap = employees.reduce((map, employee) => {
+            map[employee.employeeID] = employee.firstName;
+            return map;
+        }, {});
+
+        const reportsWithNames = pendingReports.map(report => ({
+            ...report._doc,
+            reportByFirstName: employeeMap[report.reportBy],
+            injuredEmployeeFirstName: employeeMap[report.injuredEmployeeID],
+        }));
+
+        res.json(reportsWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -126,12 +145,44 @@ exports.getPendingReportsByCompany = async (req, res) => {
 // Get all reports by CompanyID
 exports.getReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
+    const { injuryTypeID, dateOfInjury } = req.query;
+
     try {
-        const reports = await Report.find({ companyID });
+        const query = { companyID };
+        if (injuryTypeID) {
+            query.injuryTypeID = injuryTypeID;
+        }
+
+        if (dateOfInjury) {
+            query.dateOfInjury = {
+                $gte: new Date(dateOfInjury),
+                $lt: new Date(new Date(dateOfInjury).setDate(new Date(dateOfInjury).getDate() + 1))
+            };
+        }
+
+        const reports = await Report.find(query);
         if (reports.length === 0) {
             return res.status(404).json({ message: "No reports found for this company" });
         }
-        res.json(reports);
+
+        const employeeIDs = [
+            ...new Set(reports.map(report => report.reportBy).concat(reports.map(report => report.injuredEmployeeID))),
+        ];
+
+        const employees = await Employee.find({ employeeID: { $in: employeeIDs } }, 'employeeID firstName');
+
+        const employeeMap = employees.reduce((map, employee) => {
+            map[employee.employeeID] = employee.firstName;
+            return map;
+        }, {});
+
+        const reportsWithNames = reports.map(report => ({
+            ...report._doc,
+            reportByFirstName: employeeMap[report.reportBy],
+            injuredEmployeeFirstName: employeeMap[report.injuredEmployeeID],
+        }));
+
+        res.json(reportsWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -281,5 +332,83 @@ exports.approveReport = async (req, res) => {
     } catch (error) {
         console.error("Error approving report:", error);
         res.status(500).json({ message: "Error approving report." });
+    }
+};
+
+exports.getInjuryTypeStats = async (req, res) => {
+    const { companyID } = req.query;
+    try {
+        const stats = await Report.aggregate([
+            { $match: { companyID: Number(companyID) } },
+            { $group: { _id: "$injuryTypeID", count: { $sum: 1 } } }
+        ]);
+        res.status(200).json(stats);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch data", error });
+    }
+};
+
+exports.getWeeklyInjuryStats = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        // Adjust by subtracting 1 day to account for the offset
+        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();    // const startOfWeek = DateTime.now().startOf('week').toJSDate();
+        const endOfWeek = DateTime.now().endOf('week').toJSDate();
+
+        const weeklyReports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: parseInt(companyID),
+                    dateOfInjury: { $gte: startOfWeek, $lte: endOfWeek }
+                }
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$dateOfInjury" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(weeklyReports);
+    } catch (error) {
+        console.error("Error fetching weekly injury stats:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+exports.getPreviousWeeklyInjuryStats = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        const startOfPreviousWeek = DateTime.now().startOf('week').plus({ days: 1 }).minus({ weeks: 1 }).toJSDate();
+        const endOfPreviousWeek = DateTime.now().endOf('week').minus({ weeks: 1 }).toJSDate();
+
+        const previousWeeklyReports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: parseInt(companyID),
+                    dateOfInjury: { $gte: startOfPreviousWeek, $lte: endOfPreviousWeek }
+                }
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$dateOfInjury" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(previousWeeklyReports);
+    } catch (error) {
+        console.error("Error fetching previous weekly injury stats:", error);
+        res.status(500).json({ error: "Server error" });
     }
 };
