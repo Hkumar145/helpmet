@@ -11,6 +11,9 @@ const Header = () => {
             </Link>
             
             <ul className='flex gap-4'>
+                <Link to='/dashboard'>
+                  { currentUser && <li>Dashboard</li> }
+                </Link>
                 <Link to='/report'>
                   { currentUser && <li>Report</li> }
                 </Link>

@@ -25,7 +25,7 @@ const employeeSchema = new Schema({
 // PendingReport Schema
 const pendingReportSchema = new Schema({
     companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
-    reportedBy: { type: Number, required: true, trim: true, ref: "Employee" },
+    reportBy: { type: Number, required: true, trim: true, ref: "Employee" },
     injuredEmployeeID: { type: Number, required: true, trim: true, ref: "Employee" },
     dateOfInjury: { type: Date, required: true },
     reportDate: { type: Date, required: true, default: Date.now },
@@ -51,7 +51,7 @@ const pendingReportSchema = new Schema({
 const reportSchema = new Schema({
     reportID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
     companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
-    reportedBy: { type: Number, required: true, trim: true, ref: "Employee" },
+    reportBy: { type: Number, required: true, trim: true, ref: "Employee" },
     injuredEmployeeID: { type: Number, required: true, trim: true, ref: "Employee" },
     dateOfInjury: { type: Date, required: true },
     reportDate: { type: Date, required: true },
@@ -86,7 +86,9 @@ const alertSchema = new Schema({
     alertName: { type: String, trim: true, required: true, maxlength: 30 }, 
     companyID: { type: Number, ref: "Company", trim: true, required: true },
     sentAt: { type: Date, required: true, },
-    description: { type: String, trim: true, required: true, maxlength: 500 }
+    description: { type: String, trim: true, required: true, maxlength: 500 },
+    // cc: [{ type: String }],
+    // attachments: [{ type: String }]
 });
 
 // EmployeeAlert Schema

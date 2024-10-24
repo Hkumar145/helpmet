@@ -56,9 +56,15 @@ const login = () => {
       );
 
       const accessToken = response?.data?.accessToken;
+
+      const companyResponse = await axios.get(`/auth/companies?contactEmail=${email}`, {
+        withCredentials: true
+      });
+      const companyID = companyResponse?.data?.companyID;
+
       setAuth({ email, accessToken });
 
-      dispatch(loginSuccess(response.data));
+      dispatch(loginSuccess({ ...response.data, companyID }));
 
       setEmail('');
       setPwd('');

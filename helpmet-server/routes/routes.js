@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 const {
     createEmployee,
     getEmployeesByCompany,
@@ -16,7 +20,14 @@ const {
     getReportsByCompany,
     getReportByID,
     updateReportByID,
-    deleteReportByID
+    deleteReportByID,
+    getPendingReportByID,
+    getSubmittedReportByID,
+    updatePendingReportByID,
+    approveReport,
+    getInjuryTypeStats,
+    getWeeklyInjuryStats,
+    getPreviousWeeklyInjuryStats
 } = require("../controllers/reportController");
 
 const {
@@ -77,7 +88,7 @@ router.delete("/employees/:id", deleteEmployeeByID);
 
 /***************   Report Routes   ***************/
 // Submit a new pending report
-router.post("/reports/submit", submitReport);
+router.post("/reports/submit", upload.single('image'), submitReport);
 
 // Review a pending report
 router.put("/reports/review", reviewPendingReport);
@@ -100,9 +111,30 @@ router.put("/reports/:id", updateReportByID);
 // Delete report by report ID
 router.delete("/reports/:id", deleteReportByID);
 
+// Get pending report details by MongoDB _id
+router.get("/reports/pending/:_id", getPendingReportByID);
+
+// Get submitted report details by MongoDB _id
+router.get("/update-report/:_id", getSubmittedReportByID);
+
+// Update pending report details by MongoDB _id
+router.put("/update-report/:_id", upload.single('image'), updatePendingReportByID);
+
+// Move approved report from pendingreports to reports collection
+router.post("/reports/approve", approveReport);
+
+// Get injury type data from reports collection
+router.get('/injury-type-stats', getInjuryTypeStats);
+
+// Get weekly injury data from reports collection
+router.get('/weekly-injury-stats', getWeeklyInjuryStats);
+
+// Get previous weekly injury data from reports collection
+router.get('/previous-weekly-injury-stats', getPreviousWeeklyInjuryStats);
+
 /***************   Alert Routes   ***************/
 // Create an alert
-router.post("/companies/:id/alerts", createAlert);
+router.post("/companies/:id/alerts", upload.array("attachments"), createAlert);
 
 // Get a list of all alerts by CompanyID
 router.get("/companies/:id/alerts", getAlertsByCompany);
@@ -130,7 +162,10 @@ router.get("/equipments/:id", getEquipmentByID);
 router.put("/equipments/:id", updateEquipmentByID);
 
 // Delete equipment by equipment ID
-router.delete("/equipments/:id", deleteEquipmentByID);
+// router.delete("/equipments/:id", deleteEquipmentByID);
+router.delete('/companies/:id/equipments/:equipmentID', deleteEquipmentByID);
+
+
 
 /***************   Department Routes   ***************/
 // Create a department
