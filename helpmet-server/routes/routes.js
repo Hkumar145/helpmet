@@ -26,7 +26,8 @@ const {
     updatePendingReportByID,
     approveReport,
     getInjuryTypeStats,
-    getWeeklyInjuryStats
+    getWeeklyInjuryStats,
+    getPreviousWeeklyInjuryStats
 } = require("../controllers/reportController");
 
 const {
@@ -127,6 +128,9 @@ router.get('/injury-type-stats', getInjuryTypeStats);
 
 // Get weekly injury data from reports collection
 router.get('/weekly-injury-stats', getWeeklyInjuryStats);
+
+// Get previous weekly injury data from reports collection
+router.get('/previous-weekly-injury-stats', getPreviousWeeklyInjuryStats);
 
 /***************   Alert Routes   ***************/
 // Create an alert

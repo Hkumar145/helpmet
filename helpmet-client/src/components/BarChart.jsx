@@ -19,7 +19,7 @@ ChartJS.register(
     Legend
 );
 
-const BarChart = ({ chartData, barName, title, onBarClick }) => {
+const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
     const options = {
         responsive: true,
         plugins: {
@@ -48,6 +48,7 @@ const BarChart = ({ chartData, barName, title, onBarClick }) => {
                 displayColors: false
             },
         },
+        indexAxis: indexAxis,
         scales: {
             x: {
                 ticks: {
@@ -76,7 +77,7 @@ const BarChart = ({ chartData, barName, title, onBarClick }) => {
     };
 
     return (
-        <Bar style={{ maxWidth: '400px', maxHeight: '209px' }} options={options} data={chartData} />
+        <Bar style={{ height: '240px' }} options={options} data={chartData} />
     );
 };
 
