@@ -17,6 +17,7 @@ import PendingReportDetails from './pages/PendingReportDetails';
 import UpdateReport from './pages/UpdateReport';
 import Alert from './pages/Alert'
 import Analytics from './pages/Analytics'
+import Employee from './pages/Employee';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/pending-report/:id" element={<PendingReportDetails />} />
           <Route path="/update-report/:id" element={<UpdateReport />} />
           <Route path="/injury-report" element={<InjuryReport />} />
+          <Route path="/setting-employee" element={<Employee />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
