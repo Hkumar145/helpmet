@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const { Company } = require('../models/schemas');
 
 // Errors handling
 const handleErrors = (err) => {
@@ -49,12 +50,25 @@ exports.login_post = async (req, res, next) => {
     try {
         const validUser = await User.findOne({ email });
         if (!validUser) return res.status(404).json({ message: 'User not found' });
+        
         const validPassword = await bcrypt.compare(password, validUser.password);
         if (!validPassword) return res.status(401).json({ message: 'Wrong credentials' });
 
-        const accessToken = jwt.sign({ id: validUser._id }, process.env.ACCESS_TOKEN_SECRET);
+        const company = await Company.findOne({ contactEmail: email });
+
+        const accessToken = jwt.sign(
+            { 
+                id: validUser._id,
+                companyID: company ? company._id : null,
+                email: validUser.email
+            }, 
+            process.env.ACCESS_TOKEN_SECRET
+        );
+
         const { password: pwd, ...rest } = validUser._doc;
-        res.cookie('access_token', accessToken, { httpOnly: true }).status(200).json(rest);     // Adding SameSite='None' to enable proper cookie handling across frontend and backend running on different ports
+        res.cookie('access_token', accessToken, { httpOnly: true })
+            .status(200)
+            .json({ ...rest, companyID: company ? company._id : null });     // Adding SameSite='None' to enable proper cookie handling across frontend and backend running on different ports
         // const expiryDate = new Date(Date.now() + 3600000);  // 1 hour
         // res.cookie('access_token', accessToken, { httpOnly: true, expires: expiryDate }).status(200).json(rest);
     } catch (err) {
@@ -64,4 +78,21 @@ exports.login_post = async (req, res, next) => {
 
 exports.logout = (req, res) => {
     res.clearCookie('access_token').status(200).json({ message: 'Logged out successfully'});
+};
+
+exports.getCompanies = async (req, res) => {
+    if (!req.user || !req.user.email) {
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
+    const { email } = req.user;
+    try {
+        const company = await Company.findOne({ contactEmail: email });
+        if (!company) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+        res.status(200).json(company);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'An internal server error occurred' });
+    }
 };

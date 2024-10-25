@@ -1,54 +1,88 @@
 import React, { useState } from 'react';
+import axios from '../api/axios';
 
 const InjuryReport = () => {
-  const [formData, setFormData] = useState({
-    reportID: '',
-    reportedBy: '',
-    injuredEmployeeID: '',
-    dateOfInjury: '',
-    reportDate: '',
-    location: '',
-    injuryType: '',
-    severity: '',
-    description: '',
-    photos: null,
-    witnesses: '',
-  });
+  const [reportBy, setReportBy] = useState('');
+  const [injuredEmployeeID, setInjuredEmployeeID] = useState('');
+  const [dateOfInjury, setDateOfInjury] = useState('');
+  const [locationID, setLocationID] = useState('');
+  const [injuryTypeID, setInjuryTypeID] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+  const [witnessID, setWitnessID] = useState('');
+  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'file' ? files : value,
-    });
-  };
+  
+    if (type === 'file' && files.length > 0) {
+        setFile(files[0]); // Set the file state without uploading
+    } else {
+        const stateUpdateFunctions = {
+            reportBy: setReportBy,
+            injuredEmployeeID: setInjuredEmployeeID,
+            dateOfInjury: setDateOfInjury,
+            locationID: setLocationID,
+            injuryTypeID: setInjuryTypeID,
+            severity: setSeverity,
+            description: setDescription,
+            witnessID: setWitnessID,
+        };
 
-  const handleSubmit = (e) => {
+        const updateFunction = stateUpdateFunctions[name];
+        if (updateFunction) {
+            updateFunction(value);
+        }
+    }
+  };  
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Injury report submitted.");
-  };
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('reportBy', reportBy);
+    formData.append('injuredEmployeeID', injuredEmployeeID);
+    formData.append('dateOfInjury', dateOfInjury);
+    formData.append('locationID', locationID);
+    formData.append('injuryTypeID', injuryTypeID);
+    formData.append('severity', severity);
+    formData.append('description', description);
+    formData.append('witnessID', witnessID ? witnessID : null);
+    formData.append('status', "On going");
+
+    try {
+        const response = await axios.post('/reports/submit', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        alert("Injury report submitted.");
+        setReportBy('');
+        setInjuredEmployeeID('');
+        setDateOfInjury('');
+        setLocationID('');
+        setInjuryTypeID('');
+        setSeverity('');
+        setDescription('');
+        setImage('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+        setWitnessID('');
+    } catch (error) {
+        console.error("Error submitting report:", error);
+        alert("Failed to submit report. Please try again.");
+    }
+};
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg max-w-lg mx-auto text-white">
       <h1 className="text-2xl font-bold mb-4">Injury Report</h1>
       <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
-        <label>Report ID</label>
+        <label>Reported By (Employee ID)</label>
         <input
-          type="text"
-          name="reportID"
-          value={formData.reportID}
-          onChange={handleChange}
-          placeholder="Enter Report ID"
-          required
-          className="p-2 rounded border"
-        />
-
-        <label>Reported By</label>
-        <input
-          type="text"
-          name="reportedBy"
-          value={formData.reportedBy}
+          type="number"
+          name="reportBy"
+          value={reportBy}
           onChange={handleChange}
           placeholder="Enter your employee ID"
           required
@@ -57,9 +91,9 @@ const InjuryReport = () => {
 
         <label>Injured Employee's ID</label>
         <input
-          type="text"
+          type="number"
           name="injuredEmployeeID"
-          value={formData.injuredEmployeeID}
+          value={injuredEmployeeID}
           onChange={handleChange}
           placeholder="Enter injured employee's ID"
           required
@@ -70,74 +104,66 @@ const InjuryReport = () => {
         <input
           type="date"
           name="dateOfInjury"
-          value={formData.dateOfInjury}
+          value={dateOfInjury}
           onChange={handleChange}
           required
           className="p-2 rounded border"
         />
 
-        <label>Report Date</label>
-        <input
-          type="date"
-          name="reportDate"
-          value={formData.reportDate}
-          onChange={handleChange}
-          required
-          className="p-2 rounded border"
-        />
-
-        <label>Location</label>
+        <label>Location ID</label>
         <input
           type="text"
-          name="location"
-          value={formData.location}
+          name="locationID"
+          value={locationID}
           onChange={handleChange}
-          placeholder="Enter Location"
+          placeholder="Enter Location ID"
           required
           className="p-2 rounded border"
         />
 
-        <label>Injury Type</label>
+        <label>Injury Type ID</label>
         <select
-          name="injuryType"
-          value={formData.injuryType}
+          name="injuryTypeID"
+          value={injuryTypeID}
           onChange={handleChange}
           required
           className="p-2 rounded border"
         >
           <option value="" disabled>- select injury type -</option>
-          <option value="Overexertion">Overexertion</option>
-          <option value="Fall from Elevation">Fall from Elevation</option>
-          <option value="Fall on Same Level">Fall on Same Level</option>
-          <option value="Struck By">Struck By</option>
-          <option value="Exposure to Toxic Substances">Exposure to Toxic Substances</option>
-          <option value="Caught In">Caught In</option>
-          <option value="Repetitive Motion">Repetitive Motion</option>
-          <option value="Motor Vehicle Incident">Motor Vehicle Incident</option>
-          <option value="Industrial and Other Vehicle Accident">Industrial and Other Vehicle Accident</option>
-          <option value="Contact with Eleectricity">Contact with Eleectricity</option>
-          <option value="Matter in Eye">Matter in Eye</option>
-          <option value="Other Accident">Other Accident</option>
+          <option value={1}>Overexertion</option>
+          <option value={2}>Fall from Elevation</option>
+          <option value={3}>Fall on Same Level</option>
+          <option value={4}>Struck By</option>
+          <option value={5}>Exposure to Toxic Substances</option>
+          <option value={6}>Caught In</option>
+          <option value={7}>Repetitive Motion</option>
+          <option value={8}>Motor Vehicle Incident</option>
+          <option value={9}>Industrial and Other Vehicle Accident</option>
+          <option value={10}>Contact with Electricity</option>
+          <option value={11}>Matter in Eye</option>
+          <option value={12}>Other Accident</option>
         </select>
 
         <label>Severity</label>
         <select
           name="severity"
-          value={formData.severity}
+          value={severity}
           onChange={handleChange}
           required
           className="p-2 rounded border"
         >
           <option value="" disabled>- select severity -</option>
-          <option value="Minor">Minor</option>
-          <option value="Moderate">Moderate</option>
-          <option value="Severe">Severe</option>
+          <option value={1}>Minor</option>
+          <option value={2}>Moderate</option>
+          <option value={3}>Severe</option>
+          <option value={4}>Significant</option>
+          <option value={5}>Fatal</option>
         </select>
 
         <label>Describe the incident</label>
         <textarea
           name="description"
-          value={formData.description}
+          value={description}
           onChange={handleChange}
           placeholder="Include key details about the event, actions taken, and any immediate effects."
           required
@@ -145,22 +171,21 @@ const InjuryReport = () => {
           rows="4"
         ></textarea>
 
-        <label>Incident Photos</label>
+        <label>Incident Photos (Optional)</label>
         <input
           type="file"
-          name="photos"
+          name="image"
           onChange={handleChange}
-          multiple
           className="p-2 rounded border text-white"
         />
 
-        <label>Witnesses</label>
+        <label>Witnesses ID (Optional)</label>
         <input
-          type="text"
-          name="witnesses"
-          value={formData.witnesses}
+          type="number"
+          name="witnessID"
+          value={witnessID}
           onChange={handleChange}
-          placeholder="Enter witness names"
+          placeholder="Enter witness ID"
           className="p-2 rounded border"
         />
 

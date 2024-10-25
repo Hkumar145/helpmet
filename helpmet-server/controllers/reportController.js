@@ -1,32 +1,40 @@
+const { DateTime } = require('luxon');
 const {
     Employee,
     Report,
     EmployeeReport,
     PendingReport
 } = require("../models/schemas");
+const { uploadToS3 } = require('../utils/s3Upload');
 
 // Submit a new pending report (Employee Submission)
 exports.submitReport = async (req, res) => {
     try {
-        const { reportedBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, image, witnessID } = req.body;
+        const { reportBy, injuredEmployeeID, dateOfInjury, locationID, injuryTypeID, severity, description, witnessID } = req.body;
 
-        // Fetch the employee's companyID based on reportedBy (employeeID)
-        const employee = await Employee.findById(reportedBy);
+        // Fetch the employee's companyID based on reportBy (employeeID)
+        const employee = await Employee.findOne({ employeeID: reportBy });
         if (!employee) {
             return res.status(404).json({ message: "Employee not found" });
         }
         const companyID = employee.companyID;
 
+        // Upload the image file to S3
+        let imageUrl = null;
+        if (req.file) {
+            imageUrl = await uploadToS3(req.file);
+        }
+
         const newPendingReport = new PendingReport({
             companyID,
-            reportedBy,
+            reportBy,
             injuredEmployeeID,
             dateOfInjury,
             locationID,
             injuryTypeID,
             severity,
             description,
-            image,
+            image: imageUrl,
             witnessID,
             status: "On going"
         });
@@ -63,7 +71,7 @@ exports.reviewPendingReport = async (req, res) => {
 
             const newReport = new Report({
                 reportID: `R${nextReportNumber.toString().padStart(4, "0")}`,
-                reportedBy: pendingReport.reportedBy,
+                reportBy: pendingReport.reportBy,
                 injuredEmployeeID: pendingReport.injuredEmployeeID,
                 dateOfInjury: pendingReport.dateOfInjury,
                 reportDate: pendingReport.reportDate,
@@ -106,83 +114,75 @@ exports.reviewPendingReport = async (req, res) => {
 exports.getPendingReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
     try {
-        const pendingReports = await PendingReport.find({ companyID: companyID, reviewStatus: "pending" })
+        const pendingReports = await PendingReport.find({ companyID: companyID, status: { $in: ["On going", "On hold"] } })
         if (pendingReports.length === 0) {
             return res.status(404).json({ message: "No pending reports" });
         }
-        res.json(pendingReports);
+
+        const employeeIDs = [
+            ...new Set(pendingReports.map(report => report.reportBy).concat(pendingReports.map(report => report.injuredEmployeeID))),
+        ];
+
+        const employees = await Employee.find({ employeeID: { $in: employeeIDs } }, 'employeeID firstName');
+
+        const employeeMap = employees.reduce((map, employee) => {
+            map[employee.employeeID] = employee.firstName;
+            return map;
+        }, {});
+
+        const reportsWithNames = pendingReports.map(report => ({
+            ...report._doc,
+            reportByFirstName: employeeMap[report.reportBy],
+            injuredEmployeeFirstName: employeeMap[report.injuredEmployeeID],
+        }));
+
+        res.json(reportsWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// // Create a new injury report
-// exports.createReport = async (req, res) => {
-//     try {
-//         const { id: companyID } = req.params;
-//         // Check if the missing fields exist
-//         const { reportedBy, injuredEmployeeID, dateOfInjury, reportDate, locationID, injuryTypeID, severity, description, image } = req.body;
-
-//         const requiredFields = ["reportedBy", "injuredEmployeeID", "dateOfInjury", "reportDate", "locationID", "injuryTypeID", "severity", "description"];
-//         const missingFields = requiredFields.filter(field => !req.body[field]);
-
-//         if (missingFields.length > 0) {
-//             return res.status(400).json({ message: `Missing required fields: ${missingFields.join(', ')}` });
-//         }
-
-//         // Check if the employee exists
-//         const injuredEmployee = await Employee.findOne({ injuredEmployeeID });
-//         if (!injuredEmployee) {
-//             return res.status(404).json({ message: "Employee not found" });
-//         }
-
-//         // Check for duplicate report on the same date for the same employee
-//         const duplicateReport = await Injury.findOne({ injuredEmployeeID, dateOfInjury, injuryTypeID });
-//         if (duplicateReport) {
-//             return res.status(400).json({ message: "Duplicate injury report for this employee on the same date" });
-//         }
-
-//         const reportCount = await Report.countDocuments();
-//         const nextReportNumber = reportCount + 1;
-
-//         const newReport = new Report({
-//             reportID: `R${nextReportNumber.toString().padStart(4, '0')}`,
-//             reportedBy,
-//             injuredEmployeeID,
-//             dateOfInjury,
-//             reportDate,
-//             locationID,
-//             injuryTypeID,
-//             severity,
-//             description,
-//             image
-//         });
-//         await newReport.save();
-
-//         // Update EmployeeReport table
-//         if (injuredEmployeeID) {
-//             const employeeReportEntry = {
-//                 reportID: newReport.reportID,
-//                 employeeID: injuredEmployeeID
-//             };
-//             await EmployeeReport.create(employeeReportEntry);
-//         }
-
-//         res.json({ message: "Injury report created successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
-
 // Get all reports by CompanyID
 exports.getReportsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
+    const { injuryTypeID, dateOfInjury } = req.query;
+
     try {
-        const reports = await Report.find({ companyID });
+        const query = { companyID };
+        if (injuryTypeID) {
+            query.injuryTypeID = injuryTypeID;
+        }
+
+        if (dateOfInjury) {
+            query.dateOfInjury = {
+                $gte: new Date(dateOfInjury),
+                $lt: new Date(new Date(dateOfInjury).setDate(new Date(dateOfInjury).getDate() + 1))
+            };
+        }
+
+        const reports = await Report.find(query);
         if (reports.length === 0) {
             return res.status(404).json({ message: "No reports found for this company" });
         }
-        res.json(reports);
+
+        const employeeIDs = [
+            ...new Set(reports.map(report => report.reportBy).concat(reports.map(report => report.injuredEmployeeID))),
+        ];
+
+        const employees = await Employee.find({ employeeID: { $in: employeeIDs } }, 'employeeID firstName');
+
+        const employeeMap = employees.reduce((map, employee) => {
+            map[employee.employeeID] = employee.firstName;
+            return map;
+        }, {});
+
+        const reportsWithNames = reports.map(report => ({
+            ...report._doc,
+            reportByFirstName: employeeMap[report.reportBy],
+            injuredEmployeeFirstName: employeeMap[report.injuredEmployeeID],
+        }));
+
+        res.json(reportsWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -236,5 +236,179 @@ exports.deleteReportByID = async (req, res) => {
         res.json({ message: "Report deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+// Get pending report details by MongoDB _id
+exports.getPendingReportByID = async (req, res) => {
+    const { _id } = req.params;
+    try {
+        const pendingReport = await PendingReport.findById(_id);
+        if (!pendingReport) {
+            return res.status(404).json({ message: "Pending report not found" });
+        }
+        if (pendingReport.status === "Completed") {
+            return res.status(404).json({ message: "Report is approved" });
+        }
+        res.json(pendingReport);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Get submitted report details by MongoDB _id
+exports.getSubmittedReportByID = async (req, res) => {
+    const { _id } = req.params;
+    try {
+      const report = await PendingReport.findById(_id);
+      if (!report) {
+        return res.status(404).json({ message: "Report not found" });
+      }
+      if (report.status !== "On hold") {
+        return res.status(404).json({ message: "Report cannot be updated" });
+      }
+      res.json(report);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+};
+
+// Update pending report details by MongoDB _id
+exports.updatePendingReportByID = async (req, res) => {
+    const { _id } = req.params;
+    const updateFields = req.body;
+
+    if (req.file) {
+        try {
+            const imageUrl = await uploadToS3(req.file);
+            updateFields.image = imageUrl;
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to upload image" });
+        }
+    }
+
+    try {
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ message: "No fields to update" });
+        }
+
+        const updatedPendingReport = await PendingReport.findByIdAndUpdate(
+            _id,
+            updateFields,
+            { new: true }
+        );
+
+        if (!updatedPendingReport) {
+            return res.status(404).json({ message: "Pending report not found" });
+        }
+
+        res.json({ message: "Pending report updated successfully", updatedPendingReport });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Move the approved report to reports collection and delete it from pendingReports collection
+exports.approveReport = async (req, res) => {
+    try {
+        const { pendingReportId, reportID } = req.body;
+
+        const pendingReport = await PendingReport.findById(pendingReportId);
+        if (!pendingReport) {
+            return res.status(404).json({ message: "Pending report not found." });
+        }
+
+        const approvedReport = new Report({
+            ...pendingReport.toObject(),
+            status: "Completed",
+            reportID: reportID,
+        });
+
+        await approvedReport.save();
+
+        await PendingReport.findByIdAndDelete(pendingReportId);
+
+        res.status(200).json({ message: "Report approved and moved successfully." });
+    } catch (error) {
+        console.error("Error approving report:", error);
+        res.status(500).json({ message: "Error approving report." });
+    }
+};
+
+exports.getInjuryTypeStats = async (req, res) => {
+    const { companyID } = req.query;
+    try {
+        const stats = await Report.aggregate([
+            { $match: { companyID: Number(companyID) } },
+            { $group: { _id: "$injuryTypeID", count: { $sum: 1 } } }
+        ]);
+        res.status(200).json(stats);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch data", error });
+    }
+};
+
+exports.getWeeklyInjuryStats = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        // Adjust by subtracting 1 day to account for the offset
+        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();    // const startOfWeek = DateTime.now().startOf('week').toJSDate();
+        const endOfWeek = DateTime.now().endOf('week').toJSDate();
+
+        const weeklyReports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: parseInt(companyID),
+                    dateOfInjury: { $gte: startOfWeek, $lte: endOfWeek }
+                }
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$dateOfInjury" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(weeklyReports);
+    } catch (error) {
+        console.error("Error fetching weekly injury stats:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+exports.getPreviousWeeklyInjuryStats = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        const startOfPreviousWeek = DateTime.now().startOf('week').plus({ days: 1 }).minus({ weeks: 1 }).toJSDate();
+        const endOfPreviousWeek = DateTime.now().endOf('week').minus({ weeks: 1 }).toJSDate();
+
+        const previousWeeklyReports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: parseInt(companyID),
+                    dateOfInjury: { $gte: startOfPreviousWeek, $lte: endOfPreviousWeek }
+                }
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: "$dateOfInjury" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(previousWeeklyReports);
+    } catch (error) {
+        console.error("Error fetching previous weekly injury stats:", error);
+        res.status(500).json({ error: "Server error" });
     }
 };
