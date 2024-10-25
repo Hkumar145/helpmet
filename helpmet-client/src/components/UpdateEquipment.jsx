@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const CreateEquipment = ({ onSave, onCancel }) => {
+const UpdateEquipment = ({ equipment, onSave, onCancel }) => {
   const [equipmentName, setEquipmentName] = useState('');
   const [locationID, setLocationID] = useState('');
   const [inspectionDate, setInspectionDate] = useState('');
@@ -9,11 +9,25 @@ const CreateEquipment = ({ onSave, onCancel }) => {
   const [status, setStatus] = useState('Good');
   const [description, setDescription] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  const [imageURL, setImageURL] = useState('');
+
+  useEffect(() => {
+    if (equipment) {
+      // Pre-fill the form with the existing equipment data
+      setEquipmentName(equipment.equipmentName);
+      setLocationID(equipment.locationID);
+      setInspectionDate(equipment.inspectionDate);
+      setInspectionInterval(equipment.inspectionInterval);
+      setInspectedBy(equipment.inspectedBy);
+      setStatus(equipment.status);
+      setDescription(equipment.description);
+      setIsChecked(equipment.isChecked);
+    }
+  }, [equipment]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({
+    const updatedEquipment = {
+      ...equipment, // Maintain the existing equipment data
       equipmentName,
       locationID,
       inspectionDate,
@@ -22,12 +36,13 @@ const CreateEquipment = ({ onSave, onCancel }) => {
       status,
       description,
       isChecked,
-    });
+    };
+    onSave(updatedEquipment); // Pass updated equipment to the parent component for saving
   };
 
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Create New Equipment</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Update Equipment</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Equipment Name */}
         <div className="flex flex-col">
@@ -137,7 +152,7 @@ const CreateEquipment = ({ onSave, onCancel }) => {
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Save
+            Save Changes
           </button>
           <button
             type="button"
@@ -152,165 +167,136 @@ const CreateEquipment = ({ onSave, onCancel }) => {
   );
 };
 
-export default CreateEquipment;
+export default UpdateEquipment;
 
-// import React, { useState } from 'react';
 
-// const CreateEquipment = ({ onSave, onCancel }) => {
-//   const [equipmentName, setEquipmentName] = useState('');
-//   const [locationID, setLocationID] = useState('');
-//   const [inspectionDate, setInspectionDate] = useState('');
-//   const [inspectionInterval, setInspectionInterval] = useState('');
-//   const [inspectedBy, setInspectedBy] = useState('');
-//   const [isChecked, setIsChecked] = useState(false);
-//   const [status, setStatus] = useState('Good');
-//   const [description, setDescription] = useState('');
-//   const [image, setImage] = useState(''); // State for image URL
 
-//   const handleSave = () => {
-//     const newEquipment = {
+// import React, { useState, useEffect } from 'react';
+
+// const UpdateEquipment = ({ equipment, onSave, onCancel }) => {
+//   const [equipmentName, setEquipmentName] = useState(equipment.equipmentName || '');
+//   const [locationID, setLocationID] = useState(equipment.locationID || '');
+//   const [inspectionDate, setInspectionDate] = useState(equipment.inspectionDate || '');
+//   const [inspectionInterval, setInspectionInterval] = useState(equipment.inspectionInterval || '');
+//   const [inspectedBy, setInspectedBy] = useState(equipment.inspectedBy || '');
+//   const [isChecked, setIsChecked] = useState(equipment.isChecked || false);
+//   const [status, setStatus] = useState(equipment.status || 'Good');
+//   const [description, setDescription] = useState(equipment.description || '');
+//   const [imageURL, setImageURL] = useState(equipment.image || ''); // Initialize with the current image URL
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     const updatedEquipment = {
+//       ...equipment,
 //       equipmentName,
 //       locationID,
 //       inspectionDate,
-//       inspectionInterval: parseInt(inspectionInterval),
-//       inspectedBy: parseInt(inspectedBy),
+//       inspectionInterval,
+//       inspectedBy,
 //       isChecked,
 //       status,
 //       description,
-//       image, // Include the image URL in the new equipment data
+//       image: imageURL, // Add the image URL to the payload
 //     };
 
-//     onSave(newEquipment); // Call the onSave function passed as a prop
+//     onSave(updatedEquipment);
 //   };
 
 //   return (
-//     <div className="create-equipment-form bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-//       <h2 className="text-xl font-semibold mb-4">Create New Equipment</h2>
-
-//       {/* Equipment Name */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Equipment Name</label>
+//     <form onSubmit={handleSubmit}>
+//       <div>
+//         <label htmlFor="equipmentName">Equipment Name</label>
 //         <input
 //           type="text"
+//           id="equipmentName"
 //           value={equipmentName}
 //           onChange={(e) => setEquipmentName(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Equipment Name"
 //         />
 //       </div>
 
-//       {/* Location ID */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Location ID</label>
+//       <div>
+//         <label htmlFor="locationID">Location ID</label>
 //         <input
 //           type="text"
+//           id="locationID"
 //           value={locationID}
 //           onChange={(e) => setLocationID(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Location ID"
 //         />
 //       </div>
 
-//       {/* Inspection Date */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Inspection Date</label>
+//       <div>
+//         <label htmlFor="inspectionDate">Inspection Date</label>
 //         <input
 //           type="date"
+//           id="inspectionDate"
 //           value={inspectionDate}
 //           onChange={(e) => setInspectionDate(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 //         />
 //       </div>
 
-//       {/* Inspection Interval */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Inspection Interval (Days)</label>
+//       <div>
+//         <label htmlFor="inspectionInterval">Inspection Interval (Days)</label>
 //         <input
 //           type="number"
+//           id="inspectionInterval"
 //           value={inspectionInterval}
 //           onChange={(e) => setInspectionInterval(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Inspection Interval"
 //         />
 //       </div>
 
-//       {/* Inspected By (Employee ID) */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Inspected By (Employee ID)</label>
+//       <div>
+//         <label htmlFor="inspectedBy">Inspected By (Employee ID)</label>
 //         <input
-//           type="number"
+//           type="text"
+//           id="inspectedBy"
 //           value={inspectedBy}
 //           onChange={(e) => setInspectedBy(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Employee ID"
 //         />
 //       </div>
 
-//       {/* Is Checked */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Is Checked?</label>
+//       <div>
+//         <label htmlFor="imageURL">Image URL</label>
+//         <input
+//           type="text"
+//           id="imageURL"
+//           value={imageURL}
+//           onChange={(e) => setImageURL(e.target.value)} // Handle image URL update
+//         />
+//       </div>
+
+//       <div>
+//         <label htmlFor="isChecked">Checked</label>
 //         <input
 //           type="checkbox"
+//           id="isChecked"
 //           checked={isChecked}
 //           onChange={(e) => setIsChecked(e.target.checked)}
-//           className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 //         />
 //       </div>
 
-//       {/* Status */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
-//         <select
-//           value={status}
-//           onChange={(e) => setStatus(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//         >
+//       <div>
+//         <label htmlFor="status">Status</label>
+//         <select id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
 //           <option value="Good">Good</option>
 //           <option value="Needs Maintenance">Needs Maintenance</option>
 //           <option value="Out of Service">Out of Service</option>
 //         </select>
 //       </div>
 
-//       {/* Description */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+//       <div>
+//         <label htmlFor="description">Description</label>
 //         <textarea
+//           id="description"
 //           value={description}
 //           onChange={(e) => setDescription(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Description"
 //         />
 //       </div>
 
-//       {/* Image URL */}
-//       <div className="mb-4">
-//         <label className="block text-gray-700 text-sm font-bold mb-2">Image URL</label>
-//         <input
-//           type="text"
-//           value={image}
-//           onChange={(e) => setImage(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Image URL"
-//         />
-//       </div>
-
-//       {/* Save and Cancel Buttons */}
-//       <div className="flex items-center justify-between">
-//         <button
-//           onClick={handleSave}
-//           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-//         >
-//           Save
-//         </button>
-//         <button
-//           onClick={onCancel}
-//           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-//         >
-//           Cancel
-//         </button>
-//       </div>
-//     </div>
+//       <button type="submit">Save</button>
+//       <button type="button" onClick={onCancel}>Cancel</button>
+//     </form>
 //   );
 // };
 
-// export default CreateEquipment;
+// export default UpdateEquipment;
