@@ -40,7 +40,7 @@ const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc = [], a
     text: `${alertDetails.description}`,
     attachments,
   };
-
+ 
   try {
     await transporter.sendMail(mailOptions);
     console.log("Email sent successfully to:", recipient.email);

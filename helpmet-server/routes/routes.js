@@ -27,14 +27,15 @@ const {
     approveReport,
     getInjuryTypeStats,
     getWeeklyInjuryStats,
-    getPreviousWeeklyInjuryStats
+    getPreviousWeeklyInjuryStats,
+    getMonthlyEpidemicData
 } = require("../controllers/reportController");
 
 const {
     createAlert,
     getAlertsByCompany,
     getAlertByID,
-    // updateAlertByID,
+    updateAlertByID,
     // deleteAlertByID
 } = require("../controllers/alertController");
 
@@ -132,6 +133,9 @@ router.get('/weekly-injury-stats', getWeeklyInjuryStats);
 // Get previous weekly injury data from reports collection
 router.get('/previous-weekly-injury-stats', getPreviousWeeklyInjuryStats);
 
+// Get monthly epidemic type from reports collection
+router.get('/monthly-epidemic-data', getMonthlyEpidemicData);
+
 /***************   Alert Routes   ***************/
 // Create an alert
 router.post("/companies/:id/alerts", upload.array("attachments"), createAlert);
@@ -142,8 +146,8 @@ router.get("/companies/:id/alerts", getAlertsByCompany);
 // Get alert details by alert ID
 router.get("/alerts/:id", getAlertByID);
 
-// // Update alert details by alert ID
-// router.put("/alerts/:id", updateAlertByID);
+// Update alert details by alert ID
+router.put("/alerts/:id", updateAlertByID);
 
 // // Delete alert by alert ID
 // router.delete("/alerts/:id", deleteAlertByID);

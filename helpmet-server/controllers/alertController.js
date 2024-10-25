@@ -26,7 +26,13 @@ exports.createAlert = async (req, res) => {
             alertName,
             companyID,
             sentAt: new Date(), 
-            description
+            description,
+            recipients,
+            cc,  
+            attachments: req.files.map(file => ({
+                filename: file.originalname,
+                path: path.join(__dirname, "../", file.path),
+            }))
         });
         await newAlert.save();
 
@@ -123,26 +129,26 @@ exports.getAlertByID = async (req, res) => {
     }
 };
 
-// // Update an alert details by AlertID
-// exports.updateAlertByID = async (req, res) => {
-//     try {
-//         const updateFields = req.body;
-//         if (Object.keys(updateFields).length === 0) {
-//             return res.status(400).json({ message: "No fields to update" });
-//         }
-//         const updatedAlert = await Alert.findOneAndUpdate(
-//             { alertID: req.params.id },
-//             updateFields,
-//             { new: true }
-//         );
-//         if (!updatedAlert) {
-//             return res.status(404).json({ message: "Alert not found" });
-//         }
-//         res.json({ message: "Alert updated successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
+// Update an alert details by AlertID
+exports.updateAlertByID = async (req, res) => {
+    try {
+        const updateFields = req.body;
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ message: "No fields to update" });
+        }
+        const updatedAlert = await Alert.findOneAndUpdate(
+            { alertID: req.params.id },
+            updateFields,
+            { new: true }
+        );
+        if (!updatedAlert) {
+            return res.status(404).json({ message: "Alert not found" });
+        }
+        res.json({ message: "Alert updated successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 // // Delete an alert by AlertID
 // exports.deleteAlertByID = async (req, res) => {
@@ -159,6 +165,25 @@ exports.getAlertByID = async (req, res) => {
 //         await DepartmentAlert.deleteMany({ alertID: req.params.id });
 
 //         res.json({ message: "Alert deleted successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
+
+// Toggle alert status
+// exports.toggleAlertStatus = async (req, res) => {
+//     try {
+//         const { id: alertID  } = req.params;
+//         const alert = await Alert.findById(alertID);
+//         if (!alert) {
+//             return res.status(404).json({ message: "Alert not found" });
+//         }
+
+        
+//         alert.status = alert.status === "active" ? "deactive" : "active";
+//         await alert.save();
+
+//         res.json({ message: `Alert status updated to ${alert.status}` });
 //     } catch (error) {
 //         res.status(500).json({ error: error.message });
 //     }
