@@ -4,12 +4,12 @@ const { Employee, PendingReport, Report } = require("../models/schemas");
 const { sendInjuryReportEmail, sendHoldEmail, sendApprovalEmail } = require("../utils/emailService");
 
 emailRouter.post("/send-report-email", async (req, res) => {
-  const { selectedRecipients, reportID, senderEmail, remark } = req.body;
+  const { selectedRecipients, senderEmail, remark } = req.body;
 
   try {
     await Promise.all(
       selectedRecipients.map((recipient) =>
-        sendInjuryReportEmail(recipient, reportID, senderEmail, remark)
+        sendInjuryReportEmail(recipient, senderEmail, remark)
       )
     );
     res.status(200).send({ message: "Emails sent successfully" });

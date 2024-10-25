@@ -24,7 +24,10 @@ const {
     getPendingReportByID,
     getSubmittedReportByID,
     updatePendingReportByID,
-    approveReport
+    approveReport,
+    getInjuryTypeStats,
+    getWeeklyInjuryStats,
+    getPreviousWeeklyInjuryStats
 } = require("../controllers/reportController");
 
 const {
@@ -119,6 +122,15 @@ router.put("/update-report/:_id", upload.single('image'), updatePendingReportByI
 
 // Move approved report from pendingreports to reports collection
 router.post("/reports/approve", approveReport);
+
+// Get injury type data from reports collection
+router.get('/injury-type-stats', getInjuryTypeStats);
+
+// Get weekly injury data from reports collection
+router.get('/weekly-injury-stats', getWeeklyInjuryStats);
+
+// Get previous weekly injury data from reports collection
+router.get('/previous-weekly-injury-stats', getPreviousWeeklyInjuryStats);
 
 /***************   Alert Routes   ***************/
 // Create an alert

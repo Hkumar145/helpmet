@@ -61,13 +61,13 @@ const PendingReport = () => {
               <th className="px-4 py-2">Status</th>
               <th className="px-4 py-2">Location</th>
               <th className="px-4 py-2">Date of Injury</th>
+              <th className="px-4 py-2">Injured Employee</th>
               <th className="px-4 py-2">Report Date</th>
               <th className="px-4 py-2">Reported By</th>
-              <th className="px-4 py-2">Injured Employee ID</th>
               <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='text-center'>
             {pendingReports.map((report, index) => (
               <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-gray-700">
                 <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td>
@@ -75,9 +75,9 @@ const PendingReport = () => {
                 <td className="px-4 py-2">{report.status}</td>
                 <td className="px-4 py-2">{report.locationID}</td>
                 <td className="px-4 py-2">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
+                <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td>
                 <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td>
-                <td className="px-4 py-2">{report.reportBy}</td>
-                <td className="px-4 py-2">{report.injuredEmployeeID}</td>
+                <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td>
                 <td className="px-4 py-2">
                   <button
                     onClick={() => handleViewDetails(report._id)}

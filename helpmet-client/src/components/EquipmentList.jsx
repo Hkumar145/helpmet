@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import EquipmentDetail from './EquipmentDetail';
 
-const EquipmentList = ({ equipments, onUpdate, onDelete }) => {
+const EquipmentList = ({ equipments, onUpdate, onDelete, onView }) => {
   const [expandedEquipmentID, setExpandedEquipmentID] = useState(null);
 
   const toggleDetails = (equipmentID) => {
@@ -13,7 +12,7 @@ const EquipmentList = ({ equipments, onUpdate, onDelete }) => {
   };
 
   return (
-    <div className="equipment-list">
+    <div>
       <table className="min-w-full bg-white">
         <thead>
           <tr>
@@ -35,12 +34,15 @@ const EquipmentList = ({ equipments, onUpdate, onDelete }) => {
                   >
                     {expandedEquipmentID === equipment.equipmentID ? 'Hide' : 'View'}
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => onUpdate(equipment)}
                     className="bg-green-500 text-white px-4 py-1 rounded mr-2"
                   >
+                    Update
+                  </button> */}
+                  <button onClick={() => onUpdate(equipment)} className="bg-green-500 text-white px-4 py-1 rounded mr-2">
                     Edit
-                  </button>
+                </button>
                   <button
                     onClick={() => onDelete(equipment.equipmentID)}
                     className="bg-red-500 text-white px-4 py-1 rounded"
@@ -54,10 +56,12 @@ const EquipmentList = ({ equipments, onUpdate, onDelete }) => {
               {expandedEquipmentID === equipment.equipmentID && (
                 <tr>
                   <td colSpan="3" className="bg-gray-100 p-4">
-                    <EquipmentDetail
-                      equipment={equipment}
-                      onClose={() => setExpandedEquipmentID(null)}
-                    />
+                    <p><strong>Name:</strong> {equipment.equipmentName}</p>
+                    <p><strong>ID:</strong> {equipment.equipmentID}</p>
+                    <p><strong>Location ID:</strong> {equipment.locationID || 'N/A'}</p>
+                    <p><strong>Status:</strong> {equipment.status}</p>
+                    <p><strong>Inspection Interval:</strong> {equipment.inspectionInterval} days</p>
+                    <p><strong>Description:</strong> {equipment.description}</p>
                   </td>
                 </tr>
               )}
