@@ -146,21 +146,21 @@ const EquipmentCheck = () => {
   }, []);
 
   // Handle creating a new equipment
-  const handleCreateEquipment = async (newEquipment) => {
-    try {
-      const response = await axios.post(`http://localhost:5001/companies/${companyID}/equipments`, newEquipment);
-      if (response.status === 200 || response.status === 201) {
-        fetchEquipments();  // Refresh the equipment list after creating
-        setViewMode('list'); // Switch back to list view after successful creation
-      } else {
-        console.error("Error creating equipment:", response.statusText);
-        setError('Error creating equipment');
-      }
-    } catch (error) {
-      console.error("Error creating equipment:", error.response ? error.response.data : error.message);
-      setError('Error creating equipment');
-    }
-  };
+  // const handleCreateEquipment = async (newEquipment) => {
+  //   try {
+  //     const response = await axios.post(`http://localhost:5001/companies/${companyID}/equipments`, newEquipment);
+  //     if (response.status === 200 || response.status === 201) {
+  //       fetchEquipments();  // Refresh the equipment list after creating
+  //       setViewMode('list'); // Switch back to list view after successful creation
+  //     } else {
+  //       console.error("Error creating equipment:", response.statusText);
+  //       setError('Error creating equipment');
+  //     }
+  //   } catch (error) {
+  //     console.error("Error creating equipment:", error.response ? error.response.data : error.message);
+  //     setError('Error creating equipment');
+  //   }
+  // };
 
   // Handle updating an existing equipment
   const handleUpdateEquipment = async (updatedEquipment) => {
@@ -188,7 +188,7 @@ const EquipmentCheck = () => {
   // Handle deleting equipment
   const handleDeleteEquipment = async (equipmentID) => {
     try {
-      const response = await axios.delete(`http://localhost:5001/equipments/${equipmentID}`);
+      const response = await axios.delete(`http://localhost:5001/companies/${companyID}/equipments/${equipmentID}`);
       if (response.status === 200) {
         fetchEquipments(); // Refetch equipment list after deletion
       } else {
@@ -243,12 +243,13 @@ const EquipmentCheck = () => {
             <EquipmentDetail
               equipment={selectedEquipment}
               onClose={() => setSelectedEquipment(null)} // Close the detail view
+              onSave={fetchEquipments}
             />
           )}
         </div>
       ) : viewMode === 'create' ? (
         <CreateEquipment
-          onSave={handleCreateEquipment}
+          onSave={fetchEquipments}
           onCancel={() => setViewMode('list')}
         />
       ) : viewMode === 'update' ? (
