@@ -91,20 +91,37 @@ const MapComponent = () => {
         name="longitude"
         value={mapLongitude}
         onChange={(e) => setMapLongitude(e.target.value)}
+        style={{ width: '150px', padding: '5px', fontSize: '14px' }} // Reduced size
       />
       <input
         type="text"
         name="latitude"
         value={mapLatitude}
         onChange={(e) => setMapLatitude(e.target.value)}
+        style={{ width: '150px', padding: '5px', fontSize: '14px' }} // Reduced size
       />
-
-      <button onClick={increaseZoom}>Zoom In</button>
-      <button onClick={decreaseZoom}>Zoom Out</button>
-
-      <div ref={mapElement} className="mapDiv" style={{ height: '500px', width: '120%' }}></div>
+  
+      <button
+        onClick={increaseZoom}
+        style={{ padding: '8px 12px', fontSize: '14px', marginRight: '5px' }} // Smaller button
+      >
+        Zoom In
+      </button>
+      <button
+        onClick={decreaseZoom}
+        style={{ padding: '8px 12px', fontSize: '14px' }} // Smaller button
+      >
+        Zoom Out
+      </button>
+  
+      <div
+        ref={mapElement}
+        className="mapDiv"
+        style={{ height: '500px', width: '120%' }}
+      ></div>
     </div>
   );
+  
 };
 
 export default MapComponent;
