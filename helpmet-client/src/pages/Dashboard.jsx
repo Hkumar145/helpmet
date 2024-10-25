@@ -3,6 +3,7 @@ import axios from '../api/axios'
 import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
 import { DateTime } from 'luxon';
+import MapComponent from "@/components/MapComponent";
 
 const injuryTypeName = {
     T0001: 'Overexertion',
@@ -220,6 +221,10 @@ const Dashboard = () => {
                         <p className="text-emerald-400">{changeText}</p>
                         <p className="text-[14px] text-center">{injuryComparisonText}</p>
                     </div>
+                    <MapComponent/>
+                </div>
+                <div>
+                    
                 </div>
             </div>
         </div>
