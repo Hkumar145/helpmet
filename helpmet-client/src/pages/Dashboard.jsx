@@ -222,6 +222,7 @@ const Dashboard = () => {
                         <p className="text-[14px] text-center">{injuryComparisonText}</p>
                     </div>
                     <MapComponent/>
+                    
                 </div>
                 <div>
                     
