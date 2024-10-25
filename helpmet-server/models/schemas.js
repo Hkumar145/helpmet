@@ -83,12 +83,19 @@ employeeReportSchema.index({ employeeID: 1, reportID: 1 }, { unique: true });
 // Alert Schema
 const alertSchema = new Schema({
     alertID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
-    alertName: { type: String, trim: true, required: true, maxlength: 30 }, 
+    alertName: { type: String, trim: true, required: true, maxlength: 100 }, 
     companyID: { type: Number, ref: "Company", trim: true, required: true },
     sentAt: { type: Date, required: true, },
     description: { type: String, trim: true, required: true, maxlength: 500 },
-    // cc: [{ type: String }],
-    // attachments: [{ type: String }]
+    status: { type: String, 
+              enum: ["active", "deactive"], 
+              default: "deactive" },
+    recipients: [{ type: String }],
+    cc: [{ type: String }],
+    attachments: [{
+        filename: { type: String },
+        path: { type: String }
+    }] 
 });
 
 // EmployeeAlert Schema

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const emailRouter = Router();
-const { Employee, PendingReport, Report } = require("../models/schemas");
-const { sendInjuryReportEmail, sendHoldEmail, sendApprovalEmail } = require("../utils/emailService");
+const { Employee, PendingReport, Report, Alert } = require("../models/schemas");
+const { sendInjuryReportEmail, sendHoldEmail, sendApprovalEmail, sendAlertEmail } = require("../utils/emailService");
 
 emailRouter.post("/send-report-email", async (req, res) => {
   const { selectedRecipients, senderEmail, remark } = req.body;
@@ -52,6 +52,31 @@ emailRouter.post("/send-approval-email", async (req, res) => {
     res.status(200).send({ message: "Approval email sent and report status updated successfully" });
   } catch (error) {
     console.error("Error in send-approval-email route:", error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
+emailRouter.post("/send-alert-email", async (req, res) => {
+  const { recipients, senderEmail, alertDetails, cc, attachments } = req.body;
+  try {
+    
+    if (!recipients || recipients.length === 0) {
+      return res.status(400).send({ error: "No valid recipient emails found." });
+    }
+    await Promise.all(
+      recipients.map((recipientEmail) =>
+        sendAlertEmail({
+          recipient: { email: recipientEmail },
+          senderEmail,
+          alertDetails,
+          cc,
+          attachments,
+        })
+      )
+    );
+    res.status(200).send({ message: "Alert emails sent successfully" });
+  } catch (error) {
+    console.error("Error sending alert emails:", error);
     res.status(500).send({ error: error.message });
   }
 });
