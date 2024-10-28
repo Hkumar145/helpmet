@@ -32,12 +32,27 @@ exports.login_get = (req, res) => {
 
 exports.signup_post = async (req, res) => {
     const { username, email, password } = req.body;
-    
     try {
         const user = await User.create({ username, email, password });
-        res.status(201).json(user);
-    }
-    catch (err) {
+        
+        let companyID = 100001;
+        const latestCompany = await Company.findOne().sort({ companyID: -1 });
+        if (latestCompany) {
+            companyID = latestCompany.companyID + 1;
+        }
+
+        const company = await Company.create({
+            companyID,
+            companyName: username,
+            companyAddress: "100 West 49th Avenue",
+            contactEmail: email,
+            city: "Vancouver",
+            country: "Canada",
+            province: "BC",
+            postCode: "V5Y 2Z6"
+        });
+        res.status(201).json({ user, company });
+    } catch (err) {
         const errors = handleErrors(err);
         res.status(400).json({ errors });
     }
