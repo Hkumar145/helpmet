@@ -22,7 +22,6 @@ const PendingReportDetails = () => {
   const navigate = useNavigate();
   const [reportDetails, setReportDetails] = useState(null);
   const [holdReason, setHoldReason] = useState("");
-  const [reportID, setReportID] = useState("");
   const [successMessage, setSuccessMessage] = useState(false);
 
   useEffect(() => {
@@ -52,23 +51,22 @@ const PendingReportDetails = () => {
 
   const confirmApprove = async () => {
     try {
+      // Move the report from pendingReports to reports collection
+      const response = await axios.post(`/reports/approve`, {
+        pendingReportId: reportDetails._id,
+      });
+
+      const generatedReportID = response.data.reportID;
       // Send approval email
       await axios.post("/email/send-approval-email", {
         reportDetails,
-        reportID
+        reportID: generatedReportID,
       });
-        
-      // Move the report from pendingReports to reports collection
-      await axios.post(`/reports/approve`, {
-        pendingReportId: reportDetails._id,
-        reportID: reportID,
-      });
-  
+
       setReportDetails((prevDetails) => ({
         ...prevDetails,
         status: "Completed",
       }));
-      setReportID("");
       setSuccessMessage(true);
     } catch (error) {
       console.error("Error during approval process:", error);
@@ -129,14 +127,7 @@ const PendingReportDetails = () => {
             <DialogContent>
               <DialogTitle>Approve Injury Report</DialogTitle>
               <div className='flex flex-row gap-4 items-center'>
-                <DialogDescription>Define Report ID:</DialogDescription>
-                <input
-                  type="text"
-                  placeholder="Report ID"
-                  value={reportID}
-                  onChange={(e) => setReportID(e.target.value)}
-                  className="border p-2 rounded-lg"
-                />
+                <DialogDescription>Confirm the approval</DialogDescription>
               </div>
               <div className='flex flex-row justify-between gap-4'>
                 <DialogClose asChild>
