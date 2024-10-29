@@ -56,27 +56,27 @@ const PendingReport = () => {
         <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg">
           <thead>
             <tr>
-              <th className="px-4 py-2">Report ID</th>
-              <th className="px-4 py-2">Severity</th>
+              {/* <th className="px-4 py-2">Report ID</th> */}
+              {/* <th className="px-4 py-2">Severity</th> */}
               <th className="px-4 py-2">Status</th>
               <th className="px-4 py-2">Location</th>
               <th className="px-4 py-2">Date of Injury</th>
-              <th className="px-4 py-2">Injured Employee</th>
-              <th className="px-4 py-2">Report Date</th>
+              {/* <th className="px-4 py-2">Injured Employee</th> */}
+              {/* <th className="px-4 py-2">Report Date</th> */}
               <th className="px-4 py-2">Reported By</th>
-              <th className="px-4 py-2">Action</th>
+              <th className="px-4 py-2"></th>
             </tr>
           </thead>
           <tbody className='text-center'>
             {pendingReports.map((report, index) => (
               <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-gray-700">
-                <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td>
-                <td className="px-4 py-2">{severityMapping[report.severity]}</td>
+                {/* <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td> */}
+                {/* <td className="px-4 py-2">{severityMapping[report.severity]}</td> */}
                 <td className="px-4 py-2">{report.status}</td>
                 <td className="px-4 py-2">{report.locationID}</td>
                 <td className="px-4 py-2">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
-                <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td>
-                <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td>
+                {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
+                {/* <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td> */}
                 <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td>
                 <td className="px-4 py-2">
                   <button

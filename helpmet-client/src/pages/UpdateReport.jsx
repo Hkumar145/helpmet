@@ -181,18 +181,16 @@ const UpdateReport = () => {
             className="p-2 rounded border"
           >
             <option value="" disabled>- select injury type -</option>
-            <option value={1}>Overexertion</option>
-            <option value={2}>Fall from Elevation</option>
-            <option value={3}>Fall on Same Level</option>
-            <option value={4}>Struck By</option>
-            <option value={5}>Exposure to Toxic Substances</option>
-            <option value={6}>Caught In</option>
-            <option value={7}>Repetitive Motion</option>
-            <option value={8}>Motor Vehicle Incident</option>
-            <option value={9}>Industrial and Other Vehicle Accident</option>
-            <option value={10}>Contact with Electricity</option>
-            <option value={11}>Matter in Eye</option>
-            <option value={12}>Other Accident</option>
+            <option value="T0001">Overexertion</option>
+            <option value="T0002">Fall from Elevation</option>
+            <option value="T0003">Struck By</option>
+            <option value="T0004">Exposure to Toxic Substances</option>
+            <option value="T0005">Caught In</option>
+            <option value="T0006">Epidemic Related</option>
+            <option value="T0007">Motor Vehicle Incident</option>
+            <option value="T0008">Industrial and Other Vehicle Accident</option>
+            <option value="T0009">Contact with Electricity</option>
+            <option value="T0010">Matter in Eye</option>
           </select>
 
           <label>Severity</label>
