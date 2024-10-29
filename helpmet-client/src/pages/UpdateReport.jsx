@@ -46,6 +46,7 @@ const UpdateReport = () => {
 
     if (type === 'file' && files.length > 0) {
         setFile(files[0]); // Set the file state without uploading
+        setImage('');
     } else {
         const stateUpdateFunctions = {
             reportBy: setReportBy,
@@ -69,7 +70,9 @@ const UpdateReport = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('image', file);
+    if (file) {
+      formData.append('image', file);
+    }
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
     formData.append('dateOfInjury', dateOfInjury);
@@ -220,6 +223,11 @@ const UpdateReport = () => {
           ></textarea>
 
           <label>Incident Photos (Optional)</label>
+          {image && (
+            <div className="mb-2">
+              <img src={image} alt="Existing image" className="h-32 w-32 object-cover rounded-md" />
+            </div>
+          )}
           <input
             type="file"
             name="image"

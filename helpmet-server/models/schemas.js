@@ -8,7 +8,7 @@ const employeeSchema = new Schema({
     companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
     firstName: { type: String, required: true, trim: true, maxlength: 30 },
     lastName: { type: String, required: true, trim: true, maxlength: 30 },
-    DateOfBirth: { type: Date, required: true,
+    dateOfBirth: { type: Date, required: true,
         validate: [
           (date) => date <= new Date(),
           "Date of Birth must be in the past",

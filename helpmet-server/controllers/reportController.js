@@ -311,24 +311,34 @@ exports.updatePendingReportByID = async (req, res) => {
 // Move the approved report to reports collection and delete it from pendingReports collection
 exports.approveReport = async (req, res) => {
     try {
-        const { pendingReportId, reportID } = req.body;
+        const { pendingReportId } = req.body;
 
         const pendingReport = await PendingReport.findById(pendingReportId);
         if (!pendingReport) {
             return res.status(404).json({ message: "Pending report not found." });
         }
 
+        const latestReport = await Report.findOne()
+            .sort({ reportID: -1 })
+            .select("reportID");
+
+        let nextReportID = "R0001";
+        if (latestReport && latestReport.reportID) {
+            const latestID = parseInt(latestReport.reportID.slice(1));
+            nextReportID = `R${(latestID + 1).toString().padStart(4, "0")}`;
+        }
+
         const approvedReport = new Report({
             ...pendingReport.toObject(),
             status: "Completed",
-            reportID: reportID,
+            reportID: nextReportID,
         });
 
         await approvedReport.save();
 
         await PendingReport.findByIdAndDelete(pendingReportId);
 
-        res.status(200).json({ message: "Report approved and moved successfully." });
+        res.status(200).json({ message: "Report approved and moved successfully.", reportID: nextReportID });
     } catch (error) {
         console.error("Error approving report:", error);
         res.status(500).json({ message: "Error approving report." });
