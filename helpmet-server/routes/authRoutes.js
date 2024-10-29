@@ -10,5 +10,6 @@ authRouter.get('/login', authController.login_get);
 authRouter.post('/login', authController.login_post);
 authRouter.get('/logout', authController.logout);
 authRouter.get('/companies', verifyToken, authController.getCompanies);
+authRouter.put('/updateProfile', verifyToken, authController.updateProfile);
 
 module.exports = authRouter;

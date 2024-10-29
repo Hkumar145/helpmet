@@ -111,3 +111,32 @@ exports.getCompanies = async (req, res) => {
         res.status(500).json({ error: 'An internal server error occurred' });
     }
 };
+
+exports.updateProfile = async (req, res) => {
+    const { username, email, password, companyID } = req.body;
+    const userId = req.user.id;
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { username, email, password: await bcrypt.hash(password, 10) },
+        { new: true }
+      );
+
+      const parsedCompanyID = Number(companyID);
+      if (!isNaN(parsedCompanyID)) {
+        await Company.findOneAndUpdate(
+          { companyID: parsedCompanyID },
+          { contactEmail: email, companyName: username }
+        );
+      } else {
+        console.error("Invalid companyID:", companyID);
+        return res.status(400).json({ error: "Invalid company ID" });
+      }
+
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      res.status(500).json({ error: "An error occurred while updating the profile." });
+    }
+};
