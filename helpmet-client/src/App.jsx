@@ -8,8 +8,16 @@ import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Header from './components/Header'
 import PrivateRoute from './components/PrivateRoute';
-import Equipmentcheck from'./pages/Equipmentcheck.jsx';
+import Equipmentcheck from'./pages/EquipmentCheck.jsx';
 import Report from './pages/Report';
+import ReportDetails from './pages/ReportDetails';
+import InjuryReport from './pages/InjuryReport';
+import PendingReport from './pages/PendingReport';
+import PendingReportDetails from './pages/PendingReportDetails';
+import UpdateReport from './pages/UpdateReport';
+import Alert from './pages/Alert'
+import Analytics from './pages/Analytics'
+import Employee from './pages/Employee';
 
 function App() {
   return (
@@ -19,15 +27,22 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/alert" element={<Alert />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/equipmentcheck" element={<Equipmentcheck />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/report/:id" element={<ReportDetails />} />
+          <Route path="/pending-report" element={<PendingReport />} />
+          <Route path="/pending-report/:id" element={<PendingReportDetails />} />
+          <Route path="/update-report/:id" element={<UpdateReport />} />
+          <Route path="/injury-report" element={<InjuryReport />} />
+          <Route path="/setting-employee" element={<Employee />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path="/report" element={<Report />} /> */}
           </Route>
+
         </Routes>
       </div>
     </Router>

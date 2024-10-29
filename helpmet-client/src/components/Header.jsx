@@ -6,7 +6,7 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false); // State for hamburger menu
   const location = useLocation(); // Hook to get the current path
-
+  
   const toggleMenu = () => {
     setIsOpen(!isOpen); // Toggle menu open/close state
   };
@@ -83,6 +83,6 @@ const Header = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Header;

@@ -1,20 +1,34 @@
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 const {
     createEmployee,
     getEmployeesByCompany,
-    getAllEmployees,
     getEmployeeByID,
     updateEmployeeByID,
     deleteEmployeeByID
 } = require("../controllers/employeeController");
 
 const {
-    createReport,
+    submitReport,
+    reviewPendingReport,
+    getPendingReportsByCompany,
+    // createReport,
     getReportsByCompany,
     getReportByID,
     updateReportByID,
-    deleteReportByID
+    deleteReportByID,
+    getPendingReportByID,
+    getSubmittedReportByID,
+    updatePendingReportByID,
+    approveReport,
+    getInjuryTypeStats,
+    getWeeklyInjuryStats,
+    getPreviousWeeklyInjuryStats,
+    getMonthlyEpidemicData
 } = require("../controllers/reportController");
 
 const {
@@ -22,7 +36,7 @@ const {
     getAlertsByCompany,
     getAlertByID,
     updateAlertByID,
-    deleteAlertByID
+    // deleteAlertByID
 } = require("../controllers/alertController");
 
 const {
@@ -64,9 +78,6 @@ router.post("/companies/:id/employees", createEmployee);
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
 
-// Get all employees
-router.get("/employees", getAllEmployees);
-
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
 
@@ -77,8 +88,17 @@ router.put("/employees/:id", updateEmployeeByID);
 router.delete("/employees/:id", deleteEmployeeByID);
 
 /***************   Report Routes   ***************/
-// Create a report
-router.post("/companies/:id/reports", createReport);
+// Submit a new pending report
+router.post("/reports/submit", upload.single('image'), submitReport);
+
+// Review a pending report
+router.put("/reports/review", reviewPendingReport);
+
+// Get all pending reports by CompanyID
+router.get("/companies/:id/reports/pending", getPendingReportsByCompany);
+
+// // Create a report
+// router.post("/companies/:id/reports", createReport);
 
 // Get a list of all reports by CompanyID
 router.get("/companies/:id/reports", getReportsByCompany);
@@ -92,9 +112,33 @@ router.put("/reports/:id", updateReportByID);
 // Delete report by report ID
 router.delete("/reports/:id", deleteReportByID);
 
+// Get pending report details by MongoDB _id
+router.get("/reports/pending/:_id", getPendingReportByID);
+
+// Get submitted report details by MongoDB _id
+router.get("/update-report/:_id", getSubmittedReportByID);
+
+// Update pending report details by MongoDB _id
+router.put("/update-report/:_id", upload.single('image'), updatePendingReportByID);
+
+// Move approved report from pendingreports to reports collection
+router.post("/reports/approve", approveReport);
+
+// Get injury type data from reports collection
+router.get('/injury-type-stats', getInjuryTypeStats);
+
+// Get weekly injury data from reports collection
+router.get('/weekly-injury-stats', getWeeklyInjuryStats);
+
+// Get previous weekly injury data from reports collection
+router.get('/previous-weekly-injury-stats', getPreviousWeeklyInjuryStats);
+
+// Get monthly epidemic type from reports collection
+router.get('/monthly-epidemic-data', getMonthlyEpidemicData);
+
 /***************   Alert Routes   ***************/
 // Create an alert
-router.post("/companies/:id/alerts", createAlert);
+router.post("/companies/:id/alerts", upload.array("attachments"), createAlert);
 
 // Get a list of all alerts by CompanyID
 router.get("/companies/:id/alerts", getAlertsByCompany);
@@ -105,8 +149,8 @@ router.get("/alerts/:id", getAlertByID);
 // Update alert details by alert ID
 router.put("/alerts/:id", updateAlertByID);
 
-// Delete alert by alert ID
-router.delete("/alerts/:id", deleteAlertByID);
+// // Delete alert by alert ID
+// router.delete("/alerts/:id", deleteAlertByID);
 
 /***************   Equipment Routes   ***************/
 // Create an equipment
@@ -122,7 +166,10 @@ router.get("/equipments/:id", getEquipmentByID);
 router.put("/equipments/:id", updateEquipmentByID);
 
 // Delete equipment by equipment ID
-router.delete("/equipments/:id", deleteEquipmentByID);
+// router.delete("/equipments/:id", deleteEquipmentByID);
+router.delete('/companies/:id/equipments/:equipmentID', deleteEquipmentByID);
+
+
 
 /***************   Department Routes   ***************/
 // Create a department

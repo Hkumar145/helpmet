@@ -4,6 +4,6 @@ const reportController = require('../controllers/reportController');
 
 const reportRouter = Router();
 
-reportRouter.post('/create', verifyToken, reportController.createReport);
+// reportRouter.post('/create', verifyToken, reportController.createReport);
 
 module.exports = reportRouter;

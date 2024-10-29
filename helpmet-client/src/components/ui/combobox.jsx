@@ -5,22 +5,26 @@ import { Button } from "@/components/ui/button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import axios from "../../api/axios";
+import { useSelector } from 'react-redux';
 
 export function Combobox({ onSelectRecipient }) {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
     const [employees, setEmployees] = React.useState([]);
+    const companyID = useSelector((state) => state.user.currentUser?.companyID);
   
     React.useEffect(() => {
-      axios.get('/employees')
-        .then(response => {
-          const sortedEmployees = response.data.sort((a, b) => a.firstName.localeCompare(b.firstName));
-          setEmployees(sortedEmployees);
-        })
-        .catch(error => {
-          console.error("Error fetching employees:", error);
-        });
-    }, []);
+      if (companyID) {
+        axios.get(`/companies/${companyID}/employees`)
+          .then(response => {
+            const sortedEmployees = response.data.sort((a, b) => a.firstName.localeCompare(b.firstName));
+            setEmployees(sortedEmployees);
+          })
+          .catch(error => {
+            console.error("Error fetching employees:", error);
+          });
+      }
+    }, [companyID]);
   
     const handleSelect = (employee) => {
       setValue(employee.email);
