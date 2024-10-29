@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import Select from "react-select";
 import axios from "../api/axios";
+import { useSelector } from "react-redux";
 
-const CreateAlert = ({ alertType, companyID, onCancel }) => {
+const CreateAlert = ({ alertType, companyID, fetchAlerts, onCancel }) => {
   const [alertData, setAlertData] = useState({
     alertName: "",
     description: "",
     scheduleTime: "",
     recipientID: [],
     cc: [],
-    attachments: null,
+    attachments: [],
   });
   const [recipients, setRecipients] = useState([]);
-  const [ccOptions, setCcOptions] = useState([]);
   const [loadingRecipients, setLoadingRecipients] = useState(false);
-  const [loadingCc, setLoadingCc] = useState(false);
+  const senderEmail = useSelector((state) => state.user.email);
 
   useEffect(() => {
     // Fetch employees or departments based on alertType
@@ -26,7 +27,7 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
           const response = await axios.get(`/companies/${companyID}/employees`);
           const employeeOptions = response.data.map((employee) => ({
             value: employee.employeeID,
-            label: `${employee.employeeID} - ${employee.firstName} ${employee.lastName} (${employee.email})`,
+            label: `${employee.employeeID} - ${employee.firstName} ${employee.lastName}`,
           }));
           setRecipients(employeeOptions);
         } else if (alertType === "department") {
@@ -44,24 +45,7 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
       setLoadingRecipients(false);
     };
 
-    // Fetch employees for the CC options, regardless of alertType
-    const fetchCcOptions = async () => {
-      setLoadingCc(true);
-      try {
-        const response = await axios.get(`/companies/${companyID}/employees`);
-        const employeeOptions = response.data.map((employee) => ({
-          value: employee.employeeID,
-          label: `${employee.employeeID} - ${employee.firstName} ${employee.lastName} (${employee.email})`,
-        }));
-        setCcOptions(employeeOptions);
-      } catch (error) {
-        console.error("Error fetching CC options:", error);
-      }
-      setLoadingCc(false);
-    };
-
     fetchRecipients();
-    fetchCcOptions();
   }, [alertType, companyID]);
 
   const inputFields = (e) => {
@@ -73,17 +57,23 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
 
   const handleRecipientsChange = (selectedOptions) => {
     const selectedRecipients = selectedOptions.map((option) => option.value);
+    const recipientEmails = selectedOptions.map((option) => option.email);
     setAlertData({
       ...alertData,
       recipients: selectedRecipients,
+      recipientEmails,
     });
   };
 
-  const handleCCChange = (selectedOptions) => {
-    const selectedCC = selectedOptions.map((option) => option.value);
+  const handleCCChange = (e) => {
+    const ccEmails = e.target.value
+      .split(",")
+      .map(email => email.trim())
+      .filter(email => email !== ""); 
+
     setAlertData({
       ...alertData,
-      cc: selectedCC,
+      cc: ccEmails,
     });
   };
 
@@ -93,6 +83,24 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
       ...alertData,
       attachments: e.target.files, // Store the files as an array-like object
     });
+  };
+
+  // Use react-dropzone to upload file 
+  const onDrop = useCallback((acceptedFiles) => {
+    setAlertData((prevData) => ({
+      ...prevData,
+      attachments: [...prevData.attachments, ...acceptedFiles],
+    }));
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  // Remove attachments
+  const removeFile = (file) => {
+    setAlertData((prevData) => ({
+      ...prevData,
+      attachments: prevData.attachments.filter((f) => f !== file),
+    }));
   };
 
   const createNewAlert = async (e) => {
@@ -105,8 +113,8 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
     formData.append("recipients", JSON.stringify(alertData.recipients))
     formData.append("cc", JSON.stringify(alertData.cc));
 
-    if (alertData.attachments) {
-      Array.from(alertData.attachments).forEach((file) => {
+    if (alertData.attachments.length > 0) {
+      alertData.attachments.forEach((file) => {
         formData.append("attachments", file);
       });
     }
@@ -118,7 +126,30 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
         },
       });
       alert("Alert created successfully!");
-      
+
+    const response = await axios.get(`/companies/${companyID}/employees`);
+    const allEmployees = response.data;
+    const recipientEmails = allEmployees
+      .filter((employee) => alertData.recipients.includes(employee.employeeID))
+      .map((employee) => employee.email);
+
+    // Ensure we received valid recipient emails
+    if (!recipientEmails || recipientEmails.length === 0) {
+      throw new Error("No valid recipient emails found.");
+    }
+
+    // send alert email
+    await axios.post("/email/send-alert-email", {
+      recipients: recipientEmails,
+      senderEmail: senderEmail,
+      alertDetails: {
+        alertName: alertData.alertName,
+        description: alertData.description,
+      },
+      cc: alertData.cc,
+      attachments: alertData.attachments,
+    });
+      fetchAlerts();
       onCancel();
     } catch (error) {
       console.error("Error creating alert:", error);
@@ -131,21 +162,44 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
       className="flex flex-col gap-2"
       onSubmit={createNewAlert}>
         <h2 className="text-white">Create {alertType === "employee" ? "Employee" : "Department"} Alert</h2>
+        <label className="text-white">Alert Name</label>
         <input
           type="text"
           name="alertName"
-          placeholder="Alert Name"
           value={alertData.alertName}
           onChange={inputFields}
+          className="p-3 bg-slate-200 border border-gray-700 rounded-sm"
           required
         />
+
+        <label className="text-white">Description</label>
         <textarea
           name="description"
-          placeholder="Description"
           value={alertData.description}
           onChange={inputFields}
+          className="p-3 bg-slate-200 border-gray-700 rounded-sm"
           required
         />
+
+        <div {...getRootProps({ className: "flex flex-row item-center justify-between border-dashed border-2 p-4 border-gray-500 bg-gray-700 rounded-lg" })}>
+          <label className="text-white mt-0">Attachments</label>
+          <input {...getInputProps()} />
+          <p className="text-purple-400 cursor-pointer">Click here to upload or drag and drop files</p>
+        </div>
+
+        {/* Display attached files with removal option */}
+        <div className="mt-2">
+          {alertData.attachments.length > 0 && (
+            <ul>
+              {alertData.attachments.map((file, index) => (
+                <li key={index} className="flex justify-between items-center bg-gray-900 p-2 mb-2 rounded-lg text-white">
+                  <span>{file.name}</span>
+                  <button onClick={() => removeFile(file)} className="text-sm text-red-400 hover:text-red-600 mt-0">Remove</button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <Select
           name="recipients"
@@ -178,41 +232,20 @@ const CreateAlert = ({ alertType, companyID, onCancel }) => {
           }}
         />
 
-        <Select
+        <label className="text-white">CC</label>
+        <input
+          type="text"
           name="cc"
-          options={ccOptions}
+          placeholder="name@helpmet.com"
+          value={alertData.cc.join(", ")}
           onChange={handleCCChange}
-          isLoading={loadingCc}
-          placeholder="Select CC"
-          isSearchable={true}
-          isMulti={true}
-          styles={{
-            multiValue: (styles) => ({
-              ...styles,
-              display: "inline-flex",
-              maxWidth: "100%",
-            }),
-            multiValueLabel: (styles) => ({
-              ...styles,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }),
-            multiValueRemove: (styles) => ({
-              ...styles,
-              display: 'inline-flex',
-            }),
-            control: (styles) => ({
-              ...styles,
-              flexWrap: "wrap",
-            }),
-          }}
+          className="p-3 bg-gray-800 border border-gray-700 rounded-lg text-white"
         />
         
-        <input type="file" multiple onChange={handleFileChange} />
+       
         <div className="flex flex-row justify-end gap-2">
-          <button className="bg-green-700 text-white text-sm p-2 mt-0 rounded-lg text-center hover:opacity-95 max-w-40" type="submit">Create Alert</button>
-          <button className="bg-green-700 text-white text-sm p-2 mt-0 rounded-lg text-center hover:opacity-95 max-w-40" type="button" onClick={onCancel}>Cancel</button>
+          <button className="bg-purple-300 text-black text-sm p-2 mt-0 rounded-lg text-center hover:bg-indigo-700 hover:text-white max-w-40" type="submit">Submit</button>
+          <button className="bg-purple-300 text-black text-sm p-2 mt-0 rounded-lg text-center hover:bg-indigo-700 hover:text-white max-w-40" type="button" onClick={onCancel}>Cancel</button>
         </div>
       </form>
     </div>

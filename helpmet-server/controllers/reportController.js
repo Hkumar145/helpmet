@@ -422,3 +422,37 @@ exports.getPreviousWeeklyInjuryStats = async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 };
+
+exports.getMonthlyEpidemicData = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        // Get the start and end of the current month
+        const startOfMonth = DateTime.now().startOf("month").toJSDate();
+        const endOfMonth = DateTime.now().endOf("month").toJSDate();
+
+        const reports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: Number(companyID),
+                    dateOfInjury: { $gte: startOfMonth, $lte: endOfMonth },
+                    injuryTypeID: "T0006"
+                }
+            },
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$dateOfInjury" } },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(reports);
+    } catch (error) {
+        console.error("Error fetching monthly epidemic data:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
