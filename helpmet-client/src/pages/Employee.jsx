@@ -65,10 +65,10 @@ const Employee = () => {
           <tr>
             <th className="px-4 py-2">Employee ID</th>
             <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Date of Birth</th>
+            {/* <th className="px-4 py-2">Date of Birth</th> */}
             <th className="px-4 py-2">Department</th>
-            <th className="px-4 py-2">Role</th>
-            <th className="px-4 py-2">Action</th>
+            {/* <th className="px-4 py-2">Role</th> */}
+            <th className="px-4 py-2"></th>
           </tr>
         </thead>
         <tbody className='text-center'>
@@ -76,9 +76,9 @@ const Employee = () => {
             <tr key={employee.employeeID}>
               <td className="px-4 py-2">{employee.employeeID}</td>
               <td className="px-4 py-2">{employee.firstName} {employee.lastName}</td>
-              <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td>
+              {/* <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td> */}
               <td className="px-4 py-2">{employee.departmentID}</td>
-              <td className="px-4 py-2">{employee.role}</td>
+              {/* <td className="px-4 py-2">{employee.role}</td> */}
               <td className="px-4 py-2 flex gap-2">
                 <Dialog onOpenChange={(open) => { if (!open) setSelectedEmployeeID(null); }}>
                     <DialogTrigger asChild>
