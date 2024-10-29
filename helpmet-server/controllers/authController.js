@@ -2,6 +2,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { Company } = require('../models/schemas');
+const { uploadToS3 } = require('../utils/s3Upload');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Errors handling
 const handleErrors = (err) => {
@@ -112,31 +116,46 @@ exports.getCompanies = async (req, res) => {
     }
 };
 
+exports.uploadProfilePicture = async (req, res) => {
+    try {
+        const imageUrl = await uploadToS3(req.file);
+        res.status(200).json({ url: imageUrl });
+    } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        res.status(500).json({ error: "Failed to upload profile picture" });
+    }
+};
+
 exports.updateProfile = async (req, res) => {
-    const { username, email, password, companyID } = req.body;
+    const { username, email, password, companyID, profilePicture } = req.body;
     const userId = req.user.id;
 
     try {
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { username, email, password: await bcrypt.hash(password, 10) },
-        { new: true }
-      );
-
-      const parsedCompanyID = Number(companyID);
-      if (!isNaN(parsedCompanyID)) {
-        await Company.findOneAndUpdate(
-          { companyID: parsedCompanyID },
-          { contactEmail: email, companyName: username }
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+                username,
+                email,
+                password: await bcrypt.hash(password, 10),
+                profilePicture
+            },
+            { new: true }
         );
-      } else {
-        console.error("Invalid companyID:", companyID);
-        return res.status(400).json({ error: "Invalid company ID" });
-      }
 
-      res.status(200).json(updatedUser);
+        const parsedCompanyID = Number(companyID);
+        if (!isNaN(parsedCompanyID)) {
+            await Company.findOneAndUpdate(
+                { companyID: parsedCompanyID },
+                { contactEmail: email, companyName: username }
+            );
+        } else {
+            console.error("Invalid companyID:", companyID);
+            return res.status(400).json({ error: "Invalid company ID" });
+        }
+
+        res.status(200).json(updatedUser);
     } catch (err) {
-      console.error("Error updating profile:", err);
-      res.status(500).json({ error: "An error occurred while updating the profile." });
+        console.error("Error updating profile:", err);
+        res.status(500).json({ error: "An error occurred while updating the profile." });
     }
 };

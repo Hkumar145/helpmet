@@ -2,37 +2,55 @@ import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 import axios from '../api/axios'
 import { useDispatch } from 'react-redux'
-import { logout } from '../redux/user/userSlice'
+import { updateProfile, logout } from '../redux/user/userSlice'
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
-  const [image, setImage] = useState(undefined);
+  const [image, setImage] = useState(null);
   const [username, setUsername] = useState(currentUser.username);
   const [email, setEmail] = useState(currentUser.email);
   const [password, setPassword] = useState('');
+  const [profilePictureURL, setProfilePictureURL] = useState(currentUser.profilePicture);
   const companyID = currentUser.companyID;
 
   useEffect(() => {
     if (image) {
-      handleFileUpload(image);
+      setProfilePictureURL(URL.createObjectURL(image));
     }
   }, [image]);
 
-  const handleFileUpload = async (image) => {
-    console.log(image);
+  const handleFileUpload = async () => {
+    if (!image) return;
+    const formData = new FormData();
+    formData.append("profilePicture", image);
+
+    try {
+      const response = await axios.post('/auth/uploadProfilePicture', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true,
+      });
+      setProfilePictureURL(response.data.url);
+      return response.data.url;
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+    }
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/auth/updateProfile', { username, email, password, companyID },
-        {
-          withCredentials: true,
-        }
-      );
+      let uploadedImageUrl = profilePictureURL;
+      if (image) {
+        uploadedImageUrl = await handleFileUpload();
+      }
+      const response = await axios.put('/auth/updateProfile', { username, email, password, companyID, profilePicture: uploadedImageUrl },
+      {
+        withCredentials: true,
+      });
       alert("Profile updated successfully!");
+      dispatch(updateProfile(response.data));
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -40,7 +58,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch('api/auth/logout')
+      await fetch('/auth/logout')
       dispatch(logout());
     } catch (err) {
       console.error(err);
@@ -56,7 +74,7 @@ const Profile = () => {
           onChange={(e) => setImage(e.target.files[0])}
         />
         <img
-          src={currentUser.profilePicture}
+          src={profilePictureURL || currentUser.profilePicture}
           alt="profile"
           className='h-24 w-24 self-center cursor-pointer rounded-full object-cover'
           onClick={() => fileRef.current.click()}
