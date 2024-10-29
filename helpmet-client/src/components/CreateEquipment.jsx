@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from '../api/axios';
 
 const CreateEquipment = ({ onSave, onCancel }) => {
   const [equipmentName, setEquipmentName] = useState('');
@@ -10,10 +11,13 @@ const CreateEquipment = ({ onSave, onCancel }) => {
   const [description, setDescription] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [imageURL, setImageURL] = useState('');
+  const [error, setError] = useState('');
+  const [equipments, setEquipments] = useState([]);
+  const companyID = 100001;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({
+    const newEquipment = {
       equipmentName,
       locationID,
       inspectionDate,
@@ -22,7 +26,36 @@ const CreateEquipment = ({ onSave, onCancel }) => {
       status,
       description,
       isChecked,
-    });
+    };
+    handleCreateEquipment(newEquipment);
+  };
+
+  const fetchEquipments = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5001/companies/${companyID}/equipments`);
+      setEquipments(response.data);
+    } catch (error) {
+      console.error('Error fetching equipment:', error);
+      setError('Error fetching equipment');
+    }
+  };
+
+  const handleCreateEquipment = async (newEquipment) => {
+    try {
+      const response = await axios.post(`http://localhost:5001/companies/${companyID}/equipments`, newEquipment);
+      if (response.status === 200 || response.status === 201) {
+        onSave();
+        onCancel();
+      } else {
+        console.error("Error creating equipment:", response.statusText);
+        setError('Error creating equipment');
+      }
+    } catch (error) {
+      console.error("Error creating equipment:", error.response ? error.response.data : error.message);
+      setError('Error creating equipment');
+      onSave();
+      onCancel();
+    }
   };
 
   return (

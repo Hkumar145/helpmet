@@ -14,8 +14,15 @@ exports.createEquipment = async (req, res) => {
             return res.status(400).json({ message: "Equipment in this location with this name already exists" });
         }
 
-        const equipmentCount = await Equipment.countDocuments();
-        const nextEquipmentNumber = equipmentCount + 1;
+        // Create unique equipment ID
+        const lastEquipment = await Equipment.findOne().sort({ equipmentID: -1 });
+        let nextEquipmentNumber = 1;
+
+        if (lastEquipment) {
+            const lastID = lastEquipment.equipmentID.substring(1);
+            nextEquipmentNumber = parseInt(lastID, 10) + 1;
+        }
+
         const newEquipment = new Equipment({
             equipmentID: `E${nextEquipmentNumber.toString().padStart(4, "0")}`,
             equipmentName,

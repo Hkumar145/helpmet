@@ -26,8 +26,8 @@ const Header = () => {
                 <Link to='/about'>
                   <li>About</li>
                 </Link>
-                <Link to='/analytics'>
-                  <li>Analytics</li>
+                <Link to='/setting-employee'>
+                  <li>Setting</li>
                 </Link>
                 <Link to='/profile'>
                   {currentUser ? (
