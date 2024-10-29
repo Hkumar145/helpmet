@@ -160,7 +160,19 @@ departmentAlertSchema.index({ departmentID: 1, alertID: 1 }, { unique: true });
 const locationSchema = new Schema({
     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
     locationName: { type: String, trim: true, required: true, maxlength: 30 },
-    companyID: { type: Number, ref: "Company", trim: true, required: true }
+    companyID: { type: Number, ref: "Company", trim: true, required: true },
+    location: {
+        type: {
+          type: String,
+          enum: ["Point"],
+          required: true,
+          default: "Point"
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+      }
 });
 
 // InjuryType Schema

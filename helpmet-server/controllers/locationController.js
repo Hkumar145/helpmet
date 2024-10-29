@@ -3,11 +3,14 @@ const { Location } = require("../models/schemas");
 // Create a new location under a specific company
 exports.createLocation = async (req, res) => {
     const { id: companyID } = req.params;
-    const { locationName } = req.body;
+    const { locationName, coordinates } = req.body;
     try {
         // Validate input
         if (!locationName) {
             return res.status(400).json({ message: "Location name is required" });
+        }
+        if (!coordinates || coordinates.length !== 2) {
+            return res.status(400).json({ message: "Coordinates are required" });
         }
 
         const existingLocation = await Location.findOne({ locationName });
@@ -21,7 +24,8 @@ exports.createLocation = async (req, res) => {
         const newLocation = new Location({
             locationID: `L${nextLocationNumber.toString().padStart(4, "0")}`,
             locationName: locationName,
-            companyID
+            companyID,
+            location: { type: "Point", coordinates }
         });
         await newLocation.save();
         res.json({ message: "Location created successfully" });
@@ -38,7 +42,11 @@ exports.getLocationsByCompany = async (req, res) => {
         if (locations.length === 0) {
             return res.status(404).json({ message: "No locations found for this company" });
         }
-        res.json(locations);
+        res.json(locations.map(loc => ({
+            locationID: loc.locationID,
+            locationName: loc.locationName,
+            coordinates: loc.location.coordinates
+        })));
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -51,7 +59,12 @@ exports.getLocationByID = async (req, res) => {
         if (!location) {
             return res.status(404).json({ message: "Location not found" });
         }
-        res.json(location);
+        res.json({
+            locationID: location.locationID,
+            locationName: location.locationName,
+            companyID: location.companyID,
+            coordinates: location.location.coordinates
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -59,15 +72,20 @@ exports.getLocationByID = async (req, res) => {
 
 // Update a location's details by locationID
 exports.updateLocationByID = async (req, res) => {
+    const { locationName, coordinates } = req.body;
     try {
-        const updateFields = req.body;
+        const updateFields = {};
+        if (locationName) updateFields.locationName = locationName;
+        if (coordinates && coordinates.length === 2) {
+            updateFields.location = { type: "Point", coordinates };
+        }
         if (Object.keys(updateFields).length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
 
         const updatedLocation = await Location.findOneAndUpdate(
             { locationID: req.params.id },
-            updateFields,
+            { $set: updateFields },
             { new: true }
         );
 
