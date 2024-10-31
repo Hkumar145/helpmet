@@ -42,9 +42,9 @@ const Employee = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4 text-white'>
+    <div className='flex flex-col gap-4 text-black'>
     <div className='flex flex-row items-center justify-between'>
-      <h1 className='text-lg text-white md:text-2xl'>Employees</h1>
+      <h1 className='text-lg text-black md:text-2xl'>Employees</h1>
       <Dialog>
         <DialogTrigger asChild>
           <button className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95'>
@@ -60,7 +60,7 @@ const Employee = () => {
     </div>
 
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg text-sm">
+      <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
         <thead>
           <tr>
             <th className="px-2 py-2 md:px-4">Employee ID</th>

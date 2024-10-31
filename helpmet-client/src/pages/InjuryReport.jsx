@@ -75,7 +75,7 @@ const InjuryReport = () => {
 };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg max-w-lg mx-auto text-white">
+    <div className="bg-white p-6 rounded-lg max-w-lg mx-auto text-black">
       <h1 className="text-2xl font-bold mb-4">Injury Report</h1>
       <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
         <label>Reported By (Employee ID)</label>
@@ -174,7 +174,7 @@ const InjuryReport = () => {
           type="file"
           name="image"
           onChange={handleChange}
-          className="p-2 rounded border text-white"
+          className="p-2 rounded border text-black"
         />
 
         <label>Witnesses ID (Optional)</label>

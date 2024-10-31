@@ -269,7 +269,7 @@ const Dashboard = () => {
             {
                 ...injuryTypeData.datasets[0],
                 backgroundColor: injuryTypeData.labels.map(label =>
-                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(233, 236, 241)'
+                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(152, 162, 179)'
                 ),
             }
         ]
@@ -281,7 +281,7 @@ const Dashboard = () => {
             {
                 ...weeklyInjuryData.datasets[0],
                 backgroundColor: weeklyInjuryData.labels.map(label =>
-                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(233, 236, 241)'
+                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(152, 162, 179)'
                 ),
             }
         ]
@@ -311,7 +311,7 @@ const Dashboard = () => {
     
   return (
     <>
-        <div className="flex flex-col text-white gap-12 items-center justify-start">
+        <div className="flex flex-col text-black gap-12 items-center justify-start">
             <p>Hi, {username}!</p>
             <div className="flex flex-col gap-16">
                 <div className="flex flex-col lg:flex-row gap-8">
@@ -365,9 +365,9 @@ const Dashboard = () => {
             </div>
         </div>
         {showTable && (
-            <div className="mt-8 text-white">
+            <div className="mt-8 text-black">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
-                <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg text-sm">
+                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
                     <thead>
                         <tr>
                             <th className="px-2 py-2 md:px-8">Injury Type</th>
