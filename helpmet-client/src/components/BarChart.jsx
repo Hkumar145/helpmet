@@ -29,7 +29,7 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
             title: {
                 display: true,
                 text: title,
-                color: 'white',
+                color: 'black',
                 font: {
                     size: 18,
                 },
@@ -52,7 +52,7 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
         scales: {
             x: {
                 ticks: {
-                    color: 'white',
+                    color: 'black',
                 },
                 grid: {
                     display: false,
@@ -75,7 +75,7 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
                 const clickedLabel = chartData.labels[chart.index];
                 onBarClick(clickedLabel);
             }
-        }
+        },
     };
 
     return (

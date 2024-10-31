@@ -81,7 +81,7 @@ html {
 
 body {
   min-height: 100vh;
-  background-color: rgb(52, 35, 113);
+  background-color: #F4F3FF;
 }
 
 .App {
@@ -118,7 +118,7 @@ input[type="password"] {
 label,
 button {
 margin-top: 1rem;
-color: white;
+color: black;
 }
 
 button {

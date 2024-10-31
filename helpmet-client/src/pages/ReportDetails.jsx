@@ -40,7 +40,7 @@ const ReportDetails = () => {
   if (!reportDetails) return <div>Loading...</div>;
 
   return (
-    <div className='text-white max-w-lg w-full p-6 bg-gray-800 rounded-lg'>
+    <div className='text-black max-w-lg w-full p-6 bg-white rounded-lg'>
       <h1>Report Details for {reportDetails.reportID}</h1>
       <p>Report ID: {reportDetails.reportID}</p>
       <p>Reported by: {reportDetails.reportByFirstName} ({reportDetails.reportBy})</p>

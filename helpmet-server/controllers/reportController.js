@@ -19,6 +19,8 @@ exports.submitReport = async (req, res) => {
         }
         const companyID = employee.companyID;
 
+        const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO();
+
         // Upload the image file to S3
         let imageUrl = null;
         if (req.file) {
@@ -29,7 +31,7 @@ exports.submitReport = async (req, res) => {
             companyID,
             reportBy,
             injuredEmployeeID,
-            dateOfInjury,
+            dateOfInjury: dateOfInjuryWithTime,
             locationID,
             injuryTypeID,
             severity,

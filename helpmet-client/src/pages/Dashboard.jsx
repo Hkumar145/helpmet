@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios'
 import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
@@ -50,7 +51,7 @@ const Dashboard = () => {
     const [severityData, setSeverityData] = useState(null);
     const [filterBy, setFilterBy] = useState(null);
     const [currentFilterValue, setCurrentFilterValue] = useState(null);
-    
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -268,7 +269,7 @@ const Dashboard = () => {
             {
                 ...injuryTypeData.datasets[0],
                 backgroundColor: injuryTypeData.labels.map(label =>
-                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(233, 236, 241)'
+                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(152, 162, 179)'
                 ),
             }
         ]
@@ -280,10 +281,14 @@ const Dashboard = () => {
             {
                 ...weeklyInjuryData.datasets[0],
                 backgroundColor: weeklyInjuryData.labels.map(label =>
-                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(233, 236, 241)'
+                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(152, 162, 179)'
                 ),
             }
         ]
+    };
+
+    const handleViewDetails = (reportID) => {
+        navigate(`/report/${reportID}`);
     };
 
     // const handleSeverityBarClick = async (severityLevel) => {
@@ -306,81 +311,93 @@ const Dashboard = () => {
     
   return (
     <>
-        <div className="flex flex-col text-white gap-12 items-center justify-start">
+        <div className="flex flex-col text-black gap-12 items-center justify-start">
             <p>Hi, {username}!</p>
-            <div className="grid grid-cols-2 gap-20">
-                <div className="max-w-min">
-                    <BarChart
-                        chartData={filteredInjuryTypeData}
-                        barName={injuryTypeName}
-                        title="Injury Category Projection"
-                        onBarClick={handleInjuryTypeBarClick}
-                        className="items-center justify-center mx-auto"
-                        indexAxis="y"
-                    />
-                </div>
-                <div className="max-w-min">
-                    <BarChart
-                        chartData={filteredWeeklyInjuryData}
-                        barName={dayTypeName}
-                        title="General Weekly Overview"
-                        onBarClick={handleWeeklyInjuryBarClick}
-                        indexAxis="x"
-                    />
-                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
-                        <p className="text-emerald-400">{changeText}</p>
-                        <p className="text-[14px] text-center">{injuryComparisonText}</p>
-                    </div>
-                </div>
-
-                <div className="max-w-min">
-                <LineChart
-                        chartData={monthlyEpidemicData}
-                        lineName={{ T0006: "Epidemic Injury Type" }}
-                        title="Monthly Epidemic Projection"
-                        onLineClick={handleDateClick}
-                        indexAxis="x"
-                    />
-                </div>
-
-                {severityData && (
+            <div className="flex flex-col gap-16">
+                <div className="flex flex-col lg:flex-row gap-8">
                     <div className="max-w-min">
                         <BarChart
-                            chartData={severityData}
-                            // onBarClick={handleSeverityBarClick}
-                            barName={{ 1: "Low Severity", 3: "Medium Severity", 5: "High Severity" }}
-                            title="Injury Projection"
+                            chartData={filteredInjuryTypeData}
+                            barName={injuryTypeName}
+                            title="Injury Category Projection"
+                            onBarClick={handleInjuryTypeBarClick}
+                            className="items-center justify-center mx-auto"
+                            indexAxis="y"
+                        />
+                    </div>
+                    <div className="max-w-min">
+                        <BarChart
+                            chartData={filteredWeeklyInjuryData}
+                            barName={dayTypeName}
+                            title="General Weekly Overview"
+                            onBarClick={handleWeeklyInjuryBarClick}
+                            indexAxis="x"
+                        />
+                        <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
+                            <p className="text-emerald-400">{changeText}</p>
+                            <p className="text-[14px] text-center">{injuryComparisonText}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col lg:flex-row gap-16">
+                    <div className="max-w-min">
+                    <LineChart
+                            chartData={monthlyEpidemicData}
+                            lineName={{ T0006: "Epidemic Injury Type" }}
+                            title="Monthly Epidemic Projection"
+                            onLineClick={handleDateClick}
                             indexAxis="x"
                         />
                     </div>
-                )}
+
+                    {severityData && (
+                        <div className="max-w-min">
+                            <BarChart
+                                chartData={severityData}
+                                // onBarClick={handleSeverityBarClick}
+                                barName={{ 1: "Low Severity", 3: "Medium Severity", 5: "High Severity" }}
+                                title="Injury Projection"
+                                indexAxis="x"
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
         {showTable && (
-            <div className="mt-8 text-white">
+            <div className="mt-8 text-black">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
-                <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg">
+                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
                     <thead>
                         <tr>
-                            <th className="px-4 py-2">Injury Type</th>
-                            <th className="px-4 py-2">Severity</th>
-                            <th className="px-4 py-2">Location</th>
-                            <th className="px-4 py-2">Date of Injury</th>
-                            <th className="px-4 py-2">Injured Employee</th>
-                            <th className="px-4 py-2">Report Date</th>
-                            <th className="px-4 py-2">Reported By</th>
+                            <th className="px-2 py-2 md:px-8">Injury Type</th>
+                            <th className="px-0 py-2 md:px-8">Severity</th>
+                            {/* <th className="px-4 py-2">Location</th> */}
+                            <th className="px-0 py-2 md:px-8">Date of Injury</th>
+                            {/* <th className="px-4 py-2">Injured Employee</th> */}
+                            {/* <th className="px-4 py-2">Report Date</th> */}
+                            {/* <th className="px-4 py-2">Reported By</th> */}
+                            <th className="px-2 py-2 md:px-8"></th>
                         </tr>
                     </thead>
                     <tbody className='text-center'>
                         {selectedInjuryReports.map(report => (
                             <tr key={report._id} className="border-t border-gray-700">
-                                <td className="px-4 py-2">{injuryTypeName[report.injuryTypeID]}</td>
-                                <td className="px-4 py-2">{severityName[report.severity]}</td>
-                                <td className="px-4 py-2">{report.locationID}</td>
-                                <td className="px-4 py-2">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td>
-                                <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td>
+                                <td className="px-2 py-2 md:px-8">{injuryTypeName[report.injuryTypeID]}</td>
+                                <td className="px-0 py-2 md:px-8">{severityName[report.severity]}</td>
+                                {/* <td className="px-4 py-2">{report.locationID}</td> */}
+                                <td className="px-0 py-2 md:px-8">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
+                                {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
+                                {/* <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td> */}
+                                {/* <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td> */}
+                                <td className="px-2 py-2 md:px-8">
+                                    <button
+                                        onClick={() => handleViewDetails(report.reportID)}
+                                        className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0'
+                                    >
+                                        Details
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

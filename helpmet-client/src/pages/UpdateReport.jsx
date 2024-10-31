@@ -123,10 +123,10 @@ const UpdateReport = () => {
     <>
       {successMessage ? (
         <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-white'>Injury report updated successfully.</h1>
+          <h1 className='text-black'>Injury report updated successfully.</h1>
         </section>
       ) : (
-      <div className="bg-gray-800 p-6 rounded-lg max-w-lg mx-auto text-white">
+      <div className="bg-white p-6 rounded-lg max-w-lg mx-auto text-black">
         <h1 className="text-2xl font-bold mb-4">Update Injury Report</h1>
         <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>
@@ -230,7 +230,7 @@ const UpdateReport = () => {
             type="file"
             name="image"
             onChange={handleChange}
-            className="p-2 rounded border text-white"
+            className="p-2 rounded border text-black"
           />
 
           <label>Witnesses ID (Optional)</label>
