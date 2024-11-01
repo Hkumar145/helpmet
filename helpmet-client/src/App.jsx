@@ -17,7 +17,10 @@ import PendingReportDetails from './pages/PendingReportDetails';
 import UpdateReport from './pages/UpdateReport';
 import Alert from './pages/Alert'
 import Analytics from './pages/Analytics'
+import Setting from './pages/Setting';
 import Employee from './pages/Employee';
+import Department from './pages/Department';
+import Location from './pages/Location';
 
 function App() {
   return (
@@ -38,10 +41,13 @@ function App() {
 
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/injury-report" element={<InjuryReport />} />
+          <Route path="/setting" element={<Setting />} />
           <Route path="/setting-employee" element={<Employee />} />
+          <Route path="/setting-department" element={<Department />} />
+          <Route path="/setting-location" element={<Location />} />
           <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
       </div>

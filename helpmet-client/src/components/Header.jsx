@@ -48,9 +48,9 @@ const Header = () => {
                 isActive('/alert') ? 'underline text-[#6938EF]' : 'text-black hover:text-[#6938EF]'
               } transition-colors`}>Alert</li> }
           </Link>
-          <Link to='/setting-employee'>
+          <Link to='/setting'>
           { currentUser && <li className={`${
-                isActive('/setting-employee') ? 'underline text-[#6938EF]' : 'text-black hover:text-[#6938EF]'
+                isActive('/setting') ? 'underline text-[#6938EF]' : 'text-black hover:text-[#6938EF]'
               } transition-colors`}>Setting</li> }
           </Link>
           <Link>
