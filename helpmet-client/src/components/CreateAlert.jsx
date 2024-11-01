@@ -157,12 +157,12 @@ const CreateAlert = ({ alertType, companyID, fetchAlerts, onCancel }) => {
   };
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-full text-left table-fixed">
+    <div className="bg-white p-4 rounded-lg shadow-lg w-full text-left table-fixed">
       <form 
       className="flex flex-col gap-2"
       onSubmit={createNewAlert}>
-        <h2 className="text-white">Create {alertType === "employee" ? "Employee" : "Department"} Alert</h2>
-        <label className="text-white">Alert Name</label>
+        <h2 className="text-black">Create {alertType === "employee" ? "Employee" : "Department"} Alert</h2>
+        <label className="text-black">Alert Name</label>
         <input
           type="text"
           name="alertName"
@@ -172,7 +172,7 @@ const CreateAlert = ({ alertType, companyID, fetchAlerts, onCancel }) => {
           required
         />
 
-        <label className="text-white">Description</label>
+        <label className="text-black">Description</label>
         <textarea
           name="description"
           value={alertData.description}
@@ -181,8 +181,8 @@ const CreateAlert = ({ alertType, companyID, fetchAlerts, onCancel }) => {
           required
         />
 
-        <div {...getRootProps({ className: "flex flex-row item-center justify-between border-dashed border-2 p-4 border-gray-500 bg-gray-700 rounded-lg" })}>
-          <label className="text-white mt-0">Attachments</label>
+        <div {...getRootProps({ className: "flex flex-row item-center justify-between border-dashed border-2 p-4 border-gray-500 bg-white rounded-lg" })}>
+          <label className="text-black mt-0">Attachments</label>
           <input {...getInputProps()} />
           <p className="text-purple-400 cursor-pointer">Click here to upload or drag and drop files</p>
         </div>
@@ -192,9 +192,9 @@ const CreateAlert = ({ alertType, companyID, fetchAlerts, onCancel }) => {
           {alertData.attachments.length > 0 && (
             <ul>
               {alertData.attachments.map((file, index) => (
-                <li key={index} className="flex justify-between items-center bg-gray-900 p-2 mb-2 rounded-lg text-white">
+                <li key={index} className="flex justify-between items-center bg-purple-300 p-2 mb-2 rounded-lg text-black">
                   <span>{file.name}</span>
-                  <button onClick={() => removeFile(file)} className="text-sm text-red-400 hover:text-red-600 mt-0">Remove</button>
+                  <button onClick={() => removeFile(file)} className="text-sm text-black hover:text-red-600 mt-0">Remove</button>
                 </li>
               ))}
             </ul>
@@ -232,14 +232,14 @@ const CreateAlert = ({ alertType, companyID, fetchAlerts, onCancel }) => {
           }}
         />
 
-        <label className="text-white">CC</label>
+        <label className="text-black">CC</label>
         <input
           type="text"
           name="cc"
           placeholder="name@helpmet.com"
           value={alertData.cc.join(", ")}
           onChange={handleCCChange}
-          className="p-3 bg-gray-800 border border-gray-700 rounded-lg text-white"
+          className="p-3 bg-white border border-gray-700 rounded-lg text-black"
         />
         
        
