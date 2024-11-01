@@ -1,10 +1,11 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
@@ -13,23 +14,24 @@ import {
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
 );
 
-const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
+const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
     const options = {
         responsive: true,
         plugins: {
             legend: {
-                display: false,
+                position: false,
             },
             title: {
                 display: true,
                 text: title,
-                color: 'black',
+                color: 'white',
                 font: {
                     size: 18,
                 },
@@ -38,7 +40,7 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
                 callbacks: {
                     title: (tooltipItems) => {
                         const item = tooltipItems[0];
-                        return barName ? barName[item.label] || item.label : item.label;
+                        return lineName[item.label] || item.label;
                     },
                     label: (tooltipItem) => {
                         const count = tooltipItem.raw;
@@ -51,18 +53,20 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
         indexAxis: indexAxis,
         scales: {
             x: {
+                display: true,
                 ticks: {
-                    color: 'black',
+                    color: 'white',
                 },
                 grid: {
                     display: false,
                 },
             },
             y: {
+                display: false,
+                beginAtZero: true,
                 ticks: {
-                    display: false,    
-                    beginAtZero: true,  
-                    stepSize: 1
+                    color: 'white',
+                    stepSize: 1,
                 },
                 grid: {
                     display: false,
@@ -73,14 +77,14 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
             if (elements.length > 0) {
                 const chart = elements[0];
                 const clickedLabel = chartData.labels[chart.index];
-                onBarClick(clickedLabel);
+                onLineClick(clickedLabel);
             }
-        },
+        }
     };
 
     return (
-        <Bar style={{ height: '240px' }} options={options} data={chartData} />
+        <Line style={{ height: '240px' }} options={options} data={chartData} />
     );
 };
 
-export default BarChart;
+export default LineChart;

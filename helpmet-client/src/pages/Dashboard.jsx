@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios'
 import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
+import LineChart from "../components/LineChart"
 import { DateTime } from 'luxon';
 import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
@@ -13,7 +15,7 @@ const injuryTypeName = {
     T0003: 'Struck By',
     T0004: 'Exposure to Toxic Substances',
     T0005: 'Caught In',
-    T0006: 'Repetitive Motion',
+    T0006: 'Epidemic Related',
     T0007: 'Motor Vehicle Incident',
     T0008: 'Industrial and Other Vehicle Accident',
     T0009: 'Contact with Electricity',
@@ -48,6 +50,43 @@ const Dashboard = () => {
     const [showTable, setShowTable] = useState(false);
     const [changeText, setChangeText] = useState("");
     const [injuryComparisonText, setInjuryComparisonText] = useState("");
+    const [monthlyEpidemicData, setMonthlyEpidemicData] = useState({ labels: [], datasets: [] });
+    const [severityData, setSeverityData] = useState(null);
+    const [filterBy, setFilterBy] = useState(null);
+    const [currentFilterValue, setCurrentFilterValue] = useState(null);
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const fetchMonthlyEpidemicData = async () => {
+            try {
+                const response = await axios.get(`/monthly-epidemic-data?companyID=${companyID}`);
+                const sortedData = response.data;
+                const labels = sortedData.map(item => item._id);
+                const counts = sortedData.map(item => item.count);
+    
+                setMonthlyEpidemicData({
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Epidemic Injury Type',
+                            data: counts,
+                            backgroundColor: 'rgba(233, 236, 241, 0.8)',
+                            hoverBackgroundColor: 'rgba(105, 56, 239)',
+                            tension: 0.6,
+                            fill: true,
+                            borderRadius: 4,
+                        },
+                    ],
+                });
+            } catch (error) {
+                console.error('Error fetching monthly epidemic data:', error);
+            }
+        };
+    
+        fetchMonthlyEpidemicData();
+    }, [companyID]); 
+    
 
     useEffect(() => {
         const fetchInjuryTypeData = async () => {
@@ -137,18 +176,72 @@ const Dashboard = () => {
         fetchWeeklyInjuryData();
     }, []);
 
+    const handleDateClick = async (dateLabel) => {
+        try {
+            setFilterBy("date");
+            setCurrentFilterValue(dateLabel);
+
+            const response = await axios.get(`/companies/${companyID}/reports`, {
+                params: { dateOfInjury: dateLabel }
+            });
+
+            setSelectedInjuryReports(response.data);
+            fetchSeverityData(null, dateLabel);
+        } catch (error) {
+            console.error('Error fetching reports:', error);
+        }
+    };
+
+
     const handleInjuryTypeBarClick = async (barLabel) => {
         let queryParam = 'injuryTypeID';
         let value = barLabel;
-
         setSelectedBar(barLabel);
-
         try {
+            setFilterBy("injuryType");
+            setCurrentFilterValue(barLabel);
             const response = await axios.get(`/companies/${companyID}/reports?${queryParam}=${value}`);
             setSelectedInjuryReports(response.data);
             setShowTable(true);
+            fetchSeverityData(barLabel, null);
         } catch (error) {
             console.error("Error fetching reports:", error);
+        }
+    };
+
+    const fetchSeverityData = async (injuryTypeID, dateOfInjury) => {
+        try {
+            const params = {};
+            if (injuryTypeID) params.injuryTypeID = injuryTypeID;
+            if (dateOfInjury) params.dateOfInjury = dateOfInjury;
+    
+            const response = await axios.get(`/companies/${companyID}/reports`, { params });
+            const severityCounts = [0, 0, 0]; // High, Medium, Low
+    
+            response.data.forEach(report => {
+                if (report.severity === 1) {
+                    severityCounts[2] += 1;
+                } else if (report.severity === 3) {
+                    severityCounts[1] += 1;
+                } else if (report.severity === 5) {
+                    severityCounts[0] += 1;
+                }
+            });
+    
+            setSeverityData({
+                labels: ["High Severity", "Medium Severity", "Low Severity"],
+                datasets: [
+                    {
+                        label: `Severity Counts`,
+                        data: severityCounts,
+                        backgroundColor: 'rgba(233, 236, 241)',
+                        hoverBackgroundColor: 'rgba(105, 56, 239)',
+                        borderRadius: 4,
+                    },
+                ],
+            });
+        } catch (error) {
+            console.error("Error fetching severity data:", error);
         }
     };
 
@@ -167,6 +260,7 @@ const Dashboard = () => {
             const response = await axios.get(`/companies/${companyID}/reports?dateOfInjury=${queryDate}`);
             setSelectedInjuryReports(response.data);
             setShowTable(true);
+            fetchSeverityData(null, queryDate);
         } catch (error) {
             console.error("Error fetching reports:", error);
         }
@@ -178,7 +272,7 @@ const Dashboard = () => {
             {
                 ...injuryTypeData.datasets[0],
                 backgroundColor: injuryTypeData.labels.map(label =>
-                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(233, 236, 241)'
+                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(152, 162, 179)'
                 ),
             }
         ]
@@ -190,84 +284,125 @@ const Dashboard = () => {
             {
                 ...weeklyInjuryData.datasets[0],
                 backgroundColor: weeklyInjuryData.labels.map(label =>
-                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(233, 236, 241)'
+                    label === selectedBar ? 'rgba(105, 56, 239)' : 'rgba(152, 162, 179)'
                 ),
             }
         ]
     };
 
+    const handleViewDetails = (reportID) => {
+        navigate(`/report/${reportID}`);
+    };
+
+    // const handleSeverityBarClick = async (severityLevel) => {
+    //     try {
+    //         const params = { severity: severityLevel };
+ 
+    //         if (filterBy === "injuryType") {
+    //             params.injuryTypeID = currentFilterValue;
+    //         } else if (filterBy === "date") {
+    //             params.dateOfInjury = currentFilterValue;
+    //         }
+    //         const response = await axios.get(`/companies/${companyID}/reports`, { params });
+    //         setSelectedInjuryReports(response.data);
+    //         setShowTable(true);
+    //     } catch (error) {
+    //         console.error('Error fetching reports:', error);
+    //     }
+    // };
+    
+    
   return (
     <>
-        <div className="flex flex-col text-white gap-12 items-center justify-start">
+        <div className="flex flex-col text-black gap-12 items-center justify-start">
             <p>Hi, {username}!</p>
-            <div className="flex flex-row gap-20">
-            
-                <div className="max-w-min">
-                
-                    <BarChart
-                        chartData={filteredInjuryTypeData}
-                        barName={injuryTypeName}
-                        title="Injury Category Projection"
-                        onBarClick={handleInjuryTypeBarClick}
-                        className="items-center justify-center mx-auto"
-                        indexAxis="y"
-                    />
-                   <MapComponent/>
-                </div>
-               
-              
-                <div className="max-w-min">
-                      
-                    <BarChart
-                        chartData={filteredWeeklyInjuryData}
-                        barName={dayTypeName}
-                        title="General Weekly Overview"
-                        onBarClick={handleWeeklyInjuryBarClick}
-                        indexAxis="x"
-                    />
-               
-                    <div className="flex flex-row items-center justify-center my-3 gap-1 max-w-[90%] mx-auto">
-                        <p className="text-emerald-400">{changeText}</p>
-                        <p className="text-[14px] text-center">{injuryComparisonText}</p>
+            <div className="flex flex-col gap-16">
+                <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="max-w-min">
+                        <BarChart
+                            chartData={filteredInjuryTypeData}
+                            barName={injuryTypeName}
+                            title="Injury Category Projection"
+                            onBarClick={handleInjuryTypeBarClick}
+                            className="items-center justify-center mx-auto"
+                            indexAxis="y"
+                        />
                     </div>
-                    <ReportsByLocation/>  
-                    <PendingAndCompletedReports/>  
-                    
+                    <div className="max-w-min">
+                        <BarChart
+                            chartData={filteredWeeklyInjuryData}
+                            barName={dayTypeName}
+                            title="General Weekly Overview"
+                            onBarClick={handleWeeklyInjuryBarClick}
+                            indexAxis="x"
+                        />
+                        <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
+                            <p className="text-emerald-400">{changeText}</p>
+                            <p className="text-[14px] text-center">{injuryComparisonText}</p>
+                        </div>
+                    </div>
                 </div>
-               
-                <div>
-               
-               
+                <div className="flex flex-col lg:flex-row gap-16">
+                    <div className="max-w-min">
+                    <LineChart
+                            chartData={monthlyEpidemicData}
+                            lineName={{ T0006: "Epidemic Injury Type" }}
+                            title="Monthly Epidemic Projection"
+                            onLineClick={handleDateClick}
+                            indexAxis="x"
+                        />
+                    </div>
+
+                    {severityData && (
+                        <div className="max-w-min">
+                            <BarChart
+                                chartData={severityData}
+                                // onBarClick={handleSeverityBarClick}
+                                barName={{ 1: "Low Severity", 3: "Medium Severity", 5: "High Severity" }}
+                                title="Injury Projection"
+                                indexAxis="x"
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
            
         </div>
        
         {showTable && (
-            <div className="mt-8 text-white">
+            <div className="mt-8 text-black">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
-                <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg">
+                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
                     <thead>
                         <tr>
-                            <th className="px-4 py-2">Injury Type</th>
-                            <th className="px-4 py-2">Severity</th>
-                            <th className="px-4 py-2">Location</th>
-                            <th className="px-4 py-2">Date of Injury</th>
-                            <th className="px-4 py-2">Injured Employee</th>
-                            <th className="px-4 py-2">Report Date</th>
-                            <th className="px-4 py-2">Reported By</th>
+                            <th className="px-2 py-2 md:px-8">Injury Type</th>
+                            <th className="px-0 py-2 md:px-8">Severity</th>
+                            {/* <th className="px-4 py-2">Location</th> */}
+                            <th className="px-0 py-2 md:px-8">Date of Injury</th>
+                            {/* <th className="px-4 py-2">Injured Employee</th> */}
+                            {/* <th className="px-4 py-2">Report Date</th> */}
+                            {/* <th className="px-4 py-2">Reported By</th> */}
+                            <th className="px-2 py-2 md:px-8"></th>
                         </tr>
                     </thead>
                     <tbody className='text-center'>
                         {selectedInjuryReports.map(report => (
                             <tr key={report._id} className="border-t border-gray-700">
-                                <td className="px-4 py-2">{injuryTypeName[report.injuryTypeID]}</td>
-                                <td className="px-4 py-2">{severityName[report.severity]}</td>
-                                <td className="px-4 py-2">{report.locationID}</td>
-                                <td className="px-4 py-2">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td>
-                                <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td>
+                                <td className="px-2 py-2 md:px-8">{injuryTypeName[report.injuryTypeID]}</td>
+                                <td className="px-0 py-2 md:px-8">{severityName[report.severity]}</td>
+                                {/* <td className="px-4 py-2">{report.locationID}</td> */}
+                                <td className="px-0 py-2 md:px-8">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
+                                {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
+                                {/* <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td> */}
+                                {/* <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td> */}
+                                <td className="px-2 py-2 md:px-8">
+                                    <button
+                                        onClick={() => handleViewDetails(report.reportID)}
+                                        className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0'
+                                    >
+                                        Details
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

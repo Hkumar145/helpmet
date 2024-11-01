@@ -46,6 +46,7 @@ const UpdateReport = () => {
 
     if (type === 'file' && files.length > 0) {
         setFile(files[0]); // Set the file state without uploading
+        setImage('');
     } else {
         const stateUpdateFunctions = {
             reportBy: setReportBy,
@@ -69,7 +70,9 @@ const UpdateReport = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('image', file);
+    if (file) {
+      formData.append('image', file);
+    }
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
     formData.append('dateOfInjury', dateOfInjury);
@@ -120,10 +123,10 @@ const UpdateReport = () => {
     <>
       {successMessage ? (
         <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-white'>Injury report updated successfully.</h1>
+          <h1 className='text-black'>Injury report updated successfully.</h1>
         </section>
       ) : (
-      <div className="bg-gray-800 p-6 rounded-lg max-w-lg mx-auto text-white">
+      <div className="bg-white p-6 rounded-lg max-w-lg mx-auto text-black">
         <h1 className="text-2xl font-bold mb-4">Update Injury Report</h1>
         <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>
@@ -178,18 +181,16 @@ const UpdateReport = () => {
             className="p-2 rounded border"
           >
             <option value="" disabled>- select injury type -</option>
-            <option value={1}>Overexertion</option>
-            <option value={2}>Fall from Elevation</option>
-            <option value={3}>Fall on Same Level</option>
-            <option value={4}>Struck By</option>
-            <option value={5}>Exposure to Toxic Substances</option>
-            <option value={6}>Caught In</option>
-            <option value={7}>Repetitive Motion</option>
-            <option value={8}>Motor Vehicle Incident</option>
-            <option value={9}>Industrial and Other Vehicle Accident</option>
-            <option value={10}>Contact with Electricity</option>
-            <option value={11}>Matter in Eye</option>
-            <option value={12}>Other Accident</option>
+            <option value="T0001">Overexertion</option>
+            <option value="T0002">Fall from Elevation</option>
+            <option value="T0003">Struck By</option>
+            <option value="T0004">Exposure to Toxic Substances</option>
+            <option value="T0005">Caught In</option>
+            <option value="T0006">Epidemic Related</option>
+            <option value="T0007">Motor Vehicle Incident</option>
+            <option value="T0008">Industrial and Other Vehicle Accident</option>
+            <option value="T0009">Contact with Electricity</option>
+            <option value="T0010">Matter in Eye</option>
           </select>
 
           <label>Severity</label>
@@ -220,11 +221,16 @@ const UpdateReport = () => {
           ></textarea>
 
           <label>Incident Photos (Optional)</label>
+          {image && (
+            <div className="mb-2">
+              <img src={image} alt="Existing image" className="h-32 w-32 object-cover rounded-md" />
+            </div>
+          )}
           <input
             type="file"
             name="image"
             onChange={handleChange}
-            className="p-2 rounded border text-white"
+            className="p-2 rounded border text-black"
           />
 
           <label>Witnesses ID (Optional)</label>

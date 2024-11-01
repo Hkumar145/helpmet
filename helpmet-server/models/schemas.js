@@ -8,7 +8,7 @@ const employeeSchema = new Schema({
     companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
     firstName: { type: String, required: true, trim: true, maxlength: 30 },
     lastName: { type: String, required: true, trim: true, maxlength: 30 },
-    DateOfBirth: { type: Date, required: true,
+    dateOfBirth: { type: Date, required: true,
         validate: [
           (date) => date <= new Date(),
           "Date of Birth must be in the past",
@@ -83,12 +83,19 @@ employeeReportSchema.index({ employeeID: 1, reportID: 1 }, { unique: true });
 // Alert Schema
 const alertSchema = new Schema({
     alertID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
-    alertName: { type: String, trim: true, required: true, maxlength: 30 }, 
+    alertName: { type: String, trim: true, required: true, maxlength: 100 }, 
     companyID: { type: Number, ref: "Company", trim: true, required: true },
     sentAt: { type: Date, required: true, },
     description: { type: String, trim: true, required: true, maxlength: 500 },
-    // cc: [{ type: String }],
-    // attachments: [{ type: String }]
+    status: { type: String, 
+              enum: ["active", "deactive"], 
+              default: "deactive" },
+    recipients: [{ type: String }],
+    cc: [{ type: String }],
+    attachments: [{
+        filename: { type: String },
+        path: { type: String }
+    }] 
 });
 
 // EmployeeAlert Schema
@@ -153,7 +160,19 @@ departmentAlertSchema.index({ departmentID: 1, alertID: 1 }, { unique: true });
 const locationSchema = new Schema({
     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
     locationName: { type: String, trim: true, required: true, maxlength: 30 },
-    companyID: { type: Number, ref: "Company", trim: true, required: true }
+    companyID: { type: Number, ref: "Company", trim: true, required: true },
+    location: {
+        type: {
+          type: String,
+          enum: ["Point"],
+          required: true,
+          default: "Point"
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+      }
 });
 
 // InjuryType Schema

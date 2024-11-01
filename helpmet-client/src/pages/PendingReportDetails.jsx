@@ -15,6 +15,16 @@ const severityMapping = {
 };
 
 const injuryTypeMapping = {
+  T0001: 'Overexertion',
+  T0002: 'Fall from Elevation',
+  T0003: 'Struck By',
+  T0004: 'Exposure to Toxic Substances',
+  T0005: 'Caught In',
+  T0006: 'Epidemic Related',
+  T0007: 'Motor Vehicle Incident',
+  T0008: 'Industrial and Other Vehicle Accident',
+  T0009: 'Contact with Electricity',
+  T0010: 'Matter in Eye'
 };
 
 const PendingReportDetails = () => {
@@ -22,7 +32,6 @@ const PendingReportDetails = () => {
   const navigate = useNavigate();
   const [reportDetails, setReportDetails] = useState(null);
   const [holdReason, setHoldReason] = useState("");
-  const [reportID, setReportID] = useState("");
   const [successMessage, setSuccessMessage] = useState(false);
 
   useEffect(() => {
@@ -52,23 +61,22 @@ const PendingReportDetails = () => {
 
   const confirmApprove = async () => {
     try {
+      // Move the report from pendingReports to reports collection
+      const response = await axios.post(`/reports/approve`, {
+        pendingReportId: reportDetails._id,
+      });
+
+      const generatedReportID = response.data.reportID;
       // Send approval email
       await axios.post("/email/send-approval-email", {
         reportDetails,
-        reportID
+        reportID: generatedReportID,
       });
-        
-      // Move the report from pendingReports to reports collection
-      await axios.post(`/reports/approve`, {
-        pendingReportId: reportDetails._id,
-        reportID: reportID,
-      });
-  
+
       setReportDetails((prevDetails) => ({
         ...prevDetails,
         status: "Completed",
       }));
-      setReportID("");
       setSuccessMessage(true);
     } catch (error) {
       console.error("Error during approval process:", error);
@@ -93,21 +101,21 @@ const PendingReportDetails = () => {
   return (
     <>
       {successMessage ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-white'>Injury report approved successfully.</h1>
+        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-white'>
+          <h1 className='text-black'>Injury report approved successfully.</h1>
         </section>
       ) : (
-      <div className='text-white max-w-lg w-full p-6 bg-gray-800 rounded-lg'>
+      <div className='text-black max-w-lg w-full p-6 bg-white rounded-lg'>
         <h2>Report Details for {id}</h2>
-        <p>Reported by: {reportDetails.reportBy}</p>
-        <p>Injured Employee ID: {reportDetails.injuredEmployeeID}</p>
+        <p>Reported by: {reportDetails.reportByFirstName} ({reportDetails.reportBy})</p>
+        <p>Injured Employee: {reportDetails.injuredEmployeeFirstName} ({reportDetails.injuredEmployeeID})</p>
         <p>Date of Injury: {new Date(reportDetails.dateOfInjury).toLocaleDateString()}</p>
         <p>Report Date: {new Date(reportDetails.reportDate).toLocaleDateString()}</p>
         <p>Location ID: {reportDetails.locationID}</p>
-        <p>Injury type ID: {reportDetails.injuryTypeID}</p>
+        <p>Injury type: {injuryTypeMapping[reportDetails.injuryTypeID]} ({reportDetails.injuryTypeID})</p>
         <p>Severity: {severityMapping[reportDetails.severity]}</p>
         <p>Description: {reportDetails.description}</p>
-        <p>Witness ID: {reportDetails.witnessID}</p>
+        <p>Witness: {reportDetails.witnessEmployeeFirstName ? `${reportDetails.witnessEmployeeFirstName} (${reportDetails.witnessID})` : "No witness"}</p>
         <div>
           <h3>Image:</h3>
           {reportDetails.image ? (
@@ -129,14 +137,7 @@ const PendingReportDetails = () => {
             <DialogContent>
               <DialogTitle>Approve Injury Report</DialogTitle>
               <div className='flex flex-row gap-4 items-center'>
-                <DialogDescription>Define Report ID:</DialogDescription>
-                <input
-                  type="text"
-                  placeholder="Report ID"
-                  value={reportID}
-                  onChange={(e) => setReportID(e.target.value)}
-                  className="border p-2 rounded-lg"
-                />
+                <DialogDescription>Confirm the approval</DialogDescription>
               </div>
               <div className='flex flex-row justify-between gap-4'>
                 <DialogClose asChild>
@@ -150,7 +151,7 @@ const PendingReportDetails = () => {
                 <button
                   type='button'
                   onClick={confirmApprove}
-                  className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+                  className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
                 >
                   Confirm
                 </button>
@@ -185,7 +186,7 @@ const PendingReportDetails = () => {
                 <button
                   type='button'
                   onClick={confirmOnHold}
-                  className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+                  className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
                 >
                   Confirm
                 </button>

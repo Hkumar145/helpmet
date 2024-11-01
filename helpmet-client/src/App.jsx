@@ -17,6 +17,7 @@ import PendingReportDetails from './pages/PendingReportDetails';
 import UpdateReport from './pages/UpdateReport';
 import Alert from './pages/Alert'
 import Analytics from './pages/Analytics'
+import Employee from './pages/Employee';
 
 function App() {
   return (
@@ -25,7 +26,6 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
           <Route path="/alert" element={<Alert />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
@@ -38,6 +38,7 @@ function App() {
 
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/injury-report" element={<InjuryReport />} />
+          <Route path="/setting-employee" element={<Employee />} />
           <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} />

@@ -19,6 +19,8 @@ exports.submitReport = async (req, res) => {
         }
         const companyID = employee.companyID;
 
+        const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO();
+
         // Upload the image file to S3
         let imageUrl = null;
         if (req.file) {
@@ -29,7 +31,7 @@ exports.submitReport = async (req, res) => {
             companyID,
             reportBy,
             injuredEmployeeID,
-            dateOfInjury,
+            dateOfInjury: dateOfInjuryWithTime,
             locationID,
             injuryTypeID,
             severity,
@@ -195,7 +197,21 @@ exports.getReportByID = async (req, res) => {
         if (!report) {
             return res.status(404).json({ message: "Report not found" });
         }
-        res.json(report);
+
+        const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
+            Employee.findOne({ employeeID: report.reportBy }, 'firstName'),
+            Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName'),
+            Employee.findOne({ employeeID: report.witnessID }, 'firstName')
+        ]);
+
+        const reportWithNames = {
+            ...report._doc,
+            reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+        };
+
+        res.json(reportWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -250,7 +266,21 @@ exports.getPendingReportByID = async (req, res) => {
         if (pendingReport.status === "Completed") {
             return res.status(404).json({ message: "Report is approved" });
         }
-        res.json(pendingReport);
+
+        const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
+            Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName'),
+            Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName'),
+            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName')
+        ]);
+
+        const pendingReportWithNames = {
+            ...pendingReport._doc,
+            reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+        };
+
+        res.json(pendingReportWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -311,24 +341,34 @@ exports.updatePendingReportByID = async (req, res) => {
 // Move the approved report to reports collection and delete it from pendingReports collection
 exports.approveReport = async (req, res) => {
     try {
-        const { pendingReportId, reportID } = req.body;
+        const { pendingReportId } = req.body;
 
         const pendingReport = await PendingReport.findById(pendingReportId);
         if (!pendingReport) {
             return res.status(404).json({ message: "Pending report not found." });
         }
 
+        const latestReport = await Report.findOne()
+            .sort({ reportID: -1 })
+            .select("reportID");
+
+        let nextReportID = "R0001";
+        if (latestReport && latestReport.reportID) {
+            const latestID = parseInt(latestReport.reportID.slice(1));
+            nextReportID = `R${(latestID + 1).toString().padStart(4, "0")}`;
+        }
+
         const approvedReport = new Report({
             ...pendingReport.toObject(),
             status: "Completed",
-            reportID: reportID,
+            reportID: nextReportID,
         });
 
         await approvedReport.save();
 
         await PendingReport.findByIdAndDelete(pendingReportId);
 
-        res.status(200).json({ message: "Report approved and moved successfully." });
+        res.status(200).json({ message: "Report approved and moved successfully.", reportID: nextReportID });
     } catch (error) {
         console.error("Error approving report:", error);
         res.status(500).json({ message: "Error approving report." });
@@ -409,6 +449,40 @@ exports.getPreviousWeeklyInjuryStats = async (req, res) => {
         res.json(previousWeeklyReports);
     } catch (error) {
         console.error("Error fetching previous weekly injury stats:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+exports.getMonthlyEpidemicData = async (req, res) => {
+    try {
+        const { companyID } = req.query;
+
+        // Get the start and end of the current month
+        const startOfMonth = DateTime.now().startOf("month").toJSDate();
+        const endOfMonth = DateTime.now().endOf("month").toJSDate();
+
+        const reports = await Report.aggregate([
+            {
+                $match: {
+                    companyID: Number(companyID),
+                    dateOfInjury: { $gte: startOfMonth, $lte: endOfMonth },
+                    injuryTypeID: "T0006"
+                }
+            },
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$dateOfInjury" } },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { "_id": 1 }
+            }
+        ]);
+
+        res.json(reports);
+    } catch (error) {
+        console.error("Error fetching monthly epidemic data:", error);
         res.status(500).json({ error: "Server error" });
     }
 };
