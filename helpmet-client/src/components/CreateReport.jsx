@@ -94,7 +94,7 @@ const CreateReport = () => {
           </DialogClose>
           <button
             type='submit'
-            className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+            className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
           >
                 Send Links
           </button>

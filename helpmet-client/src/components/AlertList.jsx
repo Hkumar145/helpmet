@@ -121,13 +121,13 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
 
     return (
         <div>
-            <table className="bg-gray-800 p-6 rounded-lg shadow-lg w-full text-left table-fixed text-white">
+            <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed">
                 <thead className="text-center">
                     <tr className="text-xs lg:text-lg transition-all duration-300">
-                        <th className="text-white fontbold p-1" style={{ width: "20%" }}>Alert ID</th>
-                        <th className="text-white font-bold p-1" style={{ width: "40%" }}>Alert Name</th>
-                        <th className="text-white font-bold p-1" style={{ width: "20%" }}>Date sent</th>
-                        <th className="text-white font-bold p-1" style={{ width: "20%" }}>Actions</th>
+                        <th className="text-black fontbold p-1" style={{ width: "20%" }}>Alert ID</th>
+                        <th className="text-black font-bold p-1" style={{ width: "40%" }}>Alert Name</th>
+                        <th className="text-black font-bold p-1" style={{ width: "20%" }}>Date sent</th>
+                        <th className="text-black font-bold p-1" style={{ width: "20%" }}>Actions</th>
                     </tr>
                 </thead>
                 <tbody className="text-xs lg:text-sm transition-all duration-300 text-center">
@@ -160,7 +160,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {expandedAlertID === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="p-2 bg-gray-700">
+                                    <td colSpan="4" className="p-2 bg-gray-300">
                                         <div className="whitespace-pre-wrap text-start">
                                             <p><strong>Recipients:</strong></p>
                                             <ul className="border-b-2 border-gray-500 mb-2">
@@ -172,7 +172,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                         
                                                         // Map through each ID in the array
                                                         return (
-                                                            <li key={idx} className="text-gray-300">
+                                                            <li key={idx} className="text-black">
                                                                 {ids.map((id, idIdx) => {
                                                                     let employee = allEmployees.find(e => e.value === id);
                                                                     if (!employee)
@@ -206,7 +206,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                     alert.cc.map((email, idx) => {
                                                         const parsedEmails = email[0] === "[" ? JSON.parse(email) : [email];
                                                         return (
-                                                            <li key={idx} className="text-gray-300">
+                                                            <li key={idx} className="text-black">
                                                                 {parsedEmails.map((parsedEmail, emailIdx) => (
                                                                     <span key={emailIdx}>
                                                                         {parsedEmail}
@@ -218,12 +218,12 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                         );
                                                     })
                                                 ) : (
-                                                    <p className="text-gray-300">No CC recipients</p>
+                                                    <p className="text-black">No CC recipients</p>
                                                 )}
                                             </ul>
 
                                             <p><strong>Description:</strong></p>
-                                            <p className="text-gray-300">{alert.description}</p>
+                                            <p className="text-black">{alert.description}</p>
 
                                         </div>
                                     </td>
@@ -232,7 +232,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {editMode === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="bg-gray-600 p-4">
+                                    <td colSpan="4" className="bg-gray-300 p-4">
                                         <input
                                             type="text"
                                             name="alertName"
@@ -276,7 +276,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     className={`p-2 mt-0 rounded ${currentPage === 1 ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"} text-white text-sm`}>
                     Previous
                 </button>
-                <span className="text-white text-sm">Page {currentPage} of {totalPages}</span>
+                <span className="text-black text-sm">Page {currentPage} of {totalPages}</span>
                 <button
                     onClick={goToNextPage}
                     disabled={currentPage === totalPages}
