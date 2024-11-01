@@ -124,13 +124,13 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
 
     return (
         <div>
-            <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed text-black">
+            <table className="bg-gray-800 p-6 rounded-lg shadow-lg w-full text-left table-fixed text-white">
                 <thead>
                     <tr>
-                        <th className="text-black font-bold p-2" style={{ width: "20%" }}>Alert ID</th>
-                        <th className="text-black font-bold p-2" style={{ width: "40%" }}>Alert Name</th>
-                        <th className="text-black font-bold p-2" style={{ width: "20%" }}>Date sent</th>
-                        <th className="text-black font-bold p-2" style={{ width: "20%" }}>Actions</th>
+                        <th className="text-white font-bold p-2" style={{ width: "20%" }}>Alert ID</th>
+                        <th className="text-white font-bold p-2" style={{ width: "40%" }}>Alert Name</th>
+                        <th className="text-white font-bold p-2" style={{ width: "20%" }}>Date sent</th>
+                        <th className="text-white font-bold p-2" style={{ width: "20%" }}>Actions</th>
                     </tr>
                 </thead>
                 <tbody className="text-sm">
@@ -161,7 +161,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {expandedAlertID === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="p-2 bg-purple-300">
+                                    <td colSpan="4" className="p-2 bg-gray-700">
                                         <div className="whitespace-pre-wrap">
                                             <p><strong>Recipients:</strong></p>
                                             <ul>
@@ -241,7 +241,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {editMode === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="bg-purple-300 p-4">
+                                    <td colSpan="4" className="bg-gray-600 p-4">
                                         <input
                                             type="text"
                                             name="alertName"
@@ -318,7 +318,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     className={`p-2 mt-0 rounded ${currentPage === 1 ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"} text-white text-sm`}>
                     Previous
                 </button>
-                <span className="text-black text-sm">Page {currentPage} of {totalPages}</span>
+                <span className="text-white text-sm">Page {currentPage} of {totalPages}</span>
                 <button
                     onClick={goToNextPage}
                     disabled={currentPage === totalPages}

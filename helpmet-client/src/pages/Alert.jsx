@@ -42,7 +42,7 @@ const Alert = () => {
         <div className="flex flex-col gap-4 w-full">
             {/* Title and Toggle Button */}
             <div className="flex flex-row items-center justify-between">
-                <h1 className="text-black text-2xl">Alert</h1>
+                <h1 className="text-white text-2xl">Alert</h1>
 
                 {/* Toggle button component */}
                 <AlertToggle viewMode={viewMode} setViewMode={setViewMode} />
