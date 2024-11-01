@@ -7,11 +7,13 @@ import '@tomtom-international/web-sdk-maps/dist/maps.css';
 
 const MapComponent = () => {
   const [locationReportCounts, setLocationReportCounts] = useState({});
-  const [locations, setLocations] = useState([]); // State to store location data
+  const [locations, setLocations] = useState([]);
+  const [topLocations, setTopLocations] = useState([]);
+  const [selectedCoordinates, setSelectedCoordinates] = useState(null); // State to hold selected marker coordinates
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const navigate = useNavigate();
-  const mapRef = useRef(null); // Ref for the map div
-  const [topLocations, setTopLocations] = useState([]); // State to store top locations
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null); // Ref for the map instance
 
   useEffect(() => {
     if (companyID) {
@@ -19,29 +21,23 @@ const MapComponent = () => {
       axios.get(`/companies/${companyID}/reports`)
         .then(response => {
           const completedReports = response.data;
-
-          // Count reports by location
           const countsByLocation = completedReports.reduce((acc, report) => {
             acc[report.locationID] = (acc[report.locationID] || 0) + 1;
             return acc;
           }, {});
-
           setLocationReportCounts(countsByLocation);
-
-          // Determine the top 3 locations with the highest report counts
           const sortedLocations = Object.entries(countsByLocation)
-            .sort(([, countA], [, countB]) => countB - countA) // Sort by count descending
-            .slice(0, 3) // Get top 3
-            .map(([locationID]) => locationID); // Extract location IDs
-          
+            .sort(([, countA], [, countB]) => countB - countA)
+            .slice(0, 3)
+            .map(([locationID]) => locationID);
           setTopLocations(sortedLocations);
         })
         .catch(error => console.error("Error fetching completed reports:", error));
 
       // Fetch locations
-      axios.get(`/companies/${companyID}/locations`) // Update this endpoint to match your API
+      axios.get(`/companies/${companyID}/locations`)
         .then(response => {
-          setLocations(response.data); // Assuming this returns an array of location objects
+          setLocations(response.data);
         })
         .catch(error => console.error("Error fetching locations:", error));
     }
@@ -49,10 +45,10 @@ const MapComponent = () => {
 
   useEffect(() => {
     if (topLocations.length > 0 && locations.length > 0) {
-      const map = tt.map({
-        key: 'oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz', // Replace with your actual TomTom API key
-        container: mapRef.current, // Make sure this ref is defined
-        center: locations[0]?.coordinates || [0, 0], // Default center
+      mapInstance.current = tt.map({
+        key: 'oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz',
+        container: mapRef.current,
+        center: locations[0]?.coordinates || [0, 0],
         zoom: 14,
       });
 
@@ -63,7 +59,10 @@ const MapComponent = () => {
           const { coordinates } = location; 
           const marker = new tt.Marker()
             .setLngLat(coordinates)
-            .addTo(map);
+            .addTo(mapInstance.current)
+            .on('click', () => {
+              setSelectedCoordinates(coordinates); // Set selected coordinates on marker click
+            });
 
           const reportCount = locationReportCounts[locationID] || 0;
           const popupContent = `
@@ -84,10 +83,27 @@ const MapComponent = () => {
     navigate(`/report`);
   };
 
+  const zoomIn = () => {
+    mapInstance.current.setZoom(mapInstance.current.getZoom() + 1);
+  };
+
+  const zoomOut = () => {
+    mapInstance.current.setZoom(mapInstance.current.getZoom() - 1);
+  };
+
   return (
     <div>
       <p>Heat Map</p>
-      <div ref={mapRef} className="w-full h-60 mt-4" /> {/* Map container */}
+      {selectedCoordinates && (
+        <div className="mb-2">
+          <strong>Selected Coordinates:</strong> {`Longitude: ${selectedCoordinates[0]}, Latitude: ${selectedCoordinates[1]}`}
+        </div>
+      )}
+      <div ref={mapRef} className="w-full h-60 mt-4" />
+      <div className="flex justify-between mt-2">
+        <button onClick={zoomIn} className="p-2 bg-blue-500 text-white rounded">Zoom In</button>
+        <button onClick={zoomOut} className="p-2 bg-red-500 text-white rounded">Zoom Out</button>
+      </div>
     </div>
   );
 };
