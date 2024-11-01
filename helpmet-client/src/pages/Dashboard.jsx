@@ -71,8 +71,9 @@ const Dashboard = () => {
                         {
                             label: 'Epidemic Injury Type',
                             data: counts,
-                            backgroundColor: 'rgba(233, 236, 241, 0.8)',
+                            backgroundColor: 'rgba(233, 236, 24, 0.8)',
                             hoverBackgroundColor: 'rgba(105, 56, 239)',
+                            
                             tension: 0.6,
                             fill: true,
                             borderRadius: 4,
@@ -327,7 +328,9 @@ const Dashboard = () => {
                             className="items-center justify-center mx-auto"
                             indexAxis="y"
                         />
+                       
                     </div>
+                    <PendingAndCompletedReports/>
                     <div className="max-w-min">
                         <BarChart
                             chartData={filteredWeeklyInjuryData}
@@ -341,6 +344,7 @@ const Dashboard = () => {
                             <p className="text-[14px] text-center">{injuryComparisonText}</p>
                         </div>
                     </div>
+                    
                 </div>
                 <div className="flex flex-col lg:flex-row gap-16">
                     <div className="max-w-min">
@@ -352,7 +356,6 @@ const Dashboard = () => {
                             indexAxis="x"
                         />
                     </div>
-
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -364,8 +367,10 @@ const Dashboard = () => {
                             />
                         </div>
                     )}
+                     <ReportsByLocation/>
                 </div>
-            </div>
+                <MapComponent/>
+        </div>
            
         </div>
        
