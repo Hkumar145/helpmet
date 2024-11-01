@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
 import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
+import SiteAgentTable from "@/components/SiteAgentTable"
 
 const injuryTypeName = {
     T0001: 'Overexertion',
@@ -368,8 +369,10 @@ const Dashboard = () => {
                         </div>
                     )}
                      <ReportsByLocation/>
+                     <SiteAgentTable/>
                 </div>
                 <MapComponent/>
+
         </div>
            
         </div>
