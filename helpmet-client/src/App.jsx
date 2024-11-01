@@ -35,13 +35,14 @@ function App() {
           <Route path="/pending-report" element={<PendingReport />} />
           <Route path="/pending-report/:id" element={<PendingReportDetails />} />
           <Route path="/update-report/:id" element={<UpdateReport />} />
+
+          <Route path="/analytics" element={<Analytics />} />
           <Route path="/injury-report" element={<InjuryReport />} />
           <Route path="/setting-employee" element={<Employee />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           </Route>
-
         </Routes>
       </div>
     </Router>
