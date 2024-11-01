@@ -118,7 +118,7 @@ const login = () => {
           />
           <button 
             disabled={!email || !pwd ? true : false}
-            className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed'>
+            className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white'>
               Login
           </button>
           {/* <OAuth /> */}

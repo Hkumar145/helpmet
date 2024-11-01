@@ -181,7 +181,7 @@ const signup = () => {
           </p>
 
           <button disabled={!validUsername || !validEmail || !pwd || !matchPwd || !validMatch ? true : false}
-          className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed'>
+          className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white'>
             Sign Up
           </button>
           {/* <OAuth /> */}
