@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Select from "react-select";
 import axios from "../api/axios";
 
 
@@ -25,29 +24,28 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     value: department.departmentID,
                     label: `${department.departmentID} - ${department.departmentName}`
                 })));                
-                // if (editedAlert.recipientType === "employee") {
-
-                // } else if (editedAlert.recipientType === "department") {
-
-                // }
             } catch (error) {
                 console.error("Error fetching recipients:", error);
             }
         };
 
-        // if (editMode) {
-            
-        // }
         fetchRecipients();
     }, [editedAlert.recipientType, editMode]);
 
+    // Sort alerts in descending order
+    const sortedAlerts = [...alerts].sort((a, b) => {
+        const idA = parseInt(a.alertID.replace(/[^\d]/g, ""), 10);
+        const idB = parseInt(b.alertID.replace(/[^\d]/g, ""), 10);
+        return idB - idA;
+    });
+
     // Calculate total pages
-    const totalPages = Math.ceil(alerts.length / itemsPerPage);
+    const totalPages = Math.ceil(sortedAlerts.length / itemsPerPage);
 
     // Get alerts for current page
     const getPaginatedAlerts = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
-        return alerts.slice(startIndex, startIndex + itemsPerPage);
+        return sortedAlerts.slice(startIndex, startIndex + itemsPerPage);
     };
 
     // Handle edit mode
@@ -120,61 +118,61 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             console.error("Error updating status:", error);
         }
     };
-    
 
     return (
         <div>
             <table className="bg-gray-800 p-6 rounded-lg shadow-lg w-full text-left table-fixed text-white">
-                <thead>
-                    <tr>
-                        <th className="text-white font-bold p-2" style={{ width: "20%" }}>Alert ID</th>
-                        <th className="text-white font-bold p-2" style={{ width: "40%" }}>Alert Name</th>
-                        <th className="text-white font-bold p-2" style={{ width: "20%" }}>Date sent</th>
-                        <th className="text-white font-bold p-2" style={{ width: "20%" }}>Actions</th>
+                <thead className="text-center">
+                    <tr className="text-xs lg:text-lg transition-all duration-300">
+                        <th className="text-white fontbold p-1" style={{ width: "20%" }}>Alert ID</th>
+                        <th className="text-white font-bold p-1" style={{ width: "40%" }}>Alert Name</th>
+                        <th className="text-white font-bold p-1" style={{ width: "20%" }}>Date sent</th>
+                        <th className="text-white font-bold p-1" style={{ width: "20%" }}>Actions</th>
                     </tr>
                 </thead>
-                <tbody className="text-sm">
+                <tbody className="text-xs lg:text-sm transition-all duration-300 text-center">
                     {getPaginatedAlerts().map((alert) => (
                         <React.Fragment key={alert.alertID}>
-                            <tr>
-                                <td className="p-2" style={{ width: "20%" }}>{ alert.alertID }</td>
-                                <td className="p-2" style={{ width: "40%" }}>{ alert.alertName }</td>
-                                <td className="p-2" style={{ width: "20%" }}>{ alert.sentAt }</td>
-                                <td className="p-2" style={{ width: "20%" }}>
-                                    <button 
-                                    className="text-sm hover:underline mt-0"
-                                    onClick={() => viewDetails(alert.alertID)}>
-                                        {expandedAlertID === alert.alertID ? "Hide Details" : "View Details"}
-                                    </button>
-                                    <button
-                                    className="text-sm hover:underline ml-2"
-                                    onClick={() => editAlert(alert)}
-                                    >Edit
-                                    </button>
-                                    {/* <button 
-                                        onClick={() => toggleStatus(alert.alertID)} 
-                                        className={`text-sm p-2 mt-0 rounded-lg ${alert.status === "active" ? "bg-red-500" : "bg-green-500"} text-white`}>
-                                        {alert.status === "active" ? "Deactivate" : "Activate"}
-                                    </button> */}
+                            <tr className="border-t border-gray-700">
+                                <td className="p-1 w-1/4 md:w-1/5 lg:w-1/4">{ alert.alertID }</td>
+                                <td className="p-1 w-1/2 md:w-2/5 lg:w-1/2">{ alert.alertName }</td>
+                                <td className="p-1 w-1/4 md:w-1/5 lg:w-1/4">{ alert.sentAt }</td>
+                                <td className="p-1 w-full md:w-1/5 lg:w-1/4">
+                                    <div className="flex flex-col md:flex-row gap-2 justify-center">
+                                        <button 
+                                            className="text-xs lg:text-sm transition-all duration-300 bg-blue-500 text-white px-2 lg:px-4 py-1 rounded mt-0"
+                                            onClick={() => viewDetails(alert.alertID)}>
+                                                {expandedAlertID === alert.alertID ? "Hide" : "View"}
+                                        </button>
+                                        <button
+                                            className="text-xs lg:text-sm transition-all duration-300 bg-green-500 text-white px-2 lg:px-4 py-1 rounded mt-0"
+                                            onClick={() => editAlert(alert)}
+                                        >Edit
+                                        </button>
+                                        {/* <button 
+                                            onClick={() => toggleStatus(alert.alertID)} 
+                                            className={`text-sm p-2 mt-0 rounded-lg ${alert.status === "active" ? "bg-red-500" : "bg-green-500"} text-white`}>
+                                            {alert.status === "active" ? "Deactivate" : "Activate"}
+                                        </button> */}
+                                    </div>
                                 </td>
                             </tr>
         
                             {expandedAlertID === alert.alertID && (
                                 <tr>
                                     <td colSpan="4" className="p-2 bg-gray-700">
-                                        <div className="whitespace-pre-wrap">
+                                        <div className="whitespace-pre-wrap text-start">
                                             <p><strong>Recipients:</strong></p>
-                                            <ul>
-                                                {console.log(alert)}
-                                                
+                                            <ul className="border-b-2 border-gray-500 mb-2">
+                                              
                                                 {alert.recipients && alert.recipients.length > 0 ? (
                                                     alert.recipients.map((recipientID, idx) => {
                                                         // Parse the string of IDs into an array
-                                                        const ids = recipientID[0] === '[' ? JSON.parse(recipientID) : [recipientID];
+                                                        const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
                                                         
                                                         // Map through each ID in the array
                                                         return (
-                                                            <li key={idx}>
+                                                            <li key={idx} className="text-gray-300">
                                                                 {ids.map((id, idIdx) => {
                                                                     let employee = allEmployees.find(e => e.value === id);
                                                                     if (!employee)
@@ -185,12 +183,12 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                                     return employee ? (
                                                                         <span key={idIdx}>
                                                                             {employee.label}
-                                                                            {idIdx < ids.length - 1 ? ', ' : ''}
+                                                                            {idIdx < ids.length - 1 ? ", " : ""}
                                                                         </span>
                                                                     ) : (
                                                                         <span key={idIdx}>
                                                                             Unknown recipient
-                                                                            {idIdx < ids.length - 1 ? ', ' : ''}
+                                                                            {idIdx < ids.length - 1 ? ", " : ""}
                                                                         </span>
                                                                     );
                                                                 })}
@@ -203,37 +201,30 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </ul>
                                        
                                             <p><strong>CC:</strong></p>
-                                            <ul>
+                                            <ul className="border-b-2 border-gray-500 mb-2">
                                                 {alert.cc && alert.cc.length > 0 ? (
-                                                    alert.cc.map((email, idx) => (
-                                                        <li key={idx}>
-                                                            {JSON.parse(email)[0]}
-                                                            {idx < alert.cc.length - 1 ? ',' : ''}
-                                                        </li>
-                                                    ))
+                                                    alert.cc.map((email, idx) => {
+                                                        const parsedEmails = email[0] === "[" ? JSON.parse(email) : [email];
+                                                        return (
+                                                            <li key={idx} className="text-gray-300">
+                                                                {parsedEmails.map((parsedEmail, emailIdx) => (
+                                                                    <span key={emailIdx}>
+                                                                        {parsedEmail}
+                                                                        {emailIdx < parsedEmails.length - 1 ? ", " : ""}
+                                                                    </span>
+                                                                ))}
+                                                                {idx < alert.cc.length - 1 ? ", " : ""}
+                                                            </li>
+                                                        );
+                                                    })
                                                 ) : (
-                                                    <p>No CC recipients</p>
+                                                    <p className="text-gray-300">No CC recipients</p>
                                                 )}
                                             </ul>
-                                            <p><strong>Description:</strong> {alert.description}</p>
-                                            {/* <p><strong>Attachments:</strong></p> */}
-                                            {/* <div>
-                                            {alert.attachments && alert.attachments.length > 0 ? (
-                                                alert.attachments.map((file, idx) => (
-                                                    file && file.url ? (
-                                                    file.type && file.type.startsWith("image/") ? (
-                                                        <img key={idx} src={file.url} alt={`attachment-${idx}`} style={{ maxWidth: "100px", maxHeight: "100px" }} />
-                                                    ) : (
-                                                        <a key={idx} href={file.url} download>{file.name || `attachment-${idx}`}</a>
-                                                    )
-                                                    ) : (
-                                                    <p key={idx}>Invalid attachment</p>
-                                                    )
-                                                ))
-                                                ) : (
-                                                <p>No attachments</p>
-                                                )}
-                                            </div> */}
+
+                                            <p><strong>Description:</strong></p>
+                                            <p className="text-gray-300">{alert.description}</p>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -255,49 +246,16 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             onChange={handleInputChange}
                                             className="w-full p-2 mt-2"
                                         ></textarea>
-                                        {/* <Select
-                                        name="recipients"
-                                        value={
-                                            editedAlert.recipients &&
-                                            editedAlert.recipients.map((recipientID) => {
-                                                if (editedAlert.recipientType === "employee") {
-                                                    return allEmployees.find((e) => e.value === recipientID);
-                                                } else {
-                                                    return allDepartments.find((d) => d.value === recipientID);
-                                                }
-                                            })
-                                        }
-                                        options={editedAlert.recipientType === "employee" ? allEmployees : allDepartments}
-                                        isMulti
-                                        onChange={(selected) =>
-                                            setEditedAlert({
-                                                ...editedAlert,
-                                                recipients: selected.map((option) => option.value),
-                                            })
-                                        }
-                                        /> */}
-                                        {/* <div>
-                                            {editedAlert.attachments.length > 0 && (
-                                                <ul>
-                                                    {editedAlert.attachments.map((file, index) => (
-                                                        <li key={index}>
-                                                            {file.name} <button onClick={() => removeFile(file)}>Remove</button>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                            <input type="file" multiple onChange={handleFileChange} />
-                                        </div> */}
-
-                                        <div className="mt-4">
+                                        
+                                        <div className="mt-4 flex gap-2 justify-end">
                                             <button
-                                                className="bg-green-700 text-white p-2 rounded mr-2"
+                                                className="bg-green-700 text-white p-2 rounded mt-0"
                                                 onClick={saveChanges}
                                             >
                                                 Save
                                             </button>
                                             <button
-                                                className="bg-red-700 text-white p-2 rounded"
+                                                className="bg-red-700 text-white p-2 rounded mt-0"
                                                 onClick={() => setEditMode(null)}
                                             >
                                                 Cancel
@@ -310,7 +268,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     ))}
                 </tbody>
             </table>
-            {/* Pagination controls */}
+          
             <div className="flex justify-between items-center mt-4">
                 <button
                     onClick={goToPreviousPage}

@@ -5,6 +5,9 @@ import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
 import LineChart from "../components/LineChart"
 import { DateTime } from 'luxon';
+import MapComponent from '@/components/MapComponent';
+import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
+import ReportsByLocation from "@/components/ReportsByLocation"
 
 const injuryTypeName = {
     T0001: 'Overexertion',
@@ -363,7 +366,9 @@ const Dashboard = () => {
                     )}
                 </div>
             </div>
+           
         </div>
+       
         {showTable && (
             <div className="mt-8 text-black">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
