@@ -328,6 +328,10 @@ const Dashboard = () => {
                             indexAxis="y"
                         />
                     </div>
+                    <PendingAndCompletedReports/>
+                    <ReportsByLocation/>
+                    <MapComponent/>
+                
                     <div className="max-w-min">
                         <BarChart
                             chartData={filteredWeeklyInjuryData}
@@ -352,7 +356,6 @@ const Dashboard = () => {
                             indexAxis="x"
                         />
                     </div>
-
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -365,6 +368,7 @@ const Dashboard = () => {
                         </div>
                     )}
                 </div>
+                   
             </div>
            
         </div>

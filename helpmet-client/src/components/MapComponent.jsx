@@ -8,10 +8,6 @@ const MapComponent = () => {
   const mapElement = useRef();
   const markerRef = useRef(null);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
-
-  const [ongoingReportsCount, setOngoingReportsCount] = useState(0);
-  const [onHoldReportsCount, setOnHoldReportsCount] = useState(0);
-  const [completedReportsCount, setCompletedReportsCount] = useState(0);
   const [locationReportCounts, setLocationReportCounts] = useState({});
   const [locations, setLocations] = useState([]);
 
@@ -19,12 +15,20 @@ const MapComponent = () => {
     (max, [locationID, count]) => {
       if (count > (max.count || 0)) {
         const location = locations.find(loc => loc.locationID === locationID);
-        return { locationID, count, coordinates: location ? location.location.coordinates : null };
+        // Check if location exists and has coordinates
+        if (location && location.location && location.location.coordinates) {
+          return { 
+            locationID, 
+            count, 
+            coordinates: location.location.coordinates 
+          };
+        }
       }
       return max;
     },
     {}
   );
+  
 
   useEffect(() => {
     if (!companyID) {
@@ -61,6 +65,8 @@ const MapComponent = () => {
           acc[report.locationID] = (acc[report.locationID] || 0) + 1;
           return acc;
         }, {});
+        console.log("Location Count Map:", locationCountMap);
+
         setLocationReportCounts(locationCountMap);
       })
       .catch(error => {
@@ -126,6 +132,7 @@ const MapComponent = () => {
       )}
     </div>
   );
+  
 };
 
 export default MapComponent;
