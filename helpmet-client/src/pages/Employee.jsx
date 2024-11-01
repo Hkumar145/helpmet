@@ -42,9 +42,9 @@ const Employee = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4 text-white'>
+    <div className='flex flex-col gap-4 text-black'>
     <div className='flex flex-row items-center justify-between'>
-      <h1 className='text-2xl'>Employees</h1>
+      <h1 className='text-lg text-black md:text-2xl'>Employees</h1>
       <Dialog>
         <DialogTrigger asChild>
           <button className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95'>
@@ -60,29 +60,29 @@ const Employee = () => {
     </div>
 
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-gray-800 text-white mt-4 rounded-lg">
+      <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
         <thead>
           <tr>
-            <th className="px-4 py-2">Employee ID</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Date of Birth</th>
-            <th className="px-4 py-2">Department</th>
-            <th className="px-4 py-2">Role</th>
-            <th className="px-4 py-2">Action</th>
+            <th className="px-2 py-2 md:px-4">Employee ID</th>
+            <th className="px-0 py-2 md:px-4">Name</th>
+            {/* <th className="px-4 py-2">Date of Birth</th> */}
+            <th className="px-0 py-2 md:px-4">Department</th>
+            {/* <th className="px-4 py-2">Role</th> */}
+            <th className="px-2 py-2 md:px-4"></th>
           </tr>
         </thead>
         <tbody className='text-center'>
           {employees.map(employee => (
             <tr key={employee.employeeID}>
-              <td className="px-4 py-2">{employee.employeeID}</td>
-              <td className="px-4 py-2">{employee.firstName} {employee.lastName}</td>
-              <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td>
-              <td className="px-4 py-2">{employee.departmentID}</td>
-              <td className="px-4 py-2">{employee.role}</td>
-              <td className="px-4 py-2 flex gap-2">
+              <td className="px-2 py-2 md:px-4">{employee.employeeID}</td>
+              <td className="px-0 py-2 md:px-4">{employee.firstName} {employee.lastName}</td>
+              {/* <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td> */}
+              <td className="px-0 py-2 md:px-4">{employee.departmentID}</td>
+              {/* <td className="px-4 py-2">{employee.role}</td> */}
+              <td className="px-2 py-2 md:px-4 flex flex-col md:flex-row gap-2 mb-8 md:mb-2">
                 <Dialog onOpenChange={(open) => { if (!open) setSelectedEmployeeID(null); }}>
                     <DialogTrigger asChild>
-                      <button className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800' onClick={() => handleEditEmployee(employee.employeeID)}>
+                      <button className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0' onClick={() => handleEditEmployee(employee.employeeID)}>
                         Edit
                       </button>
                     </DialogTrigger>
@@ -94,7 +94,7 @@ const Employee = () => {
                       )}
                     </DialogContent>
                 </Dialog>
-                <button className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800' onClick={() => handleDeleteEmployee(employee.employeeID)}>Delete</button>
+                <button className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0' onClick={() => handleDeleteEmployee(employee.employeeID)}>Delete</button>
               </td>
             </tr>
           ))}

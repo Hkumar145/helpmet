@@ -7,6 +7,7 @@ const upload = multer({ storage: storage });
 const {
     createEmployee,
     getEmployeesByCompany,
+    getEmployeesByDepartment,
     getEmployeeByID,
     updateEmployeeByID,
     deleteEmployeeByID
@@ -77,6 +78,9 @@ router.post("/companies/:id/employees", createEmployee);
 
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
+
+// Get a list of all employees by department ID
+router.get("/companies/:companyID/departments/:departmentID/employees", getEmployeesByDepartment);
 
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);

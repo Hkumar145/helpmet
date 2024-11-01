@@ -19,6 +19,8 @@ exports.submitReport = async (req, res) => {
         }
         const companyID = employee.companyID;
 
+        const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO();
+
         // Upload the image file to S3
         let imageUrl = null;
         if (req.file) {
@@ -29,7 +31,7 @@ exports.submitReport = async (req, res) => {
             companyID,
             reportBy,
             injuredEmployeeID,
-            dateOfInjury,
+            dateOfInjury: dateOfInjuryWithTime,
             locationID,
             injuryTypeID,
             severity,
@@ -195,7 +197,21 @@ exports.getReportByID = async (req, res) => {
         if (!report) {
             return res.status(404).json({ message: "Report not found" });
         }
-        res.json(report);
+
+        const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
+            Employee.findOne({ employeeID: report.reportBy }, 'firstName'),
+            Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName'),
+            Employee.findOne({ employeeID: report.witnessID }, 'firstName')
+        ]);
+
+        const reportWithNames = {
+            ...report._doc,
+            reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+        };
+
+        res.json(reportWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -250,7 +266,21 @@ exports.getPendingReportByID = async (req, res) => {
         if (pendingReport.status === "Completed") {
             return res.status(404).json({ message: "Report is approved" });
         }
-        res.json(pendingReport);
+
+        const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
+            Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName'),
+            Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName'),
+            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName')
+        ]);
+
+        const pendingReportWithNames = {
+            ...pendingReport._doc,
+            reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+        };
+
+        res.json(pendingReportWithNames);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
