@@ -92,10 +92,14 @@ const alertSchema = new Schema({
               default: "deactive" },
     recipients: [{ type: String }],
     cc: [{ type: String }],
-    attachments: [{
-        filename: { type: String },
-        path: { type: String }
-    }] 
+    // attachments: [{
+    //     filename: { type: String },
+    //     path: { type: String }
+    // }] 
+    // attachments: [{
+    //     filename: { type: String },
+    //     data: { type: Buffer }
+    // }]
 });
 
 // EmployeeAlert Schema
