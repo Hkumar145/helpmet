@@ -327,11 +327,9 @@ const Dashboard = () => {
                             className="items-center justify-center mx-auto"
                             indexAxis="y"
                         />
+                       
                     </div>
                     <PendingAndCompletedReports/>
-                    <ReportsByLocation/>
-                    <MapComponent/>
-                
                     <div className="max-w-min">
                         <BarChart
                             chartData={filteredWeeklyInjuryData}
@@ -345,6 +343,7 @@ const Dashboard = () => {
                             <p className="text-[14px] text-center">{injuryComparisonText}</p>
                         </div>
                     </div>
+                    
                 </div>
                 <div className="flex flex-col lg:flex-row gap-16">
                     <div className="max-w-min">
@@ -367,9 +366,12 @@ const Dashboard = () => {
                             />
                         </div>
                     )}
+                    
                 </div>
-                   
-            </div>
+                <ReportsByLocation/>
+                <MapComponent/> 
+        
+        </div>
            
         </div>
        

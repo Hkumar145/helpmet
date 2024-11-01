@@ -1,138 +1,212 @@
-import '@tomtom-international/web-sdk-maps/dist/maps.css';
-import tt from '@tomtom-international/web-sdk-maps';
-import React, { useEffect, useRef, useState } from 'react';
-import axios from '../api/axios';
+// import React, { useState, useEffect, useRef } from 'react';
+// import { useSelector } from 'react-redux';
+// import axios from '../api/axios';
+// import { useNavigate } from 'react-router-dom';
+// import tt from '@tomtom-international/web-sdk-maps';
+// import '@tomtom-international/web-sdk-maps/dist/maps.css';
+
+// const PendingAndCompletedReports = () => {
+//   const [locationReportCounts, setLocationReportCounts] = useState({});
+//   const [locations, setLocations] = useState([]); // State to store location data
+//   const companyID = useSelector((state) => state.user.currentUser?.companyID);
+//   const navigate = useNavigate();
+//   const mapRef = useRef(null); // Ref for the map div
+//   const [highestReportLocation, setHighestReportLocation] = useState(null);
+
+//   useEffect(() => {
+//     if (companyID) {
+//       // Fetch completed reports count
+//       axios.get(`/companies/${companyID}/reports`)
+//         .then(response => {
+//           const completedReports = response.data;
+
+//           // Count reports by location
+//           const countsByLocation = completedReports.reduce((acc, report) => {
+//             acc[report.locationID] = (acc[report.locationID] || 0) + 1;
+//             return acc;
+//           }, {});
+
+//           setLocationReportCounts(countsByLocation);
+
+//           // Determine location with the highest report count
+//           const highestLocationID = Object.keys(countsByLocation).reduce((a, b) => 
+//             countsByLocation[a] > countsByLocation[b] ? a : b
+//           );
+//           setHighestReportLocation(highestLocationID);
+//         })
+//         .catch(error => console.error("Error fetching completed reports:", error));
+
+//       // Fetch locations
+//       axios.get(`/companies/${companyID}/locations`) // Update this endpoint to match your API
+//         .then(response => {
+//           setLocations(response.data); // Assuming this returns an array of location objects
+//         })
+//         .catch(error => console.error("Error fetching locations:", error));
+//     }
+//   }, [companyID]);
+
+//   useEffect(() => {
+//     if (highestReportLocation && locations.length > 0) {
+//       const location = locations.find(loc => loc.locationID === highestReportLocation);
+      
+//       if (location && location.coordinates) {
+//         const { coordinates } = location; 
+//         const map = tt.map({
+//           key: 'oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz', // Replace with your actual TomTom API key
+//           container: mapRef.current, // Make sure this ref is defined
+//           center: coordinates,
+//           zoom: 14,
+//         });
+  
+//         new tt.Marker().setLngLat(coordinates).addTo(map);
+//       }
+//     }
+//   }, [highestReportLocation, locations]);
+  
+//   const handleViewCompletedReports = () => {
+//     navigate(`/report`);
+//   };
+
+//   return (
+//     <div className='flex flex-col gap-4'>
+//       <div className='flex flex-row items-center justify-between'>
+//         <p className='text-black'>Reports By Location Summary</p>
+//       </div>
+
+//       <div className='mt-4'>
+//         <h3 className='text-black mb-2'>Location Reports Table</h3>
+//         <table className='min-w-full bg-white border border-gray-200'>
+//           <thead>
+//             <tr>
+//               <th className='border border-gray-300 px-4 py-2'>Location Name</th>
+//               <th className='border border-gray-300 px-4 py-2'>Report Count</th>
+//               <th className='border border-gray-300 px-4 py-2'>Coordinates</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {locations.map(location => (
+//               <tr key={location.locationID}>
+//                 <td className='border border-gray-300 px-4 py-2'>{location.locationName || location.locationID}</td>
+//                 <td className='border border-gray-300 px-4 py-2'>{locationReportCounts[location.locationID] || 0}</td>
+//                 <td className='border border-gray-300 px-4 py-2'>
+//                   {location.coordinates ? `${location.coordinates[1]}, ${location.coordinates[0]}` : 'N/A'}
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       <div ref={mapRef} className="w-full h-60 mt-4" /> {/* Map container */}
+//     </div>
+//   );
+// };
+
+// export default PendingAndCompletedReports;
+
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
+import tt from '@tomtom-international/web-sdk-maps';
+import '@tomtom-international/web-sdk-maps/dist/maps.css';
 
 const MapComponent = () => {
-  const mapElement = useRef();
-  const markerRef = useRef(null);
-  const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const [locationReportCounts, setLocationReportCounts] = useState({});
-  const [locations, setLocations] = useState([]);
-
-  const maxReportsLocation = Object.entries(locationReportCounts).reduce(
-    (max, [locationID, count]) => {
-      if (count > (max.count || 0)) {
-        const location = locations.find(loc => loc.locationID === locationID);
-        // Check if location exists and has coordinates
-        if (location && location.location && location.location.coordinates) {
-          return { 
-            locationID, 
-            count, 
-            coordinates: location.location.coordinates 
-          };
-        }
-      }
-      return max;
-    },
-    {}
-  );
-  
+  const [locations, setLocations] = useState([]); // State to store location data
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const navigate = useNavigate();
+  const mapRef = useRef(null); // Ref for the map div
+  const [highestReportLocation, setHighestReportLocation] = useState(null);
 
   useEffect(() => {
-    if (!companyID) {
-      console.log("No companyID provided.");
-      return;
+    if (companyID) {
+      // Fetch completed reports count
+      axios.get(`/companies/${companyID}/reports`)
+        .then(response => {
+          const completedReports = response.data;
+
+          // Count reports by location
+          const countsByLocation = completedReports.reduce((acc, report) => {
+            acc[report.locationID] = (acc[report.locationID] || 0) + 1;
+            return acc;
+          }, {});
+
+          setLocationReportCounts(countsByLocation);
+
+          // Determine location with the highest report count
+          const highestLocationID = Object.keys(countsByLocation).reduce((a, b) => 
+            countsByLocation[a] > countsByLocation[b] ? a : b
+          );
+          setHighestReportLocation(highestLocationID);
+        })
+        .catch(error => console.error("Error fetching completed reports:", error));
+
+      // Fetch locations
+      axios.get(`/companies/${companyID}/locations`) // Update this endpoint to match your API
+        .then(response => {
+          setLocations(response.data); // Assuming this returns an array of location objects
+        })
+        .catch(error => console.error("Error fetching locations:", error));
     }
-
-    console.log("Fetching data for companyID:", companyID);
-
-    // Fetch pending reports
-    axios.get(`/companies/${companyID}/reports/pending`)
-      .then(response => {
-        console.log("Pending Reports Data:", response.data);
-        const pendingReports = response.data;
-        setOngoingReportsCount(pendingReports.filter(report => report.status === 'On going').length);
-        setOnHoldReportsCount(pendingReports.filter(report => report.status === 'On hold').length);
-      })
-      .catch(error => {
-        console.error("Error fetching pending reports:", error);
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-        }
-      });
-
-    // Fetch completed reports
-    axios.get(`/companies/${companyID}/reports`)
-      .then(response => {
-        console.log("Completed Reports Data:", response.data);
-        const completedReports = response.data;
-        setCompletedReportsCount(completedReports.length);
-
-        // Compute location report counts
-        const locationCountMap = completedReports.reduce((acc, report) => {
-          acc[report.locationID] = (acc[report.locationID] || 0) + 1;
-          return acc;
-        }, {});
-        console.log("Location Count Map:", locationCountMap);
-
-        setLocationReportCounts(locationCountMap);
-      })
-      .catch(error => {
-        console.error("Error fetching completed reports:", error);
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-        }
-      });
-
-    // Fetch locations
-    axios.get(`/companies/${companyID}/locations`)
-      .then(response => {
-        console.log("Locations Data:", response.data);
-        setLocations(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching locations:", error);
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-        }
-      });
   }, [companyID]);
 
   useEffect(() => {
-    if (mapElement.current && maxReportsLocation?.coordinates) {
-      const { coordinates, locationID, count } = maxReportsLocation;
-
-      // Initialize the map centered on maxReportsLocation
-      const map = tt.map({
-        key: "S59U0GVlNmzVhBxdNDxbmvOBHMMaiMH3",
-        container: mapElement.current,
-        center: coordinates,
-        zoom: 13,
-      });
-
-      // Create marker for the location with max reports and set popup with locationID and count
-      markerRef.current = new tt.Marker()
-        .setLngLat(coordinates)
-        .setPopup(
-          new tt.Popup({ offset: 35 }).setHTML(
-            `<div style="font-size:14px; color:#333; line-height:1.5;">
-              <strong>Location ID:</strong> <span style="color:#0055aa;">${locationID}</span><br>
-              <strong>Reports:</strong> <span style="color:#d9534f;">${count}</span>
-            </div>`
-          )
-        )
-        .addTo(map);
-
-      return () => map.remove(); // Cleanup map on unmount
+    if (highestReportLocation && locations.length > 0) {
+      const location = locations.find(loc => loc.locationID === highestReportLocation);
+      
+      if (location && location.coordinates) {
+        const { coordinates } = location; 
+        const map = tt.map({
+          key: 'oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz', // Replace with your actual TomTom API key
+          container: mapRef.current, // Make sure this ref is defined
+          center: coordinates,
+          zoom: 14,
+        });
+  
+        new tt.Marker().setLngLat(coordinates).addTo(map);
+      }
     }
-  }, [maxReportsLocation]);
+  }, [highestReportLocation, locations]);
+  
+  const handleViewCompletedReports = () => {
+    navigate(`/report`);
+  };
 
   return (
-    <div>
-      {maxReportsLocation.count > 0 ? (
-        <>
-          <h2>Location with Maximum Reports:</h2>
-          <p>{`Location ID: ${maxReportsLocation.locationID}, Reports: ${maxReportsLocation.count}`}</p>
-          <div ref={mapElement} className="mapDiv" style={{ height: '500px', width: '100%' }}></div>
-        </>
-      ) : (
-        <p>No location data available.</p>
-      )}
+    <div className='flex flex-col gap-4'>
+      <div className='flex flex-row items-center justify-between'>
+        <p className='text-black'>Reports By Location Summary</p>
+      </div>
+
+      <div className='mt-4'>
+        <h3 className='text-black mb-2'>Location Reports Table</h3>
+        <table className='min-w-full bg-white border border-gray-200'>
+          <thead>
+            <tr>
+              <th className='border border-gray-300 px-4 py-2'>Location Name</th>
+              <th className='border border-gray-300 px-4 py-2'>Report Count</th>
+              <th className='border border-gray-300 px-4 py-2'>Coordinates</th>
+            </tr>
+          </thead>
+          <tbody>
+            {locations.map(location => (
+              <tr key={location.locationID}>
+                <td className='border border-gray-300 px-4 py-2'>{location.locationName || location.locationID}</td>
+                <td className='border border-gray-300 px-4 py-2'>{locationReportCounts[location.locationID] || 0}</td>
+                <td className='border border-gray-300 px-4 py-2'>
+                  {location.coordinates ? `${location.coordinates[1]}, ${location.coordinates[0]}` : 'N/A'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div ref={mapRef} className="w-full h-60 mt-4" /> {/* Map container */}
     </div>
   );
-  
 };
 
 export default MapComponent;
