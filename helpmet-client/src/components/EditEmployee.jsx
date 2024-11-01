@@ -21,7 +21,8 @@ const EditEmployee = ({ employeeID, onClose }) => {
         const { firstName, lastName, dateOfBirth, departmentID, role, email } = response.data;
         setFirstName(firstName);
         setLastName(lastName);
-        setDateOfBirth(dateOfBirth);
+        const formattedDateOfBirth = new Date(dateOfBirth).toISOString().split('T')[0];
+        setDateOfBirth(formattedDateOfBirth);
         setDepartment(departmentID);
         setRole(role);
         setEmail(email);
