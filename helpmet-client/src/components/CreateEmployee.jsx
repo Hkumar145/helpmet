@@ -102,7 +102,7 @@ const CreateEmployee = () => {
               Close
             </button>
           </DialogClose>
-          <button type="submit" className='bg-slate-600 hover:opacity-80 w-full'>
+          <button type="submit" className='bg-slate-600 hover:opacity-80 w-full text-white'>
             Create Employee
           </button>
         </div>

@@ -101,11 +101,11 @@ const PendingReportDetails = () => {
   return (
     <>
       {successMessage ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-white'>Injury report approved successfully.</h1>
+        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-white'>
+          <h1 className='text-black'>Injury report approved successfully.</h1>
         </section>
       ) : (
-      <div className='text-white max-w-lg w-full p-6 bg-gray-800 rounded-lg'>
+      <div className='text-black max-w-lg w-full p-6 bg-white rounded-lg'>
         <h2>Report Details for {id}</h2>
         <p>Reported by: {reportDetails.reportByFirstName} ({reportDetails.reportBy})</p>
         <p>Injured Employee: {reportDetails.injuredEmployeeFirstName} ({reportDetails.injuredEmployeeID})</p>
@@ -151,7 +151,7 @@ const PendingReportDetails = () => {
                 <button
                   type='button'
                   onClick={confirmApprove}
-                  className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+                  className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
                 >
                   Confirm
                 </button>
@@ -186,7 +186,7 @@ const PendingReportDetails = () => {
                 <button
                   type='button'
                   onClick={confirmOnHold}
-                  className='bg-slate-600 hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+                  className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
                 >
                   Confirm
                 </button>
