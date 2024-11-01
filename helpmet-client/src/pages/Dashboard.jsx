@@ -71,8 +71,9 @@ const Dashboard = () => {
                         {
                             label: 'Epidemic Injury Type',
                             data: counts,
-                            backgroundColor: 'rgba(233, 236, 241, 0.8)',
+                            backgroundColor: 'rgba(233, 236, 24, 0.8)',
                             hoverBackgroundColor: 'rgba(105, 56, 239)',
+                            
                             tension: 0.6,
                             fill: true,
                             borderRadius: 4,
@@ -366,11 +367,9 @@ const Dashboard = () => {
                             />
                         </div>
                     )}
-                    
+                     <ReportsByLocation/>
                 </div>
-                <ReportsByLocation/>
-                <MapComponent/> 
-        
+                <MapComponent/>
         </div>
            
         </div>
