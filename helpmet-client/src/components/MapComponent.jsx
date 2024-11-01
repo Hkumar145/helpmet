@@ -1,127 +1,131 @@
 import '@tomtom-international/web-sdk-maps/dist/maps.css';
 import tt from '@tomtom-international/web-sdk-maps';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from '../api/axios';
+import { useSelector } from 'react-redux';
 
 const MapComponent = () => {
   const mapElement = useRef();
+  const markerRef = useRef(null);
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
-  const [mapLongitude, setMapLongitude] = useState(-123.116327); // Default to some location
-  const [mapLatitude, setMapLatitude] = useState(49.2199047); // Default to some location
-  const [mapZoom, setMapZoom] = useState(13);
-  const [map, setMap] = useState(null);
-  const markerRef = useRef(null); // Ref for the marker
+  const [ongoingReportsCount, setOngoingReportsCount] = useState(0);
+  const [onHoldReportsCount, setOnHoldReportsCount] = useState(0);
+  const [completedReportsCount, setCompletedReportsCount] = useState(0);
+  const [locationReportCounts, setLocationReportCounts] = useState({});
+  const [locations, setLocations] = useState([]);
 
-  const MAX_ZOOM = 18;
+  const maxReportsLocation = Object.entries(locationReportCounts).reduce(
+    (max, [locationID, count]) => {
+      if (count > (max.count || 0)) {
+        const location = locations.find(loc => loc.locationID === locationID);
+        return { locationID, count, coordinates: location ? location.location.coordinates : null };
+      }
+      return max;
+    },
+    {}
+  );
 
-  const increaseZoom = () => {
-    if (mapZoom < MAX_ZOOM) {
-      setMapZoom((prevZoom) => prevZoom + 1);
-    }
-  };
-
-  const decreaseZoom = () => {
-    if (mapZoom > 1) {
-      setMapZoom((prevZoom) => prevZoom - 1);
-    }
-  };
-
-  // Fetch current location using Geolocation API
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { longitude, latitude } = position.coords;
-          setMapLongitude(longitude);
-          setMapLatitude(latitude);
+    if (!companyID) {
+      console.log("No companyID provided.");
+      return;
+    }
 
-          // Log position to make sure it's being fetched
-          console.log("Current position:", latitude, longitude);
-        },
-        (error) => {
-          console.error("Error fetching location", error);
+    console.log("Fetching data for companyID:", companyID);
+
+    // Fetch pending reports
+    axios.get(`/companies/${companyID}/reports/pending`)
+      .then(response => {
+        console.log("Pending Reports Data:", response.data);
+        const pendingReports = response.data;
+        setOngoingReportsCount(pendingReports.filter(report => report.status === 'On going').length);
+        setOnHoldReportsCount(pendingReports.filter(report => report.status === 'On hold').length);
+      })
+      .catch(error => {
+        console.error("Error fetching pending reports:", error);
+        if (error.response) {
+          console.error("Error response:", error.response.data);
         }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []); // Empty dependency array means this runs once on mount
-
-  // Initialize map and marker
-  useEffect(() => {
-    if (mapElement.current) {
-      const ttMap = tt.map({
-        key: "S59U0GVlNmzVhBxdNDxbmvOBHMMaiMH3 ",
-        container: mapElement.current,
-        center: [mapLongitude, mapLatitude],
-        zoom: mapZoom,
       });
 
-      setMap(ttMap);
+    // Fetch completed reports
+    axios.get(`/companies/${companyID}/reports`)
+      .then(response => {
+        console.log("Completed Reports Data:", response.data);
+        const completedReports = response.data;
+        setCompletedReportsCount(completedReports.length);
 
-      // Create a marker at the current location
-      const marker = new tt.Marker()
-        .setLngLat([mapLongitude, mapLatitude])
-        .addTo(ttMap);
+        // Compute location report counts
+        const locationCountMap = completedReports.reduce((acc, report) => {
+          acc[report.locationID] = (acc[report.locationID] || 0) + 1;
+          return acc;
+        }, {});
+        setLocationReportCounts(locationCountMap);
+      })
+      .catch(error => {
+        console.error("Error fetching completed reports:", error);
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+        }
+      });
 
-      markerRef.current = marker;
+    // Fetch locations
+    axios.get(`/companies/${companyID}/locations`)
+      .then(response => {
+        console.log("Locations Data:", response.data);
+        setLocations(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching locations:", error);
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+        }
+      });
+  }, [companyID]);
 
-      return () => {
-        ttMap.remove(); // Clean up the map instance on unmount
-      };
-    } else {
-      console.error("Map container not found");
-    }
-  }, [mapLongitude, mapLatitude]); // Run this when longitude and latitude change
-
-  // Update map center, zoom, and marker position on state changes
   useEffect(() => {
-    if (map && markerRef.current) {
-      map.setCenter([mapLongitude, mapLatitude]);
-      map.setZoom(mapZoom);
+    if (mapElement.current && maxReportsLocation?.coordinates) {
+      const { coordinates, locationID, count } = maxReportsLocation;
 
-      // Update marker position when location changes
-      markerRef.current.setLngLat([mapLongitude, mapLatitude]);
+      // Initialize the map centered on maxReportsLocation
+      const map = tt.map({
+        key: "S59U0GVlNmzVhBxdNDxbmvOBHMMaiMH3",
+        container: mapElement.current,
+        center: coordinates,
+        zoom: 13,
+      });
+
+      // Create marker for the location with max reports and set popup with locationID and count
+      markerRef.current = new tt.Marker()
+        .setLngLat(coordinates)
+        .setPopup(
+          new tt.Popup({ offset: 35 }).setHTML(
+            `<div style="font-size:14px; color:#333; line-height:1.5;">
+              <strong>Location ID:</strong> <span style="color:#0055aa;">${locationID}</span><br>
+              <strong>Reports:</strong> <span style="color:#d9534f;">${count}</span>
+            </div>`
+          )
+        )
+        .addTo(map);
+
+      return () => map.remove(); // Cleanup map on unmount
     }
-  }, [mapLongitude, mapLatitude, mapZoom, map]);
+  }, [maxReportsLocation]);
 
   return (
     <div>
-      <input
-        type="text"
-        name="longitude"
-        value={mapLongitude}
-        onChange={(e) => setMapLongitude(e.target.value)}
-        style={{ width: '150px', padding: '5px', fontSize: '14px' }} // Reduced size
-      />
-      <input
-        type="text"
-        name="latitude"
-        value={mapLatitude}
-        onChange={(e) => setMapLatitude(e.target.value)}
-        style={{ width: '150px', padding: '5px', fontSize: '14px' }} // Reduced size
-      />
-  
-      <button
-        onClick={increaseZoom}
-        style={{ padding: '8px 12px', fontSize: '14px', marginRight: '5px' }} // Smaller button
-      >
-        Zoom In
-      </button>
-      <button
-        onClick={decreaseZoom}
-        style={{ padding: '8px 12px', fontSize: '14px' }} // Smaller button
-      >
-        Zoom Out
-      </button>
-  
-      <div
-        ref={mapElement}
-        className="mapDiv"
-        style={{ height: '500px', width: '120%' }}
-      ></div>
+      {maxReportsLocation.count > 0 ? (
+        <>
+          <h2>Location with Maximum Reports:</h2>
+          <p>{`Location ID: ${maxReportsLocation.locationID}, Reports: ${maxReportsLocation.count}`}</p>
+          <div ref={mapElement} className="mapDiv" style={{ height: '500px', width: '100%' }}></div>
+        </>
+      ) : (
+        <p>No location data available.</p>
+      )}
     </div>
   );
-  
 };
 
 export default MapComponent;

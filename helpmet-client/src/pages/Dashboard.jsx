@@ -3,8 +3,9 @@ import axios from '../api/axios'
 import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
 import { DateTime } from 'luxon';
-import MapComponent from "@/components/MapComponent";
+import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
+import ReportsByLocation from "@/components/ReportsByLocation"
 
 const injuryTypeName = {
     T0001: 'Overexertion',
@@ -200,7 +201,9 @@ const Dashboard = () => {
         <div className="flex flex-col text-white gap-12 items-center justify-start">
             <p>Hi, {username}!</p>
             <div className="flex flex-row gap-20">
+            
                 <div className="max-w-min">
+                
                     <BarChart
                         chartData={filteredInjuryTypeData}
                         barName={injuryTypeName}
@@ -209,8 +212,12 @@ const Dashboard = () => {
                         className="items-center justify-center mx-auto"
                         indexAxis="y"
                     />
+                   <MapComponent/>
                 </div>
+               
+              
                 <div className="max-w-min">
+                      
                     <BarChart
                         chartData={filteredWeeklyInjuryData}
                         barName={dayTypeName}
@@ -218,19 +225,24 @@ const Dashboard = () => {
                         onBarClick={handleWeeklyInjuryBarClick}
                         indexAxis="x"
                     />
-                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
+               
+                    <div className="flex flex-row items-center justify-center my-3 gap-1 max-w-[90%] mx-auto">
                         <p className="text-emerald-400">{changeText}</p>
                         <p className="text-[14px] text-center">{injuryComparisonText}</p>
                     </div>
-                    <MapComponent/>
-                    <PendingAndCompletedReports/>
+                    <ReportsByLocation/>  
+                    <PendingAndCompletedReports/>  
                     
                 </div>
+               
                 <div>
-                    
+               
+               
                 </div>
             </div>
+           
         </div>
+       
         {showTable && (
             <div className="mt-8 text-white">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
