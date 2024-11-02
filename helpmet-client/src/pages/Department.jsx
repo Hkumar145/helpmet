@@ -75,7 +75,7 @@ const Department = () => {
                   <Dialog onOpenChange={(open) => { if (!open) setSelectedDepartmentID(null); }}>
                     <DialogTrigger asChild>
                       <button
-                        className='bg-purple-600 text-white p-2 rounded'
+                        className='bg-purple-600 text-white p-2 rounded mt-0'
                         onClick={() => handleEditDepartment(department.departmentID)}
                       >
                         Edit
@@ -89,7 +89,7 @@ const Department = () => {
                       )}
                     </DialogContent>
                   </Dialog>
-                  <button className='bg-purple-600 text-white p-2 rounded' onClick={() => handleDeleteDepartment(department.departmentID)}>Delete</button>
+                  <button className='bg-purple-600 text-white p-2 rounded mt-0' onClick={() => handleDeleteDepartment(department.departmentID)}>Delete</button>
                 </td>
               </tr>
             ))}

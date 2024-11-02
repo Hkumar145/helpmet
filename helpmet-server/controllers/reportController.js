@@ -22,9 +22,9 @@ exports.submitReport = async (req, res) => {
         const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO();
 
         // Upload the image file to S3
-        let imageUrl = null;
-        if (req.file) {
-            imageUrl = await uploadToS3(req.file);
+        let imageUrls = [];
+        if (req.files) {
+            imageUrls = await uploadToS3(req.files);
         }
 
         const newPendingReport = new PendingReport({
@@ -36,7 +36,7 @@ exports.submitReport = async (req, res) => {
             injuryTypeID,
             severity,
             description,
-            image: imageUrl,
+            image: imageUrls,
             witnessID,
             status: "On going"
         });
@@ -308,10 +308,10 @@ exports.updatePendingReportByID = async (req, res) => {
     const { _id } = req.params;
     const updateFields = req.body;
 
-    if (req.file) {
+    if (req.files && req.files.length > 0) {
         try {
-            const imageUrl = await uploadToS3(req.file);
-            updateFields.image = imageUrl;
+            const imageUrls = await uploadToS3(req.files);
+            updateFields.image = imageUrls;
         } catch (error) {
             return res.status(500).json({ message: "Failed to upload image" });
         }

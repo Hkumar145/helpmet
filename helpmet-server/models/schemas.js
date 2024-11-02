@@ -37,7 +37,7 @@ const pendingReportSchema = new Schema({
         required: true
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
-    image: { type: String },
+    image: { type: [String], required: false },
     witnessID: { type: Number, trim: true, ref: "Employee" },
     status: {
         type: String,
@@ -63,7 +63,7 @@ const reportSchema = new Schema({
         required: true
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
-    image: { type: String },
+    image: { type: [String], required: false },
     witnessID: { type: Number, trim: true, ref: "Employee" },
     status: { 
         type: String,
@@ -166,6 +166,7 @@ const locationSchema = new Schema({
     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
     locationName: { type: String, trim: true, required: true, maxlength: 30 },
     companyID: { type: Number, ref: "Company", trim: true, required: true },
+    managerID: { type: Number, required: true, unique: true, trim: true, maxlength: 10 },
     location: {
         type: {
           type: String,

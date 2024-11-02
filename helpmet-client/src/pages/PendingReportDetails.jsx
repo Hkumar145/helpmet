@@ -118,8 +118,17 @@ const PendingReportDetails = () => {
         <p>Witness: {reportDetails.witnessEmployeeFirstName ? `${reportDetails.witnessEmployeeFirstName} (${reportDetails.witnessID})` : "No witness"}</p>
         <div>
           <h3>Image:</h3>
-          {reportDetails.image ? (
-            <img src={reportDetails.image} alt="Injury Report" className="max-w-[40%] h-auto rounded-lg" />
+          {reportDetails.image && reportDetails.image.length > 0 ? (
+            <div className="flex overflow-x-scroll gap-4">
+              {reportDetails.image.map((imgUrl, index) => (
+                <img
+                  key={index}
+                  src={imgUrl}
+                  alt={`Injury Report Image ${index + 1}`}
+                  className="max-w-[40%] h-auto rounded-lg"
+                />
+              ))}
+            </div>
           ) : (
             <p>No image available</p>
           )}

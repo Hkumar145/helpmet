@@ -98,7 +98,7 @@ const Report = () => {
                 <td className="px-0 py-2 md:px-4">
                   <button
                     onClick={() => handleViewDetails(report.reportID)}
-                    className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800'
+                    className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0'
                   >
                     Details
                   </button>
