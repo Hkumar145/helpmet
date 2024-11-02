@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Line } from 'react-chartjs-2';
-import { Chart, LineElement, Tooltip, Legend } from 'chart.js';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
-Chart.register(LineElement, Tooltip, Legend);
-
 const PendingAndCompletedReports = () => {
+  // State to store report counts by location
   const [locationReportCounts, setLocationReportCounts] = useState({});
-  const [locations, setLocations] = useState([]);  // State to store location data
+  
+  // State to store location data
+  const [locations, setLocations] = useState([]);
+  
+  // State to store employees data
+  const [employees, setEmployees] = useState([]);
+  
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const navigate = useNavigate();
 
@@ -36,6 +39,13 @@ const PendingAndCompletedReports = () => {
           setLocations(response.data); // Assuming this returns an array of location objects
         })
         .catch(error => console.error("Error fetching locations:", error));
+
+      // Fetch employees
+      axios.get(`/companies/${companyID}/employees`) // Update this endpoint to match your API
+        .then(response => {
+          setEmployees(response.data); // Assuming this returns an array of employee objects
+        })
+        .catch(error => console.error("Error fetching employees:", error));
     }
   }, [companyID]);
 
@@ -43,50 +53,51 @@ const PendingAndCompletedReports = () => {
     navigate(`/report`);
   };
 
-  // Prepare data for the line chart
-  const lineChartData = {
-    labels: locations.map(location => location.locationName || location.locationID),
-    datasets: [
-      {
-        label: 'Reports by Location',
-        data: locations.map(location => locationReportCounts[location.locationID] || 0),
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: '#4BC0C0',
-        borderWidth: 2,
-        fill: true,
-      },
-    ],
-  };
-
-  const lineChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          stepSize: 1,
-        },
-      },
-    },
-  };
+  // Create a memoized map of employeeID to employee data for quick lookup
+  const employeeMap = useMemo(() => {
+    const map = {};
+    employees.forEach(employee => {
+      map[employee.employeeID] = employee;
+    });
+    return map;
+  }, [employees]);
 
   return (
     <div className='flex flex-col gap-4'>
-       
       <div className='flex flex-row items-center justify-between'>
-        <p className='text-black'>Reports By Location Summary</p>
+        <p className='text-black font-semibold text-lg'>Reports By Location Summary</p>
+        <button 
+          onClick={handleViewCompletedReports}
+          className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+        >
+          View Completed Reports
+        </button>
       </div>
 
-      <div className='mt-4'>
-        <Line data={lineChartData} options={lineChartOptions} />
-      </div>
+      <table className='table-auto w-full mt-4 border border-gray-300'>
+        <thead>
+          <tr className='bg-gray-100'>
+            <th className='px-4 py-2 text-left'>Location Name</th>
+            <th className='px-4 py-2 text-left'>Number of Reports</th>
+            <th className='px-4 py-2 text-left'>Manager First Name</th>
+            <th className='px-4 py-2 text-left'>Manager Last Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {locations.map(location => {
+            const manager = employeeMap[location.managerID];
+            return (
+              <tr key={location.locationID} className='border-t border-gray-300'>
+                <td className='px-4 py-2'>{location.locationName || location.locationID}</td>
+                <td className='px-4 py-2'>{locationReportCounts[location.locationID] || 0}</td>
+                <td className='px-4 py-2'>{employees ? employees.firstName : 'N/A'}</td>
+                <td className='px-4 py-2'>{manager ? manager.lastName : 'N/A'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
-    
   );
 };
 
