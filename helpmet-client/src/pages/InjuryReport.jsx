@@ -9,7 +9,7 @@ const InjuryReport = () => {
   const [injuryTypeID, setInjuryTypeID] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+  const [image, setImage] = useState([]);
   const [witnessID, setWitnessID] = useState('');
   const [file, setFile] = useState(null);
 
@@ -17,7 +17,7 @@ const InjuryReport = () => {
     const { name, value, type, files } = e.target;
   
     if (type === 'file' && files.length > 0) {
-        setFile(files[0]); // Set the file state without uploading
+        setImage(Array.from(files)); // Set the file state without uploading
     } else {
         const stateUpdateFunctions = {
             reportBy: setReportBy,
@@ -41,7 +41,7 @@ const InjuryReport = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('image', file);
+    image.forEach((img) => formData.append('image', img));
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
     formData.append('dateOfInjury', dateOfInjury);
@@ -66,7 +66,7 @@ const InjuryReport = () => {
         setInjuryTypeID('');
         setSeverity('');
         setDescription('');
-        setImage('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+        setImage([]);
         setWitnessID('');
     } catch (error) {
         console.error("Error submitting report:", error);
@@ -174,6 +174,7 @@ const InjuryReport = () => {
           type="file"
           name="image"
           onChange={handleChange}
+          multiple
           className="p-2 rounded border text-black"
         />
 
