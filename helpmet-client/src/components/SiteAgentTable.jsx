@@ -5,6 +5,7 @@ import axios from '../api/axios';
 const ReportTable = () => {
   const [locations, setLocations] = useState([]);
   const [employees, setEmployees]= useState([]);
+  const [reports, setReports]= useState([]);
   const [locationReportCounts, setLocationReportCounts] = useState({});
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
@@ -29,6 +30,7 @@ const ReportTable = () => {
               return acc;
             }, {});
             setLocationReportCounts(countsByLocation);
+            setReports(response.data);
           })
           .catch(error => console.error("Error fetching completed reports:", error));
   
@@ -52,32 +54,40 @@ const ReportTable = () => {
         <thead>
           <tr className='bg-gray-100'>
             <th className='px-4 py-2 text-left'>Location Name</th>
-            {/* <th className='px-4 py-2 text-left'>From Date</th>
-            <th className='px-4 py-2 text-left'>To Date</th> */}
+            <th className='px-4 py-2 text-left'>From Date</th>
+            <th className='px-4 py-2 text-left'>To Date</th>
             <th className='px-4 py-2 text-left'>Site Manager</th>
             <th className='px-4 py-2 text-left'>Number of Injuries</th>
             <th className='px-4 py-2 text-left'>Injury Severity</th>
           </tr>
         </thead>
         <tbody>
-          {locations.map(location => (
-            <tr key={location._id} className='border-t border-gray-300'>
-              <td className='px-4 py-2'>{location.locationName || 'N/A'}</td>
-              <td className='px-4 py-2'>{
-                (() => {
-                  const employee = employees.find(e => e.employeeID === location.managerID);
-                  return employee ? `${employee.firstName} ${employee.lastName}` : 'N/A';
-                })()
-              }</td>
-              {/* <td className='px-4 py-2'>{countsByLocation.dateOfInjury|| 'N/A'}</td>
-              <td className='px-4 py-2'>{completedReports.reportDate|| 'N/A'}</td> */}
-              <td className='px-4 py-2'>{locationReportCounts[location.locationID] || 0}</td>
-              <td className='px-4 py-2'>{
-                locationReportCounts[location.locationID] > 15 ? 'Severe' : 'Under Control'
-              }</td>
-            </tr>
-          ))}
-        </tbody>
+  {locations.map(location => (
+    <tr key={location._id} className='border-t border-gray-300'>
+      <td className='px-4 py-2'>{location.locationName || 'N/A'}</td>
+      {/* Get the first report for the current location and extract dateOfInjury */}
+      <td className='px-4 py-2'>{
+        (() => {
+          const report = reports.find(r => r.locationID === location.locationID);
+          return report ? new Date(report.dateOfInjury).toLocaleDateString() : 'N/A';
+        })()
+      }</td>
+      <td className='px-4 py-2'>{new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString() || 'N/A'}</td>
+
+      <td className='px-4 py-2'>{
+        (() => {
+          const employee = employees.find(e => e.employeeID === location.managerID);
+          return employee ? `${employee.firstName} ${employee.lastName}` : 'N/A';
+        })()
+      }</td>
+      <td className='px-4 py-2'>{locationReportCounts[location.locationID] || 0}</td>
+      <td className='px-4 py-2'>{
+        locationReportCounts[location.locationID] > 15 ? 'Severe' : 'Under Control'
+      }</td>
+    </tr>
+  ))}
+</tbody>
+
       </table>
     </div>
   );
