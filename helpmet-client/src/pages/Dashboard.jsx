@@ -369,8 +369,8 @@ const Dashboard = () => {
                         </div>
                     )}
                      <ReportsByLocation/>
-                     <SiteAgentTable/>
                 </div>
+                <SiteAgentTable/>
                 <MapComponent/>
 
         </div>

@@ -45,7 +45,9 @@ exports.getLocationsByCompany = async (req, res) => {
         res.json(locations.map(loc => ({
             locationID: loc.locationID,
             locationName: loc.locationName,
-            coordinates: loc.location.coordinates
+            coordinates: loc.location.coordinate,
+            companyID: loc.companyID,
+            managerID: loc.managerID,
         })));
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -63,7 +65,8 @@ exports.getLocationByID = async (req, res) => {
             locationID: location.locationID,
             locationName: location.locationName,
             companyID: location.companyID,
-            coordinates: location.location.coordinates
+            coordinates: location.location.coordinates,
+            managerID: location.managerID,
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
