@@ -73,10 +73,20 @@ const InjuryReport = () => {
         alert("Failed to submit report. Please try again.");
     }
 };
+  const demoAutoFill = () => {
+    setReportBy('100410616');
+    setInjuredEmployeeID('100411864');
+    setDateOfInjury('2024-11-05');
+    setLocationID('L0016');
+    setInjuryTypeID('T0002');
+    setSeverity('2');
+    setDescription('Falling from scaffolding results in a broken bone in right leg');
+    setWitnessID('100410616');
+  };
 
   return (
-    <div className="bg-white p-6 rounded-lg max-w-lg mx-auto text-black">
-      <h1 className="text-2xl font-bold mb-4">Injury Report</h1>
+    <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black">
+      <h1 className="text-2xl font-bold mb-4" onClick={demoAutoFill}>Injury Report</h1>
       <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
         <label>Reported By (Employee ID)</label>
         <input
@@ -87,6 +97,7 @@ const InjuryReport = () => {
           placeholder="Enter your employee ID"
           required
           className="p-2 rounded border"
+          onWheel={(e) => e.target.blur()}
         />
 
         <label>Injured Employee's ID</label>
@@ -98,6 +109,7 @@ const InjuryReport = () => {
           placeholder="Enter injured employee's ID"
           required
           className="p-2 rounded border"
+          onWheel={(e) => e.target.blur()}
         />
 
         <label>Date of Injury</label>
@@ -186,6 +198,7 @@ const InjuryReport = () => {
           onChange={handleChange}
           placeholder="Enter witness ID"
           className="p-2 rounded border"
+          onWheel={(e) => e.target.blur()}
         />
 
         <button
