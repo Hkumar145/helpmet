@@ -239,3 +239,89 @@ padding: 0.5rem;
     }
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/**************** Buttons ****************/
+.return-button {
+  background: #F9FAFB;
+  color: black;
+}
+
+.button-primary {
+  background: #6938EF;
+  color: white;
+}
+
+.button-primary:hover {
+  background: white;
+  color: #6938EF;
+}
+
+/**************** Report ****************/
+/**** Label ****/
+.label {
+  padding: 5px 7px ;
+  border-radius: 15px ;
+}
+
+.label-completed {
+  background: #E6F8EF;
+  color: #055E39;
+}
+
+.label-ongoing {
+  background: white;
+  color: black;
+}
+
+.label-onhold {
+  background: white;
+  color: black;
+}
+
+.label-minor {
+  background: white;
+  color: black;
+}
+
+.label-moderate {
+  background: #FEF3F2;
+  color: #B42318;
+}
+
+.label-severe {
+  background: white;
+  color: black;
+}
+
+.label-significant {
+  background: white;
+  color: black;
+}
+
+.label-fatal {
+  background: white;
+  color: black;
+}
+
+/**** Detail page ****/
+.report-info {
+  background: #F7F7F7;
+  border: 2px solid #D0D5DD;
+  border-radius: 10px;
+  display: block;
+  padding: .6rem 1rem;
+  width: 100%;
+  margin-top: .5rem;
+}
+
+.line-spacer {
+  width: 100%;
+  border-bottom: 2px solid #E4E7EC;
+  padding-top: .5rem;
+}

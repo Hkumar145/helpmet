@@ -3,6 +3,7 @@ import { Combobox } from '@/components/ui/combobox'
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import axios from '../api/axios';
 import { useSelector } from 'react-redux';
+import Avatar from 'react-avatar';
 
 const DialogClose = DialogPrimitive.Close
 
@@ -69,14 +70,28 @@ const CreateReport = () => {
             <div />
           ) : (
             selectedRecipients.map((recipient) => (
-              <div key={recipient.email} className="p-2 border rounded mb-2 flex items-center">
-                <span>{`${recipient.firstName} - ${recipient.email}`}</span>
+              <div key={recipient.email} className="p-2 border rounded mb-2 flex items-center justify-between">
+                <div className='flex items-center gap-2'>
+                  <Avatar
+                      name={recipient.firstName}
+                      round={true}
+                      size="40"
+                      textSizeRatio={1.75}
+                      style={{ cursor: 'default' }}
+                    />
+                  <div className='text-xs'>
+                    <span className='font-bold'>{`${recipient.firstName} • ${recipient.role}`}</span>
+                    <p className='text-gray-500'>{recipient.email}</p>
+                  </div>
+                  
+                </div>
+                
                 <button
                   type="button"
                   onClick={() => handleRemoveRecipient(recipient.email)}
-                  className="ml-2 my-auto text-red-500 hover:underline"
+                  className="ml-2 my-auto text-red-500 hover:underline text-xs"
                 >
-                  remove
+                  Remove
                 </button>
               </div>
             ))

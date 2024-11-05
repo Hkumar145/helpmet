@@ -125,7 +125,7 @@ const PendingReportDetails = () => {
                   key={index}
                   src={imgUrl}
                   alt={`Injury Report Image ${index + 1}`}
-                  className="max-w-[40%] h-auto rounded-lg"
+                  className="max-w-[40%] h-auto rounded-lg object-cover"
                 />
               ))}
             </div>
