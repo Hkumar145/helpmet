@@ -48,13 +48,18 @@ const Header = () => {
                 isActive('/alert') ? 'underline text-[#6938EF]' : 'text-black hover:text-[#6938EF]'
               } transition-colors`}>Alert</li> }
           </Link>
-          <Link to='/setting'>
+          {/* <Link to='/setting'>
           { currentUser && <li className={`${
                 isActive('/setting') ? 'underline text-[#6938EF]' : 'text-black hover:text-[#6938EF]'
               } transition-colors`}>Setting</li> }
+          </Link> */}
+          <Link to='/setting' className='self-center'>
+          { currentUser && <li className="border-l-2 border-gray-300 pl-4 bellzy">
+              <img src="./images/gear.svg" alt="gear icon" />
+            </li> }
           </Link>
-          <Link>
-            <li className="border-l-2 border-gray-300 pl-8 bellzy">
+          <Link className='self-center'>
+            <li className=" border-gray-300 bellzy">
               <img src="./images/bell.svg" alt="bell icon" />
             </li>
           </Link>

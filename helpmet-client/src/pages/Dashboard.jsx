@@ -316,7 +316,7 @@ const Dashboard = () => {
   return (
     <>
         <div className="flex flex-col text-black gap-12 items-center justify-start">
-            <p>Hi, {username}!</p>
+            {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col gap-16">
                 <div className="flex flex-col lg:flex-row gap-8">
                     <div className="max-w-min">

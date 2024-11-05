@@ -199,19 +199,22 @@ exports.getReportByID = async (req, res) => {
         }
 
         const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
-            Employee.findOne({ employeeID: report.reportBy }, 'firstName'),
-            Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName'),
-            Employee.findOne({ employeeID: report.witnessID }, 'firstName')
+            Employee.findOne({ employeeID: report.reportBy }, 'firstName role'),
+            Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName role'),
+            Employee.findOne({ employeeID: report.witnessID }, 'firstName role')
         ]);
 
-        const reportWithNames = {
+        const reportWithDetails = {
             ...report._doc,
             reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            reportByRole: reportByEmployee ? reportByEmployee.role : null,
             injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
-            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+            injuredEmployeeRole: injuredEmployee ? injuredEmployee.role : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null,
+            witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null,
         };
 
-        res.json(reportWithNames);
+        res.json(reportWithDetails);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

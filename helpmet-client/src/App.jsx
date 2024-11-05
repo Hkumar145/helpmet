@@ -29,25 +29,27 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/alert" element={<Alert />} />
+          
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/equipmentcheck" element={<Equipmentcheck />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/report/:id" element={<ReportDetails />} />
-          <Route path="/pending-report" element={<PendingReport />} />
-          <Route path="/pending-report/:id" element={<PendingReportDetails />} />
+          <Route path="/injury-report" element={<InjuryReport />} />
           <Route path="/update-report/:id" element={<UpdateReport />} />
 
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/injury-report" element={<InjuryReport />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route path="/setting-employee" element={<Employee />} />
-          <Route path="/setting-department" element={<Department />} />
-          <Route path="/setting-location" element={<Location />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/alert" element={<Alert />} />
+            <Route path="/equipmentcheck" element={<Equipmentcheck />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/report/:id" element={<ReportDetails />} />
+            <Route path="/pending-report" element={<PendingReport />} />
+            <Route path="/pending-report/:id" element={<PendingReportDetails />} />
+            <Route path="/analytics" element={<Analytics />} />
+
+            <Route path="/setting" element={<Setting />} />
+            <Route path="/setting-employee" element={<Employee />} />
+            <Route path="/setting-department" element={<Department />} />
+            <Route path="/setting-location" element={<Location />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </div>
