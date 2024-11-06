@@ -4,51 +4,57 @@ const { Location } = require("../models/schemas");
 exports.createLocation = async (req, res) => {
     const { id: companyID } = req.params;
     const { locationName, coordinates } = req.body;
+
     try {
         // Validate input
         if (!locationName) {
             return res.status(400).json({ message: "Location name is required" });
         }
         if (!coordinates || coordinates.length !== 2) {
-            return res.status(400).json({ message: "Coordinates are required" });
+            return res.status(400).json({ message: "Coordinates must be an array of two elements" });
         }
 
+        // Check if location already exists
         const existingLocation = await Location.findOne({ locationName });
         if (existingLocation) {
             return res.status(400).json({ message: "Location with this name already exists" });
         }
 
-        const LocationCount = await Location.countDocuments();
-        const nextLocationNumber = LocationCount + 1;
+        const locationCount = await Location.countDocuments();
+        const nextLocationNumber = locationCount + 1;
+
         // Create a new location
         const newLocation = new Location({
             locationID: `L${nextLocationNumber.toString().padStart(4, "0")}`,
-            locationName: locationName,
+            locationName,
             companyID,
             location: { type: "Point", coordinates }
         });
         await newLocation.save();
-        res.json({ message: "Location created successfully" });
+        res.status(201).json({ message: "Location created successfully" });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: `Failed to create location: ${error.message}` });
     }
 };
 
 // Get all locations for a specific company by companyID
 exports.getLocationsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
+
     try {
         const locations = await Location.find({ companyID });
         if (locations.length === 0) {
             return res.status(404).json({ message: "No locations found for this company" });
         }
-        res.json(locations.map(loc => ({
+        res.status(200).json(locations.map(loc => ({
             locationID: loc.locationID,
             locationName: loc.locationName,
-            coordinates: loc.location.coordinates
+            coordinates: loc.location.coordinates,
+            companyID: loc.companyID,
+            managerID: loc.managerID,
         })));
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: `Failed to retrieve locations: ${error.message}` });
     }
 };
 
@@ -59,26 +65,29 @@ exports.getLocationByID = async (req, res) => {
         if (!location) {
             return res.status(404).json({ message: "Location not found" });
         }
-        res.json({
+        res.status(200).json({
             locationID: location.locationID,
             locationName: location.locationName,
             companyID: location.companyID,
-            coordinates: location.location.coordinates
+            coordinates: location.location.coordinates,
+            managerID: location.managerID,
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: `Failed to retrieve location: ${error.message}` });
     }
 };
 
 // Update a location's details by locationID
 exports.updateLocationByID = async (req, res) => {
     const { locationName, coordinates } = req.body;
+
     try {
         const updateFields = {};
         if (locationName) updateFields.locationName = locationName;
         if (coordinates && coordinates.length === 2) {
             updateFields.location = { type: "Point", coordinates };
         }
+
         if (Object.keys(updateFields).length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
@@ -92,9 +101,9 @@ exports.updateLocationByID = async (req, res) => {
         if (!updatedLocation) {
             return res.status(404).json({ message: "Location not found" });
         }
-        res.json({ message: "Location updated successfully" });
+        res.status(200).json({ message: "Location updated successfully", location: updatedLocation });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: `Failed to update location: ${error.message}` });
     }
 };
 
@@ -105,8 +114,8 @@ exports.deleteLocationByID = async (req, res) => {
         if (!deletedLocation) {
             return res.status(404).json({ message: "Location not found" });
         }
-        res.json({ message: "Location successfully deleted" });
+        res.status(200).json({ message: "Location successfully deleted" });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: `Failed to delete location: ${error.message}` });
     }
 };
