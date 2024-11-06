@@ -64,7 +64,7 @@ const signup = () => {
     if (success) {
       const timer = setTimeout(() => {
         navigate('/login');
-      }, 3000);
+      }, 1500);
 
       return () => clearTimeout(timer);
     }
@@ -96,13 +96,13 @@ const signup = () => {
   return (
     <>
       {success ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-black'>Your account has been successfully created!</h1>
+        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#6938EF]'>
+          <h1 className='text-white'>Your account has been successfully created!</h1>
         </section>
       ) : (
-      <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
+      <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#F4F3FF]'>
         <p ref={errRef} className={errMsg ? 'errMsg' : 'offscreen'} aria-live='assertive'>{errMsg}</p>
-        <h1 className='text-2xl text-center font-semibold text-black'>Sign Up</h1>
+        <h1 className='text-2xl text-center font-semibold text-black'>GET STARTED</h1>
         <form onSubmit={handleSubmit} className='flex flex-col justify-evenly flex-grow pb-4'>
           <label htmlFor="username">
             Username:
@@ -110,6 +110,7 @@ const signup = () => {
             <input
               type="text"
               id="username"
+              className='border'
               ref={usernameRef}
               autoComplete="off"
               onChange={(e) => setUsername(e.target.value)}
@@ -131,6 +132,7 @@ const signup = () => {
           <input 
             type='email'
             id='email'
+            className='border'
             ref={emailRef}
             autoComplete='off'
             onChange={(e) => setEmail(e.target.value)}
@@ -150,6 +152,7 @@ const signup = () => {
           <input 
             type='password'
             id='password'
+            className='border'
             onChange={(e) => setPwd(e.target.value)}
             required
             // aria-invalid={validPwd ? 'false' : 'true'}
@@ -169,6 +172,7 @@ const signup = () => {
           <input 
             type='password'
             id='confirm_pwd'
+            className='border'
             onChange={(e) => setMatchPwd(e.target.value)}
             required
             aria-invalid={validMatch ? 'false' : 'true'}
@@ -181,15 +185,15 @@ const signup = () => {
           </p>
 
           <button disabled={!validUsername || !validEmail || !pwd || !matchPwd || !validMatch ? true : false}
-          className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white'>
+          className='bg-[#6938EF] hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white'>
             Sign Up
           </button>
           {/* <OAuth /> */}
         </form>
-        <div className='flex gap-2 text-black'>
-          Have an Account? <br/>
+        <div className='flex gap-2 text-black text-xs self-center'>
+          Already have an account? <br/>
             <Link to='/login' className='hover:underline'>
-              <span>Login</span>
+              <span className='text-[#6938EF] hover:underline'>Login</span>
             </Link>
         </div>
       </section>

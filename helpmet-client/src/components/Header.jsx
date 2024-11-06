@@ -54,14 +54,14 @@ const Header = () => {
               } transition-colors`}>Setting</li> }
           </Link> */}
           <Link to='/setting' className='self-center'>
-          { currentUser && <li className="border-l-2 border-gray-300 pl-4 bellzy">
+            { currentUser && <li className="border-l-2 border-gray-300 pl-4 bellzy">
               <img src="./images/gear.svg" alt="gear icon" />
             </li> }
           </Link>
           <Link className='self-center'>
-            <li className=" border-gray-300 bellzy">
+            { currentUser && <li className=" border-gray-300 bellzy">
               <img src="./images/bell.svg" alt="bell icon" />
-            </li>
+            </li> }
           </Link>
           <Link to="/profile">
             {currentUser ? (
