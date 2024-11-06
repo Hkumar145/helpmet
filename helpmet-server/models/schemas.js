@@ -161,6 +161,7 @@ const locationSchema = new Schema({
     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
     locationName: { type: String, trim: true, required: true, maxlength: 30 },
     companyID: { type: Number, ref: "Company", trim: true, required: true },
+    managerID:{type: Number,required:true , maxlength:20},
     location: {
         type: {
           type: String,
