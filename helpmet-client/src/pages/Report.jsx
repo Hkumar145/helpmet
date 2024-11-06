@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import Avatar from 'react-avatar'
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import BackToTopButton from '../components/BackToTopButton';
 
 const severityMapping = {
   1: 'Minor',
@@ -59,7 +60,7 @@ const Report = () => {
         <div className='flex gap-2'>
           <Dialog>
             <DialogTrigger asChild>
-              <button className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'>
+              <button className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'>
                 New Report
               </button>
             </DialogTrigger>
@@ -72,7 +73,7 @@ const Report = () => {
           </Dialog>
           <button
             onClick={handleViewPendingReports}
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
+            className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
           >
             Pending Report
           </button>
@@ -110,7 +111,7 @@ const Report = () => {
             </thead>
             <tbody className='text-center'>
               {report.map((report) => (
-                <tr key={report.reportID} className="border-t border-gray-700">
+                <tr key={report.reportID} className="border-t border-[#E4E7EC]">
                   <td className="px-2 py-2 md:px-4">{report.reportID}</td>
                   {/* <td className="px-4 py-2">{severityMapping[report.severity]}</td> */}
                   {/* <td className="px-4 py-2">{report.status}</td> */}
@@ -144,6 +145,7 @@ const Report = () => {
           </table>
         </div>
       )}
+      <BackToTopButton />
     </div>
   )
 }

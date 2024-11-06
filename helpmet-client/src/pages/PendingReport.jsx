@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar'
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import BackToTopButton from '../components/BackToTopButton';
 
 const severityMapping = {
   1: 'Minor',
@@ -56,7 +57,7 @@ const PendingReport = () => {
         <h1 className='text-lg text-black md:text-2xl'>Pending Report</h1>
         <button
             onClick={handleViewCompletedReports}
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'
+            className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'
           >
             Completed Report
           </button>
@@ -93,7 +94,7 @@ const PendingReport = () => {
             </thead>
             <tbody className='text-center'>
               {pendingReports.map((report, index) => (
-                <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-gray-700">
+                <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-[#E4E7EC]">
                   {/* <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td> */}
                   {/* <td className="px-4 py-2">{severityMapping[report.severity]}</td> */}
                   <td className="px-2 py-2 md:px-4">{report.status}</td>
@@ -127,6 +128,7 @@ const PendingReport = () => {
           </table>
         </div>
       )}
+      <BackToTopButton />
     </div>
   );
 };
