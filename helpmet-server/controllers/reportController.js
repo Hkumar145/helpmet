@@ -271,19 +271,22 @@ exports.getPendingReportByID = async (req, res) => {
         }
 
         const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
-            Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName'),
-            Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName'),
-            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName')
+            Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName role'),
+            Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName role'),
+            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName role')
         ]);
 
-        const pendingReportWithNames = {
+        const pendingReportWithDetails = {
             ...pendingReport._doc,
             reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            reportByRole: reportByEmployee ? reportByEmployee.role : null,
             injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
-            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+            injuredEmployeeRole: injuredEmployee ? injuredEmployee.role : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null,
+            witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null
         };
 
-        res.json(pendingReportWithNames);
+        res.json(pendingReportWithDetails);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

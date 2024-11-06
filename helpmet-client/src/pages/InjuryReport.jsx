@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from '../api/axios';
+import { useDropzone } from 'react-dropzone';
 
 const InjuryReport = () => {
   const [reportBy, setReportBy] = useState('');
@@ -11,7 +12,6 @@ const InjuryReport = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState([]);
   const [witnessID, setWitnessID] = useState('');
-  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -35,7 +35,27 @@ const InjuryReport = () => {
             updateFunction(value);
         }
     }
-  };  
+  };
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const imageFiles = acceptedFiles.filter((file) => file.type.startsWith("image/"));
+    const nonImageFiles = acceptedFiles.filter((file) => !file.type.startsWith("image/"));
+
+    if (nonImageFiles.length > 0) {
+        alert("Only image files (e.g., .jpg, .jpeg, .png) are allowed.");
+    }
+
+    setImage((prevImages) => [...prevImages, ...imageFiles]);
+}, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: "image/*",
+  });
+
+  const removeFile = (file) => {
+    setImage((prevImages) => prevImages.filter((img) => img !== file));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,7 +105,7 @@ const InjuryReport = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black">
+    <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black md:min-w-[700px]">
       <h1 className="text-2xl font-bold mb-4" onClick={demoAutoFill}>Injury Report</h1>
       <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
         <label>Reported By (Employee ID)</label>
@@ -182,13 +202,31 @@ const InjuryReport = () => {
         ></textarea>
 
         <label>Incident Photos (Optional)</label>
-        <input
+        {/* <input
           type="file"
           name="image"
           onChange={handleChange}
           multiple
           className="p-2 rounded border text-black"
-        />
+        /> */}
+        <div {...getRootProps()} className="p-4 border-dashed border-2 rounded text-center cursor-pointer">
+          <input {...getInputProps()} />
+          <p><span className='text-[#6938EF]'>Click here to upload</span> or drag and drop</p>
+        </div>
+        <div className="mt-2">
+          {image.map((file, index) => (
+            <div key={index} className="flex items-center justify-between p-2 border rounded mt-1">
+              <p className="truncate">{file.name}</p>
+              <button
+                type="button"
+                className="text-red-500 hover:underline mt-0"
+                onClick={() => removeFile(file)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
 
         <label>Witnesses ID (Optional)</label>
         <input

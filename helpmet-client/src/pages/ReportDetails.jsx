@@ -43,12 +43,12 @@ const ReportDetails = () => {
   return (
     <div className='flex flex-col gap-4 max-w-full'>
       <div className='flex flex-col md:flex-row justify-between items-center gap-4 text-xs'>
-        <div className='flex flex-row items-center justify-between w-[100%]'>
+        <div className='flex flex-row items-center justify-between w-[100%] gap-12'>
           <button
             onClick={() => navigate('/report')}
-            className="py-2 bg-white rounded text-xs text-black mt-0 hover:pointer hover:bg-purple-700 hover:text-white"
+            className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border"
           >
-            Back to Reports
+            <img src="../../images/return.svg" alt="gear icon" />Back to reports
           </button>
           <p className='font-bold text-base'>Report ID: {reportDetails.reportID}</p>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Signup from './pages/signup';
@@ -21,17 +21,27 @@ import Setting from './pages/Setting';
 import Employee from './pages/Employee';
 import Department from './pages/Department';
 import Location from './pages/Location';
+import HeaderWithoutLogin from './components/HeaderWithoutLogin';
+import ForgotPassword from './pages/ForgotPassword';
+
+const HeaderWrapper = () => {
+  const location = useLocation();
+  
+  return (
+    location.pathname === '/injury-report' ? <HeaderWithoutLogin /> : <Header />
+  );
+};
 
 function App() {
   return (
     <Router>
-      <Header />
+      <HeaderWrapper />
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/injury-report" element={<InjuryReport />} />
           <Route path="/update-report/:id" element={<UpdateReport />} />
 
