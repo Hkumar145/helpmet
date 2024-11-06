@@ -72,7 +72,12 @@ const ReportTable = () => {
           return report ? new Date(report.dateOfInjury).toLocaleDateString() : 'N/A';
         })()
       }</td>
-      <td className='px-4 py-2'>{new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString() || 'N/A'}</td>
+      <td className='px-4 py-2'>{
+        (() => {
+          const report = reports.find(r => r.locationID === location.locationID);
+          return report ? new Date(report.reportDate).toLocaleDateString() : 'N/A';
+        })()
+      }</td>
 
       <td className='px-4 py-2'>{
         (() => {
