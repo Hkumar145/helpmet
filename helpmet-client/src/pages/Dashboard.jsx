@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
 import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
+import SiteAgentTable from "@/components/SiteAgentTable"
 
 const injuryTypeName = {
     T0001: 'Overexertion',
@@ -71,8 +72,9 @@ const Dashboard = () => {
                         {
                             label: 'Epidemic Injury Type',
                             data: counts,
-                            backgroundColor: 'rgba(233, 236, 241, 0.8)',
+                            backgroundColor: 'rgba(152, 162, 179)',
                             hoverBackgroundColor: 'rgba(105, 56, 239)',
+                            
                             tension: 0.6,
                             fill: true,
                             borderRadius: 4,
@@ -234,7 +236,7 @@ const Dashboard = () => {
                     {
                         label: `Severity Counts`,
                         data: severityCounts,
-                        backgroundColor: 'rgba(233, 236, 241)',
+                        backgroundColor: 'rgba(152, 162, 179)',
                         hoverBackgroundColor: 'rgba(105, 56, 239)',
                         borderRadius: 4,
                     },
@@ -315,7 +317,7 @@ const Dashboard = () => {
   return (
     <>
         <div className="flex flex-col text-black gap-12 items-center justify-start">
-            <p>Hi, {username}!</p>
+            {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col gap-16">
                 <div className="flex flex-col lg:flex-row gap-8">
                     <div className="max-w-min">
@@ -327,7 +329,9 @@ const Dashboard = () => {
                             className="items-center justify-center mx-auto"
                             indexAxis="y"
                         />
+                       
                     </div>
+                    <PendingAndCompletedReports/>
                     <div className="max-w-min">
                         <BarChart
                             chartData={filteredWeeklyInjuryData}
@@ -341,6 +345,7 @@ const Dashboard = () => {
                             <p className="text-[14px] text-center">{injuryComparisonText}</p>
                         </div>
                     </div>
+                    
                 </div>
                 <div className="flex flex-col lg:flex-row gap-16">
                     <div className="max-w-min">
@@ -352,7 +357,6 @@ const Dashboard = () => {
                             indexAxis="x"
                         />
                     </div>
-
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -364,8 +368,12 @@ const Dashboard = () => {
                             />
                         </div>
                     )}
+                     <ReportsByLocation/>
                 </div>
-            </div>
+                <SiteAgentTable/>
+                <MapComponent/>
+
+        </div>
            
         </div>
        

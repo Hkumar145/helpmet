@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 
 const severityMapping = {
@@ -25,6 +25,7 @@ const injuryTypeMapping = {
 
 const ReportDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [reportDetails, setReportDetails] = useState(null);
 
   useEffect(() => {
@@ -40,27 +41,93 @@ const ReportDetails = () => {
   if (!reportDetails) return <div>Loading...</div>;
 
   return (
-    <div className='text-black max-w-lg w-full p-6 bg-white rounded-lg'>
-      <h1>Report Details for {reportDetails.reportID}</h1>
-      <p>Report ID: {reportDetails.reportID}</p>
-      <p>Reported by: {reportDetails.reportByFirstName} ({reportDetails.reportBy})</p>
-      <p>Injured Employee: {reportDetails.injuredEmployeeFirstName} ({reportDetails.injuredEmployeeID})</p>
-      <p>Date of injury: {new Date(reportDetails.dateOfInjury).toLocaleDateString()}</p>
-      <p>Report Date: {new Date(reportDetails.reportDate).toLocaleDateString()}</p>
-      <p>Location ID: {reportDetails.locationID}</p>
-      <p>Injury type: {injuryTypeMapping[reportDetails.injuryTypeID]} ({reportDetails.injuryTypeID})</p>
-      <p>Severity: {severityMapping[reportDetails.severity]}</p>
-      <p>Description: {reportDetails.description}</p>
-      <p>Witness: {reportDetails.witnessEmployeeFirstName ? `${reportDetails.witnessEmployeeFirstName} (${reportDetails.witnessID})` : "No witness"}</p>
+    <div className='flex flex-col gap-4 max-w-full'>
+      <div className='flex flex-col md:flex-row justify-between items-center gap-4 text-xs'>
+        <div className='flex flex-row items-center justify-between w-[100%] gap-12'>
+          <button
+            onClick={() => navigate('/report')}
+            className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border"
+          >
+            <img src="../../images/return.svg" alt="gear icon" />Back to reports
+          </button>
+          <p className='font-bold text-base'>Report ID: {reportDetails.reportID}</p>
+        </div>
+        <div className='flex flex-row gap-4 text-nowrap'>
+          <p className='bg-white py-2 px-3 rounded'>Severity: <span className='label label-moderate'>{severityMapping[reportDetails.severity]}</span></p>
+          <p className='bg-white py-2 px-3 rounded'>Status: <span className='label label-completed'>{reportDetails.status}</span></p>
+        </div>
+      </div>
+
       <div>
-        <h3>Image:</h3>
-        {reportDetails.image ? (
-          <img src={reportDetails.image} alt="Injury Report" className="max-w-[40%] h-auto rounded-lg" />
-        ) : (
-          <p>No image available</p>
+        {reportDetails.image && reportDetails.image.length > 0 ? (
+            <div className="flex overflow-x-scroll gap-4">
+              {reportDetails.image.map((imgUrl, index) => (
+                <img
+                  key={index}
+                  src={imgUrl}
+                  alt={`Injury Report Image ${index + 1}`}
+                  className="max-w-[40%] max-h-60 rounded-lg object-cover"
+                />
+              ))}
+            </div>
+          ) : (
+            <p>No image available</p>
         )}
       </div>
-      <p>Status: {reportDetails.status}</p>
+
+      <div className='flex flex-col text-black max-w-lg min-w-full p-6 bg-white rounded-lg text-sm gap-4 border'>
+        <div>
+          <p>Description</p>
+          <span className='report-info'>{reportDetails.description}</span>
+        </div>
+
+        <div className='line-spacer'></div>
+
+        <div>
+          <p>Location</p>
+          <span className='report-info'>{reportDetails.locationID}</span>
+        </div>
+
+        <div className='line-spacer'></div>
+
+        <div className='flex flex-col gap-6 md:flex-row justify-between'>
+          <div className='w-[100%] md:w-[50%]'>
+            <p>Injured Employee</p>
+            <span className='report-info'>{reportDetails.injuredEmployeeFirstName} • {reportDetails.injuredEmployeeRole} ({reportDetails.injuredEmployeeID})</span>
+          </div>
+          <div className='w-[100%] md:w-[50%]'>
+            <p>Date of injury</p>
+            <span className='report-info'>{new Date(reportDetails.dateOfInjury).toLocaleDateString()}</span>
+          </div>
+        </div>
+
+        <div className='line-spacer'></div>
+
+        <div className='flex flex-col gap-6 md:flex-row justify-between'>
+          <div className='w-[100%] md:w-[50%]'>
+            <p>Reported by</p>
+            <span className='report-info'>{reportDetails.reportByFirstName} • {reportDetails.reportByRole} ({reportDetails.reportBy})</span>
+          </div>
+          <div className='w-[100%] md:w-[50%]'>
+            <p>Report Date</p>
+            <span className='report-info'>{new Date(reportDetails.reportDate).toLocaleDateString()}</span>
+          </div>
+        </div>
+
+        <div className='line-spacer'></div>
+
+        <div>
+          <p>Injury Type</p>
+          <span className='report-info'>{injuryTypeMapping[reportDetails.injuryTypeID]}</span>
+        </div>
+
+        <div className='line-spacer'></div>
+
+        <div>
+          <p>Witness</p>
+          <span className='report-info'>{reportDetails.witnessEmployeeFirstName ? `${reportDetails.witnessEmployeeFirstName} • ${reportDetails.witnessEmployeeRole} (${reportDetails.witnessID})` : "No witness"}</span>
+        </div>
+      </div>
     </div>
   );
 };

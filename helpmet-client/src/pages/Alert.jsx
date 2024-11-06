@@ -59,7 +59,7 @@ const Alert = () => {
     return (
         <div className="flex flex-col gap-4 w-full">
             <div className="flex flex-col sm:flex-row items-center justify-between">
-                <h1 className="text-white text-2xl">Alerts</h1>
+                <h1 className="text-black text-2xl">Alerts</h1>
                 
                 {viewMode === "list" ? (
                     <button

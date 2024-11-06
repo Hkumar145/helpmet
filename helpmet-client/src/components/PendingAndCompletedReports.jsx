@@ -85,7 +85,7 @@ const PendingAndCompletedReports = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <h1 className='text-white text-2xl'>Reports Summary</h1>
+      <h1 className='text-black text-1xl'>Reports Summary</h1>
   
       {/* Donut Chart with clickable sections */}
       <Doughnut data={data} options={options} />
