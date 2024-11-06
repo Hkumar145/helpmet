@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 export function Combobox({ onSelectRecipient }) {
     const [open, setOpen] = React.useState(false);
-    const [selectedEmployee, setSelectedEmployee] = React.useState(null);
+    const [value, setValue] = React.useState("");
     const [employees, setEmployees] = React.useState([]);
     const companyID = useSelector((state) => state.user.currentUser?.companyID);
   
@@ -18,10 +18,7 @@ export function Combobox({ onSelectRecipient }) {
         axios.get(`/companies/${companyID}/employees`)
           .then(response => {
             const sortedEmployees = response.data.sort((a, b) => a.firstName.localeCompare(b.firstName));
-            setEmployees(sortedEmployees.map(employee => ({
-              ...employee,
-              role: employee.role,
-            })));
+            setEmployees(sortedEmployees);
           })
           .catch(error => {
             console.error("Error fetching employees:", error);
@@ -30,7 +27,7 @@ export function Combobox({ onSelectRecipient }) {
     }, [companyID]);
   
     const handleSelect = (employee) => {
-      setSelectedEmployee(employee);
+      setValue(employee.email);
       onSelectRecipient(employee);
       setOpen(false);
     };
@@ -44,7 +41,7 @@ export function Combobox({ onSelectRecipient }) {
             aria-expanded={open}
             className="w-full justify-between text-black"
           >
-            {selectedEmployee ? `${selectedEmployee.firstName} • ${selectedEmployee.role}` : "Choose Recipient"}
+            {value ? `${employees.find(e => e.email === value)?.firstName} - ${value}` : "Choose Recipient"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -57,11 +54,11 @@ export function Combobox({ onSelectRecipient }) {
                 {employees.map((employee) => (
                   <CommandItem
                     key={employee.email}
-                    value={employee.firstName}
+                    value={employee.email}
                     onSelect={() => handleSelect(employee)}
                   >
-                    <Check className={cn("mr-2 h-4 w-4", selectedEmployee?.email === employee.email ? "opacity-100" : "opacity-0")} />
-                    {`${employee.firstName} • ${employee.role}`}
+                    <Check className={cn("mr-2 h-4 w-4", value === employee.email ? "opacity-100" : "opacity-0")} />
+                    {`${employee.firstName} - ${employee.email}`}
                   </CommandItem>
                 ))}
               </CommandGroup>

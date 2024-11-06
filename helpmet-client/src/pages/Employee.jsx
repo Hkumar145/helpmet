@@ -4,12 +4,10 @@ import { useSelector } from 'react-redux'
 import axios from '../api/axios'
 import CreateEmployee from '../components/CreateEmployee'
 import EditEmployee from '../components/EditEmployee'
-import BackToTopButton from '../components/BackToTopButton';
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
-  const [showBackToTop, setShowBackToTop] = useState(false);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
@@ -103,8 +101,6 @@ const Employee = () => {
         </tbody>
       </table>
     </div>
-
-    <BackToTopButton />
   </div>
   );
 };

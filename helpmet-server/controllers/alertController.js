@@ -14,7 +14,6 @@ exports.createAlert = async (req, res) => {
         const { id: companyID } = req.params;
         const { alertName, cc, recipients, recipientType, description } = req.body;
         const duplicateAlert = await Alert.findOne({ alertName, description });
-
         if (duplicateAlert) {
             return res.status(400).json({ message: "Duplicate alert" });
         }
@@ -30,7 +29,10 @@ exports.createAlert = async (req, res) => {
             description,
             recipients,
             cc,  
-            // attachments
+            attachments: req.files.map(file => ({
+                filename: file.originalname,
+                path: path.join(__dirname, "../", file.path),
+            }))
         });
         await newAlert.save();
 
@@ -90,7 +92,7 @@ exports.createAlert = async (req, res) => {
                 },
                 senderEmail: process.env.EMAIL_USER,
                 cc: ccEmails,
-                // attachments
+                attachments
             });
         }
 

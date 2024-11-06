@@ -31,7 +31,7 @@ const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
             title: {
                 display: true,
                 text: title,
-                color: 'black',
+                color: 'white',
                 font: {
                     size: 18,
                 },
@@ -55,7 +55,7 @@ const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
             x: {
                 display: true,
                 ticks: {
-                    color: 'black',
+                    color: 'white',
                 },
                 grid: {
                     display: false,
