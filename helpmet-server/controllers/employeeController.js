@@ -113,3 +113,17 @@ exports.deleteEmployeeByID = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Get employees by DepartmentID
+exports.getEmployeesByDepartment = async (req, res) => {
+    const { companyID, departmentID } = req.params;
+    try {
+        const employees = await Employee.find({ 
+            companyID: companyID, 
+            departmentID: departmentID 
+        });
+        res.json(employees);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

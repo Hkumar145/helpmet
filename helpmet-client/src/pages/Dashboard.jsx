@@ -72,7 +72,7 @@ const Dashboard = () => {
                         {
                             label: 'Epidemic Injury Type',
                             data: counts,
-                            backgroundColor: 'rgba(233, 236, 24, 0.8)',
+                            backgroundColor: 'rgba(152, 162, 179)',
                             hoverBackgroundColor: 'rgba(105, 56, 239)',
                             
                             tension: 0.6,
@@ -236,7 +236,7 @@ const Dashboard = () => {
                     {
                         label: `Severity Counts`,
                         data: severityCounts,
-                        backgroundColor: 'rgba(233, 236, 241)',
+                        backgroundColor: 'rgba(152, 162, 179)',
                         hoverBackgroundColor: 'rgba(105, 56, 239)',
                         borderRadius: 4,
                     },
@@ -317,7 +317,7 @@ const Dashboard = () => {
   return (
     <>
         <div className="flex flex-col text-black gap-12 items-center justify-start">
-            <p>Hi, {username}!</p>
+            {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col gap-16">
                 <div className="flex flex-col lg:flex-row gap-8">
                     <div className="max-w-min">

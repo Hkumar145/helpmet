@@ -36,8 +36,8 @@ const login = () => {
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => {
-        navigate('/');
-      }, 3000);
+        navigate('/dashboard');
+      }, 1500);
 
       return () => clearTimeout(timer);
     }
@@ -89,18 +89,19 @@ const login = () => {
   return (
     <>
       {success ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-black'>You are logged in!</h1>
+        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#6938EF]'>
+          <h1 className='text-white'>You are logged in!</h1>
         </section>
       ) : (
-      <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
+      <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#F4F3FF]'>
         <p ref={errRef} className={errMsg ? 'errMsg' : 'offscreen'} aria-live='assertive'>{errMsg}</p>
-        <h1 className='text-2xl text-center font-semibold text-black'>Login</h1>
+        <h1 className='text-2xl text-center font-semibold text-black'>WELCOME</h1>
         <form onSubmit={handleSubmit} className='flex flex-col justify-evenly flex-grow pb-4'>
           <label htmlFor="email">Email:</label>
           <input 
             type="email"
             id="email"
+            className='border'
             ref={emailRef}
             autoComplete='off'
             onChange={(e) => setEmail(e.target.value)}
@@ -112,21 +113,23 @@ const login = () => {
           <input 
             type="password"
             id="password"
+            className='border'
             onChange={(e) => setPwd(e.target.value)}
             value={pwd}
             required
           />
+          <Link to='/forgot-password' className='text-right text-xs my-2 hover:underline'>Forgot Password</Link>
           <button 
             disabled={!email || !pwd ? true : false}
-            className='bg-slate-600 hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed'>
+            className='bg-[#6938EF] hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white'>
               Login
           </button>
           {/* <OAuth /> */}
         </form>
-        <div className='flex gap-2 text-black'>
-          Need an Account? <br/>
+        <div className='flex gap-2 text-black text-xs self-center'>
+          Don't have an account? <br/>
             <Link to='/signup' className='hover:underline'>
-              <span>Sign Up</span>
+              <span className='text-[#6938EF] hover:underline'>Sign up</span>
             </Link>
         </div>
       </section>

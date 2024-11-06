@@ -94,7 +94,7 @@ padding: 1rem 0.5rem;
 }
 
 a, a:visited {
-  color: #fff;
+  color: black;
 }
 
 input[type="text"],
@@ -146,4 +146,182 @@ padding: 0.5rem;
   font-weight: bold;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+/* Hamburger Menu Icon */
+.hamburger-menu {
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.bar {
+  height: 3px;
+  width: 100%;
+  background-color: black;
+  transition: all 0.3s ease;
+}
+
+.bar.open:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.bar.open:nth-child(2) {
+  opacity: 0;
+}
+.bar.open:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Hide navigation links on smaller screens by default */
+.nav-links {
+  display: none;
+}
+
+/* Display navigation links when hamburger is clicked */
+.nav-links.block {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 103px;
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+  z-index: 10;
+  text-align: center;
+}
+
+.hamburger-menu {
+  border: 2px solid #6938EF; /* Adjust border thickness and color */
+  padding: 9px; /* Optional: add some padding */
+  border-radius: 5px; /* Optional: round the corners */
+}
+
+.bar {
+  width: 30px; /* Set width for the bars */
+  height: 4px; /* Set height for the bars */
+  background-color: #6938EF; /* Bar color */
+  margin: 3px 0; /* Space between the bars */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+
+/* On larger screens, show regular navigation */
+@media (min-width: 930px) {
+  .nav-links {
+    display: flex; /* Show links in a row on larger screens */
+    position: static; /* Remove the absolute positioning for desktop view */
+    background-color: transparent;
+    width: auto;
+    padding: 0;
+  }
+
+  .hamburger-menu {
+    display: none; /* Hide hamburger menu on larger screens */
+  }
+}
+
+@media (max-width: 930px) {
+  .nav-links.block li {
+  padding: .5rem;
+  text-align: -webkit-right;
+  }
+
+  .bellzy{
+    text-align: -webkit-center;
+    padding-right: 4rem;
+    img{
+      text-align: center;
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/**************** Buttons ****************/
+.return-button {
+  background: #F9FAFB;
+  color: black;
+}
+
+.button-primary {
+  background: #6938EF;
+  color: white;
+}
+
+.button-primary:hover {
+  background: white;
+  color: #6938EF;
+}
+
+/**************** Report ****************/
+/**** Label ****/
+.label {
+  padding: 5px 7px ;
+  border-radius: 15px ;
+}
+
+.label-completed {
+  background: #E6F8EF;
+  color: #055E39;
+}
+
+.label-ongoing {
+  background: white;
+  color: black;
+}
+
+.label-onhold {
+  background: white;
+  color: black;
+}
+
+.label-minor {
+  background: white;
+  color: black;
+}
+
+.label-moderate {
+  background: #FEF3F2;
+  color: #B42318;
+}
+
+.label-severe {
+  background: white;
+  color: black;
+}
+
+.label-significant {
+  background: white;
+  color: black;
+}
+
+.label-fatal {
+  background: white;
+  color: black;
+}
+
+/**** Detail page ****/
+.report-info {
+  background: #F7F7F7;
+  border: 2px solid #D0D5DD;
+  border-radius: 10px;
+  display: block;
+  padding: .6rem 1rem;
+  width: 100%;
+  margin-top: .5rem;
+}
+
+.line-spacer {
+  width: 100%;
+  border-bottom: 2px solid #E4E7EC;
+  padding-top: .5rem;
 }
