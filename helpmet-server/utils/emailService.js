@@ -38,11 +38,12 @@ const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc = [], a
     cc: cc.length > 0 ? cc : [],
     subject: alertDetails.alertName,
     text: `${alertDetails.description}`,
-    // attachments,
+    attachments,
   };
-  console.log("Attempting to send email with options:", mailOptions);
+ 
   try {
     await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully to:", recipient.email);
   } catch (error) {
     console.error("Error sending email:", error);
     throw new Error("Could not send email");

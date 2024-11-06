@@ -224,7 +224,7 @@ const EquipmentCheck = () => {
 
   return (
     <div className="equipment-check">
-      <h1 className="text-2xl font-semibold text-black mb-4">Equipment Check</h1>
+      <h1 className="text-2xl font-semibold text-white mb-4">Equipment Check</h1>
       {viewMode === 'list' ? (
         <div>
           <button

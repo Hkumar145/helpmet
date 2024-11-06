@@ -7,7 +7,6 @@ const upload = multer({ storage: storage });
 const {
     createEmployee,
     getEmployeesByCompany,
-    getEmployeesByDepartment,
     getEmployeeByID,
     updateEmployeeByID,
     deleteEmployeeByID
@@ -79,9 +78,6 @@ router.post("/companies/:id/employees", createEmployee);
 // Get a list of all employees by company ID
 router.get("/companies/:id/employees", getEmployeesByCompany);
 
-// Get a list of all employees by department ID
-router.get("/companies/:companyID/departments/:departmentID/employees", getEmployeesByDepartment);
-
 // Get employee details by employee ID
 router.get("/employees/:id", getEmployeeByID);
 
@@ -93,7 +89,7 @@ router.delete("/employees/:id", deleteEmployeeByID);
 
 /***************   Report Routes   ***************/
 // Submit a new pending report
-router.post("/reports/submit", upload.array('image', 5), submitReport);
+router.post("/reports/submit", upload.single('image'), submitReport);
 
 // Review a pending report
 router.put("/reports/review", reviewPendingReport);
@@ -123,7 +119,7 @@ router.get("/reports/pending/:_id", getPendingReportByID);
 router.get("/update-report/:_id", getSubmittedReportByID);
 
 // Update pending report details by MongoDB _id
-router.put("/update-report/:_id", upload.array('image', 5), updatePendingReportByID);
+router.put("/update-report/:_id", upload.single('image'), updatePendingReportByID);
 
 // Move approved report from pendingreports to reports collection
 router.post("/reports/approve", approveReport);
