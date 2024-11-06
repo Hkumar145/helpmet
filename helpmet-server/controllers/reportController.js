@@ -466,9 +466,7 @@ exports.getMonthlyEpidemicData = async (req, res) => {
         // Get the start and end of the current month
         const startOfMonth = DateTime.now().minus({ months: 1 }).startOf("month").toJSDate();   // .minus({ months: 1 }) to last month
         const endOfMonth = DateTime.now().minus({ months: 1 }).endOf("month").toJSDate();       // .minus({ months: 1 }) to last month
-        const startOfMonth = DateTime.now().minus({months: 1}).startOf("month").toJSDate();
-        const endOfMonth = DateTime.now().minus({months: 1}).endOf("month").toJSDate();
-
+       
         const reports = await Report.aggregate([
             {
                 $match: {
