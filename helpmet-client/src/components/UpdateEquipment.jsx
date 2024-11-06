@@ -15,7 +15,7 @@ const UpdateEquipment = ({ equipment, onSave, onCancel }) => {
       // Pre-fill the form with the existing equipment data
       setEquipmentName(equipment.equipmentName);
       setLocationID(equipment.locationID);
-      setInspectionDate(equipment.inspectionDate.split('T')[0]);
+      setInspectionDate(equipment.inspectionDate);
       setInspectionInterval(equipment.inspectionInterval);
       setInspectedBy(equipment.inspectedBy);
       setStatus(equipment.status);

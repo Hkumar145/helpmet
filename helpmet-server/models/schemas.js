@@ -37,7 +37,7 @@ const pendingReportSchema = new Schema({
         required: true
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
-    image: { type: [String], required: false },
+    image: { type: String },
     witnessID: { type: Number, trim: true, ref: "Employee" },
     status: {
         type: String,
@@ -63,7 +63,7 @@ const reportSchema = new Schema({
         required: true
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
-    image: { type: [String], required: false },
+    image: { type: String },
     witnessID: { type: Number, trim: true, ref: "Employee" },
     status: { 
         type: String,
@@ -92,14 +92,10 @@ const alertSchema = new Schema({
               default: "deactive" },
     recipients: [{ type: String }],
     cc: [{ type: String }],
-    // attachments: [{
-    //     filename: { type: String },
-    //     path: { type: String }
-    // }] 
-    // attachments: [{
-    //     filename: { type: String },
-    //     data: { type: Buffer }
-    // }]
+    attachments: [{
+        filename: { type: String },
+        path: { type: String }
+    }] 
 });
 
 // EmployeeAlert Schema
@@ -149,7 +145,6 @@ const companySchema = new Schema({
 
 // Department Schema
 const departmentSchema = new Schema({
-    companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
     departmentID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
     departmentName: { type: String, trim: true, required: true, maxlength: 30 }
 });
@@ -166,7 +161,6 @@ const locationSchema = new Schema({
     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
     locationName: { type: String, trim: true, required: true, maxlength: 30 },
     companyID: { type: Number, ref: "Company", trim: true, required: true },
-    managerID: { type: Number, required: true, unique: true, trim: true, maxlength: 10 },
     managerID:{type: Number,required:true , maxlength:20},
     location: {
         type: {

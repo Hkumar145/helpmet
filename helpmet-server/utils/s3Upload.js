@@ -10,27 +10,23 @@ const s3Client = new S3Client({
 
 const BUCKET_NAME = 'pika-helpmet';
 
-const uploadToS3 = async (files) => {
-  const uploadPromises = files.map(async (file) => {
-    const fileKey = `${Date.now()}_${file.originalname}`;
-    const params = {
-      Bucket: BUCKET_NAME,
-      Key: fileKey,
-      Body: file.buffer,
-      ContentType: file.mimetype
-    };
+const uploadToS3 = async (file) => {
+  const fileKey = `${Date.now()}_${file.originalname}`;
+  const params = {
+    Bucket: BUCKET_NAME,
+    Key: fileKey,
+    Body: file.buffer,
+    ContentType: file.mimetype
+  };
 
-    try {
-      const command = new PutObjectCommand(params);
-      await s3Client.send(command);
-      return `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      throw new Error("File upload failed");
-    }
-  });
-
-  return Promise.all(uploadPromises);
+  try {
+    const command = new PutObjectCommand(params);
+    const data = await s3Client.send(command);
+    return `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw new Error("File upload failed");
+  }
 };
 
 module.exports = { uploadToS3 };
