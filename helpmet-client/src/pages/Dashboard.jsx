@@ -10,6 +10,8 @@ import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
 import SiteAgentTable from "@/components/SiteAgentTable"
 import BackToTopButton from "@/components/BackToTopButton"
+import CreateLocation from "@/components/CreateLocation"
+
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
