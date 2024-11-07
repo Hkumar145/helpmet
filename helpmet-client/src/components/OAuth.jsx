@@ -14,4 +14,4 @@ const OAuth = () => {
   )
 }
 
-export default OAuth;
+export default OAuth
