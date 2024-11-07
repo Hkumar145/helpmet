@@ -130,6 +130,7 @@ const Report = () => {
                       data-tooltip-id={`tooltip-${report.reportID}`}
                       data-tooltip-content={`${report.reportByFirstName}`}
                       style={{ cursor: 'default' }}
+                      color="#05603A"
                     />
                     <ReactTooltip id={`tooltip-${report.reportID}`} place="top" effect="solid" />
                   </td>

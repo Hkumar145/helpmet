@@ -110,7 +110,7 @@ const PendingReportDetails = () => {
       <div className='flex flex-col md:flex-row justify-between items-center gap-4 text-xs'>
         <div className='flex flex-row items-center justify-between w-[100%]'>
           <button
-            onClick={() => navigate('/pending-report')}
+            onClick={() => navigate(-1)}
             className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4"
           >
             <img src="../../images/return.svg" alt="return icon" />Back to reports

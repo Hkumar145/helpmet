@@ -49,12 +49,13 @@ const Employee = () => {
       <h1 className='text-lg font-bold text-black'>Employees</h1>
       <Dialog>
         <DialogTrigger asChild>
-          <button className='bg-[#4A1FB8] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90'>
-            Create New Employee
+          <button className='flex flex-row gap-2 text-nowrap bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90'>
+            Add New Employee
+            <img className="min-w-[30px] min-h-[30px]" src="./images/new-employee.svg" alt="new employee icon" />
           </button>
         </DialogTrigger>
         <DialogContent>
-          <DialogTitle>Create New Employee</DialogTitle>
+          <DialogTitle>Add New Employee</DialogTitle>
           <DialogDescription>Add a new employee to the system.</DialogDescription>
           <CreateEmployee />
         </DialogContent>
