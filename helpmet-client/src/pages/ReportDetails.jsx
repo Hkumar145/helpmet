@@ -48,12 +48,12 @@ const ReportDetails = () => {
             onClick={() => navigate('/report')}
             className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border"
           >
-            <img src="../../images/return.svg" alt="gear icon" />Back to reports
+            <img src="../../images/return.svg" alt="return icon" />Back to reports
           </button>
           <p className='font-bold text-base'>Report ID: {reportDetails.reportID}</p>
         </div>
         <div className='flex flex-row gap-4 text-nowrap'>
-          <p className='bg-white py-2 px-3 rounded'>Severity: <span className='label label-moderate'>{severityMapping[reportDetails.severity]}</span></p>
+          <p className='bg-white py-2 px-3 rounded'>Severity: <span className={`label label-severity-${reportDetails.severity}`}>{severityMapping[reportDetails.severity]}</span></p>
           <p className='bg-white py-2 px-3 rounded'>Status: <span className='label label-completed'>{reportDetails.status}</span></p>
         </div>
       </div>

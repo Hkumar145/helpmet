@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import axios from '../api/axios';
 import CreateDepartment from '../components/CreateDepartment';
 import EditDepartment from '../components/EditDepartment';
+import BackToTopButton from '../components/BackToTopButton';
 
 const Department = () => {
   const [departments, setDepartments] = useState([]);
@@ -44,10 +45,10 @@ const Department = () => {
   return (
     <div className='flex flex-col gap-4 text-black'>
       <div className='flex flex-row items-center justify-between'>
-        <h1 className='text-lg text-black md:text-2xl'>Departments</h1>
+        <h1 className='text-lg font-bold text-black'>Departments</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <button className='bg-green-700 text-white p-3 rounded-lg'>Create New Department</button>
+            <button className='bg-[#4A1FB8] text-white p-3 rounded-lg mt-0 text-center hover:opacity-90'>Create New Department</button>
           </DialogTrigger>
           <DialogContent>
             <DialogTitle>Create New Department</DialogTitle>
@@ -58,27 +59,27 @@ const Department = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
+        <table className="min-w-full bg-white text-black rounded-lg text-sm">
           <thead>
             <tr>
               <th className="px-2 py-2 md:px-4">Department ID</th>
-              <th className="px-2 py-2 md:px-4">Name</th>
-              <th className="px-2 py-2 md:px-4"></th>
+              <th className="px-0 py-2 md:px-4">Name</th>
+              <th className="pr-2 py-2 md:px-4"></th>
             </tr>
           </thead>
           <tbody className='text-center'>
             {departments.map(department => (
-              <tr key={department.departmentID}>
+              <tr className='border-t border-[#E4E7EC] hover:bg-[#F9FAFB]' key={department.departmentID}>
                 <td className="px-2 py-2 md:px-4">{department.departmentID}</td>
-                <td className="px-2 py-2 md:px-4">{department.departmentName}</td>
-                <td className="px-2 py-2 md:px-4 flex flex-row gap-2">
+                <td className="px-0 py-2 md:px-4">{department.departmentName}</td>
+                <td className="pr-2 py-2 md:px-4 flex flex-row gap-2 my-6 md:my-0 justify-end md:mr-5">
                   <Dialog onOpenChange={(open) => { if (!open) setSelectedDepartmentID(null); }}>
                     <DialogTrigger asChild>
                       <button
-                        className='bg-purple-600 text-white p-2 rounded mt-0'
+                        className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                         onClick={() => handleEditDepartment(department.departmentID)}
                       >
-                        Edit
+                        <img className="min-w-[16px] min-h-[16px]" src="./images/edit.svg" alt="edit icon" />
                       </button>
                     </DialogTrigger>
                     <DialogContent>
@@ -89,13 +90,19 @@ const Department = () => {
                       )}
                     </DialogContent>
                   </Dialog>
-                  <button className='bg-purple-600 text-white p-2 rounded mt-0' onClick={() => handleDeleteDepartment(department.departmentID)}>Delete</button>
+                  <button
+                    className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
+                    onClick={() => handleDeleteDepartment(department.departmentID)}
+                  >
+                    <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <BackToTopButton />
     </div>
   );
 };

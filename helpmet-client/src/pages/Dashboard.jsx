@@ -8,9 +8,8 @@ import { DateTime } from 'luxon';
 import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
-import SiteAgentTable from "@/components/SiteAgentTable"
 
-const injuryTypeName = {
+const injuryTypeMapping = {
     T0001: 'Overexertion',
     T0002: 'Fall from Elevation',
     T0003: 'Struck By',
@@ -23,7 +22,7 @@ const injuryTypeName = {
     T0010: 'Matter in Eye'
 };
 
-const severityName = {
+const severityMapping = {
     1: 'Minor',
     2: 'Severe',
     3: 'Moderate',
@@ -126,10 +125,8 @@ const Dashboard = () => {
                 const currentWeekCounts = Array(7).fill(0);
         
                 data.forEach(item => {
-                    const dayOfWeek = item._id - 1;
-                    if (dayOfWeek >= 0 && dayOfWeek <= 6) {
-                        currentWeekCounts[dayOfWeek] = item.count;
-                    }
+                    const dayOfWeekIndex = item._id - 1;
+                    currentWeekCounts[dayOfWeekIndex] = item.count;
                 });
         
                 setWeeklyInjuryData({
@@ -203,7 +200,12 @@ const Dashboard = () => {
             setFilterBy("injuryType");
             setCurrentFilterValue(barLabel);
             const response = await axios.get(`/companies/${companyID}/reports?${queryParam}=${value}`);
-            setSelectedInjuryReports(response.data);
+
+            const sortedReports = response.data.sort((a, b) => {
+                return new Date(a.dateOfInjury) - new Date(b.dateOfInjury);
+            });
+
+            setSelectedInjuryReports(sortedReports);
             setShowTable(true);
             fetchSeverityData(barLabel, null);
         } catch (error) {
@@ -323,7 +325,7 @@ const Dashboard = () => {
                     <div className="max-w-min">
                         <BarChart
                             chartData={filteredInjuryTypeData}
-                            barName={injuryTypeName}
+                            barName={injuryTypeMapping}
                             title="Injury Category Projection"
                             onBarClick={handleInjuryTypeBarClick}
                             className="items-center justify-center mx-auto"
@@ -395,9 +397,11 @@ const Dashboard = () => {
                     </thead>
                     <tbody className='text-center'>
                         {selectedInjuryReports.map(report => (
-                            <tr key={report._id} className="border-t border-gray-700">
-                                <td className="px-2 py-2 md:px-8">{injuryTypeName[report.injuryTypeID]}</td>
-                                <td className="px-0 py-2 md:px-8">{severityName[report.severity]}</td>
+                            <tr key={report._id} className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
+                                <td className="px-2 py-2 md:px-8">{injuryTypeMapping[report.injuryTypeID]}</td>
+                                <td className="px-0 py-2 md:px-8">
+                                    <span className={`label label-severity-${report.severity}`}>{severityMapping[report.severity]}</span>
+                                </td>
                                 {/* <td className="px-4 py-2">{report.locationID}</td> */}
                                 <td className="px-0 py-2 md:px-8">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
                                 {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
@@ -406,9 +410,9 @@ const Dashboard = () => {
                                 <td className="px-2 py-2 md:px-8">
                                     <button
                                         onClick={() => handleViewDetails(report.reportID)}
-                                        className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0'
+                                        className='p-1 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                                     >
-                                        Details
+                                        <img className="min-w-[16px] min-h-[16px]" src="./images/right-arrow.svg" alt="details icon" />
                                     </button>
                                 </td>
                             </tr>
@@ -417,6 +421,7 @@ const Dashboard = () => {
                 </table>
             </div>
         )}
+        <BackToTopButton />
     </>
   );
 };

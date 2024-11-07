@@ -55,12 +55,12 @@ const Header = () => {
           </Link> */}
           <Link to='/setting' className='self-center'>
             { currentUser && <li className="border-l-2 border-gray-300 pl-4 bellzy">
-              <img src="./images/gear.svg" alt="gear icon" />
+              <img src="./images/gear.svg" alt="setting icon" />
             </li> }
           </Link>
           <Link className='self-center'>
             { currentUser && <li className=" border-gray-300 bellzy">
-              <img src="./images/bell.svg" alt="bell icon" />
+              <img src="./images/bell.svg" alt="notification icon" />
             </li> }
           </Link>
           <Link to="/profile">

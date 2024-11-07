@@ -275,38 +275,38 @@ input::-webkit-inner-spin-button {
 }
 
 .label-ongoing {
-  background: white;
-  color: black;
+  background: #E9F2FF;
+  color: #1830B4;
 }
 
 .label-onhold {
-  background: white;
-  color: black;
+  background: #FFF4E5;
+  color: #B45800;
 }
 
-.label-minor {
-  background: white;
-  color: black;
+.label-severity-1 {
+  background: #E7F8E8;
+  color: #2A7031;
 }
 
-.label-moderate {
-  background: #FEF3F2;
-  color: #B42318;
+.label-severity-2 {
+  background: #FFF5CC;
+  color: #A67F00;
 }
 
-.label-severe {
-  background: white;
-  color: black;
+.label-severity-3 {
+  background: #FFE2CC;
+  color: #B45700;
 }
 
-.label-significant {
-  background: white;
-  color: black;
+.label-severity-4 {
+  background: #FFB3B3;
+  color: #A00000;
 }
 
-.label-fatal {
-  background: white;
-  color: black;
+.label-severity-5 {
+  background: #FF6666;
+  color: #660000;
 }
 
 /**** Detail page ****/

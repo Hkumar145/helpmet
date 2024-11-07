@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar'
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import BackToTopButton from '../components/BackToTopButton';
 
 const severityMapping = {
   1: 'Minor',
@@ -27,7 +28,7 @@ const PendingReport = () => {
     if (companyID) {
       axios.get(`/companies/${companyID}/reports/pending`)
         .then(response => {
-          const sortedPendingReports = response.data.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate));
+          const sortedPendingReports = response.data.sort((a, b) => new Date(b.dateOfInjury) - new Date(a.dateOfInjury));
           setPendingReports(sortedPendingReports);
           setLoading(false);
         })
@@ -56,7 +57,7 @@ const PendingReport = () => {
         <h1 className='text-lg text-black md:text-2xl'>Pending Report</h1>
         <button
             onClick={handleViewCompletedReports}
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'
+            className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'
           >
             Completed Report
           </button>
@@ -77,26 +78,28 @@ const PendingReport = () => {
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
+          <table className="min-w-full bg-white text-black mt-4 rounded-lg text-xs">
             <thead>
               <tr>
                 {/* <th className="px-4 py-2">Report ID</th> */}
-                {/* <th className="px-4 py-2">Severity</th> */}
-                <th className="px-2 py-2 md:px-4">Status</th>
+                <th className="px-2 py-2">Severity</th>
+                <th className="px-0 py-2 md:px-4">Status</th>
                 <th className="px-0 py-2 md:px-4">Location</th>
                 <th className="px-0 py-2 md:px-4">Date of Injury</th>
                 {/* <th className="px-4 py-2">Injured Employee</th> */}
                 {/* <th className="px-4 py-2">Report Date</th> */}
                 <th className="px-0 py-2 md:px-4">Reported By</th>
-                <th className="px-2 py-2 md:px-4"></th>
+                <th className="pr-2 py-2 md:px-4"></th>
               </tr>
             </thead>
             <tbody className='text-center'>
               {pendingReports.map((report, index) => (
-                <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-gray-700">
+                <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
                   {/* <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td> */}
-                  {/* <td className="px-4 py-2">{severityMapping[report.severity]}</td> */}
-                  <td className="px-2 py-2 md:px-4">{report.status}</td>
+                  <td className="px-2 py-2">
+                    <span className={`label label-severity-${report.severity}`}>{severityMapping[report.severity]}</span>
+                  </td>
+                  <td className="px-0 py-2 md:px-4"><span className={`text-nowrap label ${report.status === "On going" ? "label-ongoing" : "label-onhold"}`}>{report.status}</span></td>
                   <td className="px-0 py-2 md:px-4">{report.locationID}</td>
                   <td className="px-0 py-2 md:px-4">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
                   {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
@@ -113,12 +116,12 @@ const PendingReport = () => {
                     />
                     <ReactTooltip id={`tooltip-${report.reportID}`} place="top" effect="solid" />
                   </td>
-                  <td className="px-2 py-2 md:px-4">
+                  <td className="pr-2 py-2 md:px-4">
                     <button
                       onClick={() => handleViewDetails(report._id)}
-                      className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0'
+                      className='p-1 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                     >
-                      Details
+                      <img className="min-w-[16px] min-h-[16px]" src="./images/right-arrow.svg" alt="details icon" />
                     </button>
                   </td>
                 </tr>
@@ -127,6 +130,7 @@ const PendingReport = () => {
           </table>
         </div>
       )}
+      <BackToTopButton />
     </div>
   );
 };

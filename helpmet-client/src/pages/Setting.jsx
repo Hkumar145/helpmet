@@ -1,40 +1,52 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import Employee from './Employee';
+import Department from './Department';
+import Location from './Location';
 
 const Setting = () => {
-  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('Employees');
 
-  const goToEmployeeSettings = () => {
-    navigate('/setting-employee');
-  };
-
-  const goToDepartmentSettings = () => {
-    navigate('/setting-department');
-  };
-
-  const goToLocationSettings = () => {
-    navigate('/setting-location');
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'Employees':
+        return <Employee />;
+      case 'Departments':
+        return <Department />;
+      case 'Locations':
+        return <Location />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div>
-      <h1>Settings</h1>
-      <div className='flex flex-row gap-8'>
-        <button
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
-            onClick={goToEmployeeSettings}>
-                Employee
-        </button>
-        <button
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
-            onClick={goToDepartmentSettings}>
-                Department
-        </button>
-        <button
-            className='bg-green-700 text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
-            onClick={goToLocationSettings}>
-                Location
-        </button>
+    <div className="flex flex-col gap-4 text-black">
+      <div className='flex flex-col md:flex-row items-center justify-between gap-6 border-b-2 border-gray-300 pb-2 max-w-full lg:w-[1000px]'>
+        <h1 className='text-lg font-bold'>Settings</h1>
+        <div className="flex justify-end text-xs">
+          <button
+            className={`px-4 py-2 mt-0 ${activeTab === 'Employees' ? 'bg-[#D9D6FE] border-2 border-[#4A1FB8] text-black' : 'text-gray-700'}`}
+            onClick={() => setActiveTab('Employees')}
+          >
+            Employees
+          </button>
+          <button
+            className={`px-4 py-2 mt-0 ${activeTab === 'Departments' ? 'bg-[#D9D6FE] border-2 border-[#4A1FB8] text-black' : 'text-gray-700'}`}
+            onClick={() => setActiveTab('Departments')}
+          >
+            Departments
+          </button>
+          <button
+            className={`px-4 py-2 mt-0 ${activeTab === 'Locations' ? 'bg-[#D9D6FE] border-2 border-[#4A1FB8] text-black' : 'text-gray-700'}`}
+            onClick={() => setActiveTab('Locations')}
+          >
+            Locations
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        {renderContent()}
       </div>
     </div>
   );
