@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import axios from '../api/axios'
 import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
-import LineChart from "../components/LineChart"
 import { DateTime } from 'luxon';
-import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
-import ReportsByLocation from "@/components/ReportsByLocation"
-import SiteAgentTable from "@/components/SiteAgentTable"
-import BackToTopButton from "@/components/BackToTopButton"
+import BackToTopButton from '../components/BackToTopButton';
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
@@ -42,12 +38,12 @@ const dayTypeName = {
     Sat: 'Saturday',
 };
 
-const Dashboard = () => {
+const InjuryAnalytics = () => {
     const username = useSelector((state) => state.user.currentUser?.username);
     const companyID = useSelector((state) => state.user.currentUser?.companyID);
     const [injuryTypeData, setInjuryTypeData] = useState({ labels: [], datasets: [] });
     const [weeklyInjuryData, setWeeklyInjuryData] = useState({ labels: [], datasets: [] });
-    const [selectedBar, setSelectedBar] = useState(null);
+    const [selectedBar, setSelectedBar] = useState('T0006');
     const [selectedInjuryReports, setSelectedInjuryReports] = useState([]);
     const [showTable, setShowTable] = useState(false);
     const [changeText, setChangeText] = useState("");
@@ -146,11 +142,6 @@ const Dashboard = () => {
 
                 const previousWeekResponse = await axios.get(`/previous-weekly-injury-stats?companyID=${companyID}`);
                 const previousWeekData = previousWeekResponse.data;
-                // console.log("Previous Week Start Date:", DateTime.now().startOf('week').minus({ days: 7 }).toISODate());
-                // console.log("Previous Week End Date:", DateTime.now().endOf('week').minus({ days: 7 }).toISODate());
-                // console.log("This Week Start Date:", DateTime.now().startOf('week').minus({ days: 1 }).toJSDate());
-                // console.log("This Week End Date:", DateTime.now().endOf('week').toJSDate());
-                // console.log(previousWeekData);
 
                 const previousWeekCountsTotal = previousWeekData.reduce((acc, item) => acc + item.count, 0);
 
@@ -176,23 +167,6 @@ const Dashboard = () => {
         fetchInjuryTypeData();
         fetchWeeklyInjuryData();
     }, []);
-
-    const handleDateClick = async (dateLabel) => {
-        try {
-            setFilterBy("date");
-            setCurrentFilterValue(dateLabel);
-
-            const response = await axios.get(`/companies/${companyID}/reports`, {
-                params: { dateOfInjury: dateLabel }
-            });
-
-            setSelectedInjuryReports(response.data);
-            fetchSeverityData(null, dateLabel);
-        } catch (error) {
-            console.error('Error fetching reports:', error);
-        }
-    };
-
 
     const handleInjuryTypeBarClick = async (barLabel) => {
         let queryParam = 'injuryTypeID';
@@ -300,67 +274,35 @@ const Dashboard = () => {
         navigate(`/report/${reportID}`);
     };
 
-    // const handleSeverityBarClick = async (severityLevel) => {
-    //     try {
-    //         const params = { severity: severityLevel };
- 
-    //         if (filterBy === "injuryType") {
-    //             params.injuryTypeID = currentFilterValue;
-    //         } else if (filterBy === "date") {
-    //             params.dateOfInjury = currentFilterValue;
-    //         }
-    //         const response = await axios.get(`/companies/${companyID}/reports`, { params });
-    //         setSelectedInjuryReports(response.data);
-    //         setShowTable(true);
-    //     } catch (error) {
-    //         console.error('Error fetching reports:', error);
-    //     }
-    // };
-    
-    
+    // default select T0006 when the page is loaded
+    useEffect(() => {
+        if (selectedBar === 'T0006') {
+            fetchSeverityData();
+        }
+    }, [selectedBar]);
+
   return (
-    <>
-        <div className="flex flex-col text-black gap-12 items-center justify-start">
-            {/* <p>Hi, {username}!</p> */}
-            <div className="flex flex-col gap-16">
-                <div className="flex flex-col lg:flex-row gap-8">
-                    <div className="max-w-min">
-                        <BarChart
-                            chartData={filteredInjuryTypeData}
-                            barName={injuryTypeMapping}
-                            title="Injury Category Projection"
-                            onBarClick={handleInjuryTypeBarClick}
-                            className="items-center justify-center mx-auto"
-                            indexAxis="y"
-                        />
-                       
+    <div>
+        <h1 className="w-[100%] font-bold mb-8 text-left">
+            Injury Analytics - Injury Overview
+        </h1>
+        <div className="flex flex-col gap-8 items-center md:flex-row flex-wrap">
+
+                <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center">
+                    <BarChart
+                        chartData={filteredWeeklyInjuryData}
+                        barName={dayTypeName}
+                        title="General Weekly Overview"
+                        onBarClick={handleWeeklyInjuryBarClick}
+                        indexAxis="x"
+                    />
+                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
+                        <p className="text-emerald-400">{changeText}</p>
+                        <p className="text-[14px] text-center">{injuryComparisonText}</p>
                     </div>
-                    <PendingAndCompletedReports/>
-                    <div className="max-w-min">
-                        <BarChart
-                            chartData={filteredWeeklyInjuryData}
-                            barName={dayTypeName}
-                            title="General Weekly Overview"
-                            onBarClick={handleWeeklyInjuryBarClick}
-                            indexAxis="x"
-                        />
-                        <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
-                            <p className="text-emerald-400">{changeText}</p>
-                            <p className="text-[14px] text-center">{injuryComparisonText}</p>
-                        </div>
-                    </div>
-                    
                 </div>
-                <div className="flex flex-col lg:flex-row gap-16">
-                    <div className="max-w-min">
-                    <LineChart
-                            chartData={monthlyEpidemicData}
-                            lineName={{ T0006: "Epidemic Injury Type" }}
-                            title="Monthly Epidemic Projection"
-                            onLineClick={handleDateClick}
-                            indexAxis="x"
-                        />
-                    </div>
+                
+                <div className="bg-white rounded-lg border-2 max-w-72">
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -372,13 +314,23 @@ const Dashboard = () => {
                             />
                         </div>
                     )}
-                     <ReportsByLocation/>
                 </div>
-                <SiteAgentTable/>
-                <MapComponent/>
 
-        </div>
-           
+                <div className="bg-white rounded-lg border-2 max-w-72">
+                    <BarChart
+                        chartData={filteredInjuryTypeData}
+                        barName={injuryTypeMapping}
+                        title="Injury Category Projection"
+                        onBarClick={handleInjuryTypeBarClick}
+                        indexAxis="y"
+                    />
+                </div>
+
+                <div className="bg-white rounded-lg border-2 max-w-72">
+                    <PendingAndCompletedReports/>
+                </div>
+
+                
         </div>
        
         {showTable && (
@@ -400,7 +352,7 @@ const Dashboard = () => {
                     <tbody className='text-center'>
                         {selectedInjuryReports.map(report => (
                             <tr key={report._id} className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
-                                <td className="px-2 py-2 md:px-8 text-left">{injuryTypeMapping[report.injuryTypeID]}</td>
+                                <td className="px-2 py-2 md:px-8">{injuryTypeMapping[report.injuryTypeID]}</td>
                                 <td className="px-0 py-2 md:px-8">
                                     <span className={`label label-severity-${report.severity}`}>{severityMapping[report.severity]}</span>
                                 </td>
@@ -424,8 +376,8 @@ const Dashboard = () => {
             </div>
         )}
         <BackToTopButton />
-    </>
+    </div>
   );
 };
 
-export default Dashboard;
+export default InjuryAnalytics;

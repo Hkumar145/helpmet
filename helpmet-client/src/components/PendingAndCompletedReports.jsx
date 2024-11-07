@@ -88,7 +88,7 @@ const PendingAndCompletedReports = () => {
       <h1 className='text-black text-1xl'>Reports Summary</h1>
   
       {/* Donut Chart with clickable sections */}
-      <Doughnut data={data} options={options} />
+      <Doughnut data={data} options={options} style={{ maxHeight: '200px' }} />
     </div>
   );
   
