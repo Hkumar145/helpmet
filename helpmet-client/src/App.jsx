@@ -17,6 +17,7 @@ import PendingReportDetails from './pages/PendingReportDetails';
 import UpdateReport from './pages/UpdateReport';
 import Alert from './pages/Alert'
 import Analytics from './pages/Analytics'
+import InjuryAnalytics from './pages/InjuryAnalytics';
 import Setting from './pages/Setting';
 import Employee from './pages/Employee';
 import Department from './pages/Department';
@@ -54,6 +55,7 @@ function App() {
             <Route path="/pending-report" element={<PendingReport />} />
             <Route path="/pending-report/:id" element={<PendingReportDetails />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/injury-analytics" element={<InjuryAnalytics />} />
 
             <Route path="/setting" element={<Setting />} />
             <Route path="/setting-employee" element={<Employee />} />
