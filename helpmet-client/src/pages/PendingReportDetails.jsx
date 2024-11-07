@@ -113,13 +113,15 @@ const PendingReportDetails = () => {
             onClick={() => navigate('/pending-report')}
             className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4"
           >
-            <img src="../../images/return.svg" alt="gear icon" />Back to reports
+            <img src="../../images/return.svg" alt="return icon" />Back to reports
           </button>
           <p className='font-bold text-base'>Report ID: {id}</p>
         </div>
         <div className='flex flex-row gap-4 text-nowrap'>
-          <p className='bg-white py-2 px-3 rounded'>Severity: <span className='label label-moderate'>{severityMapping[reportDetails.severity]}</span></p>
-          <p className='bg-white py-2 px-3 rounded'>Status: <span className='label label-completed'>{reportDetails.status}</span></p>
+          <p className='bg-white py-2 px-3 rounded'>Severity: <span className={`label label-severity-${reportDetails.severity}`}>{severityMapping[reportDetails.severity]}</span></p>
+          <p className='bg-white py-2 px-3 rounded'>
+            Status: <span className={`label ${reportDetails.status === "On going" ? "label-ongoing" : "label-onhold"}`}>{reportDetails.status}</span>
+          </p>
         </div>
       </div>
 

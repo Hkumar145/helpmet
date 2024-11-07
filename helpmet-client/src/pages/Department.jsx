@@ -64,15 +64,15 @@ const Department = () => {
             <tr>
               <th className="px-2 py-2 md:px-4">Department ID</th>
               <th className="px-0 py-2 md:px-4">Name</th>
-              <th className="px-2 py-2 md:px-4"></th>
+              <th className="pr-2 py-2 md:px-4"></th>
             </tr>
           </thead>
           <tbody className='text-center'>
             {departments.map(department => (
-              <tr className='border-t border-[#E4E7EC]' key={department.departmentID}>
+              <tr className='border-t border-[#E4E7EC] hover:bg-[#F9FAFB]' key={department.departmentID}>
                 <td className="px-2 py-2 md:px-4">{department.departmentID}</td>
                 <td className="px-0 py-2 md:px-4">{department.departmentName}</td>
-                <td className="px-2 py-2 md:px-4 flex flex-row gap-2 my-6 md:my-0">
+                <td className="pr-2 py-2 md:px-4 flex flex-row gap-2 my-6 md:my-0 justify-end md:mr-5">
                   <Dialog onOpenChange={(open) => { if (!open) setSelectedDepartmentID(null); }}>
                     <DialogTrigger asChild>
                       <button
@@ -94,7 +94,7 @@ const Department = () => {
                     className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                     onClick={() => handleDeleteDepartment(department.departmentID)}
                   >
-                    <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="trash icon" />
+                    <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
                   </button>
                 </td>
               </tr>

@@ -70,18 +70,18 @@ const Employee = () => {
             {/* <th className="px-4 py-2">Date of Birth</th> */}
             <th className="px-0 py-2 md:px-4">Department</th>
             {/* <th className="px-4 py-2">Role</th> */}
-            <th className="px-2 py-2 md:px-4"></th>
+            <th className="pr-2 py-2 md:px-4"></th>
           </tr>
         </thead>
         <tbody className='text-center'>
           {employees.map(employee => (
-            <tr className='border-t border-[#E4E7EC]' key={employee.employeeID}>
+            <tr className='border-t border-[#E4E7EC] hover:bg-[#F9FAFB]' key={employee.employeeID}>
               <td className="px-2 py-2 md:px-4">{employee.employeeID}</td>
               <td className="px-0 py-2 md:px-4">{employee.firstName} {employee.lastName}</td>
               {/* <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td> */}
               <td className="px-0 py-2 md:px-4">{employee.departmentID}</td>
               {/* <td className="px-4 py-2">{employee.role}</td> */}
-              <td className="px-2 py-2 md:py-2 md:px-2 flex flex-col md:flex-row gap-2 max-w-max my-6 md:my-0">
+              <td className="pr-2 py-2 md:py-2 md:px-2 flex flex-col md:flex-row gap-2 max-w-max my-6 md:my-0">
                 <Dialog onOpenChange={(open) => { if (!open) setSelectedEmployeeID(null); }}>
                     <DialogTrigger asChild>
                       <button className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]' onClick={() => handleEditEmployee(employee.employeeID)}>
@@ -97,7 +97,7 @@ const Employee = () => {
                     </DialogContent>
                 </Dialog>
                 <button className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]' onClick={() => handleDeleteEmployee(employee.employeeID)}>
-                  <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="trash icon" />
+                  <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
                 </button>
               </td>
             </tr>

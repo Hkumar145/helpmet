@@ -30,7 +30,7 @@ const Report = () => {
     if (companyID) {
       axios.get(`/companies/${companyID}/reports`)
         .then(response => {
-          const sortedReports = response.data.sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate));
+          const sortedReports = response.data.sort((a, b) => new Date(b.dateOfInjury) - new Date(a.dateOfInjury));
           setReport(sortedReports);
           setLoading(false);
         })
@@ -95,25 +95,27 @@ const Report = () => {
         </div>
       ) : (
         <div className="overflow-x-auto">
-        <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
+        <table className="min-w-full bg-white text-black mt-4 rounded-lg text-xs">
             <thead>
               <tr>
                 <th className="px-2 py-2 md:px-4">Report ID</th>
-                {/* <th className="px-4 py-2">Severity</th> */}
+                <th className="px-0 py-2">Severity</th>
                 {/* <th className="px-4 py-2">Status</th> */}
                 <th className="px-0 py-2 md:px-4">Location</th>
                 <th className="px-0 py-2 md:px-4">Date of Injury</th>
                 {/* <th className="px-4 py-2">Injured Employee</th> */}
                 {/* <th className="px-4 py-2">Report Date</th> */}
                 <th className="px-0 py-2 md:px-4">Reported By</th>
-                <th className="px-2 py-2 md:px-4"></th>
+                <th className="pr-2 py-2 md:px-4"></th>
               </tr>
             </thead>
             <tbody className='text-center'>
               {report.map((report) => (
-                <tr key={report.reportID} className="border-t border-[#E4E7EC]">
+                <tr key={report.reportID} className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
                   <td className="px-2 py-2 md:px-4">{report.reportID}</td>
-                  {/* <td className="px-4 py-2">{severityMapping[report.severity]}</td> */}
+                  <td className="px-0 py-2">
+                    <span className={`label label-severity-${report.severity}`}>{severityMapping[report.severity]}</span>
+                  </td>
                   {/* <td className="px-4 py-2">{report.status}</td> */}
                   <td className="px-0 py-2 md:px-4">{report.locationID}</td>
                   <td className="px-0 py-2 md:px-4">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
@@ -131,12 +133,12 @@ const Report = () => {
                     />
                     <ReactTooltip id={`tooltip-${report.reportID}`} place="top" effect="solid" />
                   </td>
-                  <td className="px-0 py-2 md:px-4">
+                  <td className="pr-2 py-2 md:px-4">
                     <button
                       onClick={() => handleViewDetails(report.reportID)}
-                      className='bg-purple-600 text-white p-2 rounded hover:bg-purple-800 mt-0'
+                      className='p-1 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                     >
-                      Details
+                      <img className="min-w-[16px] min-h-[16px]" src="./images/right-arrow.svg" alt="details icon" />
                     </button>
                   </td>
                 </tr>

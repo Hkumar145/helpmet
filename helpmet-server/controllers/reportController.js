@@ -399,8 +399,8 @@ exports.getWeeklyInjuryStats = async (req, res) => {
         const { companyID } = req.query;
 
         // Adjust by subtracting 1 day to account for the offset
-        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();    // const startOfWeek = DateTime.now().startOf('week').toJSDate();
-        const endOfWeek = DateTime.now().endOf('week').toJSDate();
+        const startOfWeek = DateTime.now().setZone('UTC').startOf('week').toJSDate();
+        const endOfWeek = DateTime.now().setZone('UTC').endOf('week').toJSDate();
 
         const weeklyReports = await Report.aggregate([
             {
