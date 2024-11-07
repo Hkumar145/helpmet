@@ -70,7 +70,7 @@ emailRouter.post("/send-alert-email", async (req, res) => {
           senderEmail,
           alertDetails,
           cc,
-          // attachments
+          attachments,
         })
       )
     );

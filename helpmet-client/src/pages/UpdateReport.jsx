@@ -13,8 +13,9 @@ const UpdateReport = () => {
   const [injuryTypeID, setInjuryTypeID] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState('');
   const [witnessID, setWitnessID] = useState('');
+  const [file, setFile] = useState(null);
   const [successMessage, setSuccessMessage] = useState(false);
 
   useEffect(() => {
@@ -44,7 +45,8 @@ const UpdateReport = () => {
     const { name, value, type, files } = e.target;
 
     if (type === 'file' && files.length > 0) {
-      setImage(Array.from(files));
+        setFile(files[0]); // Set the file state without uploading
+        setImage('');
     } else {
         const stateUpdateFunctions = {
             reportBy: setReportBy,
@@ -68,7 +70,9 @@ const UpdateReport = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    image.forEach((img) => formData.append('image', img));
+    if (file) {
+      formData.append('image', file);
+    }
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
     formData.append('dateOfInjury', dateOfInjury);
@@ -92,7 +96,7 @@ const UpdateReport = () => {
         setInjuryTypeID('');
         setSeverity('');
         setDescription('');
-        setImage([]);
+        setImage('');
         setWitnessID('');
         setSuccessMessage(true);
     } catch (error) {
@@ -217,25 +221,15 @@ const UpdateReport = () => {
           ></textarea>
 
           <label>Incident Photos (Optional)</label>
-          {image && image.length > 0 ? (
-            <div className="flex gap-4 overflow-x-scroll mb-2 p-2">
-              {image.map((imgUrl, index) => (
-                <img
-                  key={index}
-                  src={imgUrl}
-                  alt={`Injury Report Image ${index + 1}`}
-                  className="h-32 w-32 object-cover rounded-md flex-shrink-0"
-                />
-              ))}
+          {image && (
+            <div className="mb-2">
+              <img src={image} alt="Existing image" className="h-32 w-32 object-cover rounded-md" />
             </div>
-          ) : (
-            <p>No image was submitted</p>
           )}
           <input
             type="file"
             name="image"
             onChange={handleChange}
-            multiple
             className="p-2 rounded border text-black"
           />
 

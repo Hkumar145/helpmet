@@ -5,23 +5,17 @@ const {
 
 // Create a new department under a specific company
 exports.createDepartment = async (req, res) => {
-    const { companyID, departmentName } = req.body;
+    const { departmentName } = req.body;
     try {
-        const existingDepartment = await Department.findOne({ companyID, departmentName });
+        const existingDepartment = await Department.findOne({ departmentName });
         if (existingDepartment) {
-            return res.status(400).json({ message: "Department with this name already exists within the company" });
+            return res.status(400).json({ message: "Department with this name already exists" });
         }
 
-        const lastDepartment = await Department.findOne().sort({ departmentID: -1 });
-        let nextDepartmentNumber = 1;
-
-        if (lastDepartment) {
-            const lastID = lastDepartment.departmentID.substring(1);
-            nextDepartmentNumber = parseInt(lastID, 10) + 1;
-        }
+        const departmentCount = await Department.countDocuments();
+        const nextDepartmentNumber = departmentCount + 1;
 
         const newDepartment = new Department({
-            companyID,
             departmentID: `D${nextDepartmentNumber.toString().padStart(4, "0")}`,
             departmentName
         });
@@ -36,11 +30,11 @@ exports.createDepartment = async (req, res) => {
 exports.getDepartmentsByCompany = async (req, res) => {
     const { id: companyID } = req.params;
     try {
-       const departments = await Department.find({ companyID });
-       if (departments.length === 0) {
-           return res.status(404).json({ message: "No department found for this company" });
-       }
-       res.json(departments);
+        // Step 1: Find unique department IDs for the company through employees
+        const employeeRecords = await Employee.find({ companyID }).distinct("departmentID");
+        // Step 2: Fetch departments with those IDs
+        const departments = await Department.find({ departmentID: { $in: employeeRecords } });
+        res.json(departments);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
