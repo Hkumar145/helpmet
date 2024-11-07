@@ -100,7 +100,7 @@ const Profile = () => {
           placeholder='Password'
           className='bg-slate-200 rounded-lg p-3'
         />
-        <button className='bg-slate-600 text-black rounded-lg hover:opacity-90'>
+        <button className='bg-slate-600 text-white rounded-lg hover:opacity-90'>
           Update
         </button>
       </form>
