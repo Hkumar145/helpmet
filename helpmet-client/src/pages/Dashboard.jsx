@@ -8,6 +8,8 @@ import { DateTime } from 'luxon';
 import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
+import SiteAgentTable from "@/components/SiteAgentTable"
+import BackToTopButton from "@/components/BackToTopButton"
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
