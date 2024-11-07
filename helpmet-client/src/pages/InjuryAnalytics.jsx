@@ -43,7 +43,7 @@ const InjuryAnalytics = () => {
     const companyID = useSelector((state) => state.user.currentUser?.companyID);
     const [injuryTypeData, setInjuryTypeData] = useState({ labels: [], datasets: [] });
     const [weeklyInjuryData, setWeeklyInjuryData] = useState({ labels: [], datasets: [] });
-    const [selectedBar, setSelectedBar] = useState(null);
+    const [selectedBar, setSelectedBar] = useState('T0006');
     const [selectedInjuryReports, setSelectedInjuryReports] = useState([]);
     const [showTable, setShowTable] = useState(false);
     const [changeText, setChangeText] = useState("");
@@ -274,6 +274,13 @@ const InjuryAnalytics = () => {
         navigate(`/report/${reportID}`);
     };
 
+    // default select T0006 when the page is loaded
+    useEffect(() => {
+        if (selectedBar === 'T0006') {
+            fetchSeverityData();
+        }
+    }, [selectedBar]);
+
   return (
     <div>
         <h1 className="w-[100%] font-bold mb-8 text-left">
@@ -315,7 +322,6 @@ const InjuryAnalytics = () => {
                         barName={injuryTypeMapping}
                         title="Injury Category Projection"
                         onBarClick={handleInjuryTypeBarClick}
-                        className="items-center justify-center mx-auto"
                         indexAxis="y"
                     />
                 </div>
