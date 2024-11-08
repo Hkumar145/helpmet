@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "../api/axios";
 import { IconButton } from "./ui/button";
 import { useSelector } from "react-redux";
+import Avatar from "react-avatar";
+
 
 const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const [expandedAlertID, setExpandedAlertID] = useState(null);
@@ -14,7 +16,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const senderEmail = useSelector((state) => state.user.email);
     const [intervals, setIntervals] = useState({});
 
-    // Fetch recipients (employees or departments) based on recipientType
+    // Fetch recipients (employees or departments)
     useEffect(() => {
         const fetchRecipients = async () => {
             try {
@@ -34,7 +36,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         };
 
         fetchRecipients();
-    }, [editedAlert.recipientType, editMode]);
+    }, [editedAlert, editMode]);
 
     // Sort alerts in descending order
     const sortedAlerts = [...alerts].sort((a, b) => {
@@ -147,6 +149,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             fetchAlerts(); 
 
             if (newStatus === "active") {
+                alert(`Alert ID: ${alertID} has been activated and will be sent every 7 days.`);
                 console.log(`Setting up interval for alert ID: ${alertID}`);
                 const intervalId = setInterval(async () => {
                     try {
@@ -181,7 +184,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                             scheduleTime: new Date().toISOString(),
                             alertID: alertID,
                         });
-
                         console.log(`Repeated email sent for alert ID: ${alertID}`);
                     } catch (error) {
                         console.error("Error in repeated email sending:", error);
@@ -198,6 +200,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     delete newIntervals[alertID];
                     return newIntervals;
                 });
+                alert(`Alert ID: ${alertID} deactivated successfully. Weekly email sending canceled.`);
                 console.log(`Cleared interval for alert ID: ${alertID}`);
             }
             
@@ -212,19 +215,40 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                 <thead className="text-left">
                     <tr className="text-[16px] text-gray40">
                         <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "15%" }}>Alert ID</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "40%" }}>Alert Name</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "20%" }}>Date sent</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "25%" }}></th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "30%" }}>Alert Name</th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "15%" }}>Send Date</th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "20%" }}>Recipients</th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "20%" }}></th>
                     </tr>
                 </thead>
                 <tbody className="text-[14px] text-left">
                     {getPaginatedAlerts().map((alert, index) => (
                         <React.Fragment key={alert.alertID}>
-                            <tr className={`h-14 border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
-                                <td className="py-1 px-3 lg:px-6">{ alert.alertID }</td>
-                                <td className="py-1 px-3 lg:px-6">{ alert.alertName }</td>
-                                <td className="py-1 px-3 lg:px-6">{ alert.sentAt }</td>
-                                <td className="py-1 px-3 lg:px-6">
+                            <tr className={`border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
+                                <td className="p-2 lg:px-6">{ alert.alertID }</td>
+                                <td className="p-2 lg:px-6">{ alert.alertName }</td>
+                                <td className="p-2 lg:px-6">{ alert.sentAt }</td>
+                                <td className="p-2 lg:px-6 flex h-12 items-center gap-1">
+                                    {alert.recipients && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
+                                        const id = recipientID;
+                                        const employee = allEmployees.find(e => e.value === id);
+                                        const label = employee ? employee.label : "Unknown";
+                                        const nameInitial = label && label.includes(" - ") ? label.split(" - ")[1].charAt(0) : "?";
+                                        return (
+                                            <Avatar 
+                                                key={idx}
+                                                name={nameInitial}
+                                                round={true}
+                                                size="30"
+                                                textSizeRatio={2.5} 
+                                            />
+                                        );
+                                    })}
+                                    {alert.recipients && JSON.parse(alert.recipients[0]).length > 3 && (
+                                        <span className="text-gray60">+{JSON.parse(alert.recipients[0]).length - 3}</span>
+                                    )}
+                                </td>
+                                <td className="p-2 lg:px-6">
                                     <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
                                         <div className="flex justify-center">
                                             <IconButton
@@ -253,7 +277,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {expandedAlertID === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="px-3 py-2 lg:px-6 bg-gray20">
+                                    <td colSpan="5" className="px-3 py-2 lg:px-6 bg-gray20">
                                         <div className="whitespace-pre-wrap text-start">
                                             <div className="flex gap-1">
                                                 <p><strong>Recipients:</strong></p>
@@ -295,21 +319,8 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             <div className="flex gap-1">
                                                 <p><strong>CC:</strong></p>
                                                 <ul>
-                                                    {alert.cc && alert.cc.length > 0 ? (
-                                                        alert.cc.map((email, idx) => {
-                                                            const parsedEmails = email[0] === "[" ? JSON.parse(email) : [email];
-                                                            return (
-                                                                <li key={idx} className="text-black">
-                                                                    {parsedEmails.map((parsedEmail, emailIdx) => (
-                                                                        <span key={emailIdx}>
-                                                                            {parsedEmail}
-                                                                            {emailIdx < parsedEmails.length - 1 ? ", " : ""}
-                                                                        </span>
-                                                                    ))}
-                                                                    {idx < alert.cc.length - 1 ? ", " : ""}
-                                                                </li>
-                                                            );
-                                                        })
+                                                    {alert.cc ? (
+                                                        <li className="text-black">{alert.cc}</li>
                                                     ) : (
                                                         <p className="text-black">No CC recipients</p>
                                                     )}
@@ -342,7 +353,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {editMode === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="bg-gray20 p-4">
+                                    <td colSpan="5" className="bg-gray20 p-4">
                                         <input
                                             type="text"
                                             name="alertName"
