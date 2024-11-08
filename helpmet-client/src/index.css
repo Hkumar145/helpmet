@@ -325,3 +325,21 @@ input::-webkit-inner-spin-button {
   border-bottom: 2px solid #E4E7EC;
   padding-top: .5rem;
 }
+
+.dot-before::before {
+  content: '◼';
+  margin-left: 6rem;
+  margin-right: 8px;
+}
+
+.dot-hs::before {
+  color: #3E1C96;
+}
+
+.dot-ms::before {
+  color: #6938EF;
+}
+
+.dot-ls::before {
+  color: #9B8AFB;
+}

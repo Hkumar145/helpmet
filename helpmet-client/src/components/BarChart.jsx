@@ -53,6 +53,8 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
             x: {
                 ticks: {
                     color: 'black',
+                    beginAtZero: true,  
+                    stepSize: 10
                 },
                 grid: {
                     display: false,

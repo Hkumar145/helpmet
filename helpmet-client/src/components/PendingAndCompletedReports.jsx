@@ -49,8 +49,8 @@ const PendingAndCompletedReports = () => {
       {
         label: 'Reports Status',
         data: [ongoingReportsCount, onHoldReportsCount, completedReportsCount],
-        backgroundColor: ['#36A2EB', '#FFCE56', '#4BC0C0'],
-        hoverBackgroundColor: ['#36A2EB', '#FFCE56', '#4BC0C0'],
+        backgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
+        hoverBackgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
       },
     ],
   };
@@ -58,6 +58,15 @@ const PendingAndCompletedReports = () => {
   const options = {
     responsive: true,
     plugins: {
+      title: {
+        display: true,
+        text: 'Reports Summary',
+        font: {
+          size: 18,
+          weight: 'bold',
+        },
+        color: '#000000',
+      },
       legend: {
         position: 'bottom',
       },
@@ -85,10 +94,7 @@ const PendingAndCompletedReports = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <h1 className='text-black text-1xl'>Reports Summary</h1>
-  
-      {/* Donut Chart with clickable sections */}
-      <Doughnut data={data} options={options} style={{ maxHeight: '200px' }} />
+      <Doughnut data={data} options={options} style={{ maxHeight: '270px', minWidth: '396px' }} />
     </div>
   );
   

@@ -9,6 +9,7 @@ import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
 import BackToTopButton from '../components/BackToTopButton';
+import EquipmentStatusPieChart from "@/components/EquipmentStatusPieChart"
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
@@ -372,6 +373,10 @@ const Dashboard = () => {
                         </div>
                     )}
                      <ReportsByLocation/>
+                </div>
+                <div className="flex flex-col lg:flex-row gap-12">
+                    {/* Other Dashboard Components */}
+                    <EquipmentStatusPieChart companyID={companyID} />
                 </div>
                 <MapComponent/>
         </div>
