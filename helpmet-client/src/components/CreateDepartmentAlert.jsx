@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Select from "react-select";
 import { useDropzone } from "react-dropzone";
 import { useSelector } from "react-redux";
 import axios from "../api/axios";
+import { IconButton } from "./ui/button";
+import CustomSelect from "./ui/select";
+
+const MAX_NOTE_LENGTH = 300;
 
 const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     const [alertData, setAlertData] = useState({ 
@@ -37,6 +40,9 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        if (name === "description" && value.length > MAX_NOTE_LENGTH) {
+            return;
+        }
         setAlertData((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -107,8 +113,12 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
         }));
     }, []);
     
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ 
+        onDrop,
+        accept: "image/*", 
+    });
     
+    // Remove attachments
     const removeFile = (file) => {
         setAlertData((prevData) => ({
             ...prevData,
@@ -154,9 +164,8 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                     description: alertData.description,
                 },
                 cc: alertData.cc,
-                // attachments: alertData.attachments
+                attachments: alertData.attachments
             });
-
             alert("Alert created successfully!");
             fetchAlerts();
             onCancel();
@@ -166,19 +175,24 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };
 
     return (
-        <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4">
-            <div className="col-span-2 lg:col-span-1 flex flex-col gap-2">
-                <label className="text-sm lg:text-lg transition-all duration-300">Alert Name</label>
-                <input type="text" name="alertName" value={alertData.alertName} onChange={handleInputChange} />
+        <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
+            <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-black bg-white rounded-[10px]">
+                <div className="flex flex-col gap-1">
+                    <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
+                    <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
+                </div>
+                
+                <div className="flex flex-col gap-1">
+                    <label className="text-gray60 text-[14px] mt-0">Note</label>
+                    <textarea name="description" maxLength={MAX_NOTE_LENGTH} value={alertData.description} onChange={handleInputChange} className="text-[14px] px-2 py-1 h-[200px] bg-gray10 border border-gray20 rounded-[8px]"/>
+                    <span className="text-gray30 text-xs">{MAX_NOTE_LENGTH - alertData.description.length} characters left</span>
+                </div>
 
-                <label className="text-sm lg:text-lg transition-all duration-300">Note</label>
-                <textarea name="description" value={alertData.description} onChange={handleInputChange} className="h-40"/>
-
-                <div {...getRootProps({ className: "flex flex-row item-center justify-between gap-2 border mt-4 p-2 bg-white rounded-md" })}>
-                    <label className="mt-0 text-black text-sm lg:text-lg transition-all duration-300">Attachments</label>
+                <div {...getRootProps({ className: "flex flex-row item-center justify-between gap-2 border border-gray20 mt-0 px-2 py-1 bg-gray10 rounded-[8px]" })}>
+                    <label className="mt-0 text-gray60 text-[16px]">Attachments</label>
                     <input {...getInputProps()} />
-                    <p className="cursor-pointer text-gray-600 content-center text-xs lg:text-sm transition-all duration-300">
-                        <span className="text-purple-400">Click here to upload</span> or drag and drop files
+                    <p className="cursor-pointer text-gray40 content-center text-[14px]">
+                        <span className="text-brand40">Click here to upload</span> or drag and drop files
                     </p>
                 </div>
 
@@ -191,11 +205,18 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                             : "7rem"
                     }}>
                     {alertData.attachments.length > 0 && (
-                        <ul>
+                         <ul className="border rounded-[10px] border-black mt-2">
                             {alertData.attachments.map((file, index) => (
-                                <li key={index} className="flex justify-between items-center p-2">
-                                    <span>{file.name}</span>
-                                    <button onClick={() => removeFile(file)} className="text-sm text-red-400 hover:text-red-600 mt-0 p-0">Remove</button>
+                                <li key={index} className="flex justify-between items-center p-2 text-[14px]">
+                                    <span className="text-[16px]">{file.name}</span>
+                                    <div>
+                                        <IconButton icon="close" 
+                                        onClick={() => removeFile(file)}
+                                        className="no-border p-1" 
+                                        style={{
+                                            backgroundColor: "transparent",
+                                        }} />
+                                    </div>
                                 </li>
                             ))}
                         </ul>
@@ -203,54 +224,57 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 </div>
             </div>
             
-            <div className="col-span-2 lg:col-span-1 flex flex-col gap-2">
-                <div className="flex flex-col gap-2">
-                    <label className="text-sm lg:text-lg transition-all duration-300">CC</label>
+            <div className="col-span-2 lg:col-span-1 flex flex-col gap-3">
+                <div className="flex flex-col gap-1">
+                    <label className="text-gray60 text-[14px]">CC</label>
                     <input
                         type="text"
                         name="cc"
                         placeholder="name@helpmet.com"
                         value={alertData.cc.join(", ")}
                         onChange={handleCCChange}
-                        className="bg-white"
+                        className="bg-gray10 border border-gray20 placeholder-text"
+                        style={{ fontSize: "14px", padding: ".3rem .45rem", borderRadius: "8px" }}
                     />
                 </div>
             
-                <div className="flex flex-col gap-2">
-                    <label className="text-sm lg:text-lg transition-all duration-300 lg:mt-4">Recipients</label>
-                    <div className={`bg-white p-1 rounded-md ${allSelectedEmployees.length > 3 ? "h-24 overflow-y-auto" : "h-auto"}`}>
+                <div className="flex flex-col gap-1">
+                    <label className="text-gray60 text-[14px] mt-0">To</label>
+                    <div className={`bg-gray10 border rounded-[8px] border-gray20 ${allSelectedEmployees.length > 3 ? "h-32 overflow-y-auto" : "h-auto"}`}>
                         {allSelectedEmployees.length > 0 ? (
                             <ul>
                                 {allSelectedEmployees.map((emp) => (
-                                    <li key={emp.employeeID} className="flex items-center justify-between p-1">
+                                    <li key={emp.employeeID} className="flex items-center justify-between px-2 py-1 text-[14px]">
                                         <span>{emp.employeeID} - {emp.firstName} {emp.lastName}</span>
-                                        <button
-                                            type="button"
-                                            className="mt-0 p-0 text-red-500 text-xs hover:underline lg:text-sm transition-all duration-300"
+                                        <div>
+                                            <IconButton icon="close" 
                                             onClick={() => handleRecipientSelection(emp)}
-                                        >
-                                            Remove
-                                        </button>
+                                            className="no-border p-1"
+                                            style={{
+                                                backgroundColor: "transparent",
+                                            }} />
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
-                            <p className="text-gray-400 text-xs p-1 lg:text-sm transition-all duration-300">No employees selected.</p>
+                            <p className="text-gray30 text-[14px] px-2 py-[7px]">No employees selected.</p>
                         )}
                     </div>          
 
-                    <div className="bg-white rounded-lg p-2 flex flex-col gap-2">
-                        <h3 className="text-center text-sm lg:text-lg transition-all duration-300">Members</h3>
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs lg:text-sm transition-all duration-300">
+                    <div className="bg-white p-2 flex flex-col gap-2 border border-black rounded-[10px] mt-1">
+                        <h3 className="text-gray60 text-center text-[14px] font-bold">Members</h3>
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
                             <input
                                 type="text"
                                 value={searchTerm}
                                 onChange={handleSearch}
                                 placeholder="Search Employee"
-                                className={`p-2 pl-8 w-40 border border-gray-300 rounded ${employees.length === 0 ? "bg-gray-200 text-gray-500" : "bg-white"}`}
+                                className={`w-28 lg:w-40 border border-gray20 placeholder-text ${employees.length === 0 ? "bg-gray10 text-gray40" : "bg-white"}`}
                                 disabled={employees.length === 0}
+                                style={{ fontSize: "14px", padding: ".2rem .35rem", borderRadius: "8px" }}
                             />
-                            <Select
+                            <CustomSelect
                                 options={departmentOptions}
                                 onChange={handleDepartmentChange}
                                 placeholder="Select Department"
@@ -262,8 +286,8 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                 const isSelected = alertData.recipients.includes(emp.employeeID);
                                 return (
                                     <li key={emp.employeeID} onClick={() => handleRecipientSelection(emp)} 
-                                        className={`flex items-center justify-between p-2 rounded-md border text-xs lg:text-sm transition-all duration-300
-                                            ${isSelected ? "bg-green-300" : "bg-white"} hover:bg-green-200`}>
+                                        className={`flex items-center justify-between p-2 rounded-md border text-[14px] shadow-md
+                                            ${isSelected ? "bg-secondary20" : "bg-secondary10"}`}>
                                         <div className="flex items-center gap-2">
                                             <input
                                                 type="checkbox"
@@ -282,13 +306,10 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 </div>
             
                 <div className="flex flex-row justify-end gap-2">
-                    <button className="bg-purple-300 text-black text-xs lg:text-sm transition-all duration-300 p-2 mt-0 rounded-lg text-center hover:bg-indigo-700 hover:text-white max-w-40" type="submit">Submit</button>
-                    <button className="bg-purple-300 text-black text-xs lg:text-sm transition-all duration-300 p-2 mt-0 rounded-lg text-center hover:bg-indigo-700 hover:text-white max-w-40" type="button" onClick={onCancel}>Cancel</button>
+                    <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button" onClick={onCancel}>Cancel</button>
+                    <button className="bg-brand40 text-white text-[16px] px-4 m-0 rounded-[6px] text-center border border-brand50 hover-button" type="submit">Submit</button>
                 </div>
             </div>
-
-
-            
         </form>
     );
 };

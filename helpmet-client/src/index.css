@@ -155,6 +155,11 @@ padding: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
+.placeholder-text::placeholder {
+  font-size: 14px; 
+  color: #98A2B3; 
+}
+
 /* Hamburger Menu Icon */
 .hamburger-menu {
   /* display: flex; */
@@ -269,6 +274,12 @@ input::-webkit-inner-spin-button {
   color: #6938EF;
 }
 
+.hover-button:hover {
+  background-color: #D9D6FE;
+  border-color: #D9D6FE;
+  color: #3E1C96;
+}
+
 /**************** Report ****************/
 /**** Label ****/
 .label {
@@ -349,4 +360,96 @@ input::-webkit-inner-spin-button {
 
 .dot-ls::before {
   color: #9B8AFB;
+
+/**************** DateTime picker style ****************/
+.react-datetime-picker__wrapper {
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #101828;
+  font-size: 14px;
+}
+
+.react-datetime-picker__calendar.react-datetime-picker__calendar--open .react-calendar,
+.react-datetime-picker__clock.react-datetime-picker__clock--open.react-datetime-picker__clock {
+  border: 1px solid #101828;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.react-datetime-picker__clock.react-datetime-picker__clock--open {
+  width: 175px;
+  height: 175px;
+}
+
+.react-calendar__viewContainer {
+  font-size: 14px;
+}
+
+.react-calendar__month-view__weekdays {
+  color: #98A2B3;
+}
+
+.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from {
+  font-size: 16px;
+}
+
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth:disabled,
+.react-calendar__tile.react-calendar__month-view__days__day:disabled {
+  background-color: #fff;
+}
+
+.react-calendar__tile.react-calendar__tile--active {
+  background-color: #4A1FB8;
+}
+
+.react-calendar__tile.react-calendar__tile--now {
+  background-color: #ECFDF3;
+  color: #000;
+}
+
+.react-calendar button {
+  border-radius: 50%;
+}
+
+.react-clock__face.react-clock__face {
+  border: 1px solid #4A1FB8;
+}
+
+.react-clock__hand__body.react-clock__hand__body {
+  background-color: #4A1FB8;
+}
+
+/**************** Icon buttons style ****************/
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #E4E7EC;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0px;
+}
+
+.icon-button.no-border {
+  border: none;
+}
+
+.icon-button:hover,
+.icon-button.selected {
+  transform: scale(1.05);
+  border-color: #4A1FB8;
+}
+
+.icon-path {
+  stroke: #475467;
+  transition: stroke 0.3s;
+}
+
+.icon-button:hover .icon-path,
+.icon-button.selected .icon-path {
+  stroke: #4A1FB8;
 }

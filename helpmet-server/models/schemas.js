@@ -86,20 +86,12 @@ const alertSchema = new Schema({
     alertName: { type: String, trim: true, required: true, maxlength: 100 }, 
     companyID: { type: Number, ref: "Company", trim: true, required: true },
     sentAt: { type: Date, required: true, },
-    description: { type: String, trim: true, required: true, maxlength: 500 },
-    status: { type: String, 
-              enum: ["active", "deactive"], 
-              default: "deactive" },
+    description: { type: String, trim: true, required: true, maxlength: 300 },
+    status: { type: String, default: "deactive" },
     recipients: [{ type: String }],
     cc: [{ type: String }],
-    // attachments: [{
-    //     filename: { type: String },
-    //     path: { type: String }
-    // }] 
-    // attachments: [{
-    //     filename: { type: String },
-    //     data: { type: Buffer }
-    // }]
+    scheduledTime: { type: Date },
+    attachments: { type: [String], required: false }
 });
 
 // EmployeeAlert Schema

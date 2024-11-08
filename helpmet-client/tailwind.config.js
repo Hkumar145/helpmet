@@ -49,7 +49,25 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+			gray10: '#F9FAFB',
+			gray20: '#E4E7EC',
+			gray30: '#98A2B3',
+			gray40: '#475467',
+			gray50: '#1D2939',
+			gray60: '#101828',
+			brand10: '#F4F3FF',
+			brand20: '#D9D6FE',
+			brand30: '#9B8AFB',
+			brand40: '#6938EF',
+			brand50: '#4A1FB8',
+			brand60: '#3E1C96',
+			secondary10: '#ECFDF3',
+			secondary20: '#A6F4C5',
+			secondary30: '#32D583',
+			secondary40: '#039855',
+			secondary50: '#05603A',
+			secondary60: '#054F31',
   		}
   	}
   },
