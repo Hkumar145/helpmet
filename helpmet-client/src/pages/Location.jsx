@@ -53,10 +53,10 @@ const Location = () => {
         <h1 className='text-lg font-bold text-black'>Locations</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <button className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4'>Add New Location</button>
+            <button className='bg-[#6938EF] text-white p-3 rounded-lg mt-0 text-center hover:opacity-90'>Create New Location</button>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle>Add New Location</DialogTitle>
+            <DialogTitle>Create New Location</DialogTitle>
             <DialogDescription>Add a new location to the system.</DialogDescription>
             <CreateLocation />
           </DialogContent>
@@ -67,7 +67,7 @@ const Location = () => {
         <table className="min-w-full bg-white text-black rounded-lg text-sm">
           <thead>
             <tr>
-              <th className="px-0 py-2 md:px-4 text-left">Name</th>
+              <th className="px-0 py-2 md:px-4">Name</th>
               <th className="pr-2 py-2 md:px-4"></th>
             </tr>
           </thead>
