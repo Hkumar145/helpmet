@@ -211,232 +211,235 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     
     return (
         <div className="flex flex-col items-center justify-center">
-            <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed">
-                <thead className="text-left">
-                    <tr className="text-[16px] text-gray40">
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "15%" }}>Alert ID</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "30%" }}>Alert Name</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "15%" }}>Send Date</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "20%" }}>Recipients</th>
-                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "20%" }}></th>
-                    </tr>
-                </thead>
-                <tbody className="text-[14px] text-left">
-                    {getPaginatedAlerts().map((alert, index) => (
-                        <React.Fragment key={alert.alertID}>
-                            <tr className={`border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
-                                <td className="p-2 lg:px-6">{ alert.alertID }</td>
-                                <td className="p-2 lg:px-6">{ alert.alertName }</td>
-                                <td className="p-2 lg:px-6">{ alert.sentAt }</td>
-                                <td className="p-2 lg:px-6 flex h-12 items-center gap-1">
-                                    {alert.recipients && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
-                                        const id = recipientID;
-                                        const employee = allEmployees.find(e => e.value === id);
-                                        const label = employee ? employee.label : "Unknown";
-                                        const nameInitial = label && label.includes(" - ") ? label.split(" - ")[1].charAt(0) : "?";
-                                        return (
-                                            <Avatar 
-                                                key={idx}
-                                                name={nameInitial}
-                                                round={true}
-                                                size="30"
-                                                textSizeRatio={2.5} 
-                                            />
-                                        );
-                                    })}
-                                    {alert.recipients && JSON.parse(alert.recipients[0]).length > 3 && (
-                                        <span className="text-gray60">+{JSON.parse(alert.recipients[0]).length - 3}</span>
-                                    )}
-                                </td>
-                                <td className="p-2 lg:px-6">
-                                    <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
-                                        <div className="flex justify-center">
-                                            <IconButton
-                                                icon={alert.status === "active" ? "toggleActive" : "toggleInactive"}
-                                                onClick={() => toggleStatus(alert.alertID, alert.status, alert)}
-                                                style={{
-                                                    backgroundColor: "transparent",
-                                                    border: "none",
-                                                    padding: "0px",
-                                                }}
-                                            />
-                                        </div>
-                                        <div>
-                                            <IconButton icon={expandedAlertID === alert.alertID ? "hide" : "expand"} 
-                                            onClick={() => viewDetails(alert.alertID)} 
-                                            className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}/>
-                                        </div>
-                                        <div>
-                                            <IconButton icon="edit" 
-                                            onClick={() => editAlert(alert)} 
-                                            className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} />
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-        
-                            {expandedAlertID === alert.alertID && (
-                                <tr>
-                                    <td colSpan="5" className="px-3 py-2 lg:px-6 bg-gray20">
-                                        <div className="whitespace-pre-wrap text-start">
-                                            <div className="flex gap-1">
-                                                <p><strong>Recipients:</strong></p>
-                                                <ul>
-                                                    {alert.recipients && alert.recipients.length > 0 ? (
-                                                        alert.recipients.map((recipientID, idx) => {
-                                                            // Parse the string of IDs into an array
-                                                            const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
-                                                            // Map through each ID in the array
-                                                            return (
-                                                                <li key={idx} className="text-black">
-                                                                    {ids.map((id, idIdx) => {
-                                                                        let employee = allEmployees.find(e => e.value === id);
-                                                                        if (!employee)
-                                                                        {
-                                                                            employee = allDepartments.find(e => e.value === id);
-                                                                        }
-                                                                        return employee ? (
-                                                                            <span key={idIdx}>
-                                                                                {employee.label}
-                                                                                {idIdx < ids.length - 1 ? ", " : ""}
-                                                                            </span>
-                                                                        ) : (
-                                                                            <span key={idIdx}>
-                                                                                Unknown recipient
-                                                                                {idIdx < ids.length - 1 ? ", " : ""}
-                                                                            </span>
-                                                                        );
-                                                                    })}
-                                                                </li>
-                                                            );
-                                                        })
-                                                    ) : (
-                                                        <p>No recipients</p>
-                                                    )}
-                                                </ul>
-                                            </div>
-                                            
-                                            <div className="flex gap-1">
-                                                <p><strong>CC:</strong></p>
-                                                <ul>
-                                                    {alert.cc ? (
-                                                        <li className="text-black">{alert.cc}</li>
-                                                    ) : (
-                                                        <p className="text-black">No CC recipients</p>
-                                                    )}
-                                                </ul>
-                                            </div>
-
-                                            <p><strong>Description:</strong> {alert.description}</p>
-
-                                            <div className="flex gap-1">
-                                                <p><strong>Attachments:</strong></p>
-                                                {alert.attachments && alert.attachments.length > 0 ? (
-                                                    <div className="flex overflow-x-scroll gap-4">
-                                                        {alert.attachments.map((imgUrl, index) => (
-                                                            <img
-                                                                key={index}
-                                                                src={imgUrl}
-                                                                alt={`Alert Image ${index + 1}`}
-                                                                className="w-10 h-10 rounded-md object-cover"
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <p>No image available</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
-        
-                            {editMode === alert.alertID && (
-                                <tr>
-                                    <td colSpan="5" className="bg-gray20 p-4">
-                                        <input
-                                            type="text"
-                                            name="alertName"
-                                            value={editedAlert.alertName}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2 sm:text-xs"
-                                            style={{ fontSize: "14px", padding: ".2rem .35rem", borderRadius: "6px" }}
-                                        />
-                                        <textarea
-                                            name="description"
-                                            value={editedAlert.description}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2 mt-2 rounded-[6px] text-[14px] py-[0.25rem] px-[0.35rem]"
-                                        ></textarea>
-                                        {/* <div className="mt-1">
-                                            <div className="flex items-center gap-2">
-                                                <button
-                                                    onClick={() => document.getElementById("fileInput").click()}
-                                                    className="w-20 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
-                                                >
-                                                    Select Files
-                                                </button>
-                                                <input
-                                                    id="fileInput"
-                                                    type="file"
-                                                    multiple
-                                                    onChange={handleFileChange}
-                                                    className="hidden"
+            <div className="w-full overflow-x-auto">
+                <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed min-w-[500px]">
+                    <thead className="text-left">
+                        <tr className="text-[16px] text-gray50">
+                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Alert ID</th>
+                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "30%" }}>Alert Name</th>
+                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Send Date</th>
+                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}>Recipients</th>
+                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}></th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-[14px] text-left">
+                        {getPaginatedAlerts().map((alert, index) => (
+                            <React.Fragment key={alert.alertID}>
+                                <tr className={`border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
+                                    <td className="p-2 lg:px-6">{ alert.alertID }</td>
+                                    <td className="p-2 lg:px-6">{ alert.alertName }</td>
+                                    <td className="p-2 lg:px-6">{ alert.sentAt }</td>
+                                    <td className="p-2 lg:px-6 flex flex-col md:flex-row lg:h-12 items-center gap-1">
+                                        {alert.recipients && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
+                                            const id = recipientID;
+                                            const employee = allEmployees.find(e => e.value === id);
+                                            const label = employee ? employee.label : "Unknown";
+                                            const nameInitial = label && label.includes(" - ") ? label.split(" - ")[1].charAt(0) : "?";
+                                            return (
+                                                <Avatar 
+                                                    key={idx}
+                                                    name={nameInitial}
+                                                    round={true}
+                                                    size="30"
+                                                    textSizeRatio={2.5} 
                                                 />
-                                                <p className="text-[14px] text-gray40">
-                                                    {editedAlert.attachments.length > 0
-                                                        ? `${editedAlert.attachments.length} file(s) selected`
-                                                        : "No files selected"}
-                                                </p>
+                                            );
+                                        })}
+                                        {alert.recipients && JSON.parse(alert.recipients[0]).length > 3 && (
+                                            <span className="text-gray60">+{JSON.parse(alert.recipients[0]).length - 3}</span>
+                                        )}
+                                    </td>
+                                    <td className="p-2 lg:px-6">
+                                        <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
+                                            <div className="flex justify-center">
+                                                <IconButton
+                                                    icon={alert.status === "active" ? "toggleActive" : "toggleInactive"}
+                                                    onClick={() => toggleStatus(alert.alertID, alert.status, alert)}
+                                                    style={{
+                                                        backgroundColor: "transparent",
+                                                        border: "none",
+                                                        padding: "0px",
+                                                    }}
+                                                />
                                             </div>
                                             <div>
-                                                {editedAlert.attachments.map((file, index) => (
-                                                    <div key={index} className="w-3/5 flex items-center justify-between">
-                                                        <span className="truncate">{file instanceof File ? file.name : file}</span>
-                                                        <IconButton icon="delete" onClick={() => removeFile(file)} />
-                                                    </div>
-                                                ))}
+                                                <IconButton icon={expandedAlertID === alert.alertID ? "hide" : "expand"} 
+                                                onClick={() => viewDetails(alert.alertID)} 
+                                                className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}/>
                                             </div>
-                                        </div> */}
-                                        
-                                        <div className="mt-4 flex gap-2 justify-end">
-                                            <button
-                                                className="w-12 border bg-white text-black text-[12px] p-1 rounded-[6px] mt-0 border-gray20 hover-button"
-                                                onClick={() => setEditMode(null)}
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button
-                                                className="w-12 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
-                                                onClick={saveChanges}
-                                            >
-                                                Save
-                                            </button>
-                                            
+                                            <div>
+                                                <IconButton icon="edit" 
+                                                onClick={() => editAlert(alert)} 
+                                                className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} />
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
-                            )}
-                        </React.Fragment>
-                    ))}
-                </tbody>
-            </table>
-          
-            <div className="flex gap-4 justify-between items-center mt-4">
-                <div>
-                    <IconButton icon="previous" 
-                    onClick={goToPreviousPage}
-                    disabled={currentPage === 1} />
-                </div>
-                
-                <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
+            
+                                {expandedAlertID === alert.alertID && (
+                                    <tr>
+                                        <td colSpan="5" className="px-3 py-2 lg:px-6 bg-gray20">
+                                            <div className="whitespace-pre-wrap text-start">
+                                                <div className="flex gap-1">
+                                                    <p><strong>Recipients:</strong></p>
+                                                    <ul>
+                                                        {alert.recipients && alert.recipients.length > 0 ? (
+                                                            alert.recipients.map((recipientID, idx) => {
+                                                                // Parse the string of IDs into an array
+                                                                const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
+                                                                // Map through each ID in the array
+                                                                return (
+                                                                    <li key={idx} className="text-black">
+                                                                        {ids.map((id, idIdx) => {
+                                                                            let employee = allEmployees.find(e => e.value === id);
+                                                                            if (!employee)
+                                                                            {
+                                                                                employee = allDepartments.find(e => e.value === id);
+                                                                            }
+                                                                            return employee ? (
+                                                                                <span key={idIdx}>
+                                                                                    {employee.label}
+                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
+                                                                                </span>
+                                                                            ) : (
+                                                                                <span key={idIdx}>
+                                                                                    Unknown recipient
+                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
+                                                                                </span>
+                                                                            );
+                                                                        })}
+                                                                    </li>
+                                                                );
+                                                            })
+                                                        ) : (
+                                                            <p>No recipients</p>
+                                                        )}
+                                                    </ul>
+                                                </div>
+                                                
+                                                <div className="flex gap-1">
+                                                    <p><strong>CC:</strong></p>
+                                                    <ul>
+                                                        {alert.cc ? (
+                                                            <li className="text-black">{alert.cc}</li>
+                                                        ) : (
+                                                            <p className="text-black">No CC recipients</p>
+                                                        )}
+                                                    </ul>
+                                                </div>
 
-                <div>
-                    <IconButton icon="next" 
-                    onClick={goToNextPage}
-                    disabled={currentPage === totalPages} />
-                </div>
+                                                <p><strong>Description:</strong> {alert.description}</p>
+
+                                                <div className="flex gap-1">
+                                                    <p><strong>Attachments:</strong></p>
+                                                    {alert.attachments && alert.attachments.length > 0 ? (
+                                                        <div className="flex overflow-x-scroll gap-4">
+                                                            {alert.attachments.map((imgUrl, index) => (
+                                                                <img
+                                                                    key={index}
+                                                                    src={imgUrl}
+                                                                    alt={`Alert Image ${index + 1}`}
+                                                                    className="w-10 h-10 rounded-md object-cover"
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    ) : (
+                                                        <p>No image available</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )}
+            
+                                {editMode === alert.alertID && (
+                                    <tr>
+                                        <td colSpan="5" className="bg-gray20 p-4">
+                                            <input
+                                                type="text"
+                                                name="alertName"
+                                                value={editedAlert.alertName}
+                                                onChange={handleInputChange}
+                                                className="w-full p-2 sm:text-xs"
+                                                style={{ fontSize: "14px", padding: ".2rem .35rem", borderRadius: "6px" }}
+                                            />
+                                            <textarea
+                                                name="description"
+                                                value={editedAlert.description}
+                                                onChange={handleInputChange}
+                                                className="w-full p-2 mt-2 rounded-[6px] text-[14px] py-[0.25rem] px-[0.35rem]"
+                                            ></textarea>
+                                            {/* <div className="mt-1">
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        onClick={() => document.getElementById("fileInput").click()}
+                                                        className="w-20 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
+                                                    >
+                                                        Select Files
+                                                    </button>
+                                                    <input
+                                                        id="fileInput"
+                                                        type="file"
+                                                        multiple
+                                                        onChange={handleFileChange}
+                                                        className="hidden"
+                                                    />
+                                                    <p className="text-[14px] text-gray40">
+                                                        {editedAlert.attachments.length > 0
+                                                            ? `${editedAlert.attachments.length} file(s) selected`
+                                                            : "No files selected"}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    {editedAlert.attachments.map((file, index) => (
+                                                        <div key={index} className="w-3/5 flex items-center justify-between">
+                                                            <span className="truncate">{file instanceof File ? file.name : file}</span>
+                                                            <IconButton icon="delete" onClick={() => removeFile(file)} />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div> */}
+                                            
+                                            <div className="mt-4 flex gap-2 justify-end">
+                                                <button
+                                                    className="w-12 border bg-white text-black text-[12px] p-1 rounded-[6px] mt-0 border-gray20 hover-button"
+                                                    onClick={() => setEditMode(null)}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    className="w-12 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
+                                                    onClick={saveChanges}
+                                                >
+                                                    Save
+                                                </button>
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </tbody>
+                </table>
+            
+                
             </div>
+            <div className="flex gap-4 justify-between items-center mt-4">
+                    <div>
+                        <IconButton icon="previous" 
+                        onClick={goToPreviousPage}
+                        disabled={currentPage === 1} />
+                    </div>
+                    
+                    <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
+
+                    <div>
+                        <IconButton icon="next" 
+                        onClick={goToNextPage}
+                        disabled={currentPage === totalPages} />
+                    </div>
+                </div>
         </div>
     );
 };
