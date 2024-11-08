@@ -9,6 +9,7 @@ import "react-clock/dist/Clock.css";
 import axios from "../api/axios";
 import "../index.css";
 import { IconButton } from "./ui/button";
+import Avatar from "react-avatar";
 
 const MAX_NOTE_LENGTH = 300;
 
@@ -17,7 +18,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         alertName: "", 
         description: "", 
         recipients: [], 
-        cc: [],
+        cc: "",
         attachments: [] 
     });
     const [recipients, setRecipients] = useState([]);
@@ -81,15 +82,21 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };    
 
     const handleCCChange = (e) => {
-        const ccEmails = e.target.value
-            .split(",")
-            .map(email => email.trim())
-            .filter(email => email !== "");
-
+        const email = e.target.value.trim();
         setAlertData((prev) => ({
             ...prev,
-            cc: ccEmails,
+            cc: email,
         }));
+    };
+
+    const validateEmailFormat = () => {
+        const { cc } = alertData;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (cc && !emailRegex.test(cc)) {
+            console.error("Invalid email format");
+            setAlertData((prev) => ({ ...prev, cc: "" }));
+            alert("Please enter a valid email format for CC.");
+        }
     };
 
     // Use react-dropzone to upload files
@@ -100,7 +107,6 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         }));
     }, []);
     
-
     const { getRootProps, getInputProps } = useDropzone({ 
         onDrop,
         accept: "image/*", 
@@ -133,7 +139,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         formData.append("companyID", companyID);
         formData.append("scheduleTime", dateTime ? dateTime.toISOString() : null);
         formData.append("recipients", JSON.stringify(alertData.recipients));
-        formData.append("cc", JSON.stringify(alertData.cc));
+        formData.append("cc", alertData.cc);
 
         if (alertData.attachments.length > 0) {
             alertData.attachments.forEach((file) => {
@@ -240,8 +246,9 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                         type="text"
                         name="cc"
                         placeholder="name@helpmet.com"
-                        value={alertData.cc.join(", ")}
+                        value={alertData.cc || ""}
                         onChange={handleCCChange}
+                        onBlur={validateEmailFormat}
                         className="bg-gray10 border border-gray20 placeholder-text"
                         style={{ fontSize: "14px", padding: ".3rem .45rem", borderRadius: "8px" }}
                     />
@@ -264,7 +271,15 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                 <ul>
                                 {selectedRecipients.map((recipient) => (
                                     <li key={recipient.value} className="flex items-center justify-between px-2 py-1 text-[14px]">
-                                        <span>{recipient.label}</span>
+                                        <div className="flex gap-2 items-center">
+                                            <Avatar
+                                            name={recipient.label.split(" - ")[1].charAt(0)}
+                                            round={true}
+                                            size="35"
+                                            textSizeRatio={2.5}
+                                            />
+                                            <span>{recipient.label}</span>
+                                        </div>
                                         <div>
                                             <IconButton icon="close" 
                                             onClick={() => handleRecipientSelection(recipient)}

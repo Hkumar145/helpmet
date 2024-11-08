@@ -31,11 +31,11 @@ Thank you.`,
   }
 };
 
-const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc = [], attachments }) => {
+const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc, attachments }) => {
   const mailOptions = {
     from: senderEmail,
     to: recipient.email,
-    cc: cc.length > 0 ? cc : [],
+    cc: cc || undefined,
     subject: `Alert: ${alertDetails.alertName}`,
     text: `${alertDetails.description}`,
     // attachments: attachments
