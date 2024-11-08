@@ -397,9 +397,6 @@ const Dashboard = () => {
                 <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
-
-
-
                 {/* <ReportsByLocation/> */}
             </div>
         </div>

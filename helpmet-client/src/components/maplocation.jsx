@@ -6,7 +6,7 @@ const MapLocation = ({ onCoordinatesChange }) => { // Accept callback as a prop
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerRef = useRef(null);
-  const [markerPosition, setMarkerPosition] = useState([49.225693, 23.107326]);
+  const [markerPosition, setMarkerPosition] = useState([49.225693, 3.107326]);
 
   useEffect(() => {
     // Initialize map
