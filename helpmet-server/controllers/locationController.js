@@ -201,6 +201,24 @@ exports.getLocationsByCompany = async (req, res) => {
 };
 
 // Get specific location details by locationID
+// exports.getLocationByID = async (req, res) => {
+//     try {
+//         const location = await Location.findOne({ locationID: req.params.id });
+//         if (!location) {
+//             return res.status(404).json({ message: "Location not found" });
+//         }
+//         res.json({
+//             locationID: location.locationID,
+//             locationName: location.locationName,
+//             companyID: location.companyID,
+//             coordinates: location.location.coordinates
+//         });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
+
+
 exports.getLocationByID = async (req, res) => {
     try {
         const location = await Location.findOne({ locationID: req.params.id })
