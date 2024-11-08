@@ -4,7 +4,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-import MapComponent from './MapComponent';
+import HeatMap from './HeatMap';
 
 Chart.register(ArcElement, Tooltip, Legend);
 

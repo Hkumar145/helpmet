@@ -7,6 +7,7 @@ exports.createLocation = async (req, res) => {
 
     try {
         // Validate input
+        console.log(coordinates);
         if (!locationName) {
             return res.status(400).json({ message: "Location name is required" });
         }
@@ -28,7 +29,9 @@ exports.createLocation = async (req, res) => {
             locationID: `L${nextLocationNumber.toString().padStart(4, "0")}`,
             locationName,
             companyID,
-            location: { type: "Point", coordinates }
+            location: { type: "Point", coordinates },
+            managerID,
+
         });
         await newLocation.save();
         res.status(201).json({ message: "Location created successfully" });

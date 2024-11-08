@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import BarChart from "../components/BarChart"
 import LineChart from "../components/LineChart"
 import { DateTime } from 'luxon';
-import MapComponent from '@/components/MapComponent';
+import HeatMap from "../components/HeatMap";
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
 import SiteAgentTable from "@/components/SiteAgentTable"
@@ -375,7 +375,7 @@ const Dashboard = () => {
                      <ReportsByLocation/>
                 </div>
                 <SiteAgentTable/>
-                <MapComponent/>
+                <HeatMap/>
 
         </div>
            
