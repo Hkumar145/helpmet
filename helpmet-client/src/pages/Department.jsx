@@ -48,10 +48,10 @@ const Department = () => {
         <h1 className='text-lg font-bold text-black'>Departments</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <button className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4'>Create New Department</button>
+            <button className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4'>Add New Department</button>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle>Create New Department</DialogTitle>
+            <DialogTitle>Add New Department</DialogTitle>
             <DialogDescription>Add a new department to the system.</DialogDescription>
             <CreateDepartment />
           </DialogContent>
