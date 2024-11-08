@@ -54,13 +54,13 @@ const Report = () => {
   };
 
   return (
-    <div className='w-full flex flex-col gap-4 px-6'>
+    <div className='w-full flex flex-col px-6'>
       <div className='flex flex-row items-center justify-between gap-4'>
         <h1 className='text-lg text-black md:text-2xl'>Report</h1>
         <div className='flex gap-2'>
           <Dialog>
             <DialogTrigger asChild>
-              <button className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">
+              <button className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">
                 New Report
               </button>
             </DialogTrigger>
@@ -73,7 +73,7 @@ const Report = () => {
           </Dialog>
           <button
             onClick={handleViewPendingReports}
-            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4"
+            className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
           >
             Pending Report
           </button>
