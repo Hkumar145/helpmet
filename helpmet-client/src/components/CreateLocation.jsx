@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
-import MapComponent from '@/components/MapComponent';
+import MapLocation from '@/components/MapLocation';
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -16,17 +16,18 @@ const CreateLocation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate coordinates is an array with exactly 2 elements
-    if (!Array.isArray(coordinates) || coordinates.length !== 2) {
-      alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
-      return;
-    }
+    // if (!Array.isArray(coordinates) || coordinates.length !== 2) {
+    //   alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+    //   return;
+    // }
 
-    // Ensure coordinates are valid numbers
-    if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
-      alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
-      return;
-    }
+    // // Ensure coordinates are valid numbers
+    // if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
+    //   alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
+    //   return;
+    // }
 
+    if(coordinates.length === 2){}
     const locationData = {
       locationID,
       locationName,
@@ -39,7 +40,7 @@ const CreateLocation = () => {
     console.log("Coordinates:", coordinates);
     console.log("Location Data:", JSON.stringify(locationData, null, 2));
     try {
-      const response = await axios.post(`/companies/${companyID}/locations`, {
+      const response = await axios.post(`/companies/${companyID}/createlocations`, {
         locationName,
         coordinates,
         managerID: parseInt(managerID)
@@ -104,14 +105,14 @@ const CreateLocation = () => {
         />
 
         <div className="w-full h-[400px] rounded-lg">
-          <MapComponent onCoordinatesChange={handleMapCoordinatesChange} />
+          <MapLocation onCoordinatesChange={handleMapCoordinatesChange} />
         </div>
 
         <div className='flex flex-row justify-between gap-4'>
           <DialogClose asChild>
-            <button type="button" className="text-black border px-6">Close</button>
+            <button type="button" className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]">Close</button>
           </DialogClose>
-          <button type="submit" className='bg-slate-600 hover:opacity-80 w-full text-white'>Create Location</button>
+          <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>Create Location</button>
         </div>
       </form>
     </main>

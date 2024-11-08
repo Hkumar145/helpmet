@@ -57,7 +57,7 @@ const Alert = () => {
     };
 
     return (
-        <div className="flex flex-col gap-4 w-full lg:w-3/4">
+        <div className="flex flex-col gap-4 w-full p-6">
             <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
                 <h1 className="text-black text-[32px] font-bold">Alerts</h1>
                 
