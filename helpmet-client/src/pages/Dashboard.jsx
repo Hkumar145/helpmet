@@ -10,6 +10,7 @@ import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
 import BackToTopButton from '../components/BackToTopButton';
 import EquipmentStatusPieChart from "@/components/EquipmentStatusPieChart"
+import SiteAgentTable from "@/components/SiteAgentTable"
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
@@ -398,6 +399,7 @@ const Dashboard = () => {
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
                 {/* <ReportsByLocation/> */}
+                <SiteAgentTable/>
             </div>
         </div>
         <BackToTopButton />
