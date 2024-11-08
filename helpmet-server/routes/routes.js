@@ -93,7 +93,7 @@ router.delete("/employees/:id", deleteEmployeeByID);
 
 /***************   Report Routes   ***************/
 // Submit a new pending report
-router.post("/reports/submit", upload.single('image'), submitReport);
+router.post("/reports/submit", upload.array('image', 5), submitReport);
 
 // Review a pending report
 router.put("/reports/review", reviewPendingReport);
@@ -123,7 +123,7 @@ router.get("/reports/pending/:_id", getPendingReportByID);
 router.get("/update-report/:_id", getSubmittedReportByID);
 
 // Update pending report details by MongoDB _id
-router.put("/update-report/:_id", upload.single('image'), updatePendingReportByID);
+router.put("/update-report/:_id", upload.array('image', 5), updatePendingReportByID);
 
 // Move approved report from pendingreports to reports collection
 router.post("/reports/approve", approveReport);
