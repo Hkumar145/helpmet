@@ -192,7 +192,8 @@ exports.getLocationsByCompany = async (req, res) => {
         res.json(locations.map(loc => ({
             locationID: loc.locationID,
             locationName: loc.locationName,
-            coordinates: loc.location.coordinates
+            coordinates: loc.location.coordinates,
+            managerID: loc.managerID
         })));
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -202,20 +203,25 @@ exports.getLocationsByCompany = async (req, res) => {
 // Get specific location details by locationID
 exports.getLocationByID = async (req, res) => {
     try {
-        const location = await Location.findOne({ locationID: req.params.id });
+        const location = await Location.findOne({ locationID: req.params.id })
+            .populate({ path: 'managerID', select: 'firstName lastName' });
+
         if (!location) {
             return res.status(404).json({ message: "Location not found" });
         }
+
         res.json({
             locationID: location.locationID,
             locationName: location.locationName,
             companyID: location.companyID,
-            coordinates: location.location.coordinates
+            coordinates: location.location.coordinates,
+            managerName: location.managerID ? `${location.managerID.firstName} ${location.managerID.lastName}` : 'N/A'
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Update a location's details by locationID
 exports.updateLocationByID = async (req, res) => {
