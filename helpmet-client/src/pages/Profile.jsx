@@ -67,7 +67,7 @@ const Profile = () => {
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-2xl font-semibold text-center text-white'>Profile</h1>
+      <h1 className='text-2xl font-semibold text-center text-black'>Profile</h1>
       <form onSubmit={handleUpdate} className='flex flex-col gap-4'>
         <input
           type="file" ref={fileRef} hidden accept='image/*'
@@ -104,7 +104,7 @@ const Profile = () => {
           Update
         </button>
       </form>
-      <div className='flex justify-between mt-5 text-white'>
+      <div className='flex justify-between mt-5 text-black'>
         <span className='cursor-pointer mx-auto' onClick={handleLogout}>
           Logout
         </span>
