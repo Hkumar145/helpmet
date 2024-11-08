@@ -6,14 +6,14 @@ const MapLocation = ({ onCoordinatesChange }) => { // Accept callback as a prop
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerRef = useRef(null);
-  const [markerPosition, setMarkerPosition] = useState([0, 0]);
+  const [markerPosition, setMarkerPosition] = useState([49.225693, 23.107326]);
 
   useEffect(() => {
     // Initialize map
     mapInstance.current = tt.map({
       key: 'oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz',
       container: mapRef.current,
-      center: [0, 0],
+      center: [49.225693, -83.107326],
       zoom: 2
     });
 
