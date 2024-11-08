@@ -121,6 +121,7 @@ import EquipmentList from '../components/EquipmentList';
 import CreateEquipment from '../components/CreateEquipment';
 import UpdateEquipment from '../components/UpdateEquipment';
 import EquipmentDetail from '../components/EquipmentDetail';
+import { useSelector } from 'react-redux'
 
 const companyID = 100001; // Declare the company ID
 
@@ -129,6 +130,7 @@ const EquipmentCheck = () => {
   const [viewMode, setViewMode] = useState('list'); // 'list', 'create', or 'update'
   const [selectedEquipment, setSelectedEquipment] = useState(null); // To hold details of the selected equipment
   const [error, setError] = useState(''); // Error state for handling API errors
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   // Fetch all equipments
   const fetchEquipments = async () => {

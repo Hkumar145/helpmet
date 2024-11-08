@@ -33,6 +33,7 @@ const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
                 text: title,
                 color: 'black',
                 font: {
+                    family: 'Fira Sans, sans-serif',
                     size: 18,
                 },
             },
@@ -46,6 +47,12 @@ const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
                         const count = tooltipItem.raw;
                         return count <= 1 ? `${count} Injury` : `${count} Injuries`;
                     },
+                },
+                titleFont: {
+                    family: 'Fira Sans, sans-serif',
+                },
+                bodyFont: {
+                    family: 'Fira Sans, sans-serif',
                 },
                 displayColors: false
             },
