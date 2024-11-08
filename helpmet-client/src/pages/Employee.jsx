@@ -82,7 +82,7 @@ const Employee = () => {
               {/* <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td> */}
               <td className="px-0 py-2 md:px-4">{employee.departmentID}</td>
               {/* <td className="px-4 py-2">{employee.role}</td> */}
-              <td className="pr-2 py-2 md:py-2 md:px-2 flex flex-col md:flex-row gap-2 max-w-max my-6 md:my-0">
+              <td className="pr-2 py-2 md:px-4 flex flex-row gap-2 my-6 md:my-0 justify-end md:mr-5">
                 <Dialog onOpenChange={(open) => { if (!open) setSelectedEmployeeID(null); }}>
                     <DialogTrigger asChild>
                       <button className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]' onClick={() => handleEditEmployee(employee.employeeID)}>
