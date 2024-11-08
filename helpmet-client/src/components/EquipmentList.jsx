@@ -77,7 +77,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
   };
 
   return (
-    <div style={{ marginTop: '20px' }}>
+    <div style={{ marginTop: '0px' }}>
       <table
         style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', color: '#333' }}
         className="equipment-table"
@@ -209,3 +209,5 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
 };
 
 export default EquipmentList;
+
+
