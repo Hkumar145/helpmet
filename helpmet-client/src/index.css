@@ -287,7 +287,7 @@ input::-webkit-inner-spin-button {
   border-radius: 15px ;
 }
 
-.label-completed {
+/* .label-completed {
   background: #E6F8EF;
   color: #055E39;
 }
@@ -300,7 +300,7 @@ input::-webkit-inner-spin-button {
 .label-onhold {
   background: #FFF4E5;
   color: #B45800;
-}
+} */
 
 .label-severity-1 {
   background: #E7F8E8;

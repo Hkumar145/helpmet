@@ -293,13 +293,13 @@ const InjuryAnalytics = () => {
     }, [selectedBar]);
 
   return (
-    <div>
-        <h1 className="w-[100%] font-bold mb-8 text-left">
+    <div className="w-full flex flex-col gap-4 px-6">
+        <h1 className="w-full font-bold mb-2 text-left">
             Injury Analytics - Injury Overview
         </h1>
-        <div className="flex flex-col gap-6 lg:gap-2 items-center justify-center md:flex-row flex-wrap">
+        <div className="flex flex-col w-full gap-4 lg:gap-2 items-center justify-center md:flex-row md:flex-wrap">
 
-                <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center h-[300px] w-[396px]">
+                <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center h-[300px] w-[386px]">
                     <BarChart
                         chartData={filteredWeeklyInjuryData}
                         barName={dayTypeName}
@@ -313,7 +313,7 @@ const InjuryAnalytics = () => {
                     </div>
                 </div>
                 
-                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[386px]">
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -332,7 +332,7 @@ const InjuryAnalytics = () => {
                     )}
                 </div>
 
-                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[386px]">
                     <BarChart
                         chartData={filteredInjuryTypeData}
                         barName={injuryTypeMapping}
@@ -356,9 +356,9 @@ const InjuryAnalytics = () => {
         </div>
        
         {showTable && (
-            <div className="mt-8 text-black">
+            <div className="mt-8 text-black w-full overflow-x-scroll">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
-                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm overflow-x-scroll">
+                <table className="w-full bg-white text-black mt-4 rounded-lg text-sm text-nowrap">
                     <thead>
                         <tr>
                             <th className="px-2 py-2 md:px-8">Injury Type</th>

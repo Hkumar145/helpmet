@@ -79,11 +79,11 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
   return (
     <div style={{ marginTop: '20px' }}>
       <table
-        style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', color: '#333' }}
+        style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', color: '#333', backgroundColor: '#FFF' }}
         className="equipment-table"
       >
         <thead>
-          <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center' }}>
+          <tr style={{ backgroundColor: '#FFF', textAlign: 'center' }}>
             <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Equipment Name</th>
             <th style={{ padding: '12px', borderBottom: '1px solid #ddd' }}>Equipment ID</th>
             <th
