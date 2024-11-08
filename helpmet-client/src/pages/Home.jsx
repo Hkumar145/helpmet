@@ -123,7 +123,7 @@ const Home = () => {
       
 
 
-    
+    <p className='text-center'>© 2024 PIKA PRODUCTIONS</p>
     </div>
   )
 }
