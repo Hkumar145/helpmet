@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import tt from '@tomtom-international/web-sdk-maps';
 import '@tomtom-international/web-sdk-maps/dist/maps.css';
 
-const MapComponent = ({ onCoordinatesChange }) => { // Accept callback as a prop
+const MapLocation = ({ onCoordinatesChange }) => { // Accept callback as a prop
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerRef = useRef(null);
@@ -86,4 +86,4 @@ const MapComponent = ({ onCoordinatesChange }) => { // Accept callback as a prop
   );
 };
 
-export default MapComponent;
+export default MapLocation;
