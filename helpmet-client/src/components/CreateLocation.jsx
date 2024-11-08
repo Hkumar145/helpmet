@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
-import MapComponent from '@/components/MapComponent';
+import maplocation from '@/components/maplocation';
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -104,7 +104,7 @@ const CreateLocation = () => {
         />
 
         <div className="w-full h-[400px] rounded-lg">
-          <MapComponent onCoordinatesChange={handleMapCoordinatesChange} />
+          <maplocation onCoordinatesChange={handleMapCoordinatesChange} />
         </div>
 
         <div className='flex flex-row justify-between gap-4'>
