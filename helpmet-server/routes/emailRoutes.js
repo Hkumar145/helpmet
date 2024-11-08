@@ -56,28 +56,48 @@ emailRouter.post("/send-approval-email", async (req, res) => {
   }
 });
 
+// Send a one-time alert email (immediate or scheduled)
 emailRouter.post("/send-alert-email", async (req, res) => {
-  const { recipients, senderEmail, alertDetails, cc, attachments } = req.body;
-  try {
-    
-    if (!recipients || recipients.length === 0) {
-      return res.status(400).send({ error: "No valid recipient emails found." });
+  const { recipients, senderEmail, alertDetails, cc, attachments, scheduleTime } = req.body;
+  const now = new Date();
+  const firstSendTime = scheduleTime ? new Date(scheduleTime) : now;
+  const delay = Math.max(firstSendTime - now, 0);
+
+  if (delay < 0 && !scheduleTime) {
+    return res.status(400).send({ error: "Scheduled time must be in the future" });
+  }
+
+  const sendEmails = async () => {
+    try {
+      if (!recipients || recipients.length === 0) {
+        return res.status(400).send({ error: "No valid recipient emails found." });
+      }
+      await Promise.all(
+        recipients.map((recipientEmail) =>
+          sendAlertEmail({
+            recipient: { email: recipientEmail },
+            senderEmail,
+            alertDetails,
+            cc,
+            attachments: attachments || []
+          })
+        )
+      );
+ 
+      console.log("Emails sent successfully.");
+    } catch (error) {
+      console.error("Error sending alert emails:", error);
     }
-    await Promise.all(
-      recipients.map((recipientEmail) =>
-        sendAlertEmail({
-          recipient: { email: recipientEmail },
-          senderEmail,
-          alertDetails,
-          cc,
-          // attachments
-        })
-      )
-    );
-    res.status(200).send({ message: "Alert emails sent successfully" });
-  } catch (error) {
-    console.error("Error sending alert emails:", error);
-    res.status(500).send({ error: error.message });
+  };
+
+  if (delay > 0) {
+    setTimeout(async () => {
+      await sendEmails();
+    }, delay);
+    res.status(200).send({ message: `Emails scheduled to be sent at ${scheduleTime}` });
+  } else {
+    await sendEmails();
+    res.status(200).send({ message: "Emails sent immediately" });
   }
 });
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../api/axios";
-
+import { IconButton } from "./ui/button";
+import { useSelector } from "react-redux";
 
 const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const [expandedAlertID, setExpandedAlertID] = useState(null);
@@ -10,6 +11,9 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const [editMode, setEditMode] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+    const senderEmail = useSelector((state) => state.user.email);
+    const [intervals, setIntervals] = useState({});
+
     // Fetch recipients (employees or departments) based on recipientType
     useEffect(() => {
         const fetchRecipients = async () => {
@@ -51,6 +55,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     // Handle edit mode
     const editAlert = (alert) => {
         setEditMode(alert.alertID);
+        setExpandedAlertID(null);
         setEditedAlert({
             ...alert,
             recipients: alert.recipients || [],
@@ -68,13 +73,36 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const saveChanges = async () => {
         try {
             await axios.put(`/alerts/${editedAlert.alertID}`, editedAlert);
+            alert("Alert updated successfully!");
             setEditMode(null);
             fetchAlerts();
         } catch (error) {
             console.error("Error saving alert:", error);
         }
     };
-
+    // const saveChanges = async () => {
+    //     const formData = new FormData();
+    //     formData.append("alertName", editedAlert.alertName);
+    //     formData.append("description", editedAlert.description);
+    //     // formData.append("existingAttachments", editedAlert.attachments);
+    
+    //     try {
+    //         await axios.put(`/alerts/${editedAlert.alertID}`, formData, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data",
+    //             },
+    //         });
+    //         alert("Alert updated successfully!");
+    //         setEditMode(null);
+    //         fetchAlerts();
+    //     } catch (error) {
+    //         console.error("Error saving alert:", error);
+    //         if (error.response && error.response.data) {
+    //             console.error("Server error message:", error.response.data);
+    //         }
+    //     }
+    // };
+    
     // Handle file input changes
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -105,126 +133,208 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const viewDetails = (alertID) => {
         if (expandedAlertID === alertID) {
             setExpandedAlertID(null);
+            // console.log(alerts)
         } else {
             setExpandedAlertID(alertID);
+            setEditMode(null);
         }
     };
 
-    const toggleStatus = async (alertID) => {
+    const toggleStatus = async (alertID, currentStatus, alertItem) => {
+        const newStatus = currentStatus === "active" ? "deactive" : "active";
         try {
-            await axios.put(`/alerts/${alertID}/status`);
-            fetchAlerts();
+            await axios.put(`/alerts/${alertID}`, { status: newStatus });
+            fetchAlerts(); 
+
+            if (newStatus === "active") {
+                console.log(`Setting up interval for alert ID: ${alertID}`);
+                const intervalId = setInterval(async () => {
+                    try {
+                        const recipientsResponse = await axios.get(`/companies/${companyID}/employees`);
+                        const allEmployees = recipientsResponse.data;
+                        console.log("Fetched employees:", allEmployees);
+                        const recipientEmails = allEmployees.filter((employee) => {
+                            return alertItem.recipients.some((recipientID) => {
+                                try {
+                                    const ids = Array.isArray(JSON.parse(recipientID)) ? JSON.parse(recipientID) : [recipientID];
+                                    return ids.includes(employee.employeeID);
+                                } catch (error) {
+                                    return recipientID === employee.employeeID;
+                                }
+                            });
+                        })
+                        .map((employee) => employee.email);
+
+                        if (recipientEmails.length === 0) {
+                            console.warn("No valid recipient emails found for alert:", alertID);
+                            return;
+                        }
+
+                        await axios.post("/email/send-alert-email", {
+                            recipients: recipientEmails,
+                            senderEmail,
+                            alertDetails: {
+                                alertName: alertItem.alertName,
+                                description: alertItem.description,
+                            },
+                            cc: alertItem.cc,
+                            scheduleTime: new Date().toISOString(),
+                            alertID: alertID,
+                        });
+
+                        console.log(`Repeated email sent for alert ID: ${alertID}`);
+                    } catch (error) {
+                        console.error("Error in repeated email sending:", error);
+                    }
+                }, 7 * 24 * 60 * 60 * 1000); // Repeat sending alert in 7 days
+
+                // Store interval ID for clearing later
+                setIntervals((prev) => ({ ...prev, [alertID]: intervalId }));
+            } else {
+                // Clear interval
+                clearInterval(intervals[alertID]);
+                setIntervals((prev) => {
+                    const newIntervals = { ...prev };
+                    delete newIntervals[alertID];
+                    return newIntervals;
+                });
+                console.log(`Cleared interval for alert ID: ${alertID}`);
+            }
+            
         } catch (error) {
             console.error("Error updating status:", error);
         }
     };
-
+    
     return (
-        <div>
+        <div className="flex flex-col items-center justify-center">
             <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed">
-                <thead className="text-center">
-                    <tr className="text-xs lg:text-lg transition-all duration-300">
-                        <th className="text-black fontbold p-1" style={{ width: "20%" }}>Alert ID</th>
-                        <th className="text-black font-bold p-1" style={{ width: "40%" }}>Alert Name</th>
-                        <th className="text-black font-bold p-1" style={{ width: "20%" }}>Date sent</th>
-                        <th className="text-black font-bold p-1" style={{ width: "20%" }}>Actions</th>
+                <thead className="text-left">
+                    <tr className="text-[16px] text-gray40">
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "15%" }}>Alert ID</th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "40%" }}>Alert Name</th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "20%" }}>Date sent</th>
+                        <th className="py-3 px-3 lg:px-6 font-bold" style={{ width: "25%" }}></th>
                     </tr>
                 </thead>
-                <tbody className="text-xs lg:text-sm transition-all duration-300 text-center">
-                    {getPaginatedAlerts().map((alert) => (
+                <tbody className="text-[14px] text-left">
+                    {getPaginatedAlerts().map((alert, index) => (
                         <React.Fragment key={alert.alertID}>
-                            <tr className="border-t border-gray-700">
-                                <td className="p-1 w-1/4 md:w-1/5 lg:w-1/4">{ alert.alertID }</td>
-                                <td className="p-1 w-1/2 md:w-2/5 lg:w-1/2">{ alert.alertName }</td>
-                                <td className="p-1 w-1/4 md:w-1/5 lg:w-1/4">{ alert.sentAt }</td>
-                                <td className="p-1 w-full md:w-1/5 lg:w-1/4">
-                                    <div className="flex flex-col md:flex-row gap-2 justify-center">
-                                        <button 
-                                            className="text-xs lg:text-sm transition-all duration-300 bg-blue-500 text-white px-2 lg:px-4 py-1 rounded mt-0"
-                                            onClick={() => viewDetails(alert.alertID)}>
-                                                {expandedAlertID === alert.alertID ? "Hide" : "View"}
-                                        </button>
-                                        <button
-                                            className="text-xs lg:text-sm transition-all duration-300 bg-green-500 text-white px-2 lg:px-4 py-1 rounded mt-0"
-                                            onClick={() => editAlert(alert)}
-                                        >Edit
-                                        </button>
-                                        {/* <button 
-                                            onClick={() => toggleStatus(alert.alertID)} 
-                                            className={`text-sm p-2 mt-0 rounded-lg ${alert.status === "active" ? "bg-red-500" : "bg-green-500"} text-white`}>
-                                            {alert.status === "active" ? "Deactivate" : "Activate"}
-                                        </button> */}
+                            <tr className={`h-14 border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
+                                <td className="py-1 px-3 lg:px-6">{ alert.alertID }</td>
+                                <td className="py-1 px-3 lg:px-6">{ alert.alertName }</td>
+                                <td className="py-1 px-3 lg:px-6">{ alert.sentAt }</td>
+                                <td className="py-1 px-3 lg:px-6">
+                                    <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
+                                        <div className="flex justify-center">
+                                            <IconButton
+                                                icon={alert.status === "active" ? "toggleActive" : "toggleInactive"}
+                                                onClick={() => toggleStatus(alert.alertID, alert.status, alert)}
+                                                style={{
+                                                    backgroundColor: "transparent",
+                                                    border: "none",
+                                                    padding: "0px",
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <IconButton icon={expandedAlertID === alert.alertID ? "hide" : "expand"} 
+                                            onClick={() => viewDetails(alert.alertID)} 
+                                            className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}/>
+                                        </div>
+                                        <div>
+                                            <IconButton icon="edit" 
+                                            onClick={() => editAlert(alert)} 
+                                            className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} />
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
         
                             {expandedAlertID === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="p-2 bg-gray-300">
+                                    <td colSpan="4" className="px-3 py-2 lg:px-6 bg-gray20">
                                         <div className="whitespace-pre-wrap text-start">
-                                            <p><strong>Recipients:</strong></p>
-                                            <ul className="border-b-2 border-gray-500 mb-2">
-                                              
-                                                {alert.recipients && alert.recipients.length > 0 ? (
-                                                    alert.recipients.map((recipientID, idx) => {
-                                                        // Parse the string of IDs into an array
-                                                        const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
-                                                        
-                                                        // Map through each ID in the array
-                                                        return (
-                                                            <li key={idx} className="text-black">
-                                                                {ids.map((id, idIdx) => {
-                                                                    let employee = allEmployees.find(e => e.value === id);
-                                                                    if (!employee)
-                                                                    {
-                                                                        employee = allDepartments.find(e => e.value === id);
-                                                                    }
-                                                                    console.log(employee);
-                                                                    return employee ? (
-                                                                        <span key={idIdx}>
-                                                                            {employee.label}
-                                                                            {idIdx < ids.length - 1 ? ", " : ""}
+                                            <div className="flex gap-1">
+                                                <p><strong>Recipients:</strong></p>
+                                                <ul>
+                                                    {alert.recipients && alert.recipients.length > 0 ? (
+                                                        alert.recipients.map((recipientID, idx) => {
+                                                            // Parse the string of IDs into an array
+                                                            const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
+                                                            // Map through each ID in the array
+                                                            return (
+                                                                <li key={idx} className="text-black">
+                                                                    {ids.map((id, idIdx) => {
+                                                                        let employee = allEmployees.find(e => e.value === id);
+                                                                        if (!employee)
+                                                                        {
+                                                                            employee = allDepartments.find(e => e.value === id);
+                                                                        }
+                                                                        return employee ? (
+                                                                            <span key={idIdx}>
+                                                                                {employee.label}
+                                                                                {idIdx < ids.length - 1 ? ", " : ""}
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span key={idIdx}>
+                                                                                Unknown recipient
+                                                                                {idIdx < ids.length - 1 ? ", " : ""}
+                                                                            </span>
+                                                                        );
+                                                                    })}
+                                                                </li>
+                                                            );
+                                                        })
+                                                    ) : (
+                                                        <p>No recipients</p>
+                                                    )}
+                                                </ul>
+                                            </div>
+                                            
+                                            <div className="flex gap-1">
+                                                <p><strong>CC:</strong></p>
+                                                <ul>
+                                                    {alert.cc && alert.cc.length > 0 ? (
+                                                        alert.cc.map((email, idx) => {
+                                                            const parsedEmails = email[0] === "[" ? JSON.parse(email) : [email];
+                                                            return (
+                                                                <li key={idx} className="text-black">
+                                                                    {parsedEmails.map((parsedEmail, emailIdx) => (
+                                                                        <span key={emailIdx}>
+                                                                            {parsedEmail}
+                                                                            {emailIdx < parsedEmails.length - 1 ? ", " : ""}
                                                                         </span>
-                                                                    ) : (
-                                                                        <span key={idIdx}>
-                                                                            Unknown recipient
-                                                                            {idIdx < ids.length - 1 ? ", " : ""}
-                                                                        </span>
-                                                                    );
-                                                                })}
-                                                            </li>
-                                                        );
-                                                    })
-                                                ) : (
-                                                    <p>No recipients</p>
-                                                )}
-                                            </ul>
-                                       
-                                            <p><strong>CC:</strong></p>
-                                            <ul className="border-b-2 border-gray-500 mb-2">
-                                                {alert.cc && alert.cc.length > 0 ? (
-                                                    alert.cc.map((email, idx) => {
-                                                        const parsedEmails = email[0] === "[" ? JSON.parse(email) : [email];
-                                                        return (
-                                                            <li key={idx} className="text-black">
-                                                                {parsedEmails.map((parsedEmail, emailIdx) => (
-                                                                    <span key={emailIdx}>
-                                                                        {parsedEmail}
-                                                                        {emailIdx < parsedEmails.length - 1 ? ", " : ""}
-                                                                    </span>
-                                                                ))}
-                                                                {idx < alert.cc.length - 1 ? ", " : ""}
-                                                            </li>
-                                                        );
-                                                    })
-                                                ) : (
-                                                    <p className="text-black">No CC recipients</p>
-                                                )}
-                                            </ul>
+                                                                    ))}
+                                                                    {idx < alert.cc.length - 1 ? ", " : ""}
+                                                                </li>
+                                                            );
+                                                        })
+                                                    ) : (
+                                                        <p className="text-black">No CC recipients</p>
+                                                    )}
+                                                </ul>
+                                            </div>
 
-                                            <p><strong>Description:</strong></p>
-                                            <p className="text-black">{alert.description}</p>
+                                            <p><strong>Description:</strong> {alert.description}</p>
 
+                                            <div className="flex gap-1">
+                                                <p><strong>Attachments:</strong></p>
+                                                {alert.attachments && alert.attachments.length > 0 ? (
+                                                    <div className="flex overflow-x-scroll gap-4">
+                                                        {alert.attachments.map((imgUrl, index) => (
+                                                            <img
+                                                                key={index}
+                                                                src={imgUrl}
+                                                                alt={`Alert Image ${index + 1}`}
+                                                                className="w-10 h-10 rounded-md object-cover"
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <p>No image available</p>
+                                                )}
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -232,34 +342,66 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         
                             {editMode === alert.alertID && (
                                 <tr>
-                                    <td colSpan="4" className="bg-gray-300 p-4">
+                                    <td colSpan="4" className="bg-gray20 p-4">
                                         <input
                                             type="text"
                                             name="alertName"
                                             value={editedAlert.alertName}
                                             onChange={handleInputChange}
-                                            className="w-full p-2"
+                                            className="w-full p-2 sm:text-xs"
+                                            style={{ fontSize: "14px", padding: ".2rem .35rem", borderRadius: "6px" }}
                                         />
                                         <textarea
                                             name="description"
                                             value={editedAlert.description}
                                             onChange={handleInputChange}
-                                            className="w-full p-2 mt-2"
+                                            className="w-full p-2 mt-2 rounded-[6px] text-[14px] py-[0.25rem] px-[0.35rem]"
                                         ></textarea>
+                                        {/* <div className="mt-1">
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => document.getElementById("fileInput").click()}
+                                                    className="w-20 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
+                                                >
+                                                    Select Files
+                                                </button>
+                                                <input
+                                                    id="fileInput"
+                                                    type="file"
+                                                    multiple
+                                                    onChange={handleFileChange}
+                                                    className="hidden"
+                                                />
+                                                <p className="text-[14px] text-gray40">
+                                                    {editedAlert.attachments.length > 0
+                                                        ? `${editedAlert.attachments.length} file(s) selected`
+                                                        : "No files selected"}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                {editedAlert.attachments.map((file, index) => (
+                                                    <div key={index} className="w-3/5 flex items-center justify-between">
+                                                        <span className="truncate">{file instanceof File ? file.name : file}</span>
+                                                        <IconButton icon="delete" onClick={() => removeFile(file)} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div> */}
                                         
                                         <div className="mt-4 flex gap-2 justify-end">
                                             <button
-                                                className="bg-green-700 text-white p-2 rounded mt-0"
-                                                onClick={saveChanges}
-                                            >
-                                                Save
-                                            </button>
-                                            <button
-                                                className="bg-red-700 text-white p-2 rounded mt-0"
+                                                className="w-12 border bg-white text-black text-[12px] p-1 rounded-[6px] mt-0 border-gray20 hover-button"
                                                 onClick={() => setEditMode(null)}
                                             >
                                                 Cancel
                                             </button>
+                                            <button
+                                                className="w-12 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
+                                                onClick={saveChanges}
+                                            >
+                                                Save
+                                            </button>
+                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -269,20 +411,20 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                 </tbody>
             </table>
           
-            <div className="flex justify-between items-center mt-4">
-                <button
+            <div className="flex gap-4 justify-between items-center mt-4">
+                <div>
+                    <IconButton icon="previous" 
                     onClick={goToPreviousPage}
-                    disabled={currentPage === 1}
-                    className={`p-2 mt-0 rounded ${currentPage === 1 ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"} text-white text-sm`}>
-                    Previous
-                </button>
-                <span className="text-black text-sm">Page {currentPage} of {totalPages}</span>
-                <button
+                    disabled={currentPage === 1} />
+                </div>
+                
+                <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
+
+                <div>
+                    <IconButton icon="next" 
                     onClick={goToNextPage}
-                    disabled={currentPage === totalPages}
-                    className={`p-2 mt-0 rounded ${currentPage === totalPages ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"} text-white text-sm`}>
-                    Next
-                </button>
+                    disabled={currentPage === totalPages} />
+                </div>
             </div>
         </div>
     );
