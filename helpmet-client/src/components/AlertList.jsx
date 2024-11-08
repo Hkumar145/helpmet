@@ -188,7 +188,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     } catch (error) {
                         console.error("Error in repeated email sending:", error);
                     }
-                }, 7 * 24 * 60 * 60 * 1000); // Repeat sending alert in 7 days
+                }, 7 * 24 * 60 * 60 * 1000); // Repeat sending alert in 7 days  7 * 24 * 60 * 60 * 1000
 
                 // Store interval ID for clearing later
                 setIntervals((prev) => ({ ...prev, [alertID]: intervalId }));
@@ -213,7 +213,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         <div className="flex flex-col items-center justify-center">
             <div className="w-full overflow-x-auto">
                 <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed min-w-[500px]">
-                    <thead className="text-left">
+                    <thead className="text-center">
                         <tr className="text-[16px] text-gray50">
                             <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Alert ID</th>
                             <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "30%" }}>Alert Name</th>
@@ -222,7 +222,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                             <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}></th>
                         </tr>
                     </thead>
-                    <tbody className="text-[14px] text-left">
+                    <tbody className="text-[14px] text-center">
                         {getPaginatedAlerts().map((alert, index) => (
                             <React.Fragment key={alert.alertID}>
                                 <tr className={`border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
