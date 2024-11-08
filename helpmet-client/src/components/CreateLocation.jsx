@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
-import maplocation from '@/components/maplocation';
+import maplocation from '@/components/MapLocation';
 
 const DialogClose = DialogPrimitive.Close;
 
