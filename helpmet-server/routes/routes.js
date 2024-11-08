@@ -193,7 +193,7 @@ router.delete("/departments/:id", deleteDepartmentByID);
 
 /***************  Location Routes   ***************/
 // Create a location
-router.post("/companies/:id/locations", createLocation);
+router.post("/companies/:id/createlocations", createLocation);
 
 // Get a list of all locations by company ID
 router.get("/companies/:id/locations", getLocationsByCompany);
