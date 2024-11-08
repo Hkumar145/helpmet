@@ -46,7 +46,7 @@ const ReportDetails = () => {
         <div className='flex flex-row items-center justify-between w-[100%] gap-12'>
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border"
+            className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4 hover:bg-[#D9D6FE] hover:text-[#6938EF]"
           >
             <img src="../../images/return.svg" alt="return icon" />Back to reports
           </button>

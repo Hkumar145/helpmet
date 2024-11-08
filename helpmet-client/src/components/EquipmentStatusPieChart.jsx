@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import axios from '../api/axios';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const EquipmentStatusPieChart = ({ companyID }) => {
-  const [equipmentData, setEquipmentData] = useState([]);
   const [statusData, setStatusData] = useState({ labels: [], datasets: [] });
-  const [selectedStatus, setSelectedStatus] = useState(null);
-  const [filteredEquipment, setFilteredEquipment] = useState([]);
 
   useEffect(() => {
     fetchEquipmentData();
@@ -15,7 +15,6 @@ const EquipmentStatusPieChart = ({ companyID }) => {
   const fetchEquipmentData = async () => {
     try {
       const response = await axios.get(`http://localhost:5001/companies/${companyID}/equipments`);
-      setEquipmentData(response.data);
       processStatusData(response.data);
     } catch (error) {
       console.error('Error fetching equipment data:', error);
@@ -36,73 +35,48 @@ const EquipmentStatusPieChart = ({ companyID }) => {
       datasets: [
         {
           data: counts,
-          backgroundColor: ['#B0B0B0', '#A0A0A0', '#909090'], // Shades of grey for different statuses
-          hoverBackgroundColor: ['#C0C0C0', '#B0B0B0', '#A0A0A0'], // Hover colors for shades of grey
+          backgroundColor: ['#4A1FB8', '#D9D6FE','#9B8AFB'],
+          hoverBackgroundColor: ['#4A1FB8','#D9D6FE','#9B8AFB'], // Slightly darker versions for hover
+          borderWidth: 0, // No border to create a flat modern look
         },
       ],
     });
   };
 
-  const handlePieClick = (elements) => {
-    if (elements.length > 0) {
-      const index = elements[0].index;
-      const status = statusData.labels[index];
-      setSelectedStatus(status);
-      filterEquipmentByStatus(status);
-    }
-  };
-
-  const filterEquipmentByStatus = (status) => {
-    const filtered = equipmentData.filter((equipment) => equipment.status === status);
-    setFilteredEquipment(filtered);
-  };
-
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <h3 className="text-center text-2xl font-semibold mb-4">Equipment Status</h3>
-      <div className="relative h-64 w-64 mx-auto">
-        <Pie
+    <div className="w-full max-w-sm mx-auto p-4 bg-white rounded-lg shadow-md">
+      <h3 className="text-center text-lg-16 font-semibold mb-4">Equipment Status Projection</h3>
+      <div className="relative h-72 w-72 mx-auto">
+        <Doughnut
           data={statusData}
           options={{
             responsive: true,
             maintainAspectRatio: false,
-            onClick: (e, elements) => handlePieClick(elements),
+            cutout: '50%', // Makes it look like a ring/doughnut
             plugins: {
               legend: {
+                display: true,
                 position: 'bottom',
+                labels: {
+                  boxWidth: 15,
+                  font: {
+                    size: 14,
+                    family: 'sans-serif',
+                  },
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  label: (tooltipItem) => {
+                    return `${tooltipItem.label}: ${tooltipItem.raw} equipments`;
+                  },
+                },
               },
             },
           }}
         />
       </div>
-
-      {selectedStatus && (
-        <div className="mt-8 overflow-x-auto">
-          <h4 className="text-lg font-semibold mb-2">Equipment with Status: {selectedStatus}</h4>
-          <table className="min-w-full bg-white border border-gray-300 shadow-md">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2 border">Equipment ID</th>
-                <th className="px-4 py-2 border">Equipment Name</th>
-                <th className="px-4 py-2 border">Location ID</th>
-                <th className="px-4 py-2 border">Inspection Date</th>
-                <th className="px-4 py-2 border">Inspected By</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredEquipment.map((equipment, index) => (
-                <tr key={equipment.equipmentID} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
-                  <td className="px-4 py-2 border">{equipment.equipmentID}</td>
-                  <td className="px-4 py-2 border">{equipment.equipmentName}</td>
-                  <td className="px-4 py-2 border">{equipment.locationID}</td>
-                  <td className="px-4 py-2 border">{new Date(equipment.inspectionDate).toLocaleDateString('en-GB')}</td>
-                  <td className="px-4 py-2 border">{equipment.inspectedBy}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <p className="text-center mt-4 text-sm text-gray-500">October 2024</p>
     </div>
   );
 };
