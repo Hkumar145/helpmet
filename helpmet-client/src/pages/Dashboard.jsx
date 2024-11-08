@@ -335,7 +335,7 @@ const Dashboard = () => {
 
                 {/* Update */}
 
-    {/* 1 */}   <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center h-[300px] w-[396px]">
+    {/* 1 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 flex flex-col items-center h-[300px] w-[396px]">
                     <BarChart
                         chartData={filteredWeeklyInjuryData}
                         barName={dayTypeName}
@@ -349,7 +349,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-    {/* 2 */}   <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
+    {/* 2 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[300px] w-[396px]">
                     <BarChart
                         chartData={filteredInjuryTypeData}
                         barName={injuryTypeMapping}
@@ -359,7 +359,7 @@ const Dashboard = () => {
                     />
                     <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
                         <button
-                            className="text-xs bg-[#D9D6FE] text-[#3E1C96] border-2 border-[#9B8AFB] w-40 mt-2"
+                            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 w-40 rounded mb-4"
                             onClick={() => navigate('/injury-analytics')}
                         >
                             Details
@@ -367,12 +367,12 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-    {/* 3 */}   <div className="bg-white rounded-lg border-2 h-[300px] w-[814px]">
+    {/* 3 */}   <div className="bg-white rounded-lg border-2 shadow-md h-[300px] w-[404px] md:w-[814px]">
                     <p className="text-center w-full text-sm font-bold mt-4">Injury Heat Map</p>
                     <MapComponent/>
                 </div>
 
-    {/* 4 */}   <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
+    {/* 4 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[300px] w-[396px]">
                     <LineChart
                         chartData={monthlyEpidemicData}
                         lineName={{ T0006: "Epidemic Injury Type" }}
@@ -388,13 +388,13 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-    {/* 5 */}   <div className="bg-white rounded-lg border-2 max-w-72">
+    {/* 5 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
                     <PendingAndCompletedReports/>
                 </div>
     
 
     {/* 6 */}   
-                <div className="bg-white rounded-lg border-2 max-w-72">
+                <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
                 {/* <ReportsByLocation/> */}

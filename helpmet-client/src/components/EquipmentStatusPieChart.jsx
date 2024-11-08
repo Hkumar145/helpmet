@@ -44,16 +44,31 @@ const EquipmentStatusPieChart = ({ companyID }) => {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto p-4 bg-white rounded-lg shadow-md">
-      <h3 className="text-center text-lg-16 font-semibold mb-4">Equipment Status Projection</h3>
-      <div className="relative h-72 w-72 mx-auto">
+      <div className="relative h-[300px] w-[396px] mx-auto">
         <Doughnut
           data={statusData}
+          className='max-w-[396px]'
           options={{
             responsive: true,
+            layout: {
+              padding: {
+                top: 20,
+                bottom: 20,
+                right: 20,
+              },
+            },
             maintainAspectRatio: false,
             cutout: '50%', // Makes it look like a ring/doughnut
             plugins: {
+              title: {
+                display: true,
+                text: 'Equipment Status Projection',
+                font: {
+                  family: 'Fira Sans, sans-serif',
+                  size: 18,
+                },
+                color: '#000000',
+              },
               legend: {
                 display: true,
                 position: 'bottom',
@@ -61,7 +76,7 @@ const EquipmentStatusPieChart = ({ companyID }) => {
                   boxWidth: 15,
                   font: {
                     size: 14,
-                    family: 'sans-serif',
+                    family: 'Fira Sans, sans-serif',
                   },
                 },
               },
@@ -71,13 +86,17 @@ const EquipmentStatusPieChart = ({ companyID }) => {
                     return `${tooltipItem.label}: ${tooltipItem.raw} equipments`;
                   },
                 },
+                titleFont: {
+                  family: 'Fira Sans, sans-serif',
+                },
+                bodyFont: {
+                  family: 'Fira Sans, sans-serif',
+                },
               },
             },
           }}
         />
       </div>
-      <p className="text-center mt-4 text-sm text-gray-500">October 2024</p>
-    </div>
   );
 };
 
