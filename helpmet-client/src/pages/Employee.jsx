@@ -49,7 +49,7 @@ const Employee = () => {
       <h1 className='text-lg font-bold text-black'>Employees</h1>
       <Dialog>
         <DialogTrigger asChild>
-          <button className='flex flex-row gap-2 text-nowrap bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90'>
+          <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">
             Add New Employee
             <img className="min-w-[30px] min-h-[30px]" src="./images/new-employee.svg" alt="new employee icon" />
           </button>

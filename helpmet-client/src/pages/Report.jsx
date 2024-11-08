@@ -60,7 +60,7 @@ const Report = () => {
         <div className='flex gap-2'>
           <Dialog>
             <DialogTrigger asChild>
-              <button className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'>
+              <button className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">
                 New Report
               </button>
             </DialogTrigger>
@@ -73,7 +73,7 @@ const Report = () => {
           </Dialog>
           <button
             onClick={handleViewPendingReports}
-            className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-95 max-w-40'
+            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4"
           >
             Pending Report
           </button>

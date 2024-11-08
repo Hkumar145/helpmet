@@ -111,7 +111,7 @@ const PendingReportDetails = () => {
         <div className='flex flex-row items-center justify-between w-[100%]'>
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4"
+            className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4 hover:bg-[#D9D6FE] hover:text-[#6938EF]"
           >
             <img src="../../images/return.svg" alt="return icon" />Back to reports
           </button>
@@ -201,7 +201,7 @@ const PendingReportDetails = () => {
           <Dialog>
             <DialogTrigger asChild>
               <button
-                className='bg-[#039855] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40 w-[30%] disabled:cursor-not-allowed'
+                className="bg-[#039855] text-white hover:bg-[#A6F4C5] hover:text-[#039855] text-xs px-4 py-2 rounded mb-4 disabled:cursor-not-allowed"
                 disabled={reportDetails.status === "On hold"}
                 title={reportDetails.status === "On hold" ? "This report is on hold" : ""}
               >
@@ -236,7 +236,7 @@ const PendingReportDetails = () => {
           <Dialog>
             <DialogTrigger asChild>
               <button
-                className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40 w-[30%] disabled:cursor-not-allowed'
+                className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:cursor-not-allowed"
                 disabled={reportDetails.status === "On hold"}
                 title={reportDetails.status === "On hold" ? "This report is on hold" : ""}
               >

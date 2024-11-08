@@ -24,6 +24,12 @@ ChartJS.register(
 const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
     const options = {
         responsive: true,
+        layout: {
+            padding: {
+                left: 20,
+                right: 20
+            },
+        },
         plugins: {
             legend: {
                 position: false,
@@ -36,6 +42,10 @@ const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
                     family: 'Fira Sans, sans-serif',
                     size: 18,
                 },
+                padding: {
+                    top: 30,
+                    bottom: 30
+                }
             },
             tooltip: {
                 callbacks: {
@@ -62,10 +72,14 @@ const LineChart = ({ chartData, lineName, title, onLineClick, indexAxis }) => {
             x: {
                 display: true,
                 ticks: {
+                    display: false,
                     color: 'black',
+                    font: {
+                        family: 'Fira Sans, sans-serif',
+                    }
                 },
                 grid: {
-                    display: false,
+                    display: true,
                 },
             },
             y: {

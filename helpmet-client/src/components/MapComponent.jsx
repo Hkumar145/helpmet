@@ -92,18 +92,17 @@ const MapComponent = () => {
   };
 
   return (
-    <div>
-      <p>Heat Map</p>
+    <div className='w-full'>
       {selectedCoordinates && (
         <div className="mb-2">
           <strong>Selected Coordinates:</strong> {`Longitude: ${selectedCoordinates[0]}, Latitude: ${selectedCoordinates[1]}`}
         </div>
       )}
-      <div ref={mapRef} className="w-full h-60 mt-4" />
-      <div className="flex justify-between mt-2">
+      <div ref={mapRef} className="w-[95%] h-[220px] mx-auto mt-2" />
+      {/* <div className="flex justify-between mt-2">
         <button onClick={zoomIn} className="p-2 bg-blue-500 text-white rounded">Zoom In</button>
         <button onClick={zoomOut} className="p-2 bg-red-500 text-white rounded">Zoom Out</button>
-      </div>
+      </div> */}
     </div>
   );
 };

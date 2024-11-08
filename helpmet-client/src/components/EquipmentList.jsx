@@ -162,13 +162,19 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                     />
                 </td>
                 <td style={{ padding: '12px', textAlign: 'center' }}>
-                  <button onClick={() => toggleDetails(equipment.equipmentID)} style={{ marginRight: '10px', cursor: 'pointer' }}>
-                    <FaEye color="#4CAF50" />
+                  <button onClick={() => toggleDetails(equipment.equipmentID)} style={{ marginRight: '10px', cursor: 'pointer' }}
+                    className='border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
+                  >
+                    <img src={expandedEquipmentID === equipment.equipmentID ? "./images/collapse-arrow.svg" : "./images/down-arrow.svg"} alt="Toggle Details" style={{ width: '20px' }} />
                   </button>
-                  <button onClick={() => handleUpdate(equipment)} style={{ marginRight: '10px', cursor: 'pointer' }}>
+                  <button onClick={() => handleUpdate(equipment)} style={{ marginRight: '10px', cursor: 'pointer' }}
+                    className='border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
+                  >
                     <img className="min-w-[16px] min-h-[16px]" src="./images/edit.svg" alt="edit icon" />
                   </button>
-                  <button onClick={() => onDelete(equipment.equipmentID)} style={{ cursor: 'pointer' }}>
+                  <button onClick={() => onDelete(equipment.equipmentID)} style={{ cursor: 'pointer' }}
+                    className='border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
+                  >
                     <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
                   </button>
                 </td>

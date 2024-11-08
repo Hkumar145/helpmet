@@ -76,7 +76,7 @@
   font-family: "Fira Sans", sans-serif;
 }
 
-button, input {
+button, input, textarea {
   font-family: "Fira Sans", sans-serif !important;
 }
 

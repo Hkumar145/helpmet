@@ -70,7 +70,10 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
                 ticks: {
                     color: 'black',
                     beginAtZero: true,  
-                    stepSize: 10
+                    stepSize: 10,
+                    font: {
+                        family: 'Fira Sans, sans-serif',
+                    }
                 },
                 grid: {
                     display: false,

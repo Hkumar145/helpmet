@@ -231,7 +231,7 @@ const EquipmentCheck = () => {
         <div>
           <button
             onClick={() => setViewMode('create')}
-            className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4"
           >
             Add New Equipment
           </button>
