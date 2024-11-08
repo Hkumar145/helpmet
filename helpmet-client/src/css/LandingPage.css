@@ -1,0 +1,766 @@
+/* <div className='homeinj' style={{display:'flex', width: '100vw', justifyContent: 'space-between', paddingBottom: '2rem', borderBottom: '2px solid black', paddingLeft:'2.2rem', paddingRight:'2.2rem'}}>
+        <h1 style={{fontSize:'1.5rem', fontStyle:'bold', fontWeight:'600'}}>Injury Analytics</h1>
+        <div className="filt" 
+        style={{display:'flex', gap:'.25rem', backgroundColor: '#6938EF', padding: '.5rem', borderRadius:'.3rem'}}>
+          <p style={{color:'white'}}>Filter</p><img src='./images/Filter Icon.svg'/>
+        </div>
+      </div> */
+ @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+      @tailwind base;
+      @tailwind components;
+      @tailwind utilities;
+    
+
+.slimages{
+  display: grid;
+}    
+
+/* .mainLand{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+} */
+
+.lightsl{
+  font-family: "Fira Sans", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.boldsl{
+  font-family: "Fira Sans", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+}
+
+.lightsl, .boldsl{
+  color: #3E1C96;
+  font-size: 32px;
+}
+.slogan{
+  padding: 3rem 13px;
+}
+
+.data{
+color: #52575C;
+font-size: 16px;
+}
+
+.slogansec{
+  display: none;
+}
+
+.slimages{
+  grid-column: -1;
+  grid-row: 1;
+}
+
+.slogan{
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+/* .slogan{
+  grid-column: 1/3;
+} */
+
+.slogansec{
+  grid-row: 2;
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: #3E1C96;
+  gap: 1rem;
+  h1, span{
+    color: #D9D6FE;
+  }
+  p{
+    color: #F4F3FF;
+    padding-bottom: 4rem;
+  }
+}
+
+.sloganthir, .sloganfour{
+  background-color: #3E1C96;
+  h1, span{
+    color: #D9D6FE;
+  }
+  p{
+    color: #F4F3FF;
+  }
+}
+
+.island{
+  grid-column: -1;
+}
+.landscape{
+  grid-column: 1;
+}
+.firstb, .thirdb{
+  grid-column: span 2;
+  width: 54vw;
+}
+
+.inv{
+  grid-column: -1;
+}
+
+.landscape{
+  grid-column: span 2;
+  img{
+    width: 100%;
+    height: auto;
+  }
+}
+/* ALIGNMENT */
+.slogansec, .slogan, .sloganthir, .sloganfour, .sloganfif{
+  padding: 3rem;
+  width: 100vw;
+}
+/*  */
+.slogansec .firstb, .sloganfour .thirdb{
+  /* padding-left: 2rem; */
+}
+
+.sloganthir{
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  .secondb{
+    grid-column: 1;
+  }
+  .slimages{
+    grid-column: -1;
+  }
+}
+
+.sloganfour{
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  .thirdb{
+    grid-column: -1 ;
+  }
+}
+
+
+
+.sloganthir{ 
+.secondb{
+  grid-column: span 2 ;
+}
+
+img{
+  width: 54vw;
+}
+}
+
+.sloganfif{
+  background-color: #D9D6FE;
+  grid-column: span 2;
+  .lightsl{
+    text-align: center;
+    color: black;
+    padding-bottom: 5rem;
+    font-size: 50px;
+  }
+}
+
+.gr1{
+  padding-bottom: 4rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 53px;
+  img{
+    width: 100%;
+    padding-bottom: 2rem;
+  }
+  p{
+    text-align: center;
+  }
+}
+
+.gr2{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10rem;
+  img{
+    width: 100%;
+    padding-bottom: 2rem;
+  }
+  p{
+    text-align: center;
+  }
+}
+
+.six{
+  background-color: #3E1C96;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  h1, .lightsl{
+    color: #F4F3FF;
+  }
+}
+
+.sev{
+  background-color: #9B8AFB;
+}
+
+
+
+
+
+
+/* @media screen and (max-width:1094px) {
+  .lightsl, .boldsl{
+    font-size: 32px;
+  }
+} */
+
+@media screen and (max-width:929.5px) {
+
+.firstb, .lanepor, .secondb, .thirdb{
+  width: 100%;
+  /* padding: 2rem; */
+  padding-bottom: 0;
+}
+
+.lightsl, .boldsl{
+  font-size: 32px;
+}
+
+.sloganfif{
+  .lightsl{
+    font-size: 50px;
+  }
+}
+
+.data{
+  color: #52575C;
+  font-size: 16px;
+  }
+
+.slogan h1, .sloganfif h1{
+  color: black;
+}
+
+.slimages{
+  display: none;
+}
+.slogan{
+  display: block;
+}
+
+.mainLand{
+  display: block;
+}
+.slogan, .slogansec, .sloganthir, .sloganfour, .sloganfif{
+  padding: 3rem 30px;
+}
+
+.slogansec, .sloganthir, .sloganfour{
+  display: block;
+  background-color: #3E1C96;
+  width: 100vw;
+  h1, span{
+    color: #D9D6FE;
+  }
+  p{
+    color: #F4F3FF;
+    padding-bottom: 4rem;
+  }
+  img{
+    width: 100%;
+    height: auto;
+  }
+}
+
+.data{
+  font-weight: 400;
+}
+
+.boldsl{
+  padding-bottom: 1rem;
+}
+
+.sloganthir img{
+  padding-top: 4rem;
+}
+
+.sloganfour img{
+  padding-bottom: 2rem;
+}
+
+.sloganfif h1{
+  font-size: 32px;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.sloganfif img{
+  padding-bottom: 2rem;
+}
+
+.sloganfif{
+  background-color: #D9D6FE;
+}
+
+.slofifimg{
+  width: 100%;
+  height: auto;
+  padding-top: 2rem;
+}
+
+.keep{
+  text-align: center;
+}
+
+.six{
+  display: block;
+  background-color: #3E1C96;
+  width: 100vw;
+  h1{
+    color: #F4F3FF;
+    padding-bottom: 0;
+  }
+  .boldsl{
+    position: relative;
+    bottom: 27px;
+  }
+}
+
+.sloganfif img{
+  width: 100%;
+  height: auto;
+}
+
+/* .slogansec{
+  padding-left: 0;
+} */
+
+.lanepor{
+  display: block;
+  padding-top: 0;
+}
+
+.sloganfif{
+  display: block;
+  .gr1, .gr2{
+    display: block;
+    p{
+      text-align: left;
+    }
+  }
+}
+
+.sloganfif .gr2 p{
+  text-align: center;
+  
+}
+
+.six .lightsl{
+  padding-bottom: .3rem;
+}
+
+.sev, .sevspesh{
+  background-color: #9B8AFB;
+  h1,p{
+    color: #101828;
+  }
+}
+
+.sevspesh{
+  padding-bottom: 7rem;
+}
+
+.firstb .data{
+  padding-bottom: 40px;
+}
+
+.slogan .data{
+  padding-bottom: 0px;
+}
+
+.sloganthir, .sloganfour{
+  padding-top: 9px;
+  img{
+    padding-top: 23px;
+  }
+}
+
+.sloganfour p{
+  padding-bottom: 40px ;
+}
+
+.sloganfour img{
+  padding: 0;
+  padding-bottom: 4px;
+}
+
+.sloganfif{
+  padding-top: 34px;
+  .lightsl{
+    padding-bottom: 28px;
+  }
+}
+
+.anal1 img{
+  padding-bottom: 20px;
+}
+
+.anal1 p{
+  padding-bottom: 6px;
+}
+
+.anal2 img{
+  padding-bottom: 20px;
+}
+
+.anal2 p{
+  padding-bottom: 40px;
+}
+
+.gr1{
+  padding-bottom: 0;
+}
+
+.gr2 .slofifimg {
+  padding-top: 0;
+  padding-bottom: 20px;
+}
+
+.gr2 p{
+  padding-bottom: 40px;
+}
+
+.sloganfif{
+  padding-bottom: 2px;
+}
+
+.six{
+  padding-top: 39px;
+  .lightsl{
+    padding-bottom: .5rem;
+  }
+  h1{
+    font-size: 50px;
+  }
+}
+
+.sev{
+  padding-top: 47px;
+  padding-left: 37px;
+  padding-right: 37px;
+  padding-bottom: 0;
+.data{
+  padding-bottom: 40px;
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+h1{
+  padding-left: 23px;
+  padding-right: 23px;
+}
+}
+.sevspesh{
+  padding-top: 0;
+}
+
+.eig{
+  padding-top: 61px;
+  padding-left: 52px;
+  padding-right: 53px;
+  h1{
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .data{
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.seveig{
+  padding-left: 30px;
+  padding-right: 45px;
+  padding-bottom: 80px;
+}
+
+.not{
+  padding-top: 50px;
+}
+
+.nine{
+  padding-top: 30.5px;
+  .firstb{
+    padding-left: 31px;
+    padding-right: 32px;
+  }
+  .data{
+    padding-bottom: 63px;
+  }
+  img{
+    padding-right: -6px;
+    padding-bottom: 49px ;
+  }
+}
+
+
+}
+
+@media screen and (min-width: 930px) {
+.firstb h1{
+  font-size: 64px;
+}
+
+.firstb p{
+  font-size: 20px;
+} 
+
+.slogan .boldsl{
+  padding-bottom: 21px;
+}
+
+.slogan{
+  padding-left: 98px;
+  padding-right: 20.08px;
+  padding-top: 29px;
+  .data{
+    padding-bottom: 437px;
+  }
+  .firstb{
+    padding-top: 301px;
+  }
+  display: flex;
+  gap: 1rem;
+}
+
+/* .slogan .firstb .slimages{
+  display: block;
+} */
+
+.slogan .firstb .slimages img{
+  width: 100%;
+  height: 100%;
+}
+
+.slogan{
+  padding-top: 0;
+  padding-bottom: 78px ;
+}
+
+.slogansec{
+  padding-top: 142px;
+  padding-left: 100px;
+  gap: 0;
+}
+.firstb{
+  /* padding-left: 137px; */
+  padding-top: 54px;
+  padding-right: 49px;
+}
+
+.slogansec .firstb{
+  padding-left: 137px;
+}
+
+.sloganthir h1{
+  font-size: 64px;
+}
+
+.sloganthir{
+  padding-left: 100px;
+  padding-right: 100px;
+  .secondb{
+    width: 37vw;
+  }
+  .slimages{
+    padding-left: 150px;
+  }
+}
+
+.sloganfour{
+  padding-left: 100px;
+  padding-right: 100px;
+  h1{
+    font-size: 64px;
+  }
+  .data{
+    font-size: 20px;
+  }
+  .boldsl{
+    padding-bottom: 50px;
+  }
+  .thirdb{
+    padding-left: 50px;
+  }
+  .thirdb .slimages{
+    width: 37vw;
+  }
+}
+
+.sloganfif .lightsl{
+  font-size: 96px;
+  padding-bottom: 94px;
+}
+.sloganfif{
+  padding-top: 31px;
+  padding-left: 100px;
+  padding-right: 100px;
+  p{
+    font-size: 18px;
+  }
+}
+.gr1{
+  padding-bottom: 80px;
+}
+.gr2{
+  padding-left: 32px;
+  padding-right: 33px;
+  padding-bottom: 79px;
+}
+
+.six .boldsl{
+  font-size: 96px;
+}
+.six{
+  padding-bottom: 30px;
+  .lightsl{
+    padding: 0;
+  }
+}
+
+.filt{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.sev h1, .sev p{
+  color: #101828;
+}
+
+.sev p{
+  font-size: 20px;
+}
+
+.sev{
+  display: block;
+  /* grid-row: 1; */
+}
+
+.sam{
+  grid-column: 1/-1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* padding-left: 100px;
+  padding-right: 187px; */
+  padding-top: 85px;
+  background-color: #9B8AFB;
+  .sloganthir{
+    grid-column: -1;
+    grid-row: 1;
+    width: 50vw;
+    padding-right: 187px;
+    padding-left: 51px;
+    padding-top: 17px;
+  }
+  .sevspesh{
+    grid-column: span 2;
+  }
+  .slimages{
+    width: 50vw;
+    padding-left: 100px;
+  }
+}
+
+.sam2{
+  grid-column: 1/-1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* padding-left: 100px;
+  padding-right: 187px; */
+  padding-top: 97px;
+  padding-bottom: 103px;
+  background-color: #9B8AFB;
+  .sevspesh{
+    grid-column: -1;
+    grid-row: 1;
+    width: 50vw;
+    padding-right: 187px;
+    padding-left: 51px;
+    padding-top: 17px;
+  }
+  .sloganthir{
+    grid-column: span 2;
+    padding-top: 38px;
+  }
+  .sev{
+    width: 50vw;
+    padding-left: 100px;
+  }
+  .sevspesh{
+    padding-top: 0;
+    padding-right: 100px;
+    padding-left: 37px;
+  }
+}
+
+.nine{
+  padding-top: 124px;
+  padding-bottom: 160px;
+  gap: 0;
+  .firstb{
+    padding-left: 31px;
+    width: 47.3vw;
+  }
+}
+
+.not-main{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+/* .sevspesh{
+  grid-column: 1;
+} */
+}
+/* @media screen and (min-width:1330px) {
+.mainLand{
+  width: 96vw;
+}
+}
+
+@media screen and (min-width:1350px) {
+  .mainLand{
+    width: 92vw;
+  }
+  }
+  
+  @media screen and (min-width:1400px) {
+    .mainLand{
+      width: 93vw;
+    }
+    }
+
+    @media screen and (min-width:1410px) {
+      .mainLand{
+        width: 90vw;
+      }
+      }
+      @media screen and (min-width:1500px) {
+        .mainLand{
+          width: 92vw;
+        }
+        }
+      
+        @media screen and (min-width:1920px) {
+          .mainLand{
+            width: 64vw;
+          }
+          } */
+        
+  
