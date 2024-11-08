@@ -23,7 +23,7 @@ const injuryTypeMapping = {
 const Report = () => {
   const [report, setReport] = useState([]);
   const [loading, setLoading] = useState(true);
-  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const companyID = 100001;
   const navigate = useNavigate();
 
   useEffect(() => {
