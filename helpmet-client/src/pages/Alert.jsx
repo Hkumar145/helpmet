@@ -57,23 +57,23 @@ const Alert = () => {
     };
 
     return (
-        <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col sm:flex-row items-center justify-between">
-                <h1 className="text-black text-2xl">Alerts</h1>
+        <div className="flex flex-col gap-4 w-full lg:w-3/4">
+            <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
+                <h1 className="text-black text-[32px] font-bold">Alerts</h1>
                 
                 {viewMode === "list" ? (
                     <button
-                        className="bg-blue-600 text-white p-2 rounded text-xs sm:text-sm mt-0"
+                        className="bg-brand40 text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
                         onClick={() => {setViewMode("create"); setAlertType("employee")}}
                     >
-                        Create New Alert
+                        New Incident Alert
                     </button>
                 ) : (
                     <AlertToggle viewMode={alertType} setViewMode={setAlertType} />
                 )}
             </div>
 
-            <div className="mt-4">
+            <div>
                 {renderContent()}
             </div>
         </div>

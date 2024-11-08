@@ -31,17 +31,18 @@ Thank you.`,
   }
 };
 
-const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc = [], attachments = [] }) => {
+const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc = [], attachments }) => {
   const mailOptions = {
     from: senderEmail,
     to: recipient.email,
     cc: cc.length > 0 ? cc : [],
-    subject: alertDetails.alertName,
+    subject: `Alert: ${alertDetails.alertName}`,
     text: `${alertDetails.description}`,
-    // attachments,
+    // attachments: attachments
   };
-  console.log("Attempting to send email with options:", mailOptions);
+
   try {
+    console.log("Attempting to send email with options:", mailOptions);
     await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error("Error sending email:", error);
