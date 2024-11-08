@@ -29,7 +29,7 @@ const HeaderWrapper = () => {
   const location = useLocation();
   
   return (
-    location.pathname === '/injury-report' ? <HeaderWithoutLogin /> : <Header />
+    /^\/(injury-report|update-report)/.test(location.pathname) ? <HeaderWithoutLogin /> : <Header />
   );
 };
 

@@ -4,8 +4,9 @@ import EquipmentList from '../components/EquipmentList';
 import CreateEquipment from '../components/CreateEquipment';
 import UpdateEquipment from '../components/UpdateEquipment';
 import EquipmentDetail from '../components/EquipmentDetail';
+import { useSelector } from 'react-redux'
 
-const companyID = 100001;
+// const companyID = 100001;
 
 const EquipmentCheck = () => {
   const [equipments, setEquipments] = useState([]);
@@ -150,4 +151,4 @@ const EquipmentCheck = () => {
   );
 };
 
-export default EquipmentCheck; 
+export default EquipmentCheck;

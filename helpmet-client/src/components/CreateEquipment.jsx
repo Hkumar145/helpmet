@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useSelector } from 'react-redux'
 
 const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
   const [equipmentName, setEquipmentName] = useState('');
@@ -13,7 +14,8 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [locations, setLocations] = useState([]);
-  const companyID = 100001;
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  // const companyID = 100001;
 
   useEffect(() => {
     fetchEmployees();
