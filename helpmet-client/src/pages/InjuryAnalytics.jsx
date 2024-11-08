@@ -299,7 +299,7 @@ const InjuryAnalytics = () => {
         </h1>
         <div className="flex flex-col gap-6 lg:gap-2 items-center justify-center md:flex-row flex-wrap">
 
-                <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center h-[270px] w-[396px]">
+                <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center h-[300px] w-[396px]">
                     <BarChart
                         chartData={filteredWeeklyInjuryData}
                         barName={dayTypeName}
@@ -307,13 +307,13 @@ const InjuryAnalytics = () => {
                         onBarClick={handleWeeklyInjuryBarClick}
                         indexAxis="x"
                     />
-                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
+                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[75%] mx-auto">
                         <p className="text-[#039855]">{changeText}</p>
-                        <p className="text-[14px] text-center">{injuryComparisonText}</p>
+                        <p className="text-[14px] text-left">{injuryComparisonText}</p>
                     </div>
                 </div>
                 
-                <div className="bg-white rounded-lg border-2 max-w-72 h-[270px] w-[396px]">
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -332,7 +332,7 @@ const InjuryAnalytics = () => {
                     )}
                 </div>
 
-                <div className="bg-white rounded-lg border-2 max-w-72 h-[270px] w-[396px]">
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
                     <BarChart
                         chartData={filteredInjuryTypeData}
                         barName={injuryTypeMapping}
@@ -340,9 +340,9 @@ const InjuryAnalytics = () => {
                         onBarClick={handleInjuryTypeBarClick}
                         indexAxis="y"
                     />
-                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
+                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
                     <p className="text-[#039855]">{epidemicPercentage}%</p>
-                    <p className="text-[14px] text-center">
+                    <p className="text-[14px] text-left">
                         The major injury type is epidemic related, it accounts for {epidemicPercentage}% of the injuries.
                     </p>
                     </div>
@@ -358,7 +358,7 @@ const InjuryAnalytics = () => {
         {showTable && (
             <div className="mt-8 text-black">
                 <h3 className="text-lg font-bold">Related Injury Reports</h3>
-                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
+                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm overflow-x-scroll">
                     <thead>
                         <tr>
                             <th className="px-2 py-2 md:px-8">Injury Type</th>

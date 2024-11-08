@@ -57,25 +57,42 @@ const PendingAndCompletedReports = () => {
 
   const options = {
     responsive: true,
+    layout: {
+      padding: {
+        top: 20,
+        bottom: 20,
+      },
+    },
     plugins: {
       title: {
         display: true,
         text: 'Reports Summary',
         font: {
+          family: 'Fira Sans, sans-serif',
           size: 18,
-          weight: 'bold',
         },
         color: '#000000',
       },
       legend: {
         position: 'bottom',
+        labels: {
+          font: {
+            family: 'Fira Sans, sans-serif',
+          },
+        },
       },
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
             return `${tooltipItem.label}: ${tooltipItem.raw}`;
           }
-        }
+        },
+        titleFont: {
+          family: 'Fira Sans, sans-serif',
+        },
+        bodyFont: {
+          family: 'Fira Sans, sans-serif',
+        },
       }
     },
     onClick: (e, elements) => {
@@ -94,7 +111,7 @@ const PendingAndCompletedReports = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <Doughnut data={data} options={options} style={{ maxHeight: '270px', minWidth: '396px' }} />
+      <Doughnut data={data} options={options} style={{ maxHeight: '300px', minWidth: '396px' }} />
     </div>
   );
   

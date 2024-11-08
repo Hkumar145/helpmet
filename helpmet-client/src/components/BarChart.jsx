@@ -22,6 +22,12 @@ ChartJS.register(
 const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
     const options = {
         responsive: true,
+        layout: {
+            padding: {
+                left: 40,
+                right: 40,
+            },
+        },
         plugins: {
             legend: {
                 display: false,
@@ -31,8 +37,12 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
                 text: title,
                 color: 'black',
                 font: {
+                    family: 'Fira Sans, sans-serif',
                     size: 18,
                 },
+                padding: {
+                    top: 30,
+                }
             },
             tooltip: {
                 callbacks: {
@@ -44,6 +54,12 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
                         const count = tooltipItem.raw;
                         return count <= 1 ? `${count} Injury` : `${count} Injuries`;
                     },
+                },
+                titleFont: {
+                    family: 'Fira Sans, sans-serif',
+                },
+                bodyFont: {
+                    family: 'Fira Sans, sans-serif',
                 },
                 displayColors: false
             },
