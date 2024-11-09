@@ -10,6 +10,7 @@ const Location = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocationID, setSelectedLocationID] = useState(null);
   const [expandedLocationID, setExpandedLocationID] = useState(null);
+  const [employees, setEmployees] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
@@ -23,7 +24,17 @@ const Location = () => {
         }
       };
 
+      const fetchEmployees = async () => {
+        try {
+          const response = await axios.get(`/companies/${companyID}/employees`);
+          setEmployees(response.data);
+        } catch (error) {
+          console.error("Error fetching employees:", error);
+        }
+      };
+
       fetchLocations();
+      fetchEmployees();
     }
   }, [companyID]);
 
@@ -121,9 +132,21 @@ const Location = () => {
                     <td colSpan="2" className="px-4 py-4 bg-gray-50">
                       <div className="text-left">
                         <h3 className="font-semibold mb-2">Location Details:</h3>
-                        {Object.entries(location).map(([key, value]) => (
-                          <p key={key}>{key}: {value}</p>
-                        ))}
+                        {Object.entries(location).map(([key, value]) => {
+                          if (key === 'coordinates') {
+                            return (
+                              <div key={key}>
+                                <p>Longitude: {value[0]}</p>
+                                <p>Latitude: {value[1]}</p>
+                                <p>Manager Name: {(() => {
+                                  const employee = employees.find(e => e.employeeID === location.managerID);
+                                  return employee ? `${employee.firstName} ${employee.lastName}` : 'N/A';
+                                })()}</p>
+                              </div>
+                            );
+                          }
+                          return <p key={key}>{key}: {value}</p>;
+                        })}
                       </div>
                     </td>
                   </tr>
