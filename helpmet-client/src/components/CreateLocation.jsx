@@ -35,6 +35,7 @@ const CreateLocation = () => {
       alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
       return;
     }
+   
 
     // Ensure coordinates are valid numbers
     if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
