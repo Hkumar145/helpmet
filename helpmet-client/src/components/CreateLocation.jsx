@@ -30,17 +30,17 @@ const CreateLocation = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate coordinates is an array with exactly 2 elements
-    // if (!Array.isArray(coordinates) || coordinates.length !== 2) {
-    //   alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
-    //   return;
-    // }
+   
+    if (!Array.isArray(coordinates) || coordinates.length !== 2) {
+      alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+      return;
+    }
 
-    // // Ensure coordinates are valid numbers
-    // if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
-    //   alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
-    //   return;
-    // }
+    // Ensure coordinates are valid numbers
+    if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
+      alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
+      return;
+    }
 
     if(coordinates.length === 2){}
     const locationData = {
@@ -119,9 +119,9 @@ const CreateLocation = () => {
 
         <div className='flex flex-row justify-between gap-4'>
           <DialogClose asChild>
-            <button type="button" className="text-black border px-6">Close</button>
+            <button type="button" className="text-black border px-6 py-1">Close</button>
           </DialogClose>
-          <button type="submit" className='bg-slate-600 hover:opacity-80 w-full text-white'>Create Location</button>
+          <button type="submit" className='bg-[#6938EF] text-white px-4 py-1 rounded-lg mt-3 text-center hover:opacity-90'>Create Location</button>
         </div>
       </form>
     </main>
