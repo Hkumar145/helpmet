@@ -35,13 +35,18 @@ const CreateLocation = () => {
       alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
       return;
     }
-   
+    // Validate coordinates is an array with exactly 2 elements
+    if (!Array.isArray(coordinates) || coordinates.length !== 2) {
+      alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+      return;
+    }
 
     // Ensure coordinates are valid numbers
     if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
       alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
       return;
     }
+
 
     if(coordinates.length === 2){}
     const locationData = {

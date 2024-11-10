@@ -251,7 +251,7 @@ const UpdateReport = () => {
 
           <button
             type="submit"
-            className="mt-4 p-3 bg-emerald-500 rounded hover:bg-emerald-600 text-white font-bold"
+            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
           >
             Update Report
           </button>

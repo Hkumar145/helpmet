@@ -13,7 +13,7 @@ exports.createAlert = async (req, res) => {
     try {
         // Check if similar alert already exists
         const { id: companyID } = req.params;
-        const { alertName, cc, recipients, recipientType, description } = req.body;
+        const { alertName, cc, recipients, recipientType, description, scheduleTime } = req.body;
         const duplicateAlert = await Alert.findOne({ alertName, description });
 
         if (duplicateAlert) {
@@ -22,6 +22,8 @@ exports.createAlert = async (req, res) => {
 
         const alertCount = await Alert.countDocuments();
         const nextAlertNumber = alertCount + 1;
+
+        const sentAt = scheduleTime ? new Date(scheduleTime) : new Date();
 
         // Upload the image file to S3
         let attachmentUrls = [];
@@ -34,10 +36,10 @@ exports.createAlert = async (req, res) => {
             alertID: `A${nextAlertNumber.toString().padStart(4, "0")}`,
             alertName,
             companyID,
-            sentAt: new Date(), 
+            sentAt, 
             description,
             recipients,
-            cc,  
+            cc: cc ? cc.trim() : null,  
             attachments: attachmentUrls
         });
         await newAlert.save();
@@ -70,16 +72,13 @@ exports.createAlert = async (req, res) => {
 
             // Create DepartmentAlert entries for each department
             departmentAlertEntries = departments.map(dept => ({
-            alertID: newAlert.alertID,
-            departmentID: dept.departmentID
+                alertID: newAlert.alertID,
+                departmentID: dept.departmentID
             }));
 
             // Insert department alert entries into DepartmentAlert
             await DepartmentAlert.insertMany(departmentAlertEntries);
         }
-
-        // Prepare CC emails
-        const ccEmails = cc ? cc.split(",").map(email => email.trim()) : [];
 
         // File attachments
         const attachments = attachmentUrls.map((url, index) => ({
@@ -96,7 +95,7 @@ exports.createAlert = async (req, res) => {
                     description: description,
                 },
                 senderEmail: process.env.EMAIL_USER,
-                cc: ccEmails,
+                cc: cc ? cc.trim() : undefined,
                 attachments
             });
         }
@@ -136,30 +135,10 @@ exports.getAlertByID = async (req, res) => {
 // Update an alert details by AlertID
 exports.updateAlertByID = async (req, res) => {
     try {
-        const { alertName, description } = req.body;
-        const updateFields = {
-            ...(alertName && { alertName }),
-            ...(description && { description }),
-        };
-
-        // if (req.files && req.files.length > 0) {
-        //     const newAttachmentUrls = await uploadToS3(req.files);
-        //     if (updateFields.attachments) {
-        //         updateFields.attachments = [
-        //             ...JSON.parse(req.body.existingAttachments || "[]"),
-        //             ...newAttachmentUrls,
-        //         ];
-        //     } else {
-        //         updateFields.attachments = newAttachmentUrls;
-        //     }
-        // } else if (req.body.existingAttachments) {
-        //     updateFields.attachments = JSON.parse(req.body.existingAttachments);
-        // }
-
+        const updateFields = req.body;
         if (Object.keys(updateFields).length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
-
         const updatedAlert = await Alert.findOneAndUpdate(
             { alertID: req.params.id },
             updateFields,
@@ -173,6 +152,46 @@ exports.updateAlertByID = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// exports.updateAlertByID = async (req, res) => {
+//     try {
+//         const { alertName, description } = req.body;
+//         const updateFields = {
+//             ...(alertName && { alertName }),
+//             ...(description && { description }),
+//         };
+
+//         // if (req.files && req.files.length > 0) {
+//         //     const newAttachmentUrls = await uploadToS3(req.files);
+//         //     if (updateFields.attachments) {
+//         //         updateFields.attachments = [
+//         //             ...JSON.parse(req.body.existingAttachments || "[]"),
+//         //             ...newAttachmentUrls,
+//         //         ];
+//         //     } else {
+//         //         updateFields.attachments = newAttachmentUrls;
+//         //     }
+//         // } else if (req.body.existingAttachments) {
+//         //     updateFields.attachments = JSON.parse(req.body.existingAttachments);
+//         // }
+
+//         if (Object.keys(updateFields).length === 0) {
+//             return res.status(400).json({ message: "No fields to update" });
+//         }
+
+//         const updatedAlert = await Alert.findOneAndUpdate(
+//             { alertID: req.params.id },
+//             updateFields,
+//             { new: true }
+//         );
+//         if (!updatedAlert) {
+//             return res.status(404).json({ message: "Alert not found" });
+//         }
+//         res.json({ message: "Alert updated successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
 // // Delete an alert by AlertID
 // exports.deleteAlertByID = async (req, res) => {

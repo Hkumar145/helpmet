@@ -48,7 +48,7 @@ const Dashboard = () => {
     const companyID = useSelector((state) => state.user.currentUser?.companyID);
     const [injuryTypeData, setInjuryTypeData] = useState({ labels: [], datasets: [] });
     const [weeklyInjuryData, setWeeklyInjuryData] = useState({ labels: [], datasets: [] });
-    const [selectedBar, setSelectedBar] = useState(null);
+    const [selectedBar, setSelectedBar] = useState('T0006');
     const [selectedInjuryReports, setSelectedInjuryReports] = useState([]);
     const [showTable, setShowTable] = useState(false);
     const [changeText, setChangeText] = useState("");
@@ -249,8 +249,8 @@ const Dashboard = () => {
                     {
                         label: `Severity Counts`,
                         data: severityCounts,
-                        backgroundColor: 'rgba(152, 162, 179)',
-                        hoverBackgroundColor: 'rgba(105, 56, 239)',
+                        backgroundColor: ['#3E1C96', '#6938EF', '#9B8AFB'],
+                        hoverBackgroundColor: ['#3E1C96', '#6938EF', '#9B8AFB'],
                         borderRadius: 4,
                     },
                 ],
@@ -325,7 +325,13 @@ const Dashboard = () => {
     //         console.error('Error fetching reports:', error);
     //     }
     // };
-    
+
+    // default select T0006 when the page is loaded
+    useEffect(() => {
+        if (selectedBar === 'T0006') {
+            fetchSeverityData();
+        }
+    }, [selectedBar]);
     
   return (
     <>
@@ -389,6 +395,25 @@ const Dashboard = () => {
                     </div>
                 </div>
 
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
+                    {severityData && (
+                        <div className="max-w-min">
+                            <BarChart
+                                chartData={severityData}
+                                // onBarClick={handleSeverityBarClick}
+                                barName={{ 1: "Low Severity", 3: "Medium Severity", 5: "High Severity" }}
+                                title="Injury Projection"
+                                indexAxis="y"
+                            />
+                            <div className="flex flex-col items-center justify-center my-1 max-w-[90%] mx-auto text-[13px]">
+                                <p className="text-left w-full dot-before dot-hs">High Severity</p>
+                                <p className="text-left w-full dot-before dot-ms">Medium Severity</p>
+                                <p className="text-left w-full dot-before dot-ls">Low Severity</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
     {/* 5 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
                     <PendingAndCompletedReports/>
                 </div>
@@ -398,8 +423,10 @@ const Dashboard = () => {
                 <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
-                {/* <ReportsByLocation/> */}
-                <SiteAgentTable/>
+
+                <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[404px] md:w-[814px]">
+                    <SiteAgentTable/>
+                </div>
             </div>
         </div>
         <BackToTopButton />
