@@ -49,7 +49,7 @@ const Employee = () => {
       <h1 className='text-lg font-bold text-black'>Employees</h1>
       <Dialog>
         <DialogTrigger asChild>
-          <button className='flex flex-row gap-2 text-nowrap bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90'>
+          <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">
             Add New Employee
             <img className="min-w-[30px] min-h-[30px]" src="./images/new-employee.svg" alt="new employee icon" />
           </button>
@@ -82,7 +82,7 @@ const Employee = () => {
               {/* <td className="px-4 py-2">{new Date(employee.dateOfBirth).toLocaleDateString()}</td> */}
               <td className="px-0 py-2 md:px-4">{employee.departmentID}</td>
               {/* <td className="px-4 py-2">{employee.role}</td> */}
-              <td className="pr-2 py-2 md:py-2 md:px-2 flex flex-col md:flex-row gap-2 max-w-max my-6 md:my-0">
+              <td className="pr-2 py-2 md:px-4 flex flex-row gap-2 my-6 md:my-0 justify-end md:mr-5">
                 <Dialog onOpenChange={(open) => { if (!open) setSelectedEmployeeID(null); }}>
                     <DialogTrigger asChild>
                       <button className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]' onClick={() => handleEditEmployee(employee.employeeID)}>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -71,6 +73,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Fira Sans", sans-serif;
+}
+
+button, input, textarea {
+  font-family: "Fira Sans", sans-serif !important;
 }
 
 html {
@@ -280,7 +287,7 @@ input::-webkit-inner-spin-button {
   border-radius: 15px ;
 }
 
-.label-completed {
+/* .label-completed {
   background: #E6F8EF;
   color: #055E39;
 }
@@ -293,7 +300,7 @@ input::-webkit-inner-spin-button {
 .label-onhold {
   background: #FFF4E5;
   color: #B45800;
-}
+} */
 
 .label-severity-1 {
   background: #E7F8E8;
@@ -337,6 +344,23 @@ input::-webkit-inner-spin-button {
   padding-top: .5rem;
 }
 
+.dot-before::before {
+  content: '◼';
+  margin-left: 5.5rem;
+  margin-right: 8px;
+}
+
+.dot-hs::before {
+  color: #3E1C96;
+}
+
+.dot-ms::before {
+  color: #6938EF;
+}
+
+.dot-ls::before {
+  color: #9B8AFB;
+}
 /**************** DateTime picker style ****************/
 .react-datetime-picker__wrapper {
   background-color: #fff;

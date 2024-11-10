@@ -153,12 +153,31 @@ const departmentAlertSchema = new Schema({
 });
 departmentAlertSchema.index({ departmentID: 1, alertID: 1 }, { unique: true });
 
-// Location Schema
+// // Location Schema
+// const locationSchema = new Schema({
+//     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
+//     locationName: { type: String, trim: true, required: true, maxlength: 30 },
+//     companyID: { type: Number, ref: "Company", trim: true, required: true },
+//     managerID: { type: Number,unique: true, trim: true, maxlength: 10 },
+//     location: {
+//         type: {
+//           type: String,
+//           enum: ["Point"],
+//           required: true,
+//           default: "Point"
+//         },
+//         coordinates: {
+//           type: [Number],
+//           required: true
+//         }
+//       }
+// });
+
 const locationSchema = new Schema({
     locationID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },
     locationName: { type: String, trim: true, required: true, maxlength: 30 },
     companyID: { type: Number, ref: "Company", trim: true, required: true },
-    managerID: { type: Number, required: true, unique: true, trim: true, maxlength: 10 },
+    managerID: { type: Number, ref: "Employee", maxlength: 10 }, // Add reference to Employee
     location: {
         type: {
           type: String,
@@ -170,8 +189,10 @@ const locationSchema = new Schema({
           type: [Number],
           required: true
         }
-      }
+    }
 });
+
+
 
 // InjuryType Schema
 const injuryTypeSchema = new Schema({

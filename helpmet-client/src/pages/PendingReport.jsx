@@ -52,12 +52,12 @@ const PendingReport = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='w-full flex flex-col px-6'>
       <div className='flex flex-row items-center justify-between gap-4'>
         <h1 className='text-lg text-black md:text-2xl'>Pending Report</h1>
         <button
             onClick={handleViewCompletedReports}
-            className='bg-[#6938EF] text-white p-3 mt-0 rounded-lg text-center hover:opacity-90 max-w-40'
+            className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
           >
             Completed Report
           </button>
@@ -77,11 +77,11 @@ const PendingReport = () => {
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white text-black mt-4 rounded-lg text-xs">
+        <div className="w-full overflow-x-scroll">
+          <table className="w-full bg-white text-black mt-4 rounded-lg text-xs">
             <thead>
               <tr>
-                {/* <th className="px-4 py-2">Report ID</th> */}
+                <th className="px-4 py-2">Report ID</th>
                 <th className="px-2 py-2">Severity</th>
                 <th className="px-0 py-2 md:px-4">Status</th>
                 <th className="px-0 py-2 md:px-4">Location</th>
@@ -95,7 +95,7 @@ const PendingReport = () => {
             <tbody className='text-center'>
               {pendingReports.map((report, index) => (
                 <tr key={report.reportID || report._id || `report-${index}`} className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
-                  {/* <td className="px-4 py-2">{report.reportID ? report.reportID : "N/A"}</td> */}
+                  <td className="px-4 py-2">{report._id ? report._id : "N/A"}</td>
                   <td className="px-2 py-2">
                     <span className={`label label-severity-${report.severity}`}>{severityMapping[report.severity]}</span>
                   </td>

@@ -49,24 +49,50 @@ const PendingAndCompletedReports = () => {
       {
         label: 'Reports Status',
         data: [ongoingReportsCount, onHoldReportsCount, completedReportsCount],
-        backgroundColor: ['#36A2EB', '#FFCE56', '#4BC0C0'],
-        hoverBackgroundColor: ['#36A2EB', '#FFCE56', '#4BC0C0'],
+        backgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
+        hoverBackgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
       },
     ],
   };
 
   const options = {
     responsive: true,
+    layout: {
+      padding: {
+        top: 20,
+        bottom: 20,
+      },
+    },
     plugins: {
+      title: {
+        display: true,
+        text: 'Reports Summary',
+        font: {
+          family: 'Fira Sans, sans-serif',
+          size: 18,
+        },
+        color: '#000000',
+      },
       legend: {
         position: 'bottom',
+        labels: {
+          font: {
+            family: 'Fira Sans, sans-serif',
+          },
+        },
       },
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
             return `${tooltipItem.label}: ${tooltipItem.raw}`;
           }
-        }
+        },
+        titleFont: {
+          family: 'Fira Sans, sans-serif',
+        },
+        bodyFont: {
+          family: 'Fira Sans, sans-serif',
+        },
       }
     },
     onClick: (e, elements) => {
@@ -85,10 +111,7 @@ const PendingAndCompletedReports = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <h1 className='text-black text-1xl'>Reports Summary</h1>
-  
-      {/* Donut Chart with clickable sections */}
-      <Doughnut data={data} options={options} style={{ maxHeight: '200px' }} />
+      <Doughnut data={data} options={options} style={{ maxHeight: '300px', minWidth: '396px' }} />
     </div>
   );
   

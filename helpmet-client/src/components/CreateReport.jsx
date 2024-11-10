@@ -59,7 +59,8 @@ const CreateReport = () => {
           <button
             type="button"
             onClick={handleAddRecipient}
-            className="px-6 rounded text-black hover:cursor-pointer border"
+            // className="px-6 rounded text-black hover:cursor-pointer border"
+            className="px-4 py-2 text-xs rounded border hover:bg-[#D9D6FE] hover:text-[#6938EF] hover:cursor-pointer mb-0"
             disabled={!currentSelection}
           >
             Add
@@ -102,14 +103,14 @@ const CreateReport = () => {
           <DialogClose asChild>
             <button
               type="button"
-              className="text-black border px-6"
+              className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
             >
               Close
             </button>
           </DialogClose>
           <button
             type='submit'
-            className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
           >
                 Send Links
           </button>

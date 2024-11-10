@@ -9,6 +9,8 @@ import MapComponent from '@/components/MapComponent';
 import PendingAndCompletedReports from "@/components/PendingAndCompletedReports"
 import ReportsByLocation from "@/components/ReportsByLocation"
 import BackToTopButton from '../components/BackToTopButton';
+import EquipmentStatusPieChart from "@/components/EquipmentStatusPieChart"
+import SiteAgentTable from "@/components/SiteAgentTable"
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
@@ -46,7 +48,7 @@ const Dashboard = () => {
     const companyID = useSelector((state) => state.user.currentUser?.companyID);
     const [injuryTypeData, setInjuryTypeData] = useState({ labels: [], datasets: [] });
     const [weeklyInjuryData, setWeeklyInjuryData] = useState({ labels: [], datasets: [] });
-    const [selectedBar, setSelectedBar] = useState(null);
+    const [selectedBar, setSelectedBar] = useState('T0006');
     const [selectedInjuryReports, setSelectedInjuryReports] = useState([]);
     const [showTable, setShowTable] = useState(false);
     const [changeText, setChangeText] = useState("");
@@ -56,7 +58,7 @@ const Dashboard = () => {
     const [filterBy, setFilterBy] = useState(null);
     const [currentFilterValue, setCurrentFilterValue] = useState(null);
     const navigate = useNavigate();
-
+    const [epidemicPercentage, setEpidemicPercentage] = useState(null);
 
     useEffect(() => {
         const fetchMonthlyEpidemicData = async () => {
@@ -72,7 +74,7 @@ const Dashboard = () => {
                         {
                             label: 'Epidemic Injury Type',
                             data: counts,
-                            backgroundColor: 'rgba(152, 162, 179)',
+                            backgroundColor: '#F4F3FF',
                             hoverBackgroundColor: 'rgba(105, 56, 239)',
                             
                             tension: 0.6,
@@ -99,6 +101,14 @@ const Dashboard = () => {
 
                 const labels = sortedData.map(item => item._id);
                 const counts = sortedData.map(item => item.count);
+
+                const totalInjuries = counts.reduce((acc, count) => acc + count, 0);
+
+                const epidemicData = sortedData.find(item => item._id === "T0006");
+                const epidemicCount = epidemicData ? epidemicData.count : 0;
+                const epidemicPercentage = Math.round((epidemicCount / totalInjuries) * 100);
+
+                setEpidemicPercentage(epidemicPercentage);
 
                 setInjuryTypeData({
                     labels: labels,
@@ -239,8 +249,8 @@ const Dashboard = () => {
                     {
                         label: `Severity Counts`,
                         data: severityCounts,
-                        backgroundColor: 'rgba(152, 162, 179)',
-                        hoverBackgroundColor: 'rgba(105, 56, 239)',
+                        backgroundColor: ['#3E1C96', '#6938EF', '#9B8AFB'],
+                        hoverBackgroundColor: ['#3E1C96', '#6938EF', '#9B8AFB'],
                         borderRadius: 4,
                     },
                 ],
@@ -315,51 +325,77 @@ const Dashboard = () => {
     //         console.error('Error fetching reports:', error);
     //     }
     // };
-    
+
+    // default select T0006 when the page is loaded
+    useEffect(() => {
+        if (selectedBar === 'T0006') {
+            fetchSeverityData();
+        }
+    }, [selectedBar]);
     
   return (
     <>
         <div className="flex flex-col text-black gap-12 items-center justify-start">
             {/* <p>Hi, {username}!</p> */}
-            <div className="flex flex-col gap-16">
-                <div className="flex flex-col lg:flex-row gap-8">
-                    <div className="max-w-min">
-                        <BarChart
-                            chartData={filteredInjuryTypeData}
-                            barName={injuryTypeMapping}
-                            title="Injury Category Projection"
-                            onBarClick={handleInjuryTypeBarClick}
-                            className="items-center justify-center mx-auto"
-                            indexAxis="y"
-                        />
-                       
+            <div className="flex flex-col flex-wrap md:flex-row gap-4 items-center justify-center w-full mx-auto">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center w-full max-w-6xl mx-auto"> */}
+
+                {/* Update */}
+
+    {/* 1 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 flex flex-col items-center h-[300px] w-[396px]">
+                    <BarChart
+                        chartData={filteredWeeklyInjuryData}
+                        barName={dayTypeName}
+                        title="General Weekly Overview"
+                        onBarClick={handleWeeklyInjuryBarClick}
+                        indexAxis="x"
+                    />
+                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[75%] mx-auto">
+                        <p className="text-[#039855]">{changeText}</p>
+                        <p className="text-[14px] text-left">{injuryComparisonText}</p>
                     </div>
-                    <PendingAndCompletedReports/>
-                    <div className="max-w-min">
-                        <BarChart
-                            chartData={filteredWeeklyInjuryData}
-                            barName={dayTypeName}
-                            title="General Weekly Overview"
-                            onBarClick={handleWeeklyInjuryBarClick}
-                            indexAxis="x"
-                        />
-                        <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[90%] mx-auto">
-                            <p className="text-emerald-400">{changeText}</p>
-                            <p className="text-[14px] text-center">{injuryComparisonText}</p>
-                        </div>
-                    </div>
-                    
                 </div>
-                <div className="flex flex-col lg:flex-row gap-16">
-                    <div className="max-w-min">
-                    <LineChart
-                            chartData={monthlyEpidemicData}
-                            lineName={{ T0006: "Epidemic Injury Type" }}
-                            title="Monthly Epidemic Projection"
-                            onLineClick={handleDateClick}
-                            indexAxis="x"
-                        />
+
+    {/* 2 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[300px] w-[396px]">
+                    <BarChart
+                        chartData={filteredInjuryTypeData}
+                        barName={injuryTypeMapping}
+                        title="Injury Category Projection"
+                        onBarClick={handleInjuryTypeBarClick}
+                        indexAxis="y"
+                    />
+                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
+                        <button
+                            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 w-40 rounded mb-4"
+                            onClick={() => navigate('/injury-analytics')}
+                        >
+                            Details
+                        </button>
                     </div>
+                </div>
+
+    {/* 3 */}   <div className="bg-white rounded-lg border-2 shadow-md h-[300px] w-[404px] md:w-[814px]">
+                    <p className="text-center w-full text-sm font-bold mt-4">Injury Heat Map</p>
+                    <MapComponent/>
+                </div>
+
+    {/* 4 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[300px] w-[396px]">
+                    <LineChart
+                        chartData={monthlyEpidemicData}
+                        lineName={{ T0006: "Epidemic Injury Type" }}
+                        title="Epidemic Projection (Oct)"
+                        onLineClick={handleDateClick}
+                        indexAxis="x"
+                    />
+                    <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
+                        <p className="text-[#039855]">{epidemicPercentage}%</p>
+                        <p className="text-[14px] text-left">
+                            The major injury type is epidemic related, it accounts for {epidemicPercentage}% of the injuries.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -367,59 +403,32 @@ const Dashboard = () => {
                                 // onBarClick={handleSeverityBarClick}
                                 barName={{ 1: "Low Severity", 3: "Medium Severity", 5: "High Severity" }}
                                 title="Injury Projection"
-                                indexAxis="x"
+                                indexAxis="y"
                             />
+                            <div className="flex flex-col items-center justify-center my-1 max-w-[90%] mx-auto text-[13px]">
+                                <p className="text-left w-full dot-before dot-hs">High Severity</p>
+                                <p className="text-left w-full dot-before dot-ms">Medium Severity</p>
+                                <p className="text-left w-full dot-before dot-ls">Low Severity</p>
+                            </div>
                         </div>
                     )}
-                     <ReportsByLocation/>
                 </div>
-                <MapComponent/>
-        </div>
-           
-        </div>
-       
-        {showTable && (
-            <div className="mt-8 text-black">
-                <h3 className="text-lg font-bold">Related Injury Reports</h3>
-                <table className="min-w-full bg-white text-black mt-4 rounded-lg text-sm">
-                    <thead>
-                        <tr>
-                            <th className="px-2 py-2 md:px-8">Injury Type</th>
-                            <th className="px-0 py-2 md:px-8">Severity</th>
-                            {/* <th className="px-4 py-2">Location</th> */}
-                            <th className="px-0 py-2 md:px-8">Date of Injury</th>
-                            {/* <th className="px-4 py-2">Injured Employee</th> */}
-                            {/* <th className="px-4 py-2">Report Date</th> */}
-                            {/* <th className="px-4 py-2">Reported By</th> */}
-                            <th className="px-2 py-2 md:px-8"></th>
-                        </tr>
-                    </thead>
-                    <tbody className='text-center'>
-                        {selectedInjuryReports.map(report => (
-                            <tr key={report._id} className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
-                                <td className="px-2 py-2 md:px-8 text-left">{injuryTypeMapping[report.injuryTypeID]}</td>
-                                <td className="px-0 py-2 md:px-8">
-                                    <span className={`label label-severity-${report.severity}`}>{severityMapping[report.severity]}</span>
-                                </td>
-                                {/* <td className="px-4 py-2">{report.locationID}</td> */}
-                                <td className="px-0 py-2 md:px-8">{new Date(report.dateOfInjury).toLocaleDateString()}</td>
-                                {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
-                                {/* <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td> */}
-                                {/* <td className="px-4 py-2">{report.reportByFirstName}<br />({report.reportBy})</td> */}
-                                <td className="px-2 py-2 md:px-8">
-                                    <button
-                                        onClick={() => handleViewDetails(report.reportID)}
-                                        className='p-1 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
-                                    >
-                                        <img className="min-w-[16px] min-h-[16px]" src="./images/right-arrow.svg" alt="details icon" />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+
+    {/* 5 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
+                    <PendingAndCompletedReports/>
+                </div>
+    
+
+    {/* 6 */}   
+                <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
+                    <EquipmentStatusPieChart companyID={companyID} />
+                </div>
+
+                <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[404px] md:w-[814px]">
+                    <SiteAgentTable/>
+                </div>
             </div>
-        )}
+        </div>
         <BackToTopButton />
     </>
   );
