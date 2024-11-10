@@ -89,7 +89,7 @@ const alertSchema = new Schema({
     description: { type: String, trim: true, required: true, maxlength: 300 },
     status: { type: String, default: "deactive" },
     recipients: [{ type: String }],
-    cc: [{ type: String }],
+    cc: { type: String, required: false },
     scheduledTime: { type: Date },
     attachments: { type: [String], required: false }
 });

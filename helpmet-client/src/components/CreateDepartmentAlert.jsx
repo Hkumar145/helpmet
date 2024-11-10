@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "../api/axios";
 import { IconButton } from "./ui/button";
 import CustomSelect from "./ui/select";
+import Avatar from "react-avatar";
 
 const MAX_NOTE_LENGTH = 300;
 
@@ -12,7 +13,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
         alertName: "", 
         description: "", 
         recipients: [], 
-        cc: [],
+        cc: "",
         attachments: [] 
     });
     const [departmentOptions, setDepartmentOptions] = useState([]);
@@ -95,16 +96,22 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };
 
     const handleCCChange = (e) => {
-        const ccEmails = e.target.value
-            .split(",")
-            .map(email => email.trim())
-            .filter(email => email !== "");
-
+        const email = e.target.value.trim();
         setAlertData((prev) => ({
             ...prev,
-            cc: ccEmails,
+            cc: email,
         }));
     };
+    
+    const validateEmailFormat = () => {
+        const { cc } = alertData;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (cc && !emailRegex.test(cc)) {
+            console.error("Invalid email format");
+            setAlertData((prev) => ({ ...prev, cc: "" }));
+            alert("Please enter a valid email format for CC.");
+        }
+    };    
 
     const onDrop = useCallback((acceptedFiles) => {
         setAlertData((prevData) => ({
@@ -134,7 +141,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
         formData.append("alertName", alertData.alertName);
         formData.append("description", alertData.description);
         formData.append("recipients", JSON.stringify(alertData.recipients));
-        formData.append("cc", JSON.stringify(alertData.cc));
+        formData.append("cc", alertData.cc);
     
         if (alertData.attachments.length > 0) {
           alertData.attachments.forEach((file) => {
@@ -176,7 +183,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
 
     return (
         <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
-            <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-black bg-white rounded-[10px]">
+            <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-black bg-white rounded-[10px] w-full">
                 <div className="flex flex-col gap-1">
                     <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
                     <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
@@ -224,15 +231,16 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 </div>
             </div>
             
-            <div className="col-span-2 lg:col-span-1 flex flex-col gap-3">
+            <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 w-full">
                 <div className="flex flex-col gap-1">
                     <label className="text-gray60 text-[14px]">CC</label>
                     <input
                         type="text"
                         name="cc"
                         placeholder="name@helpmet.com"
-                        value={alertData.cc.join(", ")}
+                        value={alertData.cc || ""}
                         onChange={handleCCChange}
+                        onBlur={validateEmailFormat}
                         className="bg-gray10 border border-gray20 placeholder-text"
                         style={{ fontSize: "14px", padding: ".3rem .45rem", borderRadius: "8px" }}
                     />
@@ -245,7 +253,15 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                             <ul>
                                 {allSelectedEmployees.map((emp) => (
                                     <li key={emp.employeeID} className="flex items-center justify-between px-2 py-1 text-[14px]">
-                                        <span>{emp.employeeID} - {emp.firstName} {emp.lastName}</span>
+                                        <div className="flex gap-2 items-center">
+                                            <Avatar
+                                            name={emp.firstName}
+                                            round={true}
+                                            size="35"
+                                            textSizeRatio={2.5}
+                                            />
+                                            <span>{emp.employeeID} - {emp.firstName} {emp.lastName}</span>
+                                        </div>
                                         <div>
                                             <IconButton icon="close" 
                                             onClick={() => handleRecipientSelection(emp)}

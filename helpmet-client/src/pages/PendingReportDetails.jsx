@@ -218,7 +218,7 @@ const PendingReportDetails = () => {
                 <DialogClose asChild>
                   <button
                     type="button"
-                    className="text-black border px-6"
+                    className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
                   >
                     Close
                   </button>
@@ -226,7 +226,7 @@ const PendingReportDetails = () => {
                 <button
                   type='button'
                   onClick={confirmApprove}
-                  className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+                  className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
                 >
                   Confirm
                 </button>
@@ -257,7 +257,7 @@ const PendingReportDetails = () => {
                 <DialogClose asChild>
                   <button
                     type="button"
-                    className="text-black border px-6"
+                    className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
                   >
                     Close
                   </button>
@@ -265,7 +265,7 @@ const PendingReportDetails = () => {
                 <button
                   type='button'
                   onClick={confirmOnHold}
-                  className='bg-slate-600 text-white hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed w-full'
+                  className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
                 >
                   Confirm
                 </button>

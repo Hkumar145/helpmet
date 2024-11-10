@@ -46,42 +46,42 @@ const ReportTable = () => {
   
 
   return (
-    <div className='flex flex-col gap-8'>
-      <p className='text-black font-semibold text-lg'>Report Table</p>
+    <div className='flex flex-col overflow-x-scroll'>
+      <p className='text-black font-semibold text-sm font-bold text-center mt-4 mb-2'>Report Table</p>
 
       {/* Table: Full Location Collection */}
-      <table className='table-auto w-full mt-4 border border-gray-300'>
+      <table className='table-auto w-full border text-xs'>
         <thead>
           <tr className='bg-gray-100'>
             <th className='px-4 py-2 text-left'>Location Name</th>
             <th className='px-4 py-2 text-left'>From Date</th>
             <th className='px-4 py-2 text-left'>To Date</th>
             <th className='px-4 py-2 text-left'>Site Manager</th>
-            <th className='px-4 py-2 text-left'>Number of Injuries</th>
+            <th className='px-4 py-2 text-left'>No.</th>
             <th className='px-4 py-2 text-left'>Injury Severity</th>
           </tr>
         </thead>
         <tbody>
   {locations.map(location => (
     <tr key={location._id} className='border-t border-gray-300'>
-      <td className='px-4 py-2'>{location.locationName || 'N/A'}</td>
+      <td className='px-4 py-2 text-center'>{location.locationName || 'N/A'}</td>
       {/* Get the first report for the current location and extract dateOfInjury */}
-      <td className='px-4 py-2'>{
+      <td className='px-4 py-2 text-center'>{
         (() => {
           const report = reports.find(r => r.locationID === location.locationID);
           return report ? new Date(report.dateOfInjury).toLocaleDateString() : 'N/A';
         })()
       }</td>
-      <td className='px-4 py-2'>{new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString() || 'N/A'}</td>
+      <td className='px-4 py-2 text-center'>{new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString() || 'N/A'}</td>
 
-      <td className='px-4 py-2'>{
+      <td className='px-4 py-2 text-center'>{
         (() => {
           const employee = employees.find(e => e.employeeID === location.managerID);
           return employee ? `${employee.firstName} ${employee.lastName}` : 'N/A';
         })()
       }</td>
-      <td className='px-4 py-2'>{locationReportCounts[location.locationID] || 0}</td>
-      <td className='px-4 py-2'>{
+      <td className='px-4 py-2 text-center'>{locationReportCounts[location.locationID] || 0}</td>
+      <td className='px-4 py-2 text-center'>{
         locationReportCounts[location.locationID] > 15 ? 'Severe' : 'Under Control'
       }</td>
     </tr>

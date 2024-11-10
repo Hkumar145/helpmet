@@ -64,7 +64,8 @@ const Location = () => {
         <h1 className='text-lg font-bold text-black'>Locations</h1>
         <Dialog>
           <DialogTrigger asChild>
-            <button className='bg-[#6938EF] text-white p-3 rounded-lg mt-0 text-center hover:opacity-90'>Create New Location</button>
+            <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">Add New Location</button>
+
           </DialogTrigger>
           <DialogContent>
             <DialogTitle>Create New Location</DialogTitle>
