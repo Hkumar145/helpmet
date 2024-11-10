@@ -6,15 +6,15 @@ const MapLocation = ({ onCoordinatesChange }) => { // Accept callback as a prop
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerRef = useRef(null);
-  const [markerPosition, setMarkerPosition] = useState([49.225693, 23.1101765]);
+  const [markerPosition, setMarkerPosition] = useState([49.225693, 23.107326]);
 
   useEffect(() => {
     // Initialize map
     mapInstance.current = tt.map({
       key: 'oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz',
       container: mapRef.current,
-      center: [49.2249758, 23.1101765],
-      zoom: 3
+      center: [49.225693, -83.107326],
+      zoom: 2
     });
 
     // Create draggable marker
