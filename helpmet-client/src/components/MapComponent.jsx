@@ -9,11 +9,11 @@ const MapComponent = () => {
   const [locationReportCounts, setLocationReportCounts] = useState({});
   const [locations, setLocations] = useState([]);
   const [topLocations, setTopLocations] = useState([]);
-  const [selectedCoordinates, setSelectedCoordinates] = useState(null); // State to hold selected marker coordinates
+  const [selectedCoordinates, setSelectedCoordinates] = useState(null);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const navigate = useNavigate();
   const mapRef = useRef(null);
-  const mapInstance = useRef(null); // Ref for the map instance
+  const mapInstance = useRef(null);
 
   useEffect(() => {
     if (companyID) {
@@ -27,6 +27,7 @@ const MapComponent = () => {
           }, {});
           setLocationReportCounts(countsByLocation);
           const sortedLocations = Object.entries(countsByLocation)
+            .filter(([, count]) => count > 20)
             .sort(([, countA], [, countB]) => countB - countA)
             .slice(0, 3)
             .map(([locationID]) => locationID);
@@ -56,25 +57,36 @@ const MapComponent = () => {
         const location = locations.find(loc => loc.locationID === locationID);
         
         if (location && location.coordinates) {
-          const { coordinates } = location; 
-          const marker = new tt.Marker()
+          const { coordinates } = location;
+
+          // Create a custom marker element
+          const el = document.createElement('div');
+          const img = document.createElement('img');
+          img.src = '/images/severe.svg';
+          img.style.width = '30px';
+          img.style.height = '30px';
+          el.appendChild(img);
+
+          // Create marker with custom element
+          const marker = new tt.Marker({
+            element: el
+          })
             .setLngLat(coordinates)
             .addTo(mapInstance.current)
             .on('click', () => {
-              setSelectedCoordinates(coordinates); // Set selected coordinates on marker click
+              setSelectedCoordinates(coordinates);
             });
 
           const reportCount = locationReportCounts[locationID] || 0;
           const popupContent = `
             <div>
-              <img src="/images/severe.svg" alt="Severe" />
               <p>Report Count: ${reportCount}</p>
               <p>${location.locationName}</p>
             </div>
           `;
           
           const popup = new tt.Popup({ offset: 10 }).setHTML(popupContent);
-          marker.setPopup(popup); // Attach popup to marker
+          marker.setPopup(popup);
         }
       });
     }
