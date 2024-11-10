@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from '../api/axios';
+import Avatar from 'react-avatar'
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 
 const ReportTable = () => {
   const [locations, setLocations] = useState([]);
@@ -46,19 +49,19 @@ const ReportTable = () => {
   
 
   return (
-    <div className='flex flex-col overflow-x-scroll'>
-      <p className='text-black font-semibold text-sm font-bold text-center mt-4 mb-2'> Site Injury Report Table</p>
+    <div className='flex flex-col items-center justify-center overflow-x-scroll'>
+      <p className='text-black font-bold text-sm text-center mt-4 mb-2'> Site Injury Report Table</p>
 
       {/* Table: Full Location Collection */}
       <table className='table-auto w-full border text-xs'>
         <thead>
           <tr className='bg-FFFFFF-100 rounded-lg'>
-            <td className='px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
-            <td className='px-4 py-2 text-left'>From Date</td>
-            <td className='px-4 py-2 text-left'>To Date</td>
-            <td className='px-4 py-2 text-left'>Site Manager</td>
-            <td className='px-4 py-2 text-left'>No.</td>
-            <td className='px-4 py-2 text-left'>Injury Severity</td>
+            <td className='px-4 py-2 text-center first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
+            <td className='px-4 py-2 text-center'>From Date</td>
+            <td className='px-4 py-2 text-center'>To Date</td>
+            <td className='px-4 py-2 text-center'>Site Manager</td>
+            <td className='px-4 py-2 text-center'>No.</td>
+            <td className='px-4 py-2 text-center'>Injury Severity</td>
           </tr>
         </thead>
         <tbody>
@@ -82,7 +85,18 @@ const ReportTable = () => {
       <td className='px-4 py-2 text-center'>{
         (() => {
           const employee = employees.find(e => e.employeeID === location.managerID);
-          return employee ? `${employee.firstName} ${employee.lastName}` : 'N/A';
+          return employee ? (
+            <Avatar
+              name={`${employee.firstName} ${employee.lastName}`}
+              round={true}
+              size="30" 
+              textSizeRatio={1.75}
+              data-tooltip-id={`tooltip-${employee.employeeID}`}
+              data-tooltip-content={`${employee.firstName} ${employee.lastName}`}
+              style={{ cursor: 'default' }}
+              color="#05603A"
+            />
+          ) : 'N/A';
         })()
       }</td>
       <td className='px-4 py-2 text-center'>{locationReportCounts[location.locationID] || 0}</td>

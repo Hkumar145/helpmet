@@ -47,7 +47,7 @@ const PendingAndCompletedReports = () => {
     labels: ['Ongoing', 'On Hold', 'Completed'],
     datasets: [
       {
-        label: 'Reports Status',
+        label: 'Reports Status Projection',
         data: [ongoingReportsCount, onHoldReportsCount, completedReportsCount],
         backgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
         hoverBackgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
@@ -66,7 +66,7 @@ const PendingAndCompletedReports = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Reports Summary',
+        text: 'Reports Status Projection',
         font: {
           family: 'Fira Sans, sans-serif',
           size: 18,

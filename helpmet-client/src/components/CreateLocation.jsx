@@ -125,9 +125,10 @@ const CreateLocation = () => {
 
         <div className='flex flex-row justify-between gap-4'>
           <DialogClose asChild>
-            <button type="button" className="text-black border px-6 py-1">Close</button>
+          {/* <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button">Close</button> */}
+          <button type="button" className="text-black border px-6 py-1">Close</button>
           </DialogClose>
-          <button type="submit" className='bg-[#6938EF] text-white px-4 py-1 rounded-lg mt-3 text-center hover:opacity-90'>Create Location</button>
+          <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">Add Location</button>
         </div>
       </form>
     </main>

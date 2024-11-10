@@ -67,8 +67,9 @@ const MapComponent = () => {
           const reportCount = locationReportCounts[locationID] || 0;
           const popupContent = `
             <div>
-              <h4>Location ID: ${locationID}</h4>
+              <img src="/images/severe.svg" alt="Severe" />
               <p>Report Count: ${reportCount}</p>
+              <p>${location.locationName}</p>
             </div>
           `;
           
