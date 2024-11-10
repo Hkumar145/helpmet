@@ -427,10 +427,6 @@ const Dashboard = () => {
                 <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[404px] md:w-[814px]">
                     <SiteAgentTable/>
                 </div>
-
-
-
-                {/* <ReportsByLocation/> */}
             </div>
         </div>
         <BackToTopButton />

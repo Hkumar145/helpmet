@@ -192,6 +192,8 @@ const locationSchema = new Schema({
     }
 });
 
+
+
 // InjuryType Schema
 const injuryTypeSchema = new Schema({
     injuryTypeID: { type: String, unique: true, trim: true, required: true, maxlength: 10 },

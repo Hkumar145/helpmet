@@ -240,6 +240,7 @@ exports.getLocationByID = async (req, res) => {
     }
 };
 
+
 // Update a location's details by locationID
 exports.updateLocationByID = async (req, res) => {
     const { locationName, coordinates } = req.body;
