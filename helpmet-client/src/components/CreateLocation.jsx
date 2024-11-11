@@ -67,11 +67,12 @@ const CreateLocation = () => {
       });
 
       if (response.status === 201) {
-        alert("Location created successfully.");
-        window.location.reload();
+        alert("Location created successfully!");
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
+        shouldClose: true;
+        window.location.reload(); // Reload the page
       }
     } catch (error) {
       console.error("Error creating location:", error.response?.data?.message || error.message);
@@ -125,10 +126,9 @@ const CreateLocation = () => {
 
         <div className='flex flex-row justify-between gap-4'>
           <DialogClose asChild>
-          {/* <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button">Close</button> */}
-          <button type="button" className="text-black border px-6 py-1">Close</button>
+          <button type="button" className="text-black border px-6 py-2 text-xs rounded">Close</button>
           </DialogClose>
-          <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">Add Location</button>
+          <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-12 py-2 rounded">Add Location</button>
         </div>
       </form>
     </main>
