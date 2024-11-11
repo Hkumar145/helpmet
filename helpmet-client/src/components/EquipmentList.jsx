@@ -185,6 +185,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                     <p><strong>Name:</strong> {equipment.equipmentName}</p>
                     <p><strong>ID:</strong> {equipment.equipmentID}</p>
                     <p><strong>Status:</strong> {equipment.status}</p>
+                    <p><strong>Location:</strong> {equipment.locationID}</p>
                     <p><strong>Inspection Date:</strong> {formatDate(equipment.inspectionDate)}</p>
                     <p><strong>Inspection Interval:</strong> {equipment.inspectionInterval} days</p>
                     <p><strong>Inspected By:</strong> {employeeNames[equipment.inspectedBy]}</p>
