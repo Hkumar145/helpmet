@@ -118,8 +118,8 @@ exports.getCompanies = async (req, res) => {
 
 exports.uploadProfilePicture = async (req, res) => {
     try {
-        const imageUrl = await uploadToS3(req.file);
-        res.status(200).json({ url: imageUrl });
+        const imageUrl = await uploadToS3([req.file]);
+        res.status(200).json({ url: imageUrl[0] });
     } catch (error) {
         console.error("Error uploading profile picture:", error);
         res.status(500).json({ error: "Failed to upload profile picture" });
