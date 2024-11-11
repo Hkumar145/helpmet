@@ -118,13 +118,13 @@ const EditEmployee = ({ employeeID, onClose }) => {
           <DialogClose asChild>
             <button
               type="button"
-              className="text-black border px-6"
+              className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
               onClick={onClose}
             >
               Close
             </button>
           </DialogClose>
-          <button type="submit" className='bg-slate-600 hover:opacity-80 w-full text-white'>
+          <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>
             Update Employee
           </button>
         </div>
