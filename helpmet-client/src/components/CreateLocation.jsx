@@ -47,7 +47,6 @@ const CreateLocation = () => {
       return;
     }
 
-
     if(coordinates.length === 2){}
     const locationData = {
       locationName,
@@ -60,14 +59,22 @@ const CreateLocation = () => {
     console.log("Coordinates:", coordinates);
     console.log("Location Data:", JSON.stringify(locationData, null, 2));
     try {
+      // Create location
       const response = await axios.post(`/companies/${companyID}/createlocations`, {
         locationName,
         coordinates,
         managerID: parseInt(managerID)
       });
 
+      // Update employee role to site manager
+      await axios.put(`/employees/${managerID}`, {
+        role: 'Site Manager'
+      });
+
       if (response.status === 201) {
         alert("Location created successfully!");
+        window.location.reload();
+        alert("Location created successfully.");
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
