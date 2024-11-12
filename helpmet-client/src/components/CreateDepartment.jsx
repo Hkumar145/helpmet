@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const CreateDepartment = () => {
+const CreateDepartment = ({ onClose }) => {
   const [departmentName, setDepartmentName] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
@@ -15,10 +17,17 @@ const CreateDepartment = () => {
 
     try {
       await axios.post(`/companies/${companyID}/departments`, departmentData);
-      alert("Department created successfully.");
+      toast.success("Department created successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
       setDepartmentName('');
+      onClose();
     } catch (error) {
-      console.error("Error creating department:", error.response?.data?.message || error.message);
+      toast.error(`Error creating department: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 

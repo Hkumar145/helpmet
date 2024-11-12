@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import axios from '../api/axios'
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const CreateEmployee = () => {
+const CreateEmployee = ({ onClose }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -30,15 +32,22 @@ const CreateEmployee = () => {
 
     try {
       const response = await axios.post(`/companies/${companyID}/employees`, employeeData);
-      alert("Employee created successfully.");
+      toast.success("Employee created successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
       setFirstName('');
       setLastName('');
       setDateOfBirth('');
       setDepartment('');
       setRole('');
       setEmail('');
+      onClose();
     } catch (error) {
-      console.error("Error creating employee:", error.response?.data?.message || error.message);
+      toast.error(`Error creating employee: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
