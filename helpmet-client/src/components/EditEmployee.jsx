@@ -132,9 +132,11 @@ const EditEmployee = ({ employeeID, onClose }) => {
               Close
             </button>
           </DialogClose>
-          <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>
-            Update Employee
-          </button>
+          <DialogClose asChild>
+            <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>
+              Update Employee
+            </button>
+          </DialogClose>
         </div>
       </form>
     </main>
