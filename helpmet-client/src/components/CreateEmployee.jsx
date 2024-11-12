@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const CreateEmployee = () => {
+const CreateEmployee = ({ onClose }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -42,8 +42,12 @@ const CreateEmployee = () => {
       setDepartment('');
       setRole('');
       setEmail('');
+      onClose();
     } catch (error) {
-      toast.error(`Error creating employee: ${error.response?.data?.message || error.message}`);
+      toast.error(`Error creating employee: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 

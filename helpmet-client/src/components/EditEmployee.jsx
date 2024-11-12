@@ -58,7 +58,10 @@ const EditEmployee = ({ employeeID, onClose }) => {
       });
       onClose();
     } catch (error) {
-      toast.error(`Error updating employee: ${error.response?.data?.message || error.message}`);
+      toast.error(`Error updating employee: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
