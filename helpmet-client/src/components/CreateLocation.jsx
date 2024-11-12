@@ -76,7 +76,7 @@ const CreateLocation = () => {
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
-        window.location.reload(); // Reload the page
+        window.location.href = '/location'; // Navigate back to location page
       }
     } catch (error) {
       console.error("Error creating location:", error.response?.data?.message || error.message);
