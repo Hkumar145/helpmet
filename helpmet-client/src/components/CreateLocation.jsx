@@ -73,12 +73,9 @@ const CreateLocation = () => {
 
       if (response.status === 201) {
         alert("Location created successfully!");
-        window.location.reload();
-        alert("Location created successfully.");
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
-        shouldClose: true;
         window.location.reload(); // Reload the page
       }
     } catch (error) {
@@ -120,11 +117,13 @@ const CreateLocation = () => {
           required
         >
           <option value="">Select Manager</option>
-          {employees.map((employee) => (
-            <option key={employee.employeeID} value={employee.employeeID}>
-              {employee.firstName} {employee.lastName} - ID: {employee.employeeID}
-            </option>
-          ))}
+          {employees
+            .filter(employee => employee.role !== 'Site Manager')
+            .map((employee) => (
+              <option key={employee.employeeID} value={employee.employeeID}>
+                {employee.firstName} {employee.lastName} - ID: {employee.employeeID}
+              </option>
+            ))}
         </select>
 
         <div className="w-full h-[400px] rounded-lg">
