@@ -5,6 +5,8 @@ import axios from '../api/axios'
 import CreateEmployee from '../components/CreateEmployee'
 import EditEmployee from '../components/EditEmployee'
 import BackToTopButton from '../components/BackToTopButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
@@ -37,14 +39,18 @@ const Employee = () => {
       setEmployees((prevEmployees) =>
         prevEmployees.filter((employee) => employee.employeeID !== employeeID)
       );
-      alert(`Employee with ID ${employeeID} deleted successfully`);
+      toast.success(`Employee with ID ${employeeID} deleted successfully`, {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
     } catch (error) {
-      console.error("Error deleting employee:", error);
+      toast.error(`Error deleting employee: ${error}`);
     }
   };
 
   return (
     <div className='flex flex-col gap-4 text-black'>
+      <ToastContainer position="top-right" autoClose={3000} />
     <div className='flex flex-row items-center justify-between'>
       <h1 className='text-lg font-bold text-black'>Employees</h1>
       <Dialog>

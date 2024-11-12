@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -50,10 +52,13 @@ const EditEmployee = ({ employeeID, onClose }) => {
 
     try {
       await axios.put(`/employees/${employeeID}`, employeeData);
-      alert("Employee updated successfully.");
+      toast.success("Employee updated successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
       onClose();
     } catch (error) {
-      console.error("Error updating employee:", error.response?.data?.message || error.message);
+      toast.error(`Error updating employee: ${error.response?.data?.message || error.message}`);
     }
   };
 

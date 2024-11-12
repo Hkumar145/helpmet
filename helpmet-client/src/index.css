@@ -453,3 +453,46 @@ input::-webkit-inner-spin-button {
 .icon-button.selected .icon-path {
   stroke: #4A1FB8;
 }
+
+/**************** Toast ****************/
+.custom-toast {
+  background-color: #6938EF !important;
+  color: #ffffff !important;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 12px;
+  --toastify-icon-color-success: #23c891;
+}
+
+.custom-toast-body {
+  color: #ffffff !important;
+}
+
+.Toastify__close-button {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+.Toastify__close-button:hover,
+.Toastify__close-button:focus {
+  color: #ffffff !important;
+}
+
+.Toastify__progress-bar--success {
+  background-color: #23c891 !important;
+}
+
+.custom-toast-error {
+  background-color: #ff4d4f !important;
+  color: #ffffff !important;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 12px;
+  --toastify-icon-color-error: #a70677;
+}
+
+.Toastify__toast--error .Toastify__progress-bar {
+  background-color: #a70677 !important;
+}
