@@ -322,7 +322,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 </div>
             
                 <div className="flex flex-row justify-end gap-2">
-                    <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button" onClick={onCancel}>Cancel</button>
+                    <button className="bg-white text-black text-[9px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button" onClick={onCancel}>Cancel</button>
                     <button className="bg-brand40 text-white text-[16px] px-4 m-0 rounded-[6px] text-center border border-brand50 hover-button" type="submit">Submit</button>
                 </div>
             </div>

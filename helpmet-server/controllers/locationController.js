@@ -171,7 +171,12 @@ exports.createLocation = async (req, res) => {
         // Save the location and await the result
         await newLocation.save();
 
-        res.json({ message: "Location created successfully" });
+        // Return success status code 201 for resource creation
+        res.status(201).json({ 
+            message: "Location created successfully",
+            success: true,
+            shouldClose: true
+        });
     } catch (error) {
         console.error("Error during location creation:", error);  // Log the error to the console
         res.status(500).json({ error: error.message });
