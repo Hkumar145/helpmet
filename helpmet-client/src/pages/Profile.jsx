@@ -84,28 +84,29 @@ const Profile = () => {
           onChange={(e) => setUsername(e.target.value)}
           type="text"
           placeholder='Username'
-          className='bg-slate-200 rounded-lg p-3'
+          className='bg-white rounded-lg p-3'
         />
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           placeholder='Email'
-          className='bg-slate-200 rounded-lg p-3'
+          className='bg-white rounded-lg p-3'
         />
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           placeholder='Password'
-          className='bg-slate-200 rounded-lg p-3'
+          className='bg-white rounded-lg p-3'
         />
-        <button className='bg-slate-600 text-white rounded-lg hover:opacity-90'>
+        <button 
+        className="bg-[#6938EF] text-white font-bold rounded hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 mt-4">
           Update
         </button>
       </form>
       <div className='flex justify-between mt-5 text-black'>
-        <span className='cursor-pointer mx-auto' onClick={handleLogout}>
+        <span className='cursor-pointer mx-auto text-xs' onClick={handleLogout}>
           Logout
         </span>
       </div>
