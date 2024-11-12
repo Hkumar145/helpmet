@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -28,10 +30,16 @@ const EditDepartment = ({ departmentID, onClose }) => {
 
     try {
       await axios.put(`/departments/${departmentID}`, departmentData);
-      alert("Department updated successfully.");
+      toast.success("Department updated successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
       onClose();
     } catch (error) {
-      console.error("Error updating department:", error.response?.data?.message || error.message);
+      toast.error(`Error updating department: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -50,7 +58,9 @@ const EditDepartment = ({ departmentID, onClose }) => {
           <DialogClose asChild>
             <button type="button" className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]" onClick={onClose}>Close</button>
           </DialogClose>
-          <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>Update Department</button>
+          <DialogClose asChild>
+            <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>Update Department</button>
+          </DialogClose>
         </div>
       </form>
     </main>

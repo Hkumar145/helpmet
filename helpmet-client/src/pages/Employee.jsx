@@ -5,12 +5,15 @@ import axios from '../api/axios'
 import CreateEmployee from '../components/CreateEmployee'
 import EditEmployee from '../components/EditEmployee'
 import BackToTopButton from '../components/BackToTopButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeID, setSelectedEmployeeID] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
   if (companyID) {
@@ -37,27 +40,34 @@ const Employee = () => {
       setEmployees((prevEmployees) =>
         prevEmployees.filter((employee) => employee.employeeID !== employeeID)
       );
-      alert(`Employee with ID ${employeeID} deleted successfully`);
+      toast.success(`Employee with ID ${employeeID} deleted successfully`, {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
     } catch (error) {
-      console.error("Error deleting employee:", error);
+      toast.error(`Error deleting employee: ${error}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
   return (
-    <div className='flex flex-col gap-4 text-black'>
+    <div className='flex flex-col gap-2 text-black'>
+      <ToastContainer position="top-right" autoClose={3000} />
     <div className='flex flex-row items-center justify-between'>
       <h1 className='text-lg font-bold text-black'>Employees</h1>
-      <Dialog>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">
             Add New Employee
-            <img className="min-w-[30px] min-h-[30px]" src="./images/new-employee.svg" alt="new employee icon" />
+            <img className="min-w-[16px] min-h-[16px]" src="./images/new-employee.svg" alt="new employee icon" />
           </button>
         </DialogTrigger>
         <DialogContent>
           <DialogTitle>Add New Employee</DialogTitle>
           <DialogDescription>Add a new employee to the system.</DialogDescription>
-          <CreateEmployee />
+          <CreateEmployee onClose={() => setDialogOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

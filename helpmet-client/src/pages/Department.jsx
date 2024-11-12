@@ -5,11 +5,14 @@ import axios from '../api/axios';
 import CreateDepartment from '../components/CreateDepartment';
 import EditDepartment from '../components/EditDepartment';
 import BackToTopButton from '../components/BackToTopButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Department = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartmentID, setSelectedDepartmentID] = useState(null);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (companyID) {
@@ -36,24 +39,31 @@ const Department = () => {
       setDepartments((prevDepartments) =>
         prevDepartments.filter((department) => department.departmentID !== departmentID)
       );
-      alert(`Department with ID ${departmentID} deleted successfully`);
+      toast.success(`Department with ID ${departmentID} deleted successfully`, {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
     } catch (error) {
-      console.error("Error deleting department:", error);
+      toast.error(`Error deleting employee: ${error}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
   return (
-    <div className='flex flex-col gap-4 text-black'>
+    <div className='flex flex-col gap-2 text-black'>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className='flex flex-row items-center justify-between'>
         <h1 className='text-lg font-bold text-black'>Departments</h1>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <button className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4'>Add New Department</button>
           </DialogTrigger>
           <DialogContent>
             <DialogTitle>Add New Department</DialogTitle>
             <DialogDescription>Add a new department to the system.</DialogDescription>
-            <CreateDepartment />
+            <CreateDepartment onClose={() => setDialogOpen(false)} />
           </DialogContent>
         </Dialog>
       </div>

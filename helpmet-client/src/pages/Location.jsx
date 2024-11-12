@@ -5,6 +5,8 @@ import axios from '../api/axios';
 import CreateLocation from '../components/CreateLocation';
 import EditLocation from '../components/EditLocation';
 import BackToTopButton from '../components/BackToTopButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Location = () => {
   const [locations, setLocations] = useState([]);
@@ -59,7 +61,8 @@ const Location = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4 text-black'>
+    <div className='flex flex-col gap-2 text-black'>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className='flex flex-row items-center justify-between'>
         <h1 className='text-lg font-bold text-black'>Locations</h1>
         <Dialog>

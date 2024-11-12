@@ -54,7 +54,7 @@ const PendingReport = () => {
   return (
     <div className='w-full flex flex-col px-6'>
       <div className='flex flex-row items-center justify-between gap-4'>
-        <h1 className='text-lg text-black md:text-2xl'>Pending Report</h1>
+        <h1 className='text-lg font-bold text-black md:text-2xl'>Pending Report</h1>
         <button
             onClick={handleViewCompletedReports}
             className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
@@ -70,7 +70,7 @@ const PendingReport = () => {
           <p className='font-bold text-nowrap'>No Reports Available</p>
           <p className='text-sm text-gray-500 text-nowrap'>Start by creating the first incident report</p>
           <button
-            className='bg-green-700 text-white p-3 rounded-lg mt-4 text-nowrap'
+            className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-4"
             onClick={handleCreateInjuryReport}
           >
             Create Incident Report
