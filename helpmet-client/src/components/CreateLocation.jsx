@@ -73,10 +73,12 @@ const CreateLocation = () => {
 
       if (response.status === 201) {
         alert("Location created successfully!");
-        window.location.reload('./location');
+        window.location.reload();
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
+        shouldClose: true;
+        window.location.reload(); // Reload the page
       }
     } catch (error) {
       console.error("Error creating location:", error.response?.data?.message || error.message);
