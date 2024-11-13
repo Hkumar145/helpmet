@@ -79,6 +79,12 @@ const Location = () => {
       </div>
 
       <div className="overflow-x-auto">
+      {locations.length === 0 ? (
+      <div className="text-center bg-white rounded-lg py-[120px]">
+        <p className="font-bold">No Location Available</p>
+        <p className="text-sm text-gray-500">Start by adding new location to the list</p>
+      </div>
+      ) : (
         <table className="min-w-full bg-white text-black rounded-lg text-sm">
           <thead>
             <tr>
@@ -159,6 +165,7 @@ const Location = () => {
             ))}
           </tbody>
         </table>
+      )}
       </div>
       <BackToTopButton />
     </div>

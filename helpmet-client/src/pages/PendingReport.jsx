@@ -6,6 +6,7 @@ import Avatar from 'react-avatar'
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import BackToTopButton from '../components/BackToTopButton';
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const severityMapping = {
   1: 'Minor',
@@ -64,10 +65,10 @@ const PendingReport = () => {
       </div>
 
       {loading ? (
-        <p className='text-center mt-6 max-w-[710px] min-w-full'>Loading...</p>
+        <LoadingSpinner />
       ) : pendingReports.length === 0 ? (
         <div className='text-center mt-6 bg-white rounded-lg py-[120px] sm:px-auto lg:px-[350px]'>
-          <p className='font-bold text-nowrap'>No Reports Available</p>
+          <p className='font-bold text-nowrap'>No Report Available</p>
           <p className='text-sm text-gray-500 text-nowrap'>Start by creating the first incident report</p>
           <button
             className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-4"

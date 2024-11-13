@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { FaEye, FaEdit, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 import Avatar from 'react-avatar';
 import axios from '../api/axios';
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
   const [expandedEquipmentID, setExpandedEquipmentID] = useState(null);
   const [updatedEquipments, setUpdatedEquipments] = useState([]);
   const [employeeNames, setEmployeeNames] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // Calculate if inspection is due and add a warning flag
   useEffect(() => {
@@ -25,6 +27,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
         }
       });
       setUpdatedEquipments(updatedList);
+      setLoading(false);
     };
 
     calculateInspectionWarnings();
@@ -78,6 +81,14 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
 
   return (
     <div style={{ marginTop: '0px' }}>
+      {loading ? (
+        <LoadingSpinner />
+      ) : updatedEquipments.length === 0 ? (
+        <div className="text-center bg-white rounded-lg py-[120px]">
+          <p className="font-bold">No Equipment Available</p>
+          <p className="text-sm text-gray-500">Start by adding new equipment to the list</p>
+        </div>
+      ) : (
       <table
         style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', color: '#333' }}
         className="equipment-table"
@@ -197,6 +208,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
           ))}
         </tbody>
       </table>
+      )}
 
       <style jsx>{`
         @media (max-width: 768px) {
