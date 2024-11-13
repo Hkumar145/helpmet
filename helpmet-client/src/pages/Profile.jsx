@@ -95,21 +95,24 @@ const Profile = () => {
             onChange={(e) => setUsername(e.target.value)}
             type="text"
             placeholder='Username'
-            className='bg-slate-200 rounded-lg p-3'
+            className='bg-white rounded-lg p-3'
+            required
           />
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder='Email'
-            className='bg-slate-200 rounded-lg p-3'
+            className='bg-white rounded-lg p-3'
+            required
           />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder='Password'
-            className='bg-slate-200 rounded-lg p-3'
+            className='bg-white rounded-lg p-3'
+            required
           />
           <button className='bg-slate-600 text-white rounded-lg hover:opacity-90'>
             Update
