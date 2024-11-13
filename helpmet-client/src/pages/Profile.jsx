@@ -85,6 +85,7 @@ const Profile = () => {
           type="text"
           placeholder='Username'
           className='bg-white rounded-lg p-3'
+          required
         />
         <input
           value={email}
@@ -92,6 +93,7 @@ const Profile = () => {
           type="email"
           placeholder='Email'
           className='bg-white rounded-lg p-3'
+          required
         />
         <input
           value={password}
@@ -99,6 +101,7 @@ const Profile = () => {
           type="password"
           placeholder='Password'
           className='bg-white rounded-lg p-3'
+          required
         />
         <button 
         className="bg-[#6938EF] text-white font-bold rounded hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 mt-4">

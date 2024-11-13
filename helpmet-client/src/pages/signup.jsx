@@ -95,7 +95,7 @@ const signup = () => {
     <>
       {success ? (
         <section className='w-full max-w-sm min-h-[400px] flex flex-col justify-start p-4'>
-          <h1 className='text-[#6938EF]'>Your account has been successfully created!</h1>
+          <h1 className='text-[#6938EF] text-center'>Your account has been successfully created!</h1>
         </section>
       ) : (
       <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#F4F3FF]'>

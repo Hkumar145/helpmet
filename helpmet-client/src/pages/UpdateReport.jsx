@@ -16,6 +16,7 @@ const UpdateReport = () => {
   const [image, setImage] = useState([]);
   const [witnessID, setWitnessID] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const fetchReportDetails = async () => {
@@ -95,6 +96,7 @@ const UpdateReport = () => {
         setImage([]);
         setWitnessID('');
         setSuccessMessage(true);
+        setSuccess(true);
     } catch (error) {
       console.error("Error updating report:", error);
       alert("Failed to update report. Please try again.");
@@ -118,8 +120,8 @@ const UpdateReport = () => {
   return (
     <>
       {successMessage ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-black/40'>
-          <h1 className='text-black'>Injury report updated successfully.</h1>
+        <section className='w-full max-w-sm min-h-[400px] flex flex-col justify-start p-4'>
+          <h1 className='text-[#6938EF] text-clip text-center'>Injury report updated successfully.</h1>
         </section>
       ) : (
       <div className="bg-white p-6 rounded-lg max-w-lg mx-auto text-black">
