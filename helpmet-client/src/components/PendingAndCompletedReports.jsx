@@ -111,7 +111,7 @@ const PendingAndCompletedReports = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <Doughnut data={data} options={options} style={{ maxHeight: '300px', minWidth: '396px' }} />
+      <Doughnut data={data} options={options} style={{ maxHeight: '280px', minWidth: '370px' }} />
     </div>
   );
   
