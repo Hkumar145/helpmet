@@ -86,6 +86,12 @@ const Department = () => {
       </div>
 
       <div className="overflow-x-auto">
+      {departments.length === 0 ? (
+      <div className="text-center bg-white rounded-lg py-[120px]">
+        <p className="font-bold">No Department Available</p>
+        <p className="text-sm text-gray-500">Start by adding new department to the list</p>
+      </div>
+      ) : (
         <table className="min-w-full bg-white text-black rounded-lg text-sm">
           <thead>
             <tr>
@@ -128,6 +134,7 @@ const Department = () => {
             ))}
           </tbody>
         </table>
+      )}
       </div>
 
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
