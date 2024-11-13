@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaEye, FaEdit, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 import Avatar from 'react-avatar';
 import axios from '../api/axios';
-import LoadingSpinner from '../components/LoadingSpinner'
 
 const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
   const [expandedEquipmentID, setExpandedEquipmentID] = useState(null);
@@ -82,7 +81,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
   return (
     <div style={{ marginTop: '0px' }}>
       {loading ? (
-        <LoadingSpinner />
+        <p className='text-center mt-6 max-w-[710px] min-w-full'>Loading...</p>
       ) : updatedEquipments.length === 0 ? (
         <div className="text-center bg-white rounded-lg py-[120px]">
           <p className="font-bold">No Equipment Available</p>
