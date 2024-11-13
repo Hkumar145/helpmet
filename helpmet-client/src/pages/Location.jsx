@@ -101,7 +101,7 @@ const Location = () => {
                 >
                   <td className="px-0 py-2 md:px-4">
                     <div className="flex items-center gap-2">
-                      <img src="./images/map.svg" alt="map icon" className="w-5 h-5" />
+                      <img src="./images/map.svg" alt="map icon" className="w-5 h-5 ml-5" />
                       {location.locationName}
                     </div>
                   </td>
@@ -133,7 +133,7 @@ const Location = () => {
                         handleDeleteLocation(location.locationID);
                       }}
                     >
-                      <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
+                      <img className="min-w-[16px] min-h-[16px] " src="./images/trash.svg" alt="delete icon" />
                     </button>
                   </td>
                 </tr>

@@ -82,28 +82,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             console.error("Error saving alert:", error);
         }
     };
-    // const saveChanges = async () => {
-    //     const formData = new FormData();
-    //     formData.append("alertName", editedAlert.alertName);
-    //     formData.append("description", editedAlert.description);
-    //     // formData.append("existingAttachments", editedAlert.attachments);
-    
-    //     try {
-    //         await axios.put(`/alerts/${editedAlert.alertID}`, formData, {
-    //             headers: {
-    //                 "Content-Type": "multipart/form-data",
-    //             },
-    //         });
-    //         alert("Alert updated successfully!");
-    //         setEditMode(null);
-    //         fetchAlerts();
-    //     } catch (error) {
-    //         console.error("Error saving alert:", error);
-    //         if (error.response && error.response.data) {
-    //             console.error("Server error message:", error.response.data);
-    //         }
-    //     }
-    // };
     
     // Handle file input changes
     const handleFileChange = (e) => {
@@ -135,7 +113,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const viewDetails = (alertID) => {
         if (expandedAlertID === alertID) {
             setExpandedAlertID(null);
-            // console.log(alerts)
         } else {
             setExpandedAlertID(alertID);
             setEditMode(null);
@@ -230,7 +207,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                     <td className="p-2 lg:px-6">{ alert.alertName }</td>
                                     <td className="p-2 lg:px-6">{ alert.sentAt }</td>
                                     <td className="p-2 lg:px-6 flex flex-col md:flex-row lg:h-12 items-center gap-1">
-                                        {alert.recipients && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
+                                        {alert.recipients && alert.recipients[0] && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
                                             const id = recipientID;
                                             const employee = allEmployees.find(e => e.value === id);
                                             const label = employee ? employee.label : "Unknown";
@@ -245,7 +222,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                 />
                                             );
                                         })}
-                                        {alert.recipients && JSON.parse(alert.recipients[0]).length > 3 && (
+                                        {alert.recipients && alert.recipients[0] && JSON.parse(alert.recipients[0]).length > 3 && (
                                             <span className="text-gray60">+{JSON.parse(alert.recipients[0]).length - 3}</span>
                                         )}
                                     </td>
@@ -369,36 +346,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                 onChange={handleInputChange}
                                                 className="w-full p-2 mt-2 rounded-[6px] text-[14px] py-[0.25rem] px-[0.35rem]"
                                             ></textarea>
-                                            {/* <div className="mt-1">
-                                                <div className="flex items-center gap-2">
-                                                    <button
-                                                        onClick={() => document.getElementById("fileInput").click()}
-                                                        className="w-20 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
-                                                    >
-                                                        Select Files
-                                                    </button>
-                                                    <input
-                                                        id="fileInput"
-                                                        type="file"
-                                                        multiple
-                                                        onChange={handleFileChange}
-                                                        className="hidden"
-                                                    />
-                                                    <p className="text-[14px] text-gray40">
-                                                        {editedAlert.attachments.length > 0
-                                                            ? `${editedAlert.attachments.length} file(s) selected`
-                                                            : "No files selected"}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    {editedAlert.attachments.map((file, index) => (
-                                                        <div key={index} className="w-3/5 flex items-center justify-between">
-                                                            <span className="truncate">{file instanceof File ? file.name : file}</span>
-                                                            <IconButton icon="delete" onClick={() => removeFile(file)} />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div> */}
                                             
                                             <div className="mt-4 flex gap-2 justify-end">
                                                 <button

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import axios from '../api/axios'
 import { useDispatch } from 'react-redux'
 import { updateProfile, logout } from '../redux/user/userSlice'
-import LoadingSpinner from '../components/LoadingSpinner'
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,6 @@ const Profile = () => {
   const [email, setEmail] = useState(currentUser.email);
   const [password, setPassword] = useState('');
   const [profilePictureURL, setProfilePictureURL] = useState(currentUser.profilePicture);
-  const [loading, setLoading] = useState(false);
   const companyID = currentUser.companyID;
 
   useEffect(() => {
@@ -29,7 +27,6 @@ const Profile = () => {
     formData.append("profilePicture", image);
 
     try {
-      setLoading(true);
       const response = await axios.post('/auth/uploadProfilePicture', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true,
@@ -38,15 +35,12 @@ const Profile = () => {
       return response.data.url;
     } catch (error) {
       console.error("Error uploading profile picture:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
       let uploadedImageUrl = profilePictureURL;
       if (image) {
         uploadedImageUrl = await handleFileUpload();
@@ -59,8 +53,6 @@ const Profile = () => {
       dispatch(updateProfile(response.data));
     } catch (error) {
       console.error("Error updating profile:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -76,49 +68,46 @@ const Profile = () => {
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-2xl font-semibold text-center text-black'>Profile</h1>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <form onSubmit={handleUpdate} className='flex flex-col gap-4'>
-          <input
-            type="file" ref={fileRef} hidden accept='image/*'
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-          <img
-            src={profilePictureURL || currentUser.profilePicture}
-            alt="profile"
-            className='h-24 w-24 self-center cursor-pointer rounded-full object-cover'
-            onClick={() => fileRef.current.click()}
-          />
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            type="text"
-            placeholder='Username'
-            className='bg-white rounded-lg p-3'
-            required
-          />
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder='Email'
-            className='bg-white rounded-lg p-3'
-            required
-          />
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder='Password'
-            className='bg-white rounded-lg p-3'
-            required
-          />
-          <button className='bg-slate-600 text-white rounded-lg hover:opacity-90'>
-            Update
-          </button>
-        </form>
-      )}
+      <form onSubmit={handleUpdate} className='flex flex-col gap-4'>
+        <input
+          type="file" ref={fileRef} hidden accept='image/*'
+          onChange={(e) => setImage(e.target.files[0])}
+        />
+        <img
+          src={profilePictureURL || currentUser.profilePicture}
+          alt="profile"
+          className='h-24 w-24 self-center cursor-pointer rounded-full object-cover'
+          onClick={() => fileRef.current.click()}
+        />
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          type="text"
+          placeholder='Username'
+          className='bg-white rounded-lg p-3'
+          required
+        />
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          placeholder='Email'
+          className='bg-white rounded-lg p-3'
+          required
+        />
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          type="password"
+          placeholder='Password'
+          className='bg-white rounded-lg p-3'
+          required
+        />
+        <button 
+        className="bg-[#6938EF] text-white font-bold rounded hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 mt-4">
+          Update
+        </button>
+      </form>
       <div className='flex justify-between mt-5 text-black'>
         <span className='cursor-pointer mx-auto text-xs' onClick={handleLogout}>
           Logout

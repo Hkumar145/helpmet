@@ -8,7 +8,6 @@ import Avatar from 'react-avatar'
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import BackToTopButton from '../components/BackToTopButton';
-import LoadingSpinner from '../components/LoadingSpinner'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -95,7 +94,7 @@ const Report = () => {
       </div>
 
       {loading ? (
-        <LoadingSpinner />
+        <p className='text-center mt-6 max-w-[710px] min-w-full'>Loading...</p>
       ) : report.length === 0 ? (
         <div className='text-center mt-6 bg-white rounded-lg py-[120px] sm:px-auto lg:px-[350px]'>
           <p className='font-bold text-nowrap'>No Report Available</p>

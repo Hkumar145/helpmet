@@ -5,13 +5,11 @@ import CreateEmployeeAlert from "../components/CreateEmployeeAlert";
 import CreateDepartmentAlert from "../components/CreateDepartmentAlert";
 import AlertToggle from "../components/AlertToggle";
 import { useSelector } from "react-redux";
-import { Audio } from 'react-loader-spinner';
 
 const Alert = () => {
     const [alerts, setAlerts] = useState([]);
     const [viewMode, setViewMode] = useState("list");
     const [alertType, setAlertType] = useState("employee");
-    const [loading, setLoading] = useState(true);
     const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
     // Fetch all alerts
@@ -24,10 +22,8 @@ const Alert = () => {
                 sentAt: new Date(alert.sentAt).toISOString().split("T")[0]
             }));
             setAlerts(formattedAlerts);
-            setLoading(false);
         } catch (error) {
             console.error(error);
-            setLoading(false);
         }
     };
 
@@ -44,22 +40,6 @@ const Alert = () => {
 
     // Render different components based on viewMode
     const renderContent = () => {
-        if (loading) {
-            return (
-                <div className='flex justify-center mt-6'>
-                    <Audio
-                        height="80"
-                        width="80"
-                        radius="9"
-                        color="green"
-                        ariaLabel="loading"
-                        wrapperStyle
-                        wrapperClass
-                    />
-                </div>
-            );
-        }
-
         if (viewMode === "create") {
             return alertType === "employee" ? (
                 <CreateEmployeeAlert 
