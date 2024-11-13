@@ -117,7 +117,7 @@ const Profile = () => {
         </form>
       )}
       <div className='flex justify-between mt-5 text-black'>
-        <span className='cursor-pointer mx-auto' onClick={handleLogout}>
+        <span className='cursor-pointer mx-auto text-xs' onClick={handleLogout}>
           Logout
         </span>
       </div>

@@ -13,6 +13,9 @@ const Department = () => {
   const [selectedDepartmentID, setSelectedDepartmentID] = useState(null);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [departmentToDelete, setDepartmentToDelete] = useState(null);
+  const [departmentNameToDelete, setDepartmentNameToDelete] = useState(null);
 
   useEffect(() => {
     if (companyID) {
@@ -33,22 +36,36 @@ const Department = () => {
     setSelectedDepartmentID(departmentID);
   };
 
-  const handleDeleteDepartment = async (departmentID) => {
+  const handleDeleteDepartment = async () => {
     try {
-      await axios.delete(`/departments/${departmentID}`);
+      const departmentName = departments.find(department => department.departmentID === departmentToDelete)?.departmentName;
+      
+      await axios.delete(`/departments/${departmentToDelete}`);
+      
       setDepartments((prevDepartments) =>
-        prevDepartments.filter((department) => department.departmentID !== departmentID)
+        prevDepartments.filter((department) => department.departmentID !== departmentToDelete)
       );
-      toast.success(`Department with ID ${departmentID} deleted successfully`, {
+      
+      toast.success(`${departmentName} deleted successfully`, {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
     } catch (error) {
-      toast.error(`Error deleting employee: ${error}`, {
+      toast.error(`Error deleting department: ${error}`, {
         className: "custom-toast-error",
         bodyClassName: "custom-toast-body",
       });
+    } finally {
+      setDeleteDialogOpen(false);
+      setDepartmentToDelete(null);
+      setDepartmentNameToDelete(null);
     }
+  };
+
+  const openDeleteConfirmation = (departmentID, departmentName) => {
+    setDepartmentToDelete(departmentID);
+    setDepartmentNameToDelete(departmentName);
+    setDeleteDialogOpen(true);
   };
 
   return (
@@ -102,7 +119,7 @@ const Department = () => {
                   </Dialog>
                   <button
                     className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
-                    onClick={() => handleDeleteDepartment(department.departmentID)}
+                    onClick={() => openDeleteConfirmation(department.departmentID)}
                   >
                     <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
                   </button>
@@ -112,6 +129,25 @@ const Department = () => {
           </tbody>
         </table>
       </div>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>Are you sure you want to delete this department?</DialogDescription>
+          <div className="flex justify-end gap-2 mt-4">
+            <button onClick={() => setDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] text-xs px-4 py-2 my-0">
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteDepartment}
+              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
+            >
+              Confirm
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <BackToTopButton />
     </div>
   );

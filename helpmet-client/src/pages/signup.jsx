@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-import OAuth from '../components/OAuth';
-import '../../src/index.css';
 
 const signup = () => {
   const usernameRef = useRef();
@@ -64,7 +62,7 @@ const signup = () => {
     if (success) {
       const timer = setTimeout(() => {
         navigate('/login');
-      }, 1500);
+      }, 1250);
 
       return () => clearTimeout(timer);
     }
@@ -96,8 +94,8 @@ const signup = () => {
   return (
     <>
       {success ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#6938EF]'>
-          <h1 className='text-white'>Your account has been successfully created!</h1>
+        <section className='w-full max-w-sm min-h-[400px] flex flex-col justify-start p-4'>
+          <h1 className='text-[#6938EF] text-center'>Your account has been successfully created!</h1>
         </section>
       ) : (
       <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-[#F4F3FF]'>
@@ -185,7 +183,7 @@ const signup = () => {
           </p>
 
           <button disabled={!validUsername || !validEmail || !pwd || !matchPwd || !validMatch ? true : false}
-          className='bg-[#6938EF] hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed text-white'>
+          className='bg-[#6938EF] text-white font-bold disabled:opacity-40 disabled:bg-[#D9D6FE] disabled:text-[#6938EF] disabled:cursor-not-allowed hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mt-4'>
             Sign Up
           </button>
           {/* <OAuth /> */}
