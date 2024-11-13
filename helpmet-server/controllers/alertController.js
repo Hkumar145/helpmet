@@ -6,14 +6,14 @@ const {
 } = require("../models/schemas");
 const { sendEmail } = require("../utils/emailService");
 const path = require("path");
-const { uploadToS3, getS3FileBuffer } = require('../utils/s3Upload');
+const { uploadToS3 } = require('../utils/s3Upload');
 
 // Create a new alert
 exports.createAlert = async (req, res) => {
     try {
         // Check if similar alert already exists
         const { id: companyID } = req.params;
-        const { alertName, cc, recipients, recipientType, description, scheduleTime } = req.body;
+        const { alertName, cc, recipients, recipientType, description, scheduleTime, type } = req.body;
         const duplicateAlert = await Alert.findOne({ alertName, description });
 
         if (duplicateAlert) {
@@ -38,6 +38,7 @@ exports.createAlert = async (req, res) => {
             companyID,
             sentAt, 
             description,
+            type,
             recipients,
             cc: cc ? cc.trim() : null,  
             attachments: attachmentUrls
@@ -81,8 +82,8 @@ exports.createAlert = async (req, res) => {
         }
 
         // File attachments
-        const attachments = attachmentUrls.map((url, index) => ({
-            filename: `attachment-${index + 1}`, 
+        const attachments = attachmentUrls.map((url) => ({
+            filename: url.split('/').pop(), 
             path: url,
         }));  
 
@@ -99,7 +100,7 @@ exports.createAlert = async (req, res) => {
                 attachments
             });
         }
-        res.json({ message: "Alert created successfully" });
+        res.json({ message: "Alert created successfully", attachments: attachments });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -136,14 +137,37 @@ exports.getAlertByID = async (req, res) => {
 exports.updateAlertByID = async (req, res) => {
     try {
         const updateFields = req.body;
-        if (Object.keys(updateFields).length === 0) {
-            return res.status(400).json({ message: "No fields to update" });
+
+        const alertId = req.params.id;
+        const alert = await Alert.findOne({
+            alertID: alertId
+        });
+        let attachmentUrls = [];
+        
+        if (req.files) {
+            attachmentUrls = await uploadToS3(req.files);
+            console.log("Uploaded attachment URLs:", attachmentUrls);
         }
-        const updatedAlert = await Alert.findOneAndUpdate(
-            { alertID: req.params.id },
-            updateFields,
-            { new: true }
-        );
+        const oldAttachments = updateFields.oldAttachments ? JSON.parse(updateFields.oldAttachments) : [];
+        const newAttachments = [...oldAttachments, ...attachmentUrls];
+
+        updateFields.recipients = JSON.parse(updateFields.recipients || "[]");
+        updateFields.attachments = newAttachments;
+        console.log(updateFields);
+        await Alert.findOneAndUpdate({
+            alertID: alertId
+        }, {
+            $set: updateFields
+        });
+
+        // if (Object.keys(updateFields).length === 0) {
+        //     return res.status(400).json({ message: "No fields to update" });
+        // }
+        // const updatedAlert = await Alert.findOneAndUpdate(
+        //     { alertID: req.params.id },
+        //     updateFields,
+        //     { new: true }
+        // );
         if (!updatedAlert) {
             return res.status(404).json({ message: "Alert not found" });
         }

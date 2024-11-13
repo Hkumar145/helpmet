@@ -10,10 +10,12 @@ import axios from "../api/axios";
 import "../index.css";
 import { IconButton } from "./ui/button";
 import Avatar from "react-avatar";
+import {useNavigate, useParams} from "react-router-dom";
 
 const MAX_NOTE_LENGTH = 300;
 
-const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
+const EditEmployeeAlert = () => {
+    const navigate = useNavigate();
     const [alertData, setAlertData] = useState({ 
         alertName: "", 
         description: "", 
@@ -21,6 +23,8 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         cc: "",
         attachments: [] 
     });
+    const companyID = useSelector((state) => state.user.currentUser?.companyID);
+    const { alertId } = useParams();
     const [recipients, setRecipients] = useState([]);
     const [scheduleDate, setScheduleDate] = useState(null);
     const [loadingRecipients, setLoadingRecipients] = useState(false);
@@ -28,6 +32,56 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
     const [dateTime, setDateTime] = useState(null);
     const [selectedRecipients, setSelectedRecipients] = useState([]);
 
+    const onCancel = () => {
+        navigate(-1);
+    }
+
+    // Set selected recipients by parsing each recipient ID
+    const fetchRecipientDetails = async (recipientIDs) => {
+        const details = await Promise.all(
+            recipientIDs.map(async (recipient) => {
+                const ids = recipient.startsWith("[") ? JSON.parse(recipient) : [recipient];
+
+                // Fetch employee details for each ID in parsed `ids`
+                const employees = await Promise.all(ids.map(async (id) => {
+                    try {
+                        const response = await axios.get(`/employees/${id}`);
+                        const employee = response.data;
+                        return {
+                            value: employee.employeeID,
+                            label: `${employee.employeeID} - ${employee.firstName} ${employee.lastName}`
+                        };
+                    } catch (error) {
+                        console.error(`Error fetching details for employee ID ${id}:`, error);
+                        return { value: id, label: "Unknown recipient" };
+                    }
+                }));
+
+                return employees;
+            })
+        );
+
+        // Flatten the array and set selected recipients
+        setSelectedRecipients(details.flat());
+    };
+
+    useEffect(() => {
+        axios.get(`/alerts/${alertId}`)
+            .then(async res => {
+                const data = res.data;
+                console.log(data);
+                setAlertData({
+                    ...data,
+                    attachments: data.attachments.map(item => {
+                        return item.split('/').pop();
+                    })
+                });
+            await fetchRecipientDetails(data.recipients);
+            setDateTime(new Date(data.sentAt));
+            }).catch(error => {
+            console.error("Error fetching alert:", error);
+        })
+    }, [alertId]);
 
     useEffect(() => {
         // Fetch all employees
@@ -82,6 +136,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         setSelectedRecipients((prevSelected) => prevSelected.filter((r) => r.value !== recipient.value));
     };    
 
+
     const handleCCChange = (e) => {
         const email = e.target.value.trim();
         setAlertData((prev) => ({
@@ -122,6 +177,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };
 
     const handleDateTimeChange = (value) => {
+        console.log(value)
         const now = new Date();
         if (value == null) {
             setDateTime(now);
@@ -130,28 +186,38 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         }
     };
 
-    const createAlert = async (e) => {
+    const updateAlert = async (e) => {
         e.preventDefault();
+
 
         const formData = new FormData();
         formData.append("alertName", alertData.alertName);
         formData.append("description", alertData.description);
         formData.append("companyID", companyID);
         formData.append("scheduleTime", dateTime ? dateTime.toISOString() : new Date().toISOString());
-        formData.append("recipients", JSON.stringify(alertData.recipients));
+        formData.append("recipients", JSON.stringify(selectedRecipients.map(item => item.value)));
         formData.append("cc", alertData.cc);
-        formData.append("type", "employee");
-
+        let oldAttachments = [];
         if (alertData.attachments.length > 0) {
-            alertData.attachments.forEach((file) => {
-              formData.append("attachments", file);
+            alertData.attachments.filter(item => {
+                return typeof item === 'string';
+            }).forEach((url) => {
+                oldAttachments.push(url);
+            });
+            formData.append("oldAttachments", JSON.stringify(oldAttachments));
+
+            alertData.attachments.filter(item => {
+                return typeof item !== 'string';
+            }).forEach((file) => {
+                formData.append("attachments", file);
             });
         }
 
         try {
-            const create_response = await axios.post(`/companies/${companyID}/alerts`, formData);
-            alertData.attachments = create_response.data.attachments;
+            const update_response = await axios.put(`/alerts/${alertId}`, formData);
 
+            alert("Alert update successfully!");
+            return;
             /// Fetch all employees to get their emails by employee ID
             const response = await axios.get(`/companies/${companyID}/employees`);
             const allEmployees = response.data;
@@ -175,8 +241,6 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 scheduleTime: dateTime ? dateTime.toISOString() : null
             });
             alert("Alert created successfully!");
-            fetchAlerts();
-            onCancel();
         } catch (error) {
             if (error.response) {
                 console.error("Error creating employee alert:", error.response.data);
@@ -187,8 +251,8 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };
 
     return (
-        <div className="w-full overflow-x-auto">
-            <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start min-w-[500px]">
+        <div>
+            <form onSubmit={updateAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
                         <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
@@ -221,9 +285,9 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                             <ul className="border rounded-[10px] border-black mt-2">
                                 {alertData.attachments.map((file, index) => (
                                     <li key={index} className="flex justify-between items-center p-2 text-[14px]">
-                                        <span>{file.name}</span>
+                                        <span>{typeof file === 'string' ? file : file.name}</span>
                                         <div>
-                                            <IconButton icon="close" 
+                                            <IconButton type={'button'} icon="close"
                                             onClick={() => removeFile(file)}
                                             className="no-border" 
                                             style={{
@@ -320,4 +384,4 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
     );
 };
 
-export default CreateEmployeeAlert;
+export default EditEmployeeAlert;

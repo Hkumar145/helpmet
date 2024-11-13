@@ -20,7 +20,7 @@ const Setting = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 text-black w-full px-6">
+    <div className="flex flex-col gap-4 text-black w-full px-4 lg:px-7 max-w-[2700px]">
       <div className='flex flex-col md:flex-row items-center justify-between gap-6 border-b-2 border-gray-300 pb-2 max-w-full lg:w-full'>
         <h1 className='text-lg font-bold'>Settings</h1>
         <div className="flex justify-end text-xs">

@@ -11,10 +11,10 @@ const Header = () => {
   // Check if the current path matches the link path
   const isActive = (path) => location.pathname === path;
   return (
-    <div className="bg-white p-7 border-b-2 border-black">
-      <div className="flex justify-between items-center max-w-6xl mx-auto">
+    <div className="bg-white border-b-2 border-black">
+      <div className="flex justify-between items-center max-w-[2700px] mx-auto py-7 px-4 lg:px-7">
         <Link to="/">
-          <img src="./images/Group 7.svg" className="w-[140px] h-auto" />
+          <img src="./images/Group 7.svg" className="w-[140px] lg:max-w-[160px] sm:max-w-[140px] h-auto" />
         </Link>
         {/* Hamburger icon for mobile */}
         <div className="hamburger-menu md:hidden" onClick={toggleMenu}>

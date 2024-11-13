@@ -52,7 +52,7 @@ const PendingReport = () => {
   };
 
   return (
-    <div className='w-full flex flex-col px-6'>
+    <div className='w-full flex flex-col px-4 lg:px-7 max-w-[2700px]'>
       <div className='flex flex-row items-center justify-between gap-4'>
         <h1 className='text-lg text-black md:text-2xl'>Pending Report</h1>
         <button
