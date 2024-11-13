@@ -11,6 +11,7 @@ import ReportsByLocation from "@/components/ReportsByLocation"
 import BackToTopButton from '../components/BackToTopButton';
 import EquipmentStatusPieChart from "@/components/EquipmentStatusPieChart"
 import SiteAgentTable from "@/components/SiteAgentTable"
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
@@ -396,7 +397,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[396px]">
-                    {severityData && (
+                    {severityData ? (
                         <div className="max-w-min">
                             <BarChart
                                 chartData={severityData}
@@ -410,6 +411,10 @@ const Dashboard = () => {
                                 <p className="text-left w-full dot-before dot-ms">Medium Severity</p>
                                 <p className="text-left w-full dot-before dot-ls">Low Severity</p>
                             </div>
+                        </div>
+                    ) : (
+                        <div className="flex justify-center mt-6">
+                            <LoadingSpinner />
                         </div>
                     )}
                 </div>

@@ -4,9 +4,8 @@ import EquipmentList from '../components/EquipmentList';
 import CreateEquipment from '../components/CreateEquipment';
 import UpdateEquipment from '../components/UpdateEquipment';
 import EquipmentDetail from '../components/EquipmentDetail';
-import { useSelector } from 'react-redux'
-
-// const companyID = 100001;
+import { useSelector } from 'react-redux';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const EquipmentCheck = () => {
   const [equipments, setEquipments] = useState([]);
@@ -15,15 +14,18 @@ const EquipmentCheck = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   const fetchEquipments = async () => {
     try {
       const response = await axios.get(`http://localhost:5001/companies/${companyID}/equipments`);
       setEquipments(response.data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching equipment:', error);
       setError('Error fetching equipment');
+      setLoading(false);
     }
   };
 
@@ -114,7 +116,9 @@ const EquipmentCheck = () => {
           Add New Equipment
         </button>
       </div>
-      {viewMode === 'list' ? (
+      {loading ? (
+        <LoadingSpinner />
+      ) : viewMode === 'list' ? (
         <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
           <EquipmentList
             equipments={equipments}

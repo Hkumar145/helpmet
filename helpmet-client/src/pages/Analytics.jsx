@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 // import 'leaflet/dist/leaflet.css';
 import { Chart } from 'chart.js/auto'; // Importing Chart.js
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Analytics = () => {
+  const [loading, setLoading] = useState(true);
   const barChartRef = useRef(null);   // Reference for bar chart
   const doughnutChartRef = useRef(null);  // Reference for doughnut chart
 
@@ -73,12 +75,26 @@ const Analytics = () => {
 
   // Creating the charts when the component mounts
   useEffect(() => {
-    const barCtx = barChartRef.current.getContext('2d');
-    new Chart(barCtx, barChartConfig); // Render bar chart
+    const timer = setTimeout(() => {
+      const barCtx = barChartRef.current.getContext('2d');
+      new Chart(barCtx, barChartConfig); // Render bar chart
 
-    const doughnutCtx = doughnutChartRef.current.getContext('2d');
-    new Chart(doughnutCtx, doughnutChartConfig); // Render doughnut chart
+      const doughnutCtx = doughnutChartRef.current.getContext('2d');
+      new Chart(doughnutCtx, doughnutChartConfig); // Render doughnut chart
+      
+      setLoading(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="animate-fade-in">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -106,8 +122,6 @@ const Analytics = () => {
       </div>
     </>
   );
-
-  
 }
 
 export default Analytics;
