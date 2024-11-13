@@ -73,6 +73,7 @@ const CreateLocation = () => {
 
       if (response.status === 201) {
         alert("Location created successfully!");
+        window.location.reload('./location');
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
