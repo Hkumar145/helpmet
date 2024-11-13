@@ -14,6 +14,8 @@ const Employee = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
 
   useEffect(() => {
   if (companyID) {
@@ -34,22 +36,31 @@ const Employee = () => {
     setSelectedEmployeeID(employeeID);
   };
 
-  const handleDeleteEmployee = async (employeeID) => {
+  const handleDeleteEmployee = async () => {
     try {
-      await axios.delete(`/employees/${employeeID}`);
-      setEmployees((prevEmployees) =>
-        prevEmployees.filter((employee) => employee.employeeID !== employeeID)
-      );
-      toast.success(`Employee with ID ${employeeID} deleted successfully`, {
-        className: "custom-toast",
-        bodyClassName: "custom-toast-body",
-      });
+      if (employeeToDelete) {
+        await axios.delete(`/employees/${employeeToDelete}`);
+        setEmployees((prevEmployees) =>
+          prevEmployees.filter((employee) => employee.employeeID !== employeeToDelete)
+        );
+        toast.success(`Employee with ID ${employeeToDelete} deleted successfully`, {
+          className: "custom-toast",
+          bodyClassName: "custom-toast-body",
+        });
+        setEmployeeToDelete(null);  // Clear after deletion
+      }
     } catch (error) {
       toast.error(`Error deleting employee: ${error}`, {
         className: "custom-toast-error",
         bodyClassName: "custom-toast-body",
       });
     }
+    setConfirmDeleteDialogOpen(false);
+  };
+
+  const confirmDelete = (employeeID) => {
+    setEmployeeToDelete(employeeID);
+    setConfirmDeleteDialogOpen(true);
   };
 
   return (
@@ -107,7 +118,10 @@ const Employee = () => {
                       )}
                     </DialogContent>
                 </Dialog>
-                <button className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]' onClick={() => handleDeleteEmployee(employee.employeeID)}>
+                  <button
+                    className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
+                    onClick={() => confirmDelete(employee.employeeID)}
+                  >
                   <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />
                 </button>
               </td>
@@ -116,6 +130,27 @@ const Employee = () => {
         </tbody>
       </table>
     </div>
+
+    <Dialog open={confirmDeleteDialogOpen} onOpenChange={setConfirmDeleteDialogOpen}>
+        <DialogContent>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this employee?
+          </DialogDescription>
+          <div className="flex justify-end gap-2">
+            <button onClick={() => setConfirmDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] text-xs px-4 py-2 my-0">
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteEmployee}
+              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
+            >
+              Confirm
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
     <BackToTopButton />
   </div>
   );

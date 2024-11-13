@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close
 
@@ -41,21 +43,34 @@ const PendingReportDetails = () => {
   }, [id]);
 
   const confirmOnHold = async () => {
+    toast.info("Processing...", { 
+      autoClose: 1000,
+      className: "custom-toast-info",
+      bodyClassName: "custom-toast-body",
+    });
+
     try {
       await axios.post("/email/send-hold-email", {
         reportDetails,
         holdReason,
       });
-      alert("Email sent successfully!");
 
       setReportDetails((prevDetails) => ({
         ...prevDetails,
         status: "On hold",
       }));
       setHoldReason("");
+      toast.success("Report put on hold successfully!", {
+        autoClose: 3000,
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
     } catch (error) {
-      console.error("Error sending hold email:", error);
-      alert("Could not send hold email.");
+      toast.error(`Failed to put the report on hold: ${error}`, {
+        autoClose: 3000,
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -101,11 +116,12 @@ const PendingReportDetails = () => {
   return (
     <>
       {successMessage ? (
-        <section className='w-full max-w-xs min-h-[400px] flex flex-col justify-start p-4 bg-white'>
-          <h1 className='text-black'>Injury report approved successfully.</h1>
+        <section className='w-full max-w-sm min-h-[400px] flex flex-col justify-start p-4'>
+          <h1 className='text-[#6938EF] text-center'>Injury report approved successfully.</h1>
         </section>
       ) : (
       <div>
+        <ToastContainer position="top-right" />
               <div className='flex flex-col gap-4 max-w-full'>
       <div className='flex flex-col md:flex-row justify-between items-center gap-4 text-xs'>
         <div className='flex flex-row items-center justify-between w-[100%]'>
@@ -262,13 +278,15 @@ const PendingReportDetails = () => {
                     Close
                   </button>
                 </DialogClose>
-                <button
-                  type='button'
-                  onClick={confirmOnHold}
-                  className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
-                >
-                  Confirm
-                </button>
+                <DialogClose asChild>
+                  <button
+                    type='button'
+                    onClick={confirmOnHold}
+                    className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                  >
+                    Confirm
+                  </button>
+                </DialogClose>
               </div>
             </DialogContent>
           </Dialog>
