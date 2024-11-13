@@ -8,6 +8,8 @@ import Avatar from 'react-avatar'
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import BackToTopButton from '../components/BackToTopButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const severityMapping = {
   1: 'Minor',
@@ -25,6 +27,7 @@ const Report = () => {
   const [loading, setLoading] = useState(true);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const navigate = useNavigate();
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     if (companyID) {
@@ -53,8 +56,18 @@ const Report = () => {
     navigate('/injury-report');
   };
 
+  const showToast = (message) => {
+    setToastMessage(message);
+    toast.success(message, {
+      autoClose: 3000,
+      className: "custom-toast",
+      bodyClassName: "custom-toast-body",
+    });
+  };
+
   return (
     <div className='w-full flex flex-col px-6'>
+      <ToastContainer position="top-right" />
       <div className='flex flex-row items-center justify-between gap-4'>
         <h1 className='text-lg font-bold text-black md:text-2xl'>Report</h1>
         <div className='flex gap-2'>
@@ -68,7 +81,7 @@ const Report = () => {
             <DialogContent>
               <DialogTitle>New Incident Report</DialogTitle>
               <DialogDescription>Notify the relevant people to submit incident report.</DialogDescription>
-              <CreateReport />
+              <CreateReport onSubmitSuccess={() => showToast("Injury report email sent successfully!")} />
             </DialogContent>
           </Dialog>
           <button

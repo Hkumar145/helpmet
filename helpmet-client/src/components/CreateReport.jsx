@@ -4,10 +4,12 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import axios from '../api/axios';
 import { useSelector } from 'react-redux';
 import Avatar from 'react-avatar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close
 
-const CreateReport = () => {
+const CreateReport = ({ onSubmitSuccess }) => {
   const senderEmail = useSelector((state) => state.user.email);
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [remark, setRemark] = useState("");
@@ -35,18 +37,27 @@ const CreateReport = () => {
       return;
     }
 
+    toast.info("Sending email...", { 
+      autoClose: 1000,
+      className: "custom-toast-info",
+      bodyClassName: "custom-toast-body",
+    });
+
     try {
       await axios.post("/email/send-report-email", {
         selectedRecipients,
         senderEmail,
         remark
       });
-      alert("Injury report email sent to selected recipients.");
       setRemark("");
       setSelectedRecipients([]);
+      onSubmitSuccess();
     } catch (error) {
-      console.error("Error sending email:", error);
-      alert("Failed to send email.");
+      toast.error(`Failed to send email: ${error}`, {
+        autoClose: 3000,
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -108,12 +119,14 @@ const CreateReport = () => {
               Close
             </button>
           </DialogClose>
-          <button
-            type='submit'
-            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
-          >
-                Send Links
-          </button>
+          <DialogClose asChild>
+            <button
+              type='submit'
+              className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+            >
+                  Send Links
+            </button>
+          </DialogClose>
         </div>
       </form>
     </main>
