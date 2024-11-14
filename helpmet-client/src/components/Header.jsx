@@ -106,9 +106,10 @@ const Header = () => {
           <Link to="/profile">
             {currentUser ? (
               <img
-                src={
-                  "https://img.freepik.com/premium-vector/user-icon-icon_1076610-59410.jpg"
-                }
+                src={currentUser.profilePicture}
+                // src={
+                //   "https://img.freepik.com/premium-vector/user-icon-icon_1076610-59410.jpg"
+                // }
                 alt="profile"
                 className="h-7 w-7 rounded-full object-cover"
               />
