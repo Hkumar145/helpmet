@@ -132,7 +132,7 @@ const CreateReport = ({ onSubmitSuccess }) => {
         <div className="flex flex-row justify-end gap-2 mt-4">
           <DialogClose asChild>
             <button className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0">
-              Close
+              Cancel
             </button>
           </DialogClose>
           <DialogClose asChild>
