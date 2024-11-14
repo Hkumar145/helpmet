@@ -364,9 +364,9 @@ const Dashboard = () => {
                         onBarClick={handleInjuryTypeBarClick}
                         indexAxis="y"
                     />
-                    <div className="flex flex-row items-center justify-center my-1 gap-2 max-w-[100%] ml-8 mr-6">
+                    <div className="flex flex-row items-center justify-center gap-2 w-full p-2">
                         <button
-                            className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 w-40 rounded mb-4"
+                            className="bg-gray-100 border border-gray-200 text-gray-700 text-xs px-4 py-2 w-full rounded"
                             onClick={() => navigate('/injury-analytics')}
                         >
                             Details
