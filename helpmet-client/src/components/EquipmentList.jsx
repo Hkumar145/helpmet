@@ -190,16 +190,55 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                 </td>
               </tr>
               {expandedEquipmentID === equipment.equipmentID && (
-                <tr>
-                  <td colSpan="7" style={{ padding: '12px', backgroundColor: '#f9f9f9' }}>
-                    <p><strong>Name:</strong> {equipment.equipmentName}</p>
-                    <p><strong>ID:</strong> {equipment.equipmentID}</p>
-                    <p><strong>Status:</strong> {equipment.status}</p>
-                    <p><strong>Location:</strong> {equipment.locationID}</p>
-                    <p><strong>Inspection Date:</strong> {formatDate(equipment.inspectionDate)}</p>
-                    <p><strong>Inspection Interval:</strong> {equipment.inspectionInterval} days</p>
-                    <p><strong>Inspected By:</strong> {employeeNames[equipment.inspectedBy]}</p>
-                    <p><strong>Description:</strong> {equipment.description}</p>
+                <tr className='relative -top-1 border-b border-gray-200'>
+                  <td colSpan="7" className="px-6 py-4">
+                    <div className="bg-white w-full">
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        {/* First Row */}
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500">Equipment Name</div>
+                          <div className="font-semibold text-gray-900">{equipment.equipmentName}</div>
+                        </div>
+                        
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500">Equipment ID</div>
+                          <div className="font-semibold text-gray-900">{equipment.equipmentID}</div>
+                        </div>
+                        
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500">Location ID</div>
+                          <div className="font-semibold text-gray-900">{equipment.locationID}</div>
+                        </div>
+
+                        {/* Second Row */}
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500">Status</div>
+                          <div className="font-semibold text-gray-900 flex items-center">
+                            <span className={`w-2 h-2 rounded-full mr-2 ${
+                              equipment.status.toLowerCase() === 'good' ? 'bg-green-500' : 'bg-yellow-500'
+                            }`}></span>
+                            {equipment.status}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500">Inspection Date</div>
+                          <div className="font-semibold text-gray-900">{formatDate(equipment.inspectionDate)}</div>
+                        </div>
+                        
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-sm text-gray-500">Inspection Interval</div>
+                          <div className="font-semibold text-gray-900">{equipment.inspectionInterval} days</div>
+                        </div>
+                      </div>
+
+                      {/* Description - Full Width */}
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="text-sm text-gray-500">Description</div>
+                        <div className="font-semibold text-gray-900">{equipment.description}</div>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               )}
