@@ -5,7 +5,7 @@ import CreateEmployeeAlert from "../components/CreateEmployeeAlert";
 import CreateDepartmentAlert from "../components/CreateDepartmentAlert";
 import AlertToggle from "../components/AlertToggle";
 import { useSelector } from "react-redux";
-import { Audio } from 'react-loader-spinner';
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Alert = () => {
     const [alerts, setAlerts] = useState([]);
@@ -17,6 +17,7 @@ const Alert = () => {
     // Fetch all alerts
     const fetchAlerts = async () => {
         try {
+            setLoading(true);
             const response = await axios.get(`/companies/${companyID}/alerts`);
             // Format the sentAt date to "YYYY-MM-DD" format
             const formattedAlerts = response.data.map(alert => ({
@@ -24,9 +25,9 @@ const Alert = () => {
                 sentAt: new Date(alert.sentAt).toISOString().split("T")[0]
             }));
             setAlerts(formattedAlerts);
-            setLoading(false);
         } catch (error) {
             console.error(error);
+        } finally {
             setLoading(false);
         }
     };
@@ -45,21 +46,9 @@ const Alert = () => {
     // Render different components based on viewMode
     const renderContent = () => {
         if (loading) {
-            return (
-                <div className='flex justify-center mt-6'>
-                    <Audio
-                        height="80"
-                        width="80"
-                        radius="9"
-                        color="green"
-                        ariaLabel="loading"
-                        wrapperStyle
-                        wrapperClass
-                    />
-                </div>
-            );
+            return <LoadingSpinner />;
         }
-
+        
         if (viewMode === "create") {
             return alertType === "employee" ? (
                 <CreateEmployeeAlert 

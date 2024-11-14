@@ -7,7 +7,7 @@ const LoadingSpinner = () => {
         height="80"
         width="80"
         radius="9"
-        color="green"
+        color="#6938EF"
         ariaLabel="loading"
         wrapperStyle
         wrapperClass

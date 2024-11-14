@@ -14,7 +14,7 @@ const Setting = () => {
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 100); // Longer delay to show animation
+    }, 15); // Longer delay to show animation
 
     return () => clearTimeout(timer);
   }, [activeTab]);
