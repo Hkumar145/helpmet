@@ -294,7 +294,7 @@ const InjuryAnalytics = () => {
 
   return (
     <div className="w-full flex flex-col gap-4 px-6">
-        <h1 className="w-full font-bold mb-2 text-left">
+        <h1 className="w-full font-bold xl:ml-1 mb-2 text-left">
             Injury Analytics - Injury Overview
         </h1>
         <div className="flex flex-col w-full gap-4 lg:gap-2 items-center justify-center md:flex-row md:flex-wrap">
@@ -348,7 +348,7 @@ const InjuryAnalytics = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg border-2 max-w-72">
+                <div className="bg-white rounded-lg border-2 max-w-72 h-[300px] w-[386px]">
                     <PendingAndCompletedReports/>
                 </div>
 

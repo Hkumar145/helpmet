@@ -132,11 +132,11 @@ const CreateLocation = () => {
           <MapLocation onCoordinatesChange={handleMapCoordinatesChange} />
         </div>
 
-        <div className='flex flex-row justify-between gap-4'>
+        <div className='flex flex-row justify-end gap-2 mt-2'>
           <DialogClose asChild>
-          <button type="button" className="text-black border px-6 py-2 text-xs rounded">Close</button>
+          <button type="button" className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0">Cancel</button>
           </DialogClose>
-          <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-12 py-2 rounded">Add Location</button>
+          <button className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">Add Location</button>
         </div>
       </form>
     </main>

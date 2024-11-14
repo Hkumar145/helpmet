@@ -14,6 +14,8 @@ const Location = () => {
   const [expandedLocationID, setExpandedLocationID] = useState(null);
   const [employees, setEmployees] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
+  const [locationToDelete, setLocationToDelete] = useState(null);
 
   useEffect(() => {
     if (companyID) {
@@ -44,16 +46,31 @@ const Location = () => {
     setSelectedLocationID(locationID);
   };
 
-  const handleDeleteLocation = async (locationID) => {
+  const handleDeleteLocation = async () => {
     try {
-      await axios.delete(`/locations/${locationID}`);
-      setLocations((prevLocations) =>
-        prevLocations.filter((location) => location.locationID !== locationID)
-      );
-      alert(`Location with ID ${locationID} deleted successfully`);
+      if (locationToDelete) {
+        await axios.delete(`/locations/${locationToDelete}`);
+        setLocations((prevLocations) =>
+          prevLocations.filter((location) => location.locationID !== locationToDelete)
+        );
+        toast.success(`Location with ID ${locationToDelete} deleted successfully`, {
+          className: "custom-toast",
+          bodyClassName: "custom-toast-body",
+        });
+        setLocationToDelete(null); // Clear after deletion
+      }
     } catch (error) {
-      console.error("Error deleting location:", error);
+      toast.error(`Error deleting location: ${error}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
+    setConfirmDeleteDialogOpen(false);
+  };
+
+  const confirmDelete = (locationID) => {
+    setLocationToDelete(locationID);
+    setConfirmDeleteDialogOpen(true);
   };
 
   const toggleLocationDetails = (locationID) => {
@@ -130,7 +147,7 @@ const Location = () => {
                       className='p-2 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteLocation(location.locationID);
+                        confirmDelete(location.locationID);
                       }}
                     >
                       <img className="min-w-[16px] min-h-[16px] " src="./images/trash.svg" alt="delete icon" />
@@ -167,6 +184,27 @@ const Location = () => {
         </table>
       )}
       </div>
+
+      <Dialog open={confirmDeleteDialogOpen} onOpenChange={setConfirmDeleteDialogOpen}>
+        <DialogContent>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this location?
+          </DialogDescription>
+          <div className="flex justify-end gap-2">
+            <button onClick={() => setConfirmDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0">
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteLocation}
+              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
+            >
+              Confirm
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <BackToTopButton />
     </div>
   );
