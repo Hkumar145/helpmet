@@ -145,7 +145,7 @@ const Employee = () => {
             Are you sure you want to delete this employee?
           </DialogDescription>
           <div className="flex justify-end gap-2">
-            <button onClick={() => setConfirmDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] text-xs px-4 py-2 my-0">
+            <button onClick={() => setConfirmDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] border text-xs px-4 py-2 my-0">
               Cancel
             </button>
             <button

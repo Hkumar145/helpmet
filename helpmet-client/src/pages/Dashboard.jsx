@@ -374,7 +374,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-    {/* 3 */}   <div className="bg-white rounded-lg border-2 shadow-md h-[280px] w-[384px] md:w-[770px]">
+    {/* 3 */}   <div className="bg-white rounded-lg border-2 shadow-md h-[280px] w-[384px] md:w-[790px] 2xl:w-[770px]">
                     <p className="text-center w-full text-sm font-bold mt-4">Injury Heat Map</p>
                     <MapComponent/>
                 </div>
@@ -423,7 +423,7 @@ const Dashboard = () => {
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
 
-    {/* 8 */}   <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[384px] md:w-[770px]">
+    {/* 8 */}   <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[384px] md:w-[770px] 2xl:w-[785px]">
                     <SiteAgentTable/>
                 </div>
             </div>

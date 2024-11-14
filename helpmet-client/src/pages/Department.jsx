@@ -142,7 +142,7 @@ const Department = () => {
           <DialogTitle>Confirm Delete</DialogTitle>
           <DialogDescription>Are you sure you want to delete this department?</DialogDescription>
           <div className="flex justify-end gap-2 mt-4">
-            <button onClick={() => setDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] text-xs px-4 py-2 my-0">
+            <button onClick={() => setDeleteDialogOpen(false)} className="text-[#98A2B3] hover:text-[#475467] border text-xs px-4 py-2 my-0">
               Cancel
             </button>
             <button
