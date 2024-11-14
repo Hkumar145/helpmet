@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -76,7 +76,9 @@
   font-family: "Fira Sans", sans-serif;
 }
 
-button, input, textarea {
+button,
+input,
+textarea {
   font-family: "Fira Sans", sans-serif !important;
 }
 
@@ -88,19 +90,20 @@ html {
 
 body {
   min-height: 100vh;
-  background-color: #F4F3FF;
+  background-color: #f4f3ff;
 }
 
 .App {
-display: flex;
-flex-direction: column;
-/* justify-content: center; */
-align-items: center;
-min-height: 100vh; 
-padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
 }
 
-a, a:visited {
+a,
+a:visited {
   color: black;
 }
 
@@ -109,11 +112,11 @@ input[type="email"],
 input[type="password"],
 button,
 textarea {
-font-family: sans-serif;
-font-size: 22px;
-padding: 0.25rem;
-border-radius: 0.5rem;
-color: black
+  font-family: sans-serif;
+  font-size: 22px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  color: black;
 }
 
 input[type="text"],
@@ -124,12 +127,12 @@ input[type="password"] {
 
 label,
 button {
-margin-top: 1rem;
-color: black;
+  margin-top: 1rem;
+  color: black;
 }
 
 button {
-padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 .instructions {
@@ -156,8 +159,8 @@ padding: 0.5rem;
 }
 
 .placeholder-text::placeholder {
-  font-size: 14px; 
-  color: #98A2B3; 
+  font-size: 14px;
+  color: #98a2b3;
 }
 
 /* Hamburger Menu Icon */
@@ -206,7 +209,7 @@ padding: 0.5rem;
 }
 
 .hamburger-menu {
-  border: 2px solid #6938EF; /* Adjust border thickness and color */
+  border: 2px solid #6938ef; /* Adjust border thickness and color */
   padding: 9px; /* Optional: add some padding */
   border-radius: 5px; /* Optional: round the corners */
 }
@@ -214,11 +217,10 @@ padding: 0.5rem;
 .bar {
   width: 30px; /* Set width for the bars */
   height: 4px; /* Set height for the bars */
-  background-color: #6938EF; /* Bar color */
+  background-color: #6938ef; /* Bar color */
   margin: 3px 0; /* Space between the bars */
   transition: all 0.3s ease; /* Smooth transition */
 }
-
 
 /* On larger screens, show regular navigation */
 @media (min-width: 930px) {
@@ -237,14 +239,14 @@ padding: 0.5rem;
 
 @media (max-width: 930px) {
   .nav-links.block li {
-  padding: .5rem;
-  text-align: -webkit-right;
+    padding: 0.5rem;
+    text-align: -webkit-right;
   }
 
-  .bellzy{
+  .bellzy {
     text-align: -webkit-center;
     padding-right: 4rem;
-    img{
+    img {
       text-align: center;
       padding-right: 1rem;
       padding-left: 1rem;
@@ -260,31 +262,31 @@ input::-webkit-inner-spin-button {
 
 /**************** Buttons ****************/
 .return-button {
-  background: #F9FAFB;
+  background: #f9fafb;
   color: black;
 }
 
 .button-primary {
-  background: #6938EF;
+  background: #6938ef;
   color: white;
 }
 
 .button-primary:hover {
   background: white;
-  color: #6938EF;
+  color: #6938ef;
 }
 
 .hover-button:hover {
-  background-color: #D9D6FE;
-  border-color: #D9D6FE;
-  color: #3E1C96;
+  background-color: #d9d6fe;
+  border-color: #d9d6fe;
+  color: #3e1c96;
 }
 
 /**************** Report ****************/
 /**** Label ****/
 .label {
-  padding: 5px 7px ;
-  border-radius: 15px ;
+  padding: 5px 7px;
+  border-radius: 15px;
 }
 
 /* .label-completed {
@@ -303,63 +305,63 @@ input::-webkit-inner-spin-button {
 } */
 
 .label-severity-1 {
-  background: #E7F8E8;
-  color: #2A7031;
+  background: #e7f8e8;
+  color: #2a7031;
 }
 
 .label-severity-2 {
-  background: #FFF5CC;
-  color: #A67F00;
+  background: #fff5cc;
+  color: #a67f00;
 }
 
 .label-severity-3 {
-  background: #FFE2CC;
-  color: #B45700;
+  background: #ffe2cc;
+  color: #b45700;
 }
 
 .label-severity-4 {
-  background: #FFB3B3;
-  color: #A00000;
+  background: #ffb3b3;
+  color: #a00000;
 }
 
 .label-severity-5 {
-  background: #FF6666;
-  color: #660000;
+  background: #fecaca;
+  color: #450a0a;
 }
 
 /**** Detail page ****/
 .report-info {
-  background: #F7F7F7;
-  border: 2px solid #D0D5DD;
+  background: #f7f7f7;
+  border: 2px solid #d0d5dd;
   border-radius: 10px;
   display: block;
-  padding: .6rem 1rem;
+  padding: 0.6rem 1rem;
   width: 100%;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .line-spacer {
   width: 100%;
-  border-bottom: 2px solid #E4E7EC;
-  padding-top: .5rem;
+  border-bottom: 2px solid #e4e7ec;
+  padding-top: 0.5rem;
 }
 
 .dot-before::before {
-  content: '◼';
+  content: "◼";
   margin-left: 5.5rem;
   margin-right: 8px;
 }
 
 .dot-hs::before {
-  color: #3E1C96;
+  color: #3e1c96;
 }
 
 .dot-ms::before {
-  color: #6938EF;
+  color: #6938ef;
 }
 
 .dot-ls::before {
-  color: #9B8AFB;
+  color: #9b8afb;
 }
 /**************** DateTime picker style ****************/
 .react-datetime-picker__wrapper {
@@ -369,7 +371,8 @@ input::-webkit-inner-spin-button {
   font-size: 14px;
 }
 
-.react-datetime-picker__calendar.react-datetime-picker__calendar--open .react-calendar,
+.react-datetime-picker__calendar.react-datetime-picker__calendar--open
+  .react-calendar,
 .react-datetime-picker__clock.react-datetime-picker__clock--open.react-datetime-picker__clock {
   border: 1px solid #101828;
   border-radius: 10px;
@@ -388,7 +391,7 @@ input::-webkit-inner-spin-button {
 }
 
 .react-calendar__month-view__weekdays {
-  color: #98A2B3;
+  color: #98a2b3;
 }
 
 .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from {
@@ -401,11 +404,11 @@ input::-webkit-inner-spin-button {
 }
 
 .react-calendar__tile.react-calendar__tile--active {
-  background-color: #4A1FB8;
+  background-color: #4a1fb8;
 }
 
 .react-calendar__tile.react-calendar__tile--now {
-  background-color: #ECFDF3;
+  background-color: #ecfdf3;
   color: #000;
 }
 
@@ -414,11 +417,11 @@ input::-webkit-inner-spin-button {
 }
 
 .react-clock__face.react-clock__face {
-  border: 1px solid #4A1FB8;
+  border: 1px solid #4a1fb8;
 }
 
 .react-clock__hand__body.react-clock__hand__body {
-  background-color: #4A1FB8;
+  background-color: #4a1fb8;
 }
 
 /**************** Icon buttons style ****************/
@@ -427,7 +430,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  border: 1px solid #E4E7EC;
+  border: 1px solid #e4e7ec;
   background-color: #fff;
   cursor: pointer;
   transition: all 0.2s;
@@ -441,7 +444,7 @@ input::-webkit-inner-spin-button {
 .icon-button:hover,
 .icon-button.selected {
   transform: scale(1.05);
-  border-color: #4A1FB8;
+  border-color: #4a1fb8;
 }
 
 .icon-path {
@@ -451,7 +454,7 @@ input::-webkit-inner-spin-button {
 
 .icon-button:hover .icon-path,
 .icon-button.selected .icon-path {
-  stroke: #4A1FB8;
+  stroke: #4a1fb8;
 }
 
 /**************** Toast ****************/
@@ -480,7 +483,7 @@ input::-webkit-inner-spin-button {
 }
 
 .Toastify__progress-bar--success {
-  background-color: #32D583 !important;
+  background-color: #32d583 !important;
 }
 
 .custom-toast-error {
@@ -508,5 +511,5 @@ input::-webkit-inner-spin-button {
 }
 
 .Toastify__toast--info .Toastify__progress-bar {
-  background-color: #98A2B3 !important;
+  background-color: #98a2b3 !important;
 }
