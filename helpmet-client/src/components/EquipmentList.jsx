@@ -182,7 +182,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                   >
                     <img className="min-w-[16px] min-h-[16px]" src="./images/edit.svg" alt="edit icon" />
                   </button>
-                  <button onClick={() => onDelete(equipment.equipmentID)} style={{ cursor: 'pointer' }}
+                  <button onClick={() => onDelete(equipment.equipmentID)} style={{marginRight: '10px', cursor: 'pointer' }}
                     className='border-2 hover:cursor-pointer hover:border-[#4A1FB8]'
                   >
                     <img className="min-w-[16px] min-h-[16px]" src="./images/trash.svg" alt="delete icon" />

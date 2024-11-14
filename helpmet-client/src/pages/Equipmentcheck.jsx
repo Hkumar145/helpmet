@@ -4,9 +4,10 @@ import EquipmentList from "../components/EquipmentList";
 import CreateEquipment from "../components/CreateEquipment";
 import UpdateEquipment from "../components/UpdateEquipment";
 import EquipmentDetail from "../components/EquipmentDetail";
-import { useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// const companyID = 100001;
+const companyID = 100001;
 
 const EquipmentCheck = () => {
   const [equipments, setEquipments] = useState([]);
@@ -14,8 +15,8 @@ const EquipmentCheck = () => {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
-  const [error, setError] = useState("");
-  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [equipmentToDelete, setEquipmentToDelete] = useState(null);
 
   const fetchEquipments = async () => {
     try {
@@ -25,7 +26,6 @@ const EquipmentCheck = () => {
       setEquipments(response.data);
     } catch (error) {
       console.error("Error fetching equipment:", error);
-      setError("Error fetching equipment");
     }
   };
 
@@ -50,13 +50,23 @@ const EquipmentCheck = () => {
         );
         setIsUpdateDialogOpen(false);
         setViewMode("list");
+        toast.success("Equipment updated successfully.", {
+          className: "custom-toast",
+          bodyClassName: "custom-toast-body",
+        });
       } else {
         console.error("Failed to update equipment:", response.statusText);
-        setError("Error updating equipment");
+        toast.error("Error updating equipment", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
       }
     } catch (error) {
       console.error("Error updating equipment:", error.message);
-      setError("Error updating equipment: " + error.message);
+      toast.error(`Error updating equipment: ${error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -68,27 +78,50 @@ const EquipmentCheck = () => {
   const handleSaveEquipment = () => {
     fetchEquipments();
     setIsDialogOpen(false);
+    toast.success("Equipment created successfully.", {
+      className: "custom-toast",
+      bodyClassName: "custom-toast-body",
+    });
   };
 
   const handleCancel = () => {
     setIsDialogOpen(false);
     setIsUpdateDialogOpen(false);
+    setIsDeleteConfirmOpen(false);
   };
 
-  const handleDeleteEquipment = async (equipmentID) => {
+  const handleDeleteRequest = (equipmentID) => {
+    setEquipmentToDelete(equipmentID);
+    setIsDeleteConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:5001/companies/${companyID}/equipments/${equipmentID}`
+        `http://localhost:5001/companies/${companyID}/equipments/${equipmentToDelete}`
       );
       if (response.status === 200) {
         fetchEquipments();
+        toast.success("Equipment deleted successfully.", {
+          className: "custom-toast",
+          bodyClassName: "custom-toast-body",
+        });
       } else {
         console.error("Failed to delete equipment:", response.statusText);
-        setError("Error deleting equipment");
+        toast.error("Error deleting equipment", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
       }
     } catch (error) {
       console.error("Error deleting equipment:", error);
-      setError("Error deleting equipment");
+      toast.error("Error deleting equipment", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
+    } finally {
+      setIsDeleteConfirmOpen(false);
+      setEquipmentToDelete(null);
     }
   };
 
@@ -100,15 +133,18 @@ const EquipmentCheck = () => {
       if (response.status === 200) {
         setSelectedEquipment(response.data);
       } else {
-        console.error(
-          "Failed to fetch equipment details:",
-          response.statusText
-        );
-        setError("Error fetching equipment details");
+        console.error("Failed to fetch equipment details:", response.statusText);
+        toast.error("Error fetching equipment details", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
       }
     } catch (error) {
       console.error("Error fetching equipment details:", error);
-      setError("Error fetching equipment details");
+      toast.error("Error fetching equipment details", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -119,6 +155,7 @@ const EquipmentCheck = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-6xl mx-auto">
+      <ToastContainer />
       <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
         <h1 className="text-black text-[32px] font-bold">Equipment Check</h1>
         <button
@@ -133,7 +170,7 @@ const EquipmentCheck = () => {
           <EquipmentList
             equipments={equipments}
             onUpdate={handleEditEquipment}
-            onDelete={handleDeleteEquipment}
+            onDelete={handleDeleteRequest} // Open confirmation dialog before delete
             onView={handleViewEquipment}
             striped
           />
@@ -161,6 +198,30 @@ const EquipmentCheck = () => {
         onSave={handleUpdateEquipment}
         onCancel={handleCancel}
       />
+
+      {/* Delete Confirmation Dialog */}
+      {isDeleteConfirmOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
+            <p className="text-gray-600 mb-6">Are you sure you want to delete this equipment?</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={handleCancel}
+                className="px-4 py-2 text-xs rounded border hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded text-xs hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
