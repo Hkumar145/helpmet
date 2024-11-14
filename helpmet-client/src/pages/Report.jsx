@@ -119,12 +119,12 @@ const Report = () => {
 
       <div className="mt-4 flex lg:hidden items-center px-0 justify-end border border-gray-200 rounded-md overflow-hidden">
         <button
-          className={`w-1/2 md:w-36 font-medium mt-0 text-[16px] rounded-none bg-white text-black border-b-4 border-brand40 rounded-l-sm`}
+          className={`w-1/2 md:w-full font-medium mt-0 text-[16px] rounded-none bg-white text-black border-b-4 border-brand40 rounded-l-sm`}
         >
           Completed Report
         </button>
         <button
-          className={`w-1/2 md:w-36 border text-gray-700 mt-0 text-[16px] rounded-none bg-gray-100 border-b-4 border-gray-50/0`}
+          className={`w-1/2 md:w-full border text-gray-700 mt-0 text-[16px] rounded-none bg-gray-100 border-b-4 border-gray-50/0`}
           onClick={handleViewPendingReports}
         >
           Pending Report
@@ -147,7 +147,7 @@ const Report = () => {
           </button>
         </div>
       ) : (
-        <div className="w-full">
+        <div className="w-full overflow-x-scroll">
           <table className="w-full bg-white text-black mt-4 rounded-lg text-xs">
             <thead>
               <tr className="bg-[#f8f8f8]">

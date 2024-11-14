@@ -123,7 +123,7 @@ const Location = () => {
           <table className="min-w-full bg-white text-black rounded-lg text-sm">
             <thead className="bg-[#f8f8f8] text-left">
               <tr>
-                <th className="px-0 py-2 md:px-4">Name</th>
+                <th className="pl-2 py-2 md:px-4">Name</th>
                 <th className="pr-2 py-2 md:px-4"></th>
               </tr>
             </thead>
@@ -134,7 +134,7 @@ const Location = () => {
                     className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB] cursor-pointer"
                     onClick={() => toggleLocationDetails(location.locationID)}
                   >
-                    <td className="px-0 py-2 md:px-4">
+                    <td className="pl-2 py-2 md:px-4">
                       <div className="flex items-center gap-2">
                         <img
                           src="./images/map.svg"
