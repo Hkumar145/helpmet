@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import axios from '../api/axios'
 import { useDispatch } from 'react-redux'
 import { updateProfile, logout } from '../redux/user/userSlice'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -49,10 +51,16 @@ const Profile = () => {
       {
         withCredentials: true,
       });
-      alert("Profile updated successfully!");
+      toast.success(`Profile updated successfully!`, {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
       dispatch(updateProfile(response.data));
     } catch (error) {
-      console.error("Error updating profile:", error);
+      toast.error(`Error updating profile: ${error}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -67,6 +75,7 @@ const Profile = () => {
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
+      <ToastContainer position="top-right" autoClose={3000} />
       <h1 className='text-2xl font-semibold text-center text-black'>Profile</h1>
       <form onSubmit={handleUpdate} className='flex flex-col gap-4'>
         <input

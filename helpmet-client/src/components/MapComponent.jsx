@@ -112,7 +112,7 @@ const MapComponent = () => {
         </div>
       )}
       <div className="relative">
-        <div ref={mapRef} className="w-[95%] h-[220px] mx-auto mt-2" />
+        <div ref={mapRef} className="w-[95%] h-[200px] mx-auto mt-2" />
         <div className="absolute right-2 top-2 flex flex-col gap-1">
           <button 
             onClick={zoomIn} 
