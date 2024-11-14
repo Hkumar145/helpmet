@@ -217,30 +217,42 @@ const Location = () => {
                             </div>
 
                             {/* Coordinates Card */}
-                            <div className="p-3 rounded-lg bg-gray-50/80 border border-gray-100 hover:shadow-sm transition-all duration-300">
-                              <div className="text-xl mb-2">🌍</div>
-                              <h4 className="text-xs font-medium text-gray-500 mb-1">
-                                Coordinates
-                              </h4>
-                              <div className="space-y-2">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">
-                                    {location.coordinates?.[0]}
-                                  </p>
-                                  <p className="text-xs text-gray-600">
-                                    Longitude
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">
-                                    {location.coordinates?.[1]}
-                                  </p>
-                                  <p className="text-xs text-gray-600">
-                                    Latitude
-                                  </p>
+                            <a
+                              href={`https://www.google.com/maps?q=${location.coordinates?.[1]},${location.coordinates?.[0]}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block relative group"
+                            >
+                              <div className="absolute right-4 top-4 text-gray-400 group-hover:text-gray-700 transition-all ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                </svg>
+                              </div>
+                              <div className="p-3 rounded-lg bg-gray-50/80 border border-gray-100 hover:shadow-sm transition-all duration-300">
+                                <div className="text-xl mb-2">🌍</div>
+                                <h4 className="text-xs font-medium text-gray-500 mb-1">
+                                  Coordinates
+                                </h4>
+                                <div className="space-y-2">
+                                  <div>
+                                    <p className="text-sm font-medium text-gray-900">
+                                      {location.coordinates?.[0]}
+                                    </p>
+                                    <p className="text-xs text-gray-600">
+                                      Longitude
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <p className="text-sm font-medium text-gray-900">
+                                      {location.coordinates?.[1]}
+                                    </p>
+                                    <p className="text-xs text-gray-600">
+                                      Latitude
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </a>
 
                             {/* Manager Card */}
                             <div className="p-3 rounded-lg bg-gray-50/80 border border-gray-100 hover:shadow-sm transition-all duration-300">
