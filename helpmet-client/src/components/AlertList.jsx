@@ -255,79 +255,85 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             
                                 {expandedAlertID === alert.alertID && (
                                     <tr>
-                                        <td colSpan="5" className="px-3 py-2 lg:px-6 bg-gray20">
-                                            <div className="whitespace-pre-wrap text-start">
-                                                <div className="flex gap-1">
-                                                    <p><strong>Recipients:</strong></p>
-                                                    <ul>
-                                                        {alert.recipients && alert.recipients.length > 0 ? (
-                                                            alert.recipients.map((recipientID, idx) => {
-                                                                // Parse the string of IDs into an array
-                                                                const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
-                                                                // Map through each ID in the array
-                                                                return (
-                                                                    <li key={idx} className="text-black">
-                                                                        {ids.map((id, idIdx) => {
-                                                                            let employee = allEmployees.find(e => e.value === id);
-                                                                            if (!employee)
-                                                                            {
-                                                                                employee = allDepartments.find(e => e.value === id);
-                                                                            }
-                                                                            return employee ? (
-                                                                                <span key={idIdx}>
-                                                                                    {employee.label}
-                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
-                                                                                </span>
-                                                                            ) : (
-                                                                                <span key={idIdx}>
-                                                                                    Unknown recipient
-                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
-                                                                                </span>
-                                                                            );
-                                                                        })}
-                                                                    </li>
-                                                                );
-                                                            })
-                                                        ) : (
-                                                            <p>No recipients</p>
-                                                        )}
-                                                    </ul>
-                                                </div>
-                                                
-                                                <div className="flex gap-1">
-                                                    <p><strong>CC:</strong></p>
-                                                    <ul>
-                                                        {alert.cc ? (
-                                                            <li className="text-black">{alert.cc}</li>
-                                                        ) : (
-                                                            <p className="text-black">No CC recipients</p>
-                                                        )}
-                                                    </ul>
-                                                </div>
-
-                                                <p><strong>Description:</strong> {alert.description}</p>
-
-                                                <div className="flex gap-1">
-                                                    <p><strong>Attachments:</strong></p>
-                                                    {alert.attachments && alert.attachments.length > 0 ? (
-                                                        <div className="flex overflow-x-scroll gap-4">
-                                                            {alert.attachments.map((imgUrl, index) => (
-                                                                <img
-                                                                    key={index}
-                                                                    src={imgUrl}
-                                                                    alt={`Alert Image ${index + 1}`}
-                                                                    className="w-10 h-10 rounded-md object-cover"
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <p>No image available</p>
-                                                    )}
+                                        <td colSpan="5" className="px-6 py-4">
+                                        <div className="bg-white rounded-lg">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                            {/* Recipients Card */}
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <div className="text-gray-500 mb-2">Recipients</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.recipients && alert.recipients.length > 0 ? (
+                                                    <div className="flex flex-wrap items-center justify-center gap-2">
+                                                    {alert.recipients.map((recipientID, idx) => {
+                                                        const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
+                                                        return ids.map((id, idIdx) => {
+                                                        let employee = allEmployees.find(e => e.value === id) || 
+                                                                    allDepartments.find(e => e.value === id);
+                                                        return (
+                                                            <span 
+                                                            key={`${idx}-${idIdx}`}
+                                                            className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200"
+                                                            >
+                                                            {employee ? employee.label : "Unknown recipient"}
+                                                            </span>
+                                                        );
+                                                        });
+                                                    })}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-500 italic">No recipients</span>
+                                                )}
                                                 </div>
                                             </div>
+
+                                            {/* CC Recipients Card */}
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <div className="text-gray-500 mb-2">CC Recipients</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.cc ? (
+                                                    <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
+                                                    {alert.cc}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-gray-500 italic">No CC recipients</span>
+                                                )}
+                                                </div>
+                                            </div>
+
+                                            {/* Description Card - Full Width */}
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                                <div className="text-gray-500 mb-2">Description</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.description || <span className="text-gray-500 italic">No description available</span>}
+                                                </div>
+                                            </div>
+
+                                            {/* Attachments Card - Full Width */}
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                                <div className="text-gray-500 mb-2">Attachments</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.attachments && alert.attachments.length > 0 ? (
+                                                    <div className="flex gap-3 overflow-x-auto py-2">
+                                                    {alert.attachments.map((imgUrl, index) => (
+                                                        <div key={index} className="flex-shrink-0">
+                                                        <img
+                                                            src={imgUrl}
+                                                            alt={`Alert Image ${index + 1}`}
+                                                            className="w-16 h-16 rounded-lg object-cover border border-gray-200"
+                                                        />
+                                                        </div>
+                                                    ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-500 italic">No attachments available</span>
+                                                )}
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
                                         </td>
                                     </tr>
-                                )}
+                                    )}
             
                                 {editMode === alert.alertID && (
                                     <tr>
