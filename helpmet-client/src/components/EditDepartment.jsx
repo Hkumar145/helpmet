@@ -54,12 +54,12 @@ const EditDepartment = ({ departmentID, onClose }) => {
           onChange={(e) => setDepartmentName(e.target.value)}
           required
         />
-        <div className='flex flex-row justify-between gap-4'>
+        <div className='flex flex-row justify-end gap-2'>
           <DialogClose asChild>
-            <button type="button" className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]" onClick={onClose}>Close</button>
+            <button type="button" className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0" onClick={onClose}>Cancel</button>
           </DialogClose>
           <DialogClose asChild>
-            <button type="submit" className='bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 w-full'>Update Department</button>
+            <button type="submit" className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">Update Department</button>
           </DialogClose>
         </div>
       </form>

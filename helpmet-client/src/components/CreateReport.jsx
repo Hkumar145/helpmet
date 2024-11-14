@@ -118,7 +118,7 @@ const CreateReport = ({ onSubmitSuccess }) => {
             >
               Close
             </button> */}
-            <button className="text-[#98A2B3] hover:text-[#475467] border text-xs px-4 py-2 my-0">
+            <button className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0">
               Cancel
             </button>
           </DialogClose>

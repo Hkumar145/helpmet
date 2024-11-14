@@ -58,7 +58,7 @@ const Header = () => {
               <img src="./images/gear.svg" alt="setting icon" />
             </li> }
           </Link>
-          <Link className='self-center'>
+          <Link to="/pending-report" className='self-center'>
             { currentUser && <li className=" border-gray-300 bellzy">
               <img src="./images/bell.svg" alt="notification icon" />
             </li> }
