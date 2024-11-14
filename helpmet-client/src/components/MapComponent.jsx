@@ -176,7 +176,7 @@ const MapComponent = () => {
     const minCount = Math.min(...Object.values(allCounts));
 
     // Zoom factor calculation (smaller circles at lower zoom levels)
-    const zoomFactor = Math.max(0.1, (zoom - 10) / 6); // Adjust divisor for desired scaling
+    const zoomFactor = Math.max(0.1, (zoom - 10) / 10); //
 
     if (maxCount === minCount) {
       return ((minRadiusMeters + maxRadiusMeters) / 2) * zoomFactor;
@@ -245,8 +245,8 @@ const MapComponent = () => {
           const dynamicOpacity = calculateNormalizedValue(
             reportCount,
             locationReportCounts,
-            0.2,
-            0.8
+            0.1,
+            0.6
           );
 
           mapInstance.current.on("load", () => {
