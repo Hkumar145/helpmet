@@ -144,39 +144,25 @@ exports.updateAlertByID = async (req, res) => {
             return res.status(404).json({ message: "Alert not found" });
         }
         
-         let currentAttachments = currentAlert.attachments || [];
-        // console.log("Current attachments from DB:", currentAttachments);
-    
+        let currentAttachments = currentAlert.attachments || []; 
         const removedAttachments = updateFields.removedAttachments ? JSON.parse(updateFields.removedAttachments) : [];
-        // console.log("Removed attachments from frontend:", removedAttachments);
-
         const baseUrl = "https://pika-helpmet.s3.us-west-1.amazonaws.com/";
-        const removedAttachmentUrls = removedAttachments.length > 0
-        ? removedAttachments.map(filename => `${baseUrl}${filename}`)
-        : [];
+        const removedAttachmentUrls = removedAttachments.length > 0 ? removedAttachments.map(filename => `${baseUrl}${filename}`) : [];
 
         currentAttachments = currentAttachments.filter(
             (attachment) => !removedAttachmentUrls.includes(attachment)
         );
 
-        // console.log("Attachments after removal:", currentAttachments);
-
         let attachmentUrls = [];
         if (req.files && req.files.length > 0) {
             attachmentUrls = await uploadToS3(req.files);
-            // console.log("Uploaded attachment URLs:", attachmentUrls);
         }
 
         const newAttachments = [...new Set([...currentAttachments, ...attachmentUrls])];
-
         updateFields.attachments = newAttachments;
-
-        // console.log(updateFields);
-        console.log("Fields to update in backend:", updateFields);
-        console.log("req.body:", req.body);
         
         if (Object.keys(updateFields).length === 0) {
-                return res.status(400).json({ message: "No fields to update" });
+            return res.status(400).json({ message: "No fields to update" });
         }
         const updatedAlert = await Alert.findOneAndUpdate(
             { alertID: req.params.id },

@@ -152,6 +152,11 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
 
         try {
             const create_response = await axios.post(`/companies/${companyID}/alerts`, formData);
+            toast.success("Alert created successfully!", {
+                autoClose: 3000,
+                className: "custom-toast",
+                bodyClassName: "custom-toast-body",
+              });
             alertData.attachments = create_response.data.attachments;
 
             /// Fetch all employees to get their emails by employee ID
@@ -176,11 +181,12 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 attachments: alertData.attachments,
                 scheduleTime: dateTime ? dateTime.toISOString() : null
             });
-            toast.success("Alert created successfully!");
-            fetchAlerts();
-            onCancel();
+            setTimeout(() => {
+                fetchAlerts();
+                onCancel();
+            }, 1500);
         } catch (error) {
-            toast.error(`Failed to create employee alert: ${error}`, {
+            toast.error(`Failed to create employee alert. ${error}`, {
                 autoClose: 3000,
                 className: "custom-toast-error",
                 bodyClassName: "custom-toast-body",
@@ -190,6 +196,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
 
     return (
         <div className="w-full overflow-x-auto">
+             <ToastContainer position="top-right" />
             <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start min-w-[500px]">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">

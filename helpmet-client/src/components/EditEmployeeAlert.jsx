@@ -217,11 +217,17 @@ const EditEmployeeAlert = () => {
     
         try {
             await axios.put(`/alerts/${alertId}`, formData);
-            toast.success("Alert updated successfully!");
-            navigate(-1);
+            toast.success("Alert updated successfully!", {
+                autoClose: 3000,
+                className: "custom-toast",
+                bodyClassName: "custom-toast-body",
+            });
+            setTimeout(() => {
+                navigate(-1);
+            }, 1500);
             return;
         } catch (error) {
-            toast.error(`Failed to update employee alert: ${error}`, {
+            toast.error(`Failed to update employee alert. ${error}`, {
                 autoClose: 3000,
                 className: "custom-toast-error",
                 bodyClassName: "custom-toast-body",
@@ -231,6 +237,7 @@ const EditEmployeeAlert = () => {
  
     return (
         <div className="flex flex-col gap-4 w-full px-4 lg:px-7 py-0 max-w-[2700px]">
+            <ToastContainer position="top-right" />
             <h1 className="text-black text-[32px] font-bold">Update Alert</h1>
             <form onSubmit={updateAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
