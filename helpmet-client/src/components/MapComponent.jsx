@@ -193,7 +193,7 @@ const MapComponent = () => {
   useEffect(() => {
     if (topLocations.length > 0 && locations.length > 0) {
       mapInstance.current = tt.map({
-        key: "oGTNNSBuTvoAlixWgPsrKxwc1vZyRitz",
+        key: "S59U0GVlNmzVhBxdNDxbmvOBHMMaiMH3",
         container: mapRef.current,
         center: locations[0]?.coordinates || [0, 0],
         zoom: 14,

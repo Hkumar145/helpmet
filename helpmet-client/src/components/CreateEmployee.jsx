@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from '../api/axios'
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux'
@@ -12,10 +12,26 @@ const CreateEmployee = ({ onClose }) => {
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [department, setDepartment] = useState('');
+  const [departments, setDepartments] = useState([]);
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const roleOptions = ["Site Manager", "Safety Officer", "Employee"];
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get(`/companies/${companyID}/departments`);
+        setDepartments(response.data);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
+
+    if (companyID) {
+      fetchDepartments();
+    }
+  }, [companyID]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,14 +94,19 @@ const CreateEmployee = ({ onClose }) => {
           onChange={(e) => setDateOfBirth(e.target.value)}
           required
         />
-        <input
-          type="text"
-          placeholder="Department"
+        <select
           className="border p-2"
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>- Select Department -</option>
+          {departments.map((dept) => (
+            <option key={dept.departmentID} value={dept.departmentID}>
+              {dept.departmentName}
+            </option>
+          ))}
+        </select>
         <select
           className="border p-2"
           value={role}

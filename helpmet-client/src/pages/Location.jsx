@@ -58,7 +58,20 @@ const Location = () => {
   const handleDeleteLocation = async () => {
     try {
       if (locationToDelete) {
+        // Find the manager ID before deleting location
+        const locationToDeleteData = locations.find(loc => loc.locationID === locationToDelete);
+        const managerID = locationToDeleteData?.managerID;
+
+        // Delete the location
         await axios.delete(`/locations/${locationToDelete}`);
+
+        // Update the manager's role back to Employee
+        if (managerID) {
+          await axios.put(`/employees/${managerID}`, {
+            role: 'Employee'
+          });
+        }
+
         setLocations((prevLocations) =>
           prevLocations.filter(
             (location) => location.locationID !== locationToDelete
@@ -131,7 +144,7 @@ const Location = () => {
           <table className="min-w-full bg-white text-black rounded-lg text-sm">
             <thead className="bg-[#f8f8f8] text-left">
               <tr>
-                <th className="px-0 py-2 md:px-4">Name</th>
+                <th className="pl-2 py-2 md:px-4">Name</th>
                 <th className="pr-2 py-2 md:px-4"></th>
               </tr>
             </thead>
@@ -312,7 +325,7 @@ const Location = () => {
             </button>
             <button
               onClick={handleDeleteLocation}
-              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
+              className="bg-red-600 text-white font-bold hover:bg-red-800 text-xs px-4 py-2 rounded my-0"
             >
               Confirm
             </button>

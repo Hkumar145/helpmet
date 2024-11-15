@@ -132,8 +132,8 @@ const PendingReportDetails = () => {
         <>
           <ToastContainer position="top-right" />
           <div className="flex flex-col gap-4 max-w-6xl mx-auto w-full">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-              <div className="flex flex-row items-center justify-between w-[100%]">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs px-2">
+              <div className="flex flex-row items-center justify-between w-full px-2">
                 <button
                   onClick={() => navigate(-1)}
                   className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4 hover:bg-[#D9D6FE] hover:text-[#6938EF]"
@@ -180,7 +180,8 @@ const PendingReportDetails = () => {
                   ))}
                 </div>
               ) : (
-                <p>No image available</p>
+                // <p>No image available</p>
+                <div></div>
               )}
             </div>
 
@@ -277,19 +278,19 @@ const PendingReportDetails = () => {
                 <div className="flex flex-row gap-4 items-center">
                   <DialogDescription>Confirm the approval</DialogDescription>
                 </div>
-                <div className="flex flex-row justify-between gap-4">
+                <div className="flex flex-row justify-end gap-2">
                   <DialogClose asChild>
                     <button
                       type="button"
-                      className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
+                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
                     >
-                      Close
+                      Cancel
                     </button>
                   </DialogClose>
                   <button
                     type="button"
                     onClick={confirmApprove}
-                    className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                    className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     Confirm
                   </button>
@@ -322,20 +323,20 @@ const PendingReportDetails = () => {
                   onChange={(e) => setHoldReason(e.target.value)}
                   className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
                 ></textarea>
-                <div className="flex flex-row justify-between gap-4">
+                <div className="flex flex-row justify-end gap-2">
                   <DialogClose asChild>
                     <button
                       type="button"
-                      className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
+                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
                     >
-                      Close
+                      Cancel
                     </button>
                   </DialogClose>
                   <DialogClose asChild>
                     <button
                       type="button"
                       onClick={confirmOnHold}
-                      className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                      className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Confirm
                     </button>

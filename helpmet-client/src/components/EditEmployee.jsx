@@ -12,6 +12,7 @@ const EditEmployee = ({ employeeID, onClose }) => {
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [department, setDepartment] = useState('');
+  const [departments, setDepartments] = useState([]);
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
@@ -34,7 +35,17 @@ const EditEmployee = ({ employeeID, onClose }) => {
       }
     };
 
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get(`/companies/${companyID}/departments`);
+        setDepartments(response.data);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
+
     fetchEmployeeData();
+    fetchDepartments();
   }, [employeeID]);
 
   const handleSubmit = async (e) => {
@@ -92,14 +103,19 @@ const EditEmployee = ({ employeeID, onClose }) => {
           onChange={(e) => setDateOfBirth(e.target.value)}
           required
         />
-        <input
-          type="text"
-          placeholder="Department"
+        <select
           className="border p-2"
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>- Select Department -</option>
+          {departments.map((dept) => (
+            <option key={dept.departmentID} value={dept.departmentID}>
+              {dept.departmentName}
+            </option>
+          ))}
+        </select>
         <select
           className="border p-2"
           value={role}

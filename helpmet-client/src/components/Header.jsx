@@ -14,7 +14,7 @@ const Header = () => {
     <div className="bg-white border-b border-gray-200">
       <div className="flex justify-between items-center max-w-[2700px] mx-auto py-7 px-4 lg:px-7">
         <Link to="/">
-          <img src="./images/Group 7.svg" className="w-[140px] lg:max-w-[160px] sm:max-w-[140px] h-auto" />
+          <img src="/images/Group 7.svg" className="w-[140px] h-auto" />
         </Link>
         {/* Hamburger icon for mobile */}
         <div className="hamburger-menu md:hidden" onClick={toggleMenu}>
@@ -87,9 +87,9 @@ const Header = () => {
           </Link> */}
           <Link to="/setting" className="self-center">
             {currentUser && (
-              <li className="border-l-2 border-gray-300 pl-4 bellzy">
+              <li className="border-l-2 border-gray-300 pl-4">
                 <img
-                  src="./images/gear.svg"
+                  src="/images/gear.svg"
                   alt="setting icon"
                   className="w-5 h-5"
                 />
@@ -99,7 +99,7 @@ const Header = () => {
           {/* <Link to="/pending-report" className="self-center">
             {currentUser && (
               <li className=" border-gray-300 bellzy">
-                <img src="./images/bell.svg" alt="notification icon" />
+                <img src="/images/bell.svg" alt="notification icon" />
               </li>
             )}
           </Link> */}
@@ -107,9 +107,6 @@ const Header = () => {
             {currentUser ? (
               <img
                 src={currentUser.profilePicture}
-                // src={
-                //   "https://img.freepik.com/premium-vector/user-icon-icon_1076610-59410.jpg"
-                // }
                 alt="profile"
                 className="h-7 w-7 rounded-full object-cover"
               />

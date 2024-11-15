@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import axios from '../api/axios';
 import { useDropzone } from 'react-dropzone';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const InjuryReport = () => {
   const [reportBy, setReportBy] = useState('');
@@ -93,7 +95,10 @@ const InjuryReport = () => {
         setSuccess(true);
     } catch (error) {
         console.error("Error submitting report:", error);
-        alert("Failed to submit report. Please try again.");
+        toast.error("Failed to submit report. Please try again.", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
     }
   };
 
@@ -125,7 +130,8 @@ const InjuryReport = () => {
           <h1 className='text-[#6938EF] text-clip text-center'>Injury report submitted.</h1>
         </section>
       ) : (
-      <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black md:min-w-[700px]">
+      <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black lg:min-w-[1024px]">
+        <ToastContainer position="top-right" autoClose={3000} />
         <h1 className="text-2xl font-bold mb-4" onClick={demoAutoFill}>Injury Report</h1>
         <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>
