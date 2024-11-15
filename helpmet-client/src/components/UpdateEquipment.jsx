@@ -14,8 +14,8 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [locations, setLocations] = useState([]);
-  const companyID = useSelector((state) => state.user.currentUser?.companyID);
-  // const companyID = 100001;
+  // const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const companyID = 100001;
 
   useEffect(() => {
     if (equipment) {
@@ -179,7 +179,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
             </div>
 
             {/* Checked */}
-            <div className="flex items-start mt-4">
+            <div className="flex items-center mt-4">
               <input
                 type="checkbox"
                 checked={isChecked}

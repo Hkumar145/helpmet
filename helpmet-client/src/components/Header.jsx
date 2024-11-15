@@ -87,7 +87,7 @@ const Header = () => {
           </Link> */}
           <Link to="/setting" className="self-center">
             {currentUser && (
-              <li className="border-l-2 border-gray-300 pl-4 bellzy">
+              <li className="border-l-2 border-gray-300 pl-4">
                 <img
                   src="/images/gear.svg"
                   alt="setting icon"
@@ -107,9 +107,6 @@ const Header = () => {
             {currentUser ? (
               <img
                 src={currentUser.profilePicture}
-                // src={
-                //   "https://img.freepik.com/premium-vector/user-icon-icon_1076610-59410.jpg"
-                // }
                 alt="profile"
                 className="h-7 w-7 rounded-full object-cover"
               />

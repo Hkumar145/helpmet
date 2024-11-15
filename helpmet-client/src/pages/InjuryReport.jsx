@@ -125,7 +125,7 @@ const InjuryReport = () => {
           <h1 className='text-[#6938EF] text-clip text-center'>Injury report submitted.</h1>
         </section>
       ) : (
-      <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black md:min-w-[700px]">
+      <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black lg:min-w-[1024px]">
         <h1 className="text-2xl font-bold mb-4" onClick={demoAutoFill}>Injury Report</h1>
         <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>

@@ -42,6 +42,7 @@ const BarChart = ({ chartData, barName, title, onBarClick, indexAxis }) => {
                 },
                 padding: {
                     top: 30,
+                    bottom: 4
                 }
             },
             tooltip: {
