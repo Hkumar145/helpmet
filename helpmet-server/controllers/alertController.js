@@ -6,14 +6,14 @@ const {
 } = require("../models/schemas");
 const { sendEmail } = require("../utils/emailService");
 const path = require("path");
-const { uploadToS3, getS3FileBuffer } = require('../utils/s3Upload');
+const { uploadToS3 } = require('../utils/s3Upload');
 
 // Create a new alert
 exports.createAlert = async (req, res) => {
     try {
         // Check if similar alert already exists
         const { id: companyID } = req.params;
-        const { alertName, cc, recipients, recipientType, description, scheduleTime } = req.body;
+        const { alertName, cc, recipients, recipientType, description, scheduleTime, type } = req.body;
         const duplicateAlert = await Alert.findOne({ alertName, description });
 
         if (duplicateAlert) {
@@ -38,6 +38,7 @@ exports.createAlert = async (req, res) => {
             companyID,
             sentAt, 
             description,
+            type,
             recipients,
             cc: cc ? cc.trim() : null,  
             attachments: attachmentUrls
@@ -81,8 +82,8 @@ exports.createAlert = async (req, res) => {
         }
 
         // File attachments
-        const attachments = attachmentUrls.map((url, index) => ({
-            filename: `attachment-${index + 1}`, 
+        const attachments = attachmentUrls.map((url) => ({
+            filename: url.split('/').pop(), 
             path: url,
         }));  
 
@@ -99,7 +100,7 @@ exports.createAlert = async (req, res) => {
                 attachments
             });
         }
-        res.json({ message: "Alert created successfully" });
+        res.json({ message: "Alert created successfully", attachments: attachments });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -136,14 +137,41 @@ exports.getAlertByID = async (req, res) => {
 exports.updateAlertByID = async (req, res) => {
     try {
         const updateFields = req.body;
+        console.log("Initial updateFields:", updateFields);
+
+        const currentAlert = await Alert.findOne({ alertID: req.params.id });
+        if (!currentAlert) {
+            return res.status(404).json({ message: "Alert not found" });
+        }
+        
+        let currentAttachments = currentAlert.attachments || []; 
+        const removedAttachments = updateFields.removedAttachments ? JSON.parse(updateFields.removedAttachments) : [];
+        const baseUrl = "https://pika-helpmet.s3.us-west-1.amazonaws.com/";
+        const removedAttachmentUrls = removedAttachments.length > 0 ? removedAttachments.map(filename => `${baseUrl}${filename}`) : [];
+
+        currentAttachments = currentAttachments.filter(
+            (attachment) => !removedAttachmentUrls.includes(attachment)
+        );
+
+        let attachmentUrls = [];
+        if (req.files && req.files.length > 0) {
+            attachmentUrls = await uploadToS3(req.files);
+        }
+
+        const newAttachments = [...new Set([...currentAttachments, ...attachmentUrls])];
+        updateFields.attachments = newAttachments;
+        
         if (Object.keys(updateFields).length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
         const updatedAlert = await Alert.findOneAndUpdate(
             { alertID: req.params.id },
-            updateFields,
+            // { $set: updateFields },
+            { $set: { ...updateFields, sentAt: updateFields.scheduleTime } },
             { new: true }
         );
+        delete updateFields.scheduleTime;
+        console.log(updatedAlert);
         if (!updatedAlert) {
             return res.status(404).json({ message: "Alert not found" });
         }

@@ -16,11 +16,12 @@ import "react-tooltip/dist/react-tooltip.css";
 import BackToTopButton from "../components/BackToTopButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../components/Loader";
 
 const severityMapping = {
   1: "Minor",
   2: "Moderate",
-  3: "Severe",
+  3: "Severe", 
   4: "Significant",
   5: "Fatal",
 };
@@ -74,7 +75,7 @@ const Report = () => {
   };
 
   return (
-    <div className="w-full flex flex-col max-w-6xl mx-auto">
+    <div className="w-full flex flex-col px-4 lg:px-7 max-w-[2700px]">
       <ToastContainer position="top-right" />
       <div className="flex flex-row items-center justify-between gap-4">
         <h1 className="text-lg font-bold text-black md:text-2xl w-full">
@@ -119,12 +120,12 @@ const Report = () => {
 
       <div className="mt-4 flex lg:hidden items-center px-0 justify-end border border-gray-200 rounded-md overflow-hidden">
         <button
-          className={`w-1/2 md:w-36 font-medium mt-0 text-[16px] rounded-none bg-white text-black border-b-4 border-brand40 rounded-l-sm`}
+          className={`w-1/2 md:w-full font-medium mt-0 text-[16px] rounded-none bg-white text-black border-b-4 border-brand40 rounded-l-sm`}
         >
           Completed Report
         </button>
         <button
-          className={`w-1/2 md:w-36 border text-gray-700 mt-0 text-[16px] rounded-none bg-gray-100 border-b-4 border-gray-50/0`}
+          className={`w-1/2 md:w-full border text-gray-700 mt-0 text-[16px] rounded-none bg-gray-100 border-b-4 border-gray-50/0`}
           onClick={handleViewPendingReports}
         >
           Pending Report
@@ -132,7 +133,9 @@ const Report = () => {
       </div>
 
       {loading ? (
-        <p className="text-center mt-6 max-w-[710px] min-w-full">Loading...</p>
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
+        </div>
       ) : report.length === 0 ? (
         <div className="text-center mt-6 bg-white rounded-lg py-[120px] sm:px-auto lg:px-[350px]">
           <p className="font-bold text-nowrap">No Report Available</p>
@@ -147,7 +150,7 @@ const Report = () => {
           </button>
         </div>
       ) : (
-        <div className="w-full">
+        <div className="w-full overflow-x-scroll">
           <table className="w-full bg-white text-black mt-4 rounded-lg text-xs">
             <thead>
               <tr className="bg-[#f8f8f8]">

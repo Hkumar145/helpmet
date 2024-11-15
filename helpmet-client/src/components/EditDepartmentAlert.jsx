@@ -5,12 +5,17 @@ import axios from "../api/axios";
 import { IconButton } from "./ui/button";
 import CustomSelect from "./ui/select";
 import Avatar from "react-avatar";
+import {useNavigate, useParams} from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const MAX_NOTE_LENGTH = 300;
 
-const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
+const EditDepartmentAlert = () => {
+    const navigate = useNavigate();
+    const companyID = useSelector((state) => state.user.currentUser?.companyID);
+    const { alertId } = useParams();
     const [alertData, setAlertData] = useState({ 
         alertName: "", 
         description: "", 
@@ -18,17 +23,75 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
         cc: "",
         attachments: [] 
     });
-
     const [departmentOptions, setDepartmentOptions] = useState([]);
-    const senderEmail = useSelector((state) => state.user.email);
     const [filteredEmployees, setFilteredEmployees] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [employees, setEmployees] = useState([]);
     const [allSelectedEmployees, setAllSelectedEmployees] = useState([]); 
+    const [removedAttachments, setRemovedAttachments] = useState([]);
+    const [tempRecipients, setTempRecipients] = useState([]);
+
+    const onCancel = () => {
+        navigate(-1);
+    } 
+
+    const fetchRecipientDetails = async (recipientIDs) => {
+        const ids = recipientIDs.flatMap((recipient) => {
+            if (typeof recipient === "string" && recipient.startsWith("[")) {
+                try {
+                    return JSON.parse(recipient);
+                } catch {
+                    return [];
+                }
+            } else if (Array.isArray(recipient)) {
+                return recipient;
+            }
+            return [recipient];
+        });
+    
+        const details = await Promise.all(
+            ids.map(async (id) => {
+                try {
+                    const response = await axios.get(`/employees/${id}`);
+                    const employee = response.data;
+                    return {
+                        employeeID: employee.employeeID,
+                        firstName: employee.firstName,
+                        lastName: employee.lastName,
+                        label: `${employee.employeeID} - ${employee.firstName} ${employee.lastName}`
+                    };
+                } catch (error) {
+                    return { employeeID: id, label: "Unknown recipient" };
+                }
+            })
+        );
+        setAllSelectedEmployees(details.flat());
+    };
+
+    useEffect(() => {
+        setTempRecipients(alertData.recipients);
+    }, [alertData.recipients]);  
+
+    useEffect(() => {
+        axios.get(`/alerts/${alertId}`)
+            .then(async (res) => {
+                let data = res.data;
+                data.recipients = JSON.parse(data.recipients[0]);
+                console.log("data: ", data);
+                setAlertData({
+                    ...data,
+                    attachments: data.attachments.map((item) => item.split("/").pop())
+                });
+                setTempRecipients(data.recipients);
+                fetchRecipientDetails(data.recipients);
+            })
+            .catch((error) => {
+                console.error("Error fetching alert:", error);
+            });
+    }, [alertId]);
 
     useEffect(() => {
         const fetchDepartments = async () => {
-            
             try {
                 const response = await axios.get(`/companies/${companyID}/departments`);
                 const departmentOptions = response.data.map((department) => ({
@@ -41,7 +104,6 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
             }
         };
         fetchDepartments();
-   
     }, [companyID]);
 
     const handleInputChange = (e) => {
@@ -78,26 +140,21 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 const bRelevance = (`${b.employeeID} ${b.firstName} ${b.lastName}`).toLowerCase().startsWith(term) ? -1 : 0;
                 return aRelevance - bRelevance;
             });
-    
         setFilteredEmployees(sortedEmployees);
     };
     
-    // Store and display selected recipients
+    // Store and display selected recipients 
     const handleRecipientSelection = (employee) => {
-        const isSelected = alertData.recipients.includes(employee.employeeID);
-        
-        setAlertData(prevData => ({
-            ...prevData,
-            recipients: isSelected 
-                ? prevData.recipients.filter(id => id !== employee.employeeID)
-                : [...prevData.recipients, employee.employeeID],
-        }));
+        const isSelected = tempRecipients.includes(employee.employeeID);
+        const newRecipients = isSelected
+            ? tempRecipients.filter(id => id !== employee.employeeID)
+            : [...tempRecipients, employee.employeeID];
+        setTempRecipients(newRecipients);
 
-        setAllSelectedEmployees(prevSelected => {
-            return isSelected 
-                ? prevSelected.filter(emp => emp.employeeID !== employee.employeeID)
-                : [...prevSelected, employee];
-        });
+        const updatedSelectedEmployees = isSelected
+        ? allSelectedEmployees.filter(emp => emp.employeeID !== employee.employeeID)
+        : [...allSelectedEmployees, employee];
+        setAllSelectedEmployees(updatedSelectedEmployees);
     };
 
     const handleCCChange = (e) => {
@@ -124,7 +181,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
             attachments: [...prevData.attachments, ...acceptedFiles],
         }));
     }, []);
-    
+     
     const { getRootProps, getInputProps } = useDropzone({ 
         onDrop,
         accept: "image/*", 
@@ -132,6 +189,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     
     // Remove attachments
     const removeFile = (file) => {
+        setRemovedAttachments((prev) => [...prev, file]);
         setAlertData((prevData) => ({
             ...prevData,
             attachments: prevData.attachments.filter((f) => f !== file),
@@ -139,58 +197,46 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };
 
     // Create new alert
-    const createAlert = async (e) => {
+    const updateAlert = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
         formData.append("alertName", alertData.alertName);
         formData.append("description", alertData.description);
-        formData.append("recipients", JSON.stringify(alertData.recipients));
-        formData.append("cc", alertData.cc);
-        formData.append("type", "department");
-    
+        formData.append("recipients", JSON.stringify(tempRecipients));
+        if (alertData.cc && alertData.cc.trim() !== "") {
+            formData.append("cc", alertData.cc);
+        }
+        formData.append("removedAttachments", JSON.stringify(removedAttachments));
+        let oldAttachments = [];
         if (alertData.attachments.length > 0) {
-          alertData.attachments.forEach((file) => {
-            formData.append("attachments", file);
-          });
+            alertData.attachments.filter(item => {
+                return typeof item === "string";
+            }).forEach((url) => {
+                oldAttachments.push(url);
+            });
+            formData.append("oldAttachments", JSON.stringify(oldAttachments));
+
+            alertData.attachments.filter(item => {
+                return typeof item !== "string";
+            }).forEach((file) => {
+                formData.append("attachments", file);
+            });
         }
 
         try {
-            const create_response = await axios.post(`/companies/${companyID}/alerts`, formData);
-            toast.success("Alert created successfully!", {
+            await axios.put(`/alerts/${alertId}`, formData);
+            toast.success("Alert updated successfully!", {
                 autoClose: 3000,
                 className: "custom-toast",
                 bodyClassName: "custom-toast-body",
-              });
-            alertData.attachments = create_response.data.attachments;
-
-            /// Fetch all employees to get their emails by employee ID
-            const response = await axios.get(`/companies/${companyID}/employees`);
-            const allEmployees = response.data;
-            const recipientEmails = allEmployees
-                .filter((employee) => alertData.recipients.includes(employee.employeeID))
-                .map((employee) => employee.email);
-
-            if (!recipientEmails || recipientEmails.length === 0) {
-                throw new Error("No valid recipient emails found.");
-            }
-
-            await axios.post("/email/send-alert-email", {
-                recipients: recipientEmails,
-                senderEmail,
-                alertDetails: {
-                    alertName: alertData.alertName,
-                    description: alertData.description,
-                },
-                cc: alertData.cc,
-                attachments: alertData.attachments
             });
             setTimeout(() => {
-                fetchAlerts();
-                onCancel();
+                navigate(-1);
             }, 1500);
+            return;
         } catch (error) {
-            toast.error(`Failed to create department alert. ${error}`, {
+            toast.error(`Failed to update department alert. ${error}`, {
                 autoClose: 3000,
                 className: "custom-toast-error",
                 bodyClassName: "custom-toast-body",
@@ -199,9 +245,10 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     };
 
     return (
-        <div className="w-full overflow-x-auto">
-            <ToastContainer position="top-right" />
-            <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start min-w-[500px]">
+        <div className="flex flex-col gap-4 w-full px-4 lg:px-7 py-0 max-w-[2700px]">
+             <ToastContainer position="top-right" />
+            <h1 className="text-black text-[32px] font-bold">Update Alert</h1>
+            <form onSubmit={updateAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
                         <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
@@ -234,9 +281,11 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                             <ul className="border rounded-[10px] border-black mt-2">
                                 {alertData.attachments.map((file, index) => (
                                     <li key={index} className="flex justify-between items-center p-2 text-[14px]">
-                                        <span className="text-[16px]">{file.name}</span>
+                                        <span className="text-[16px]">{typeof file === "string" ? file : file.name}</span>
                                         <div>
-                                            <IconButton icon="close" 
+                                            <IconButton 
+                                            type={"button"} 
+                                            icon="close" 
                                             onClick={() => removeFile(file)}
                                             className="no-border p-1" 
                                             style={{
@@ -282,7 +331,8 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                                 <span>{emp.employeeID} - {emp.firstName} {emp.lastName}</span>
                                             </div>
                                             <div>
-                                                <IconButton icon="close" 
+                                                <IconButton 
+                                                icon="close"
                                                 onClick={() => handleRecipientSelection(emp)}
                                                 className="no-border p-1"
                                                 style={{
@@ -319,7 +369,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                             </div>
                             <ul className={`space-y-2 overflow-y-scroll ${employees.length > 0 ? "h-48" : "h-auto"}`}>
                                 {filteredEmployees.map(emp => {
-                                    const isSelected = alertData.recipients.includes(emp.employeeID);
+                                    const isSelected = tempRecipients.includes(emp.employeeID);
                                     return (
                                         <li key={emp.employeeID} onClick={() => handleRecipientSelection(emp)} 
                                             className={`flex items-center justify-between p-1 pl-2 rounded-md border text-[14px]
@@ -327,8 +377,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                             <div className="flex items-center gap-2">
                                                 <input
                                                     type="checkbox"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    checked={alertData.recipients.includes(emp.employeeID)}
+                                                    checked={tempRecipients.includes(emp.employeeID)}
                                                     onChange={() => handleRecipientSelection(emp)}
                                                     className="custom-checkbox"
                                                 />
@@ -352,4 +401,4 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
     );
 };
 
-export default CreateDepartmentAlert;
+export default EditDepartmentAlert;

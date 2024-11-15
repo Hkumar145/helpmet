@@ -24,6 +24,7 @@ import Department from './pages/Department';
 import Location from './pages/Location';
 import HeaderWithoutLogin from './components/HeaderWithoutLogin';
 import ForgotPassword from './pages/ForgotPassword';
+import EditAlertIndex from './components/EditAlertIndex';
 
 const HeaderWrapper = () => {
   const location = useLocation();
@@ -49,6 +50,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/alert" element={<Alert />} />
+            <Route path="/alert/:alertId/:type/edit" element={<EditAlertIndex />}/>
             <Route path="/equipmentcheck" element={<Equipmentcheck />} />
             <Route path="/report" element={<Report />} />
             <Route path="/report/:id" element={<ReportDetails />} />

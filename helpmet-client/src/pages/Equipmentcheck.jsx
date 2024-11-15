@@ -11,6 +11,9 @@ import CreateEquipment from "../components/CreateEquipment";
 import UpdateEquipment from "../components/UpdateEquipment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
+import Loader from "../components/Loader";
+
 
 const companyID = 100001;
 
@@ -22,6 +25,9 @@ const EquipmentCheck = () => {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [equipmentToDelete, setEquipmentToDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   const fetchEquipments = async () => {
     try {
@@ -29,8 +35,12 @@ const EquipmentCheck = () => {
         `http://localhost:5001/companies/${companyID}/equipments`
       );
       setEquipments(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching equipment:", error);
+      setError("Error fetching equipment");
+      setLoading(false);
+
     }
   };
 
@@ -152,6 +162,7 @@ const EquipmentCheck = () => {
   return (
     <div className="flex flex-col gap-4 w-full max-w-6xl mx-auto">
       <ToastContainer position="top-right" autoClose={3000} />
+    <div className="flex flex-col gap-4 w-full px-4 lg:px-7 max-w-[2700px]">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
         <h1 className="text-black text-[32px] font-bold">Equipment Check</h1>
         <button
@@ -170,8 +181,24 @@ const EquipmentCheck = () => {
             onView={handleViewEquipment}
             striped
           />
+
+      {loading ? (
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
         </div>
-      ) : null}
+      ) : (
+        viewMode === "list" && (
+          <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
+            <EquipmentList
+              equipments={equipments}
+              onUpdate={handleEditEquipment}
+              onDelete={handleDeleteEquipment}
+              onView={handleViewEquipment}
+              striped
+            />
+          </div>
+        )
+      )}
 
       {/* Create Equipment Dialog */}
       <CreateEquipment

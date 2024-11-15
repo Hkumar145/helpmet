@@ -3,11 +3,15 @@ import axios from "../api/axios";
 import { IconButton } from "./ui/button";
 import { useSelector } from "react-redux";
 import Avatar from "react-avatar";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const AlertList = ({ alerts, companyID, fetchAlerts }) => {
+    const navigate = useNavigate();
     const [expandedAlertID, setExpandedAlertID] = useState(null);
-    const [editedAlert, setEditedAlert] = useState({ recipients: [], attachments: [] });
+    // const [editedAlert, setEditedAlert] = useState({ recipients: [], attachments: [] });
     const [allEmployees, setAllEmployees] = useState([]);
     const [allDepartments, setAllDepartments] = useState([]);
     const [editMode, setEditMode] = useState(null);
@@ -15,6 +19,20 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const itemsPerPage = 10;
     const senderEmail = useSelector((state) => state.user.email);
     const [intervals, setIntervals] = useState({});
+    const [colSpan, setColSpan] = useState(window.innerWidth >= 768 ? 5 : 4);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+    // Update colSpan and screen size status on resize
+    useEffect(() => {
+    const handleResize = () => {
+        const isSmall = window.innerWidth < 768;
+        setColSpan(isSmall ? 4 : 5);
+        setIsSmallScreen(isSmall);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // Fetch recipients (employees or departments)
     useEffect(() => {
@@ -36,7 +54,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         };
 
         fetchRecipients();
-    }, [editedAlert, editMode]);
+    }, [companyID]);
 
     // Sort alerts in descending order
     const sortedAlerts = [...alerts].sort((a, b) => {
@@ -54,51 +72,15 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         return sortedAlerts.slice(startIndex, startIndex + itemsPerPage);
     };
 
-    // Handle edit mode
+
     const editAlert = (alert) => {
-        setEditMode(alert.alertID);
-        setExpandedAlertID(null);
-        setEditedAlert({
-            ...alert,
-            recipients: alert.recipients || [],
-            attachments: alert.attachments || []
-        });
-    };
-
-    // Handle form input changes
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedAlert((prev) => ({ ...prev, [name]: value }));
-    };
-
-    // Save the edited alert
-    const saveChanges = async () => {
-        try {
-            await axios.put(`/alerts/${editedAlert.alertID}`, editedAlert);
-            alert("Alert updated successfully!");
-            setEditMode(null);
-            fetchAlerts();
-        } catch (error) {
-            console.error("Error saving alert:", error);
+        if (alert.type === "department") {
+            navigate(`/alert/${alert.alertID}/department/edit`);
+        } else {
+            navigate(`/alert/${alert.alertID}/employee/edit`);
         }
     };
     
-    // Handle file input changes
-    const handleFileChange = (e) => {
-        const selectedFiles = Array.from(e.target.files);
-        setEditedAlert((prev) => ({
-            ...prev,
-            attachments: [...prev.attachments, ...selectedFiles]
-        }));
-    };
-
-    // Remove file from attachments
-    const removeFile = (fileToRemove) => {
-        setEditedAlert((prev) => ({
-            ...prev,
-            attachments: prev.attachments.filter((file) => file !== fileToRemove),
-        }));
-    };
 
     // Handle page changes
     const goToNextPage = () => {
@@ -126,7 +108,11 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             fetchAlerts(); 
 
             if (newStatus === "active") {
-                alert(`Alert ID: ${alertID} has been activated and will be sent every 7 days.`);
+                toast.success("Alert activated successfully! Alert will be sent every 7 days.", {
+                    autoClose: 3000,
+                    className: "custom-toast",
+                    bodyClassName: "custom-toast-body",
+                });
                 console.log(`Setting up interval for alert ID: ${alertID}`);
                 const intervalId = setInterval(async () => {
                     try {
@@ -177,7 +163,11 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     delete newIntervals[alertID];
                     return newIntervals;
                 });
-                alert(`Alert ID: ${alertID} deactivated successfully. Weekly email sending canceled.`);
+                toast.success("Alert deactivated successfully!", {
+                    autoClose: 3000,
+                    className: "custom-toast",
+                    bodyClassName: "custom-toast-body",
+                });
                 console.log(`Cleared interval for alert ID: ${alertID}`);
             }
             
@@ -188,46 +178,78 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="w-full overflow-x-auto">
-                <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed min-w-[500px]">
+            <ToastContainer position="top-right" />
+            <div className="w-full overflow-x-auto rounded-lg">
+                <table className="bg-white p-6 shadow-lg w-full text-left table-fixed min-w-[500px]">
                     <thead className="text-center">
-                        <tr className="text-[16px] text-gray50">
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Alert ID</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "30%" }}>Alert Name</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Send Date</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}>Recipients</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}></th>
+                        <tr className="text-[16px] text-gray50 bg-[#f8f8f8]">
+                            <th className="py-2 font-bold" style={{ width: window.innerWidth >= 1024 ? "20%" : "15%" }}>Alert ID</th>
+                            <th className="py-2 font-bold text-left" style={{ width: "30%" }}>Alert Name</th>
+                            <th className="py-2 font-bold" style={{ width: "18%" }}>Send Date</th>
+                            <th className="py-2 font-bold text-left hidden md:table-cell" style={{ width: "12%" }}>Recipients</th>
+                            <th className="py-2 font-bold" style={{ width: "auto" }}></th>
                         </tr>
                     </thead>
                     <tbody className="text-[14px] text-center">
                         {getPaginatedAlerts().map((alert, index) => (
                             <React.Fragment key={alert.alertID}>
-                                <tr className={`border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
-                                    <td className="p-2 lg:px-6">{ alert.alertID }</td>
-                                    <td className="p-2 lg:px-6">{ alert.alertName }</td>
-                                    <td className="p-2 lg:px-6">{ alert.sentAt }</td>
-                                    <td className="p-2 lg:px-6 flex flex-col md:flex-row lg:h-12 items-center gap-1">
-                                        {alert.recipients && alert.recipients[0] && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
+                                <tr className="border-t border-gray20 hover:bg-gray10">
+                                    <td className="py-2 md:py-0">{ alert.alertID }</td>
+                                    <td className="py-2 md:py-0 text-left">
+                                        {isSmallScreen
+                                            ? alert.alertName.length > 20
+                                                ? `${alert.alertName.slice(0, 20)}...`
+                                                : alert.alertName
+                                            : alert.alertName}
+                                    </td>
+                                    <td className="py-2 md:py-0">{ alert.sentAt }</td>
+                                    <td className="md:flex items-center h-12 text-left relative hidden">
+                                        {alert.recipients && JSON.parse(alert.recipients[0] || "[]").slice(0, 3).reverse().map((recipientID, idx) => {
                                             const id = recipientID;
                                             const employee = allEmployees.find(e => e.value === id);
                                             const label = employee ? employee.label : "Unknown";
                                             const nameInitial = label && label.includes(" - ") ? label.split(" - ")[1].charAt(0) : "?";
                                             return (
-                                                <Avatar 
+                                                <div 
                                                     key={idx}
-                                                    name={nameInitial}
-                                                    round={true}
-                                                    size="30"
-                                                    textSizeRatio={2.5} 
-                                                />
+                                                    className="relative" 
+                                                    style={{ 
+                                                        zIndex: idx,
+                                                        left: `${idx * 23}px`,
+                                                        border: "1px solid white",
+                                                        borderRadius: "50%",
+                                                        width: "32px",
+                                                        height: "32px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        position: "absolute",
+                                                        top: "50%",
+                                                        transform: "translateY(-50%)", 
+                                                    }}
+                                                >
+                                                    <Avatar 
+                                                        name={nameInitial}
+                                                        round={true}
+                                                        size="30"
+                                                        textSizeRatio={2.5} 
+                                                    />
+                                                </div>
                                             );
                                         })}
-                                        {alert.recipients && alert.recipients[0] && JSON.parse(alert.recipients[0]).length > 3 && (
-                                            <span className="text-gray60">+{JSON.parse(alert.recipients[0]).length - 3}</span>
+                                        {alert.recipients && JSON.parse(alert.recipients[0] || "[]").length > 3 && (
+                                            <span className="text-gray60 absolute"
+                                                style={{
+                                                    left: "82px",
+                                                    top: "50%",
+                                                    transform: "translateY(-50%)"
+                                                }}>
+                                                +{JSON.parse(alert.recipients[0]).length - 3}
+                                            </span>
                                         )}
                                     </td>
-                                    <td className="p-2 lg:px-6">
-                                        <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
+                                    <td className="py-2 md:py-0">
+                                        <div className="flex gap-2 justify-center items-center">
                                             <div className="flex justify-center">
                                                 <IconButton
                                                     icon={alert.status === "active" ? "toggleActive" : "toggleInactive"}
@@ -241,29 +263,67 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </div>
                                             <div>
                                                 <IconButton icon={expandedAlertID === alert.alertID ? "hide" : "expand"} 
-                                                onClick={() => viewDetails(alert.alertID)} 
-                                                className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}/>
+                                                    onClick={() => viewDetails(alert.alertID)} 
+                                                    className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}
+                                                />
                                             </div>
                                             <div>
                                                 <IconButton icon="edit" 
-                                                onClick={() => editAlert(alert)} 
-                                                className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} />
+                                                    onClick={() => editAlert(alert)}
+                                                    className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} 
+                                                />
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-            
+
+                                {/* {expandedAlertID === alert.alertID && (
+                                    <tr>
+                                        <td colSpan={colSpan} className="px-3 py-2 lg:px-6 bg-gray20">
+                                            <div className="whitespace-pre-wrap text-start">
+                                                <p><strong>Alert Name:</strong> {alert.alertName}</p>
+                                                <div className="flex gap-1">
+                                                    <p><strong>Recipients:</strong></p>
+                                                    <ul>
+                                                        {alert.recipients && alert.recipients.length > 0 ? (
+                                                            alert.recipients.map((recipientID, idx) => {
+                                                                const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
+                                                                return (
+                                                                    <li key={idx} className="text-black">
+                                                                        {ids.map((id, idIdx) => {
+                                                                            let employee = allEmployees.find(e => e.value === id) || allDepartments.find(e => e.value === id);
+                                                                            return employee ? (
+                                                                                <span key={idIdx}>
+                                                                                    {employee.label}
+                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
+                                                                                </span>
+                                                                            ) : (
+                                                                                <span key={idIdx}>
+                                                                                    Unknown recipient
+                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
+                                                                                </span>
+                                                                            );
+                                                                        })}
+                                                                    </li>
+                                                                );
+                                                            })
+                                                        ) : (
+                                                            <p>No recipients</p>
+                                                        )}
+                                                    </ul>
+                                                </div>
+                                            </div> */}
                                 {expandedAlertID === alert.alertID && (
                                     <tr>
                                         <td colSpan="5" className="px-6 py-4">
                                         <div className="bg-white rounded-lg">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                             {/* Recipients Card */}
-                                            <div className="bg-gray-50 rounded-lg p-4">
-                                                <div className="text-gray-500 mb-2">Recipients</div>
-                                                <div className="font-medium text-gray-900">
+                                            <div className="bg-gray-50 rounded-lg p-4 text-left">
+                                                <div className="text-gray-500 text-sm">Recipients</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.recipients && alert.recipients.length > 0 ? (
-                                                    <div className="flex flex-wrap items-center justify-center gap-2">
+                                                    <div className="flex flex-wrap items-center justify-start gap-[0.15rem]">
                                                     {alert.recipients.map((recipientID, idx) => {
                                                         const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
                                                         return ids.map((id, idIdx) => {
@@ -281,15 +341,29 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                     })}
                                                     </div>
                                                 ) : (
-                                                    <span className="text-gray-500 italic">No recipients</span>
+                                                    <span className="text-gray-500 italic text-[16px]">No recipients</span>
                                                 )}
                                                 </div>
                                             </div>
 
                                             {/* CC Recipients Card */}
-                                            <div className="bg-gray-50 rounded-lg p-4">
+                                            {/* <div className="bg-gray-50 rounded-lg p-4">
                                                 <div className="text-gray-500 mb-2">CC Recipients</div>
                                                 <div className="font-medium text-gray-900">
+                                                    {alert.cc ? (
+                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
+                                                            {alert.cc}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">No CC recipients</span>
+                                                    )}
+                                                </div>
+                                            </div> */}
+
+                                            {/* CC Recipients Card */}
+                                            <div className="bg-gray-50 rounded-lg p-4 text-left">
+                                                <div className="text-gray-500 text-sm">CC Recipients</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.cc ? (
                                                     <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
                                                     {alert.cc}
@@ -301,17 +375,23 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </div>
 
                                             {/* Description Card - Full Width */}
-                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                            {/* <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
                                                 <div className="text-gray-500 mb-2">Description</div>
                                                 <div className="font-medium text-gray-900">
+                                                    {alert.description || <span className="text-gray-500 italic">No description available</span>}
+                                                </div>
+                                            </div> */}
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2 text-left">
+                                                <div className="text-gray-500 text-sm">Description</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.description || <span className="text-gray-500 italic">No description available</span>}
                                                 </div>
                                             </div>
 
                                             {/* Attachments Card - Full Width */}
-                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
-                                                <div className="text-gray-500 mb-2">Attachments</div>
-                                                <div className="font-medium text-gray-900">
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2 text-left">
+                                                <div className="text-gray-500 text-sm">Attachments</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.attachments && alert.attachments.length > 0 ? (
                                                     <div className="flex gap-3 overflow-x-auto py-2">
                                                     {alert.attachments.map((imgUrl, index) => (
@@ -334,65 +414,26 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                         </td>
                                     </tr>
                                     )}
-            
-                                {editMode === alert.alertID && (
-                                    <tr>
-                                        <td colSpan="5" className="bg-gray20 p-4">
-                                            <input
-                                                type="text"
-                                                name="alertName"
-                                                value={editedAlert.alertName}
-                                                onChange={handleInputChange}
-                                                className="w-full p-2 sm:text-xs"
-                                                style={{ fontSize: "14px", padding: ".2rem .35rem", borderRadius: "6px" }}
-                                            />
-                                            <textarea
-                                                name="description"
-                                                value={editedAlert.description}
-                                                onChange={handleInputChange}
-                                                className="w-full p-2 mt-2 rounded-[6px] text-[14px] py-[0.25rem] px-[0.35rem]"
-                                            ></textarea>
-                                            
-                                            <div className="mt-4 flex gap-2 justify-end">
-                                                <button
-                                                    className="w-12 border bg-white text-black text-[12px] p-1 rounded-[6px] mt-0 border-gray20 hover-button"
-                                                    onClick={() => setEditMode(null)}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    className="w-12 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
-                                                    onClick={saveChanges}
-                                                >
-                                                    Save
-                                                </button>
-                                                
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
                             </React.Fragment>
                         ))}
                     </tbody>
                 </table>
-            
-                
             </div>
             <div className="flex gap-4 justify-between items-center mt-4">
-                    <div>
-                        <IconButton icon="previous" 
+                <div>
+                    <IconButton icon="previous" 
                         onClick={goToPreviousPage}
-                        disabled={currentPage === 1} />
-                    </div>
-                    
-                    <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
-
-                    <div>
-                        <IconButton icon="next" 
-                        onClick={goToNextPage}
-                        disabled={currentPage === totalPages} />
-                    </div>
+                        disabled={currentPage === 1} 
+                    />
                 </div>
+                <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
+                <div>
+                    <IconButton icon="next" 
+                        onClick={goToNextPage}
+                        disabled={currentPage === totalPages} 
+                    />
+                </div>
+            </div>
         </div>
     );
 };
