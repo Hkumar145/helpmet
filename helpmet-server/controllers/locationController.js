@@ -229,6 +229,7 @@ exports.createLocation = async (req, res) => {
   
   
   
+  
 
 // Get all locations for a specific company by companyID
 exports.getLocationsByCompany = async (req, res) => {

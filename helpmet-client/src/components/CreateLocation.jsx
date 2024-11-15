@@ -3,6 +3,8 @@ import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
 import MapLocation from '@/components/MapLocation';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -13,7 +15,6 @@ const CreateLocation = () => {
   const [employees, setEmployees] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
-
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -21,6 +22,10 @@ const CreateLocation = () => {
         setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
+        toast.error("Error fetching employees", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
       }
     };
 
@@ -29,104 +34,55 @@ const CreateLocation = () => {
     }
   }, [companyID]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-   
-  //   if (!Array.isArray(coordinates) || coordinates.length !== 2) {
-  //     alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
-  //     return;
-  //   }
-  //   // Validate coordinates is an array with exactly 2 elements
-  //   if (!Array.isArray(coordinates) || coordinates.length !== 2) {
-  //     alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
-  //     return;
-  //   }
-
-  //   // Ensure coordinates are valid numbers
-  //   if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
-  //     alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
-  //     return;
-  //   }
-
-  //   if(coordinates.length === 2){}
-  //   const locationData = {
-  //     locationName,
-  //     companyID,
-  //     coordinates, // Pass coordinates directly from state
-  //     managerID: parseInt(managerID)
-  //   };
-  //   console.log(managerID)
-  //   // Log coordinates and locationData to debug
-  //   console.log("Coordinates:", coordinates);
-  //   console.log("Location Data:", JSON.stringify(locationData, null, 2));
-  //   try {
-  //     // Create location
-  //     const response = await axios.post(`/companies/${companyID}/createlocations`, {
-  //       locationName,
-  //       coordinates,
-  //       managerID: parseInt(managerID)
-  //     });
-
-  //     // Update employee role to site manager
-  //     await axios.put(`/employees/${managerID}`, {
-  //       role: 'Site Manager'
-  //     });
-  //     if (response.status === 201) {
-  //       alert("Location created successfully!");
-  //       window.location.reload();
-  //       setLocationName('');
-  //       setCoordinates([0, 0]); 
-  //       setManagerID('');
-  //       shouldClose: true;
-  //     }
-  //   } catch (error) {
-  //     console.error("Error creating location:", error.response?.data?.message || error.message);
-  //     if (error.response?.status === 400) {
-  //       alert(error.response.data.message);
-  //     } else {
-  //       alert("Failed to create location. Please try again.");
-  //     }
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted with:", { locationName, coordinates, managerID });
   
-    // Ensure managerID is valid
     const parsedManagerID = parseInt(managerID, 10);
     if (isNaN(parsedManagerID) || parsedManagerID <= 0) {
-      alert("Invalid manager ID. Please select a valid manager.");
+      toast.error("Invalid manager ID. Please select a valid manager.", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
       return;
     }
   
-    // Validate coordinates
     if (!Array.isArray(coordinates) || coordinates.length !== 2 || isNaN(coordinates[0]) || isNaN(coordinates[1])) {
-      alert("Invalid coordinates. Please select valid coordinates on the map.");
+      toast.error("Invalid coordinates. Please select valid coordinates on the map.", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
       return;
     }
-  
-    const locationData = {
-      locationName,
-      coordinates,
-      managerID: parsedManagerID,
-    };
   
     try {
-      const response = await axios.post(`/companies/${companyID}/createlocations`, locationData);
-  
-      if (response.status === 201) {
-        alert("Location created successfully!");
-        setLocationName('');
-        setCoordinates([0, 0]);
-        setManagerID('');
-      }
+      // Create location
+      const locationResponse = await axios.post(`/companies/${companyID}/createlocations`, {
+        locationName,
+        coordinates,
+        managerID: parsedManagerID,
+      });
+
+      // Update employee role to Site Manager
+      await axios.put(`/employees/${parsedManagerID}`, {
+        role: 'Site Manager'
+      });
+
+      console.log("Location created:", locationResponse.data);
+      toast.success("Location created successfully!", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
-      console.error("Error creating location:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Failed to create location.");
+      console.error("Error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Failed to create location. Please try again.", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
-  
   
   const handleMapCoordinatesChange = (newCoordinates) => {
     if (Array.isArray(newCoordinates) && newCoordinates.length === 2 &&
@@ -140,6 +96,7 @@ const CreateLocation = () => {
   
   return (
     <main>
+      <ToastContainer position="top-right" autoClose={3000} />
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="text"

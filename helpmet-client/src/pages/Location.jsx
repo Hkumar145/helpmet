@@ -58,7 +58,20 @@ const Location = () => {
   const handleDeleteLocation = async () => {
     try {
       if (locationToDelete) {
+        // Find the manager ID before deleting location
+        const locationToDeleteData = locations.find(loc => loc.locationID === locationToDelete);
+        const managerID = locationToDeleteData?.managerID;
+
+        // Delete the location
         await axios.delete(`/locations/${locationToDelete}`);
+
+        // Update the manager's role back to Employee
+        if (managerID) {
+          await axios.put(`/employees/${managerID}`, {
+            role: 'Employee'
+          });
+        }
+
         setLocations((prevLocations) =>
           prevLocations.filter(
             (location) => location.locationID !== locationToDelete
