@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import axios from "../api/axios";
 import EquipmentList from "../components/EquipmentList";
 import CreateEquipment from "../components/CreateEquipment";
 import UpdateEquipment from "../components/UpdateEquipment";
-import EquipmentDetail from "../components/EquipmentDetail";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const companyID = 100001;
 
@@ -15,7 +20,7 @@ const EquipmentCheck = () => {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [equipmentToDelete, setEquipmentToDelete] = useState(null);
 
   const fetchEquipments = async () => {
@@ -55,14 +60,12 @@ const EquipmentCheck = () => {
           bodyClassName: "custom-toast-body",
         });
       } else {
-        console.error("Failed to update equipment:", response.statusText);
         toast.error("Error updating equipment", {
           className: "custom-toast-error",
           bodyClassName: "custom-toast-body",
         });
       }
     } catch (error) {
-      console.error("Error updating equipment:", error.message);
       toast.error(`Error updating equipment: ${error.message}`, {
         className: "custom-toast-error",
         bodyClassName: "custom-toast-body",
@@ -87,40 +90,35 @@ const EquipmentCheck = () => {
   const handleCancel = () => {
     setIsDialogOpen(false);
     setIsUpdateDialogOpen(false);
-    setIsDeleteConfirmOpen(false);
+    setDeleteDialogOpen(false);
   };
 
-  const handleDeleteRequest = (equipmentID) => {
+  const openDeleteConfirmation = (equipmentID) => {
     setEquipmentToDelete(equipmentID);
-    setIsDeleteConfirmOpen(true);
+    setDeleteDialogOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `http://localhost:5001/companies/${companyID}/equipments/${equipmentToDelete}`
       );
-      if (response.status === 200) {
-        fetchEquipments();
-        toast.success("Equipment deleted successfully.", {
-          className: "custom-toast",
-          bodyClassName: "custom-toast-body",
-        });
-      } else {
-        console.error("Failed to delete equipment:", response.statusText);
-        toast.error("Error deleting equipment", {
-          className: "custom-toast-error",
-          bodyClassName: "custom-toast-body",
-        });
-      }
+      setEquipments((prevEquipments) =>
+        prevEquipments.filter(
+          (equipment) => equipment.equipmentID !== equipmentToDelete
+        )
+      );
+      toast.success("Equipment deleted successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
     } catch (error) {
-      console.error("Error deleting equipment:", error);
       toast.error("Error deleting equipment", {
         className: "custom-toast-error",
         bodyClassName: "custom-toast-body",
       });
     } finally {
-      setIsDeleteConfirmOpen(false);
+      setDeleteDialogOpen(false);
       setEquipmentToDelete(null);
     }
   };
@@ -133,14 +131,12 @@ const EquipmentCheck = () => {
       if (response.status === 200) {
         setSelectedEquipment(response.data);
       } else {
-        console.error("Failed to fetch equipment details:", response.statusText);
         toast.error("Error fetching equipment details", {
           className: "custom-toast-error",
           bodyClassName: "custom-toast-body",
         });
       }
     } catch (error) {
-      console.error("Error fetching equipment details:", error);
       toast.error("Error fetching equipment details", {
         className: "custom-toast-error",
         bodyClassName: "custom-toast-body",
@@ -155,11 +151,11 @@ const EquipmentCheck = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-6xl mx-auto">
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
         <h1 className="text-black text-[32px] font-bold">Equipment Check</h1>
         <button
-          className="bg-brand40 text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
+          className="bg-[#6938EF] text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
           onClick={handleAddNewEquipment}
         >
           Add New Equipment
@@ -170,17 +166,10 @@ const EquipmentCheck = () => {
           <EquipmentList
             equipments={equipments}
             onUpdate={handleEditEquipment}
-            onDelete={handleDeleteRequest} // Open confirmation dialog before delete
+            onDelete={openDeleteConfirmation} // Open confirmation dialog before delete
             onView={handleViewEquipment}
             striped
           />
-          {selectedEquipment && (
-            <EquipmentDetail
-              equipment={selectedEquipment}
-              onClose={() => setSelectedEquipment(null)}
-              onSave={fetchEquipments}
-            />
-          )}
         </div>
       ) : null}
 
@@ -200,28 +189,28 @@ const EquipmentCheck = () => {
       />
 
       {/* Delete Confirmation Dialog */}
-      {isDeleteConfirmOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
-            <p className="text-gray-600 mb-6">Are you sure you want to delete this equipment?</p>
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 text-xs rounded border hover:bg-gray-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded text-xs hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this equipment?
+          </DialogDescription>
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={handleCancel}
+              className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmDelete}
+              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
+            >
+              Confirm
+            </button>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
