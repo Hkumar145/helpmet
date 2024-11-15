@@ -13,6 +13,7 @@ import EditEmployee from "../components/EditEmployee";
 import BackToTopButton from "../components/BackToTopButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../components/Loader";
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
@@ -22,6 +23,7 @@ const Employee = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (companyID) {
@@ -29,8 +31,10 @@ const Employee = () => {
         try {
           const response = await axios.get(`/companies/${companyID}/employees`);
           setEmployees(response.data);
+          setLoading(false);
         } catch (error) {
           console.error("Error fetching employees:", error);
+          setLoading(false);
         }
       };
 
@@ -73,6 +77,14 @@ const Employee = () => {
     setEmployeeToDelete(employeeID);
     setConfirmDeleteDialogOpen(true);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[400px]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2 text-black">

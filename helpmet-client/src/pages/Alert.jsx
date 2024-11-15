@@ -5,11 +5,13 @@ import CreateEmployeeAlert from "../components/CreateEmployeeAlert";
 import CreateDepartmentAlert from "../components/CreateDepartmentAlert";
 import AlertToggle from "../components/AlertToggle";
 import { useSelector } from "react-redux";
+import Loader from "../components/Loader";
 
 const Alert = () => {
   const [alerts, setAlerts] = useState([]);
   const [viewMode, setViewMode] = useState("list");
   const [alertType, setAlertType] = useState("employee");
+  const [loading, setLoading] = useState(true);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   // Fetch all alerts
@@ -22,8 +24,10 @@ const Alert = () => {
         sentAt: new Date(alert.sentAt).toISOString().split("T")[0],
       }));
       setAlerts(formattedAlerts);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -72,7 +76,6 @@ const Alert = () => {
     <div className="flex flex-col gap-4 w-full max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
         <h1 className="text-black text-[32px] font-bold">Alerts</h1>
-
         {viewMode === "list" ? (
           <button
             className="bg-brand40 text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
@@ -87,8 +90,13 @@ const Alert = () => {
           <AlertToggle viewMode={alertType} setViewMode={setAlertType} />
         )}
       </div>
-
-      <div>{renderContent()}</div>
+      {loading ? (
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
+        </div>
+      ) : (
+        <div>{renderContent()}</div>
+      )}
     </div>
   );
 };
