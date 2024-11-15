@@ -115,7 +115,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div>
 
             {/* Location and Status in one row */}
-            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            {/* <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
               <div className="flex flex-col w-full md:w-1/2">
                 <label className="text-gray-600">Location</label>
                 <select
@@ -144,10 +144,10 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   <option value="Out of Service">Out of Service</option>
                 </select>
               </div>
-            </div>
+            </div> */}
 
             {/* Inspection Date and Interval */}
-            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            {/* <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
               <div className="flex flex-col w-full md:w-1/2">
                 <label className="text-gray-600">Inspection Date</label>
                 <input
@@ -157,8 +157,8 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
 
-                />
-              </div>
+                /> */}
+              {/* </div>
               <div className="flex flex-col w-full md:w-1/2">
                 <label className="text-gray-600">Inspection Interval (Days)</label>
                 <input
@@ -171,10 +171,10 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   onWheel={(e) => e.target.blur()}
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Inspected By */}
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <label className="text-gray-600">Inspected By</label>
               <select
                 value={inspectedBy}
@@ -189,7 +189,71 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
+              {/* Location and Status in one row */}
+<div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+  <div className="flex flex-col w-full md:w-1/2">
+    <label className="text-gray-600">Location</label>
+    <select
+      value={locationID}
+      onChange={(e) => setLocationID(e.target.value)}
+      className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring focus:ring-purple-500 focus:border-purple-300 appearance-none pr-10 shadow-sm"
+      style={{
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`,
+        backgroundPosition: 'right 1rem center',
+        backgroundRepeat: 'no-repeat'
+      }}
+      required
+    >
+      <option value="">Select Location</option>
+      {locations.map((location) => (
+        <option key={location.locationID} value={location.locationID}>
+          {location.locationName}
+        </option>
+      ))}
+    </select>
+  </div>
+  <div className="flex flex-col w-full md:w-1/2">
+    <label className="text-gray-600">Status</label>
+    <select
+      value={status}
+      onChange={(e) => setStatus(e.target.value)}
+      className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring focus:ring-purple-500 focus:border-purple-300 appearance-none pr-10 shadow-sm"
+      style={{
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`,
+        backgroundPosition: 'right 1rem center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      <option value="Good">Good</option>
+      <option value="Needs Maintenance">Needs Maintenance</option>
+      <option value="Out of Service">Out of Service</option>
+    </select>
+  </div>
+</div>
+
+{/* Inspected By */}
+<div className="flex flex-col">
+  <label className="text-gray-600">Inspected By</label>
+  <select
+    value={inspectedBy}
+    onChange={(e) => setInspectedBy(e.target.value)}
+    className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring focus:ring-purple-500 focus:border-purple-300 appearance-none pr-10 shadow-sm"
+    style={{
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`,
+      backgroundPosition: 'right 1rem center',
+      backgroundRepeat: 'no-repeat'
+    }}
+    required
+  >
+    <option value="">Select Employee</option>
+    {employees.map((employee) => (
+      <option key={employee.employeeID} value={employee.employeeID}>
+        {employee.firstName} {employee.lastName} ({employee.role})
+      </option>
+    ))}
+  </select>
+</div>
 
             {/* Checked */}
             <div className="flex  mt-4 items-center">
