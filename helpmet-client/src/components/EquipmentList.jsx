@@ -81,12 +81,13 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
         </div>
       ) : (
         <div style={{ overflowX: 'auto', width: '100%' }}>
-          <table
+          {/* <table
             style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', color: '#333' }}
             className="equipment-table"
-          >
+          > */}
+           <table className="w-full bg-white text-black mt-0 rounded-lg text-xs">
             <thead>
-              <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center' }}>
+              <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center', }}>
               <th style={{ padding: '16px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>
   <div style={{ marginLeft: '5vw' }}>Equipment Name</div>
 </th>
@@ -102,7 +103,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
             <tbody>
               {updatedEquipments.map((equipment) => (
                 <React.Fragment key={equipment.equipmentID}>
-                  <tr style={{ borderBottom: '1px solid #ddd' }}>
+                 <tr className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
                     <td style={{
                         padding: '16px',
                         verticalAlign: 'middle',
