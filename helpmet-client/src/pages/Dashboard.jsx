@@ -371,7 +371,7 @@ const Dashboard = () => {
                     />
                     <div className="flex flex-row items-center justify-center gap-2 w-full p-2">
                         <button
-                            className="bg-gray-100 border border-gray-200 text-gray-700 text-xs px-4 py-2 w-full rounded"
+                            className="bg-[#6938EF] w-32 text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-2"
                             onClick={() => navigate('/injury-analytics')}
                         >
                             Details
