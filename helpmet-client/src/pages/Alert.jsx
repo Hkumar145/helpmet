@@ -11,31 +11,36 @@ const Alert = () => {
   const [viewMode, setViewMode] = useState("list");
   const [alertType, setAlertType] = useState("employee");
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
     // Fetch all alerts
     const fetchAlerts = async () => {
       try {
+          setLoading(true);
+          setError(null);
           const response = await axios.get(`/companies/${companyID}/alerts`);
           // Format the sentAt date to "DD/MM/YYYY" format
           const formattedAlerts = response.data.map(alert => ({
               ...alert,
-              // sentAt: new Date(alert.sentAt).toISOString().split("T")[0]
               sentAt: new Date(alert.sentAt).toLocaleDateString()
           }));
           setAlerts(formattedAlerts);
       } catch (error) {
-          console.error(error);
-      }
+        console.error(error);
+        setError("Failed to load, please try again.");
+        } finally {
+            setLoading(false);
+        }
   };
 
   useEffect(() => { fetchAlerts(); }, []);
 
-    // Function to reset view mode to "list"
     const handleCancel = () => {
       setViewMode("list");
   };
 
-  // Render different components based on viewMode
+
   const renderContent = () => {
     if (viewMode === "create") {
         return alertType === "employee" ? (
@@ -50,6 +55,20 @@ const Alert = () => {
             onCancel={handleCancel}  />
         );
     }
+
+    if (loading) {
+        return <p className="text-center mt-6">Loading...</p>;
+    }
+
+    if (error || alerts.length === 0) {
+        return (
+            <div className="text-center bg-white rounded-lg py-[120px] px-6">
+                <p className="font-bold">No Alerts Available</p>
+                <p className="text-gray40 mt-2 mb-2">Start by creating the first incident alert</p>
+            </div>
+        );
+    }
+
     return <AlertList alerts={alerts} fetchAlerts={fetchAlerts} companyID={companyID} />;
 };
 
