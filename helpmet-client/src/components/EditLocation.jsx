@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -28,10 +30,16 @@ const EditLocation = ({ locationID, onClose }) => {
 
     try {
       await axios.put(`/locations/${locationID}`, locationData);
-      alert("Location updated successfully.");
+      toast.success("Location updated successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
       onClose();
     } catch (error) {
-      console.error("Error updating location:", error.response?.data?.message || error.message);
+      toast.error(`Error updating location: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -50,7 +58,9 @@ const EditLocation = ({ locationID, onClose }) => {
           <DialogClose asChild>
             <button type="button" className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0" onClick={onClose}>Cancel</button>
           </DialogClose>
-          <button type="submit" className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">Update Location</button>
+          <DialogClose asChild>
+            <button type="submit" className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">Update Location</button>
+          </DialogClose>
         </div>
       </form>
     </main>

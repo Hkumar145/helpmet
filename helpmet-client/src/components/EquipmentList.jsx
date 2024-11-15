@@ -81,13 +81,16 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
         </div>
       ) : (
         <div style={{ overflowX: 'auto', width: '100%' }}>
-          <table
+          {/* <table
             style={{ width: '100%', borderCollapse: 'collapse', fontSize: '16px', color: '#333' }}
             className="equipment-table"
-          >
+          > */}
+           <table className="w-full bg-white text-black mt-0 rounded-lg text-xs">
             <thead>
-              <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center' }}>
-                <th style={{ padding: '16px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Equipment Name</th>
+              <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center', }}>
+                <th style={{ padding: '16px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>
+                  <div style={{ marginLeft: '5vw' }}>Equipment Name</div>
+                </th>
                 <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd' }}>Equipment ID</th>
                 <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd' }} className="hide-on-mobile">Status</th>
                 <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd' }} className="hide-on-mobile">Inspection Date</th>
@@ -99,7 +102,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
             <tbody>
               {updatedEquipments.map((equipment) => (
                 <React.Fragment key={equipment.equipmentID}>
-                  <tr style={{ borderBottom: '1px solid #ddd' }}>
+                 <tr className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
                     <td style={{
                         padding: '16px',
                         verticalAlign: 'middle',
@@ -108,6 +111,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                       <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
+                          marginLeft:'5vw'
                         }}
                       >
                         {equipment.equipmentName}
@@ -130,7 +134,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                       <Avatar
                         name={employeeNames[equipment.inspectedBy] || ''}
                         round={true}
-                        size="40"
+                        size="30"
                         textSizeRatio={1.75}
                         style={{ cursor: 'default', backgroundColor: '#B0B0B0' }}
                         title={employeeNames[equipment.inspectedBy] || 'Unknown'}
@@ -138,22 +142,22 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                       />
                     </td>
                     <td style={{ padding: '16px', textAlign: 'right' }}>
-                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'right', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'right', alignItems: 'center', marginRight: '5vw' }}>
                         <button onClick={() => toggleDetails(equipment.equipmentID)} title="View Details"
                           className='border hover:cursor-pointer hover:border-[#4A1FB8] flex justify-center items-center'
-                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '0px' }}
                         >
                           <img src={expandedEquipmentID === equipment.equipmentID ? "./images/collapse-arrow.svg" : "./images/down-arrow.svg"} alt="Toggle Details" style={{ maxWidth: '100%' }} />
                         </button>
                         <button onClick={() => handleUpdate(equipment)} title="Edit"
                           className='border hover:cursor-pointer hover:border-[#4A1FB8] flex justify-center items-center'
-                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '0px' }}
                         >
                           <img src="./images/edit.svg" alt="edit icon" style={{ maxWidth: '100%' }} />
                         </button>
                         <button onClick={() => onDelete(equipment.equipmentID)} title="Delete"
                           className='border hover:cursor-pointer hover:border-[#4A1FB8] flex justify-center items-center'
-                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '0px' }}
                         >
                           <img src="./images/trash.svg" alt="delete icon" style={{ maxWidth: '100%' }} />
                         </button>

@@ -74,7 +74,7 @@ const CreateLocation = () => {
       });
       setTimeout(() => {
         window.location.reload();
-      }, 3000);
+      }, 3200);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.message || "Failed to create location. Please try again.", {
@@ -96,7 +96,6 @@ const CreateLocation = () => {
   
   return (
     <main>
-      <ToastContainer position="top-right" autoClose={3000} />
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="text"
