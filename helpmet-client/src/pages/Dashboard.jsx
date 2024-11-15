@@ -11,6 +11,7 @@ import ReportsByLocation from "@/components/ReportsByLocation"
 import BackToTopButton from '../components/BackToTopButton';
 import EquipmentStatusPieChart from "@/components/EquipmentStatusPieChart"
 import SiteAgentTable from "@/components/SiteAgentTable"
+import Loader from "../components/Loader"
 
 const injuryTypeMapping = {
     T0001: 'Overexertion',
@@ -59,9 +60,11 @@ const Dashboard = () => {
     const [currentFilterValue, setCurrentFilterValue] = useState(null);
     const navigate = useNavigate();
     const [epidemicPercentage, setEpidemicPercentage] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchMonthlyEpidemicData = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get(`/monthly-epidemic-data?companyID=${companyID}`);
                 const sortedData = response.data;
@@ -85,6 +88,8 @@ const Dashboard = () => {
                 });
             } catch (error) {
                 console.error('Error fetching monthly epidemic data:', error);
+            } finally {
+                setLoading(false);
             }
         };
     
@@ -94,6 +99,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchInjuryTypeData = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get(`/injury-type-stats?companyID=${companyID}`);
                 const data = response.data;
@@ -124,10 +130,13 @@ const Dashboard = () => {
                 });
             } catch (error) {
                 console.error("Error fetching injury stats:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
         const fetchWeeklyInjuryData = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get(`/weekly-injury-stats?companyID=${companyID}`);
                 const data = response.data;
@@ -179,6 +188,8 @@ const Dashboard = () => {
 
             } catch (error) {
                 console.error("Error fetching weekly injury stats:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -225,6 +236,7 @@ const Dashboard = () => {
     };
 
     const fetchSeverityData = async (injuryTypeID, dateOfInjury) => {
+        setLoading(true);
         try {
             const params = {};
             if (injuryTypeID) params.injuryTypeID = injuryTypeID;
@@ -257,6 +269,8 @@ const Dashboard = () => {
             });
         } catch (error) {
             console.error("Error fetching severity data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -339,7 +353,11 @@ const Dashboard = () => {
     
   return (
     <div>
-        {injuryTypeData.labels.length > 0 ? (
+        {loading ? (
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
+        </div>
+      ) : injuryTypeData.labels.length > 0 ? (
         <div className="flex flex-col text-black gap-12 items-center justify-start px-4 lg:px-7 max-w-[2700px]">
             {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col flex-wrap md:flex-row gap-4 items-center justify-center w-full mx-auto">

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateReport = () => {
   const { id } = useParams();
@@ -99,7 +101,10 @@ const UpdateReport = () => {
         setSuccess(true);
     } catch (error) {
       console.error("Error updating report:", error);
-      alert("Failed to update report. Please try again.");
+      toast.error("Failed to update report. Please try again.", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -125,6 +130,7 @@ const UpdateReport = () => {
         </section>
       ) : (
       <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black lg:min-w-[1024px]">
+        <ToastContainer position="top-right" autoClose={3000} />
         <h1 className="text-2xl font-bold mb-4">Update Injury Report</h1>
         <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>

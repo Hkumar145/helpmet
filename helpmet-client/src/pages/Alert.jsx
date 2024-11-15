@@ -5,6 +5,7 @@ import CreateEmployeeAlert from "../components/CreateEmployeeAlert";
 import CreateDepartmentAlert from "../components/CreateDepartmentAlert";
 import AlertToggle from "../components/AlertToggle";
 import { useSelector } from "react-redux";
+import Loader from "../components/Loader"
 
 const Alert = () => {
   const [alerts, setAlerts] = useState([]);
@@ -57,7 +58,7 @@ const Alert = () => {
     }
 
     if (loading) {
-        return <p className="text-center mt-6">Loading...</p>;
+        return <div className="flex items-center justify-center w-full h-full py-36"><Loader /></div>;
     }
 
     if (error || alerts.length === 0) {
