@@ -31,6 +31,11 @@ const customStyles = (alignRight) => ({
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
     ...(alignRight ? { right: 0, left: "auto" } : { left: 0 }),
   }),
+  menuList: (provided) => ({
+    ...provided,
+    maxHeight: "220px",
+    overflowY: "auto",
+  }),
   option: (provided, state) => ({
     ...provided,
     fontSize: "14px",

@@ -4,6 +4,8 @@ import { IconButton } from "./ui/button";
 import { useSelector } from "react-redux";
 import Avatar from "react-avatar";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const AlertList = ({ alerts, companyID, fetchAlerts }) => {
@@ -106,7 +108,11 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             fetchAlerts(); 
 
             if (newStatus === "active") {
-                alert(`Alert ID: ${alertID} has been activated and will be sent every 7 days.`);
+                toast.success("Alert activated successfully! Alert will be sent every 7 days.", {
+                    autoClose: 3000,
+                    className: "custom-toast",
+                    bodyClassName: "custom-toast-body",
+                });
                 console.log(`Setting up interval for alert ID: ${alertID}`);
                 const intervalId = setInterval(async () => {
                     try {
@@ -157,7 +163,11 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     delete newIntervals[alertID];
                     return newIntervals;
                 });
-                alert(`Alert ID: ${alertID} deactivated successfully. Weekly email sending canceled.`);
+                toast.success("Alert deactivated successfully!", {
+                    autoClose: 3000,
+                    className: "custom-toast",
+                    bodyClassName: "custom-toast-body",
+                });
                 console.log(`Cleared interval for alert ID: ${alertID}`);
             }
             
@@ -168,14 +178,15 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="w-full overflow-x-auto">
-                <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed min-w-[500px]">
+            <ToastContainer position="top-right" />
+            <div className="w-full overflow-x-auto rounded-lg">
+                <table className="bg-white p-6 shadow-lg w-full text-left table-fixed min-w-[500px]">
                     <thead className="text-center">
-                        <tr className="text-[16px] text-gray50">
-                            <th className="py-2 font-bold" style={{ width: "15%" }}>Alert ID</th>
-                            <th className="py-2 font-bold" style={{ width: "30%" }}>Alert Name</th>
+                        <tr className="text-[16px] text-gray50 bg-[#f8f8f8]">
+                            <th className="py-2 font-bold" style={{ width: window.innerWidth >= 1024 ? "20%" : "15%" }}>Alert ID</th>
+                            <th className="py-2 font-bold text-left" style={{ width: "30%" }}>Alert Name</th>
                             <th className="py-2 font-bold" style={{ width: "18%" }}>Send Date</th>
-                            <th className="py-2 font-bold hidden md:table-cell" style={{ width: "12%" }}>Recipients</th>
+                            <th className="py-2 font-bold text-left hidden md:table-cell" style={{ width: "12%" }}>Recipients</th>
                             <th className="py-2 font-bold" style={{ width: "auto" }}></th>
                         </tr>
                     </thead>
@@ -184,7 +195,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                             <React.Fragment key={alert.alertID}>
                                 <tr className="border-t border-gray20 hover:bg-gray10">
                                     <td className="py-2 md:py-0">{ alert.alertID }</td>
-                                    <td className="py-2 md:py-0">
+                                    <td className="py-2 md:py-0 text-left">
                                         {isSmallScreen
                                             ? alert.alertName.length > 20
                                                 ? `${alert.alertName.slice(0, 20)}...`
@@ -192,7 +203,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             : alert.alertName}
                                     </td>
                                     <td className="py-2 md:py-0">{ alert.sentAt }</td>
-                                    <td className="md:flex items-center h-12 relative hidden">
+                                    <td className="md:flex items-center h-12 text-left relative hidden">
                                         {alert.recipients && JSON.parse(alert.recipients[0] || "[]").slice(0, 3).reverse().map((recipientID, idx) => {
                                             const id = recipientID;
                                             const employee = allEmployees.find(e => e.value === id);

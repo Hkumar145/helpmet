@@ -450,7 +450,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   border: 1px solid #e4e7ec;
   background-color: #fff;
   cursor: pointer;
@@ -464,16 +464,13 @@ input::-webkit-inner-spin-button {
 
 .icon-button:hover,
 .icon-button.selected {
-  transform: scale(1.05);
   border-color: #4a1fb8;
 }
 
 .icon-path {
   stroke: #475467;
-  transition: stroke 0.3s;
 }
 
-.icon-button:hover .icon-path,
 .icon-button.selected .icon-path {
   stroke: #4A1FB8;
 }
