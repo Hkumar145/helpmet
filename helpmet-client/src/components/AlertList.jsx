@@ -6,7 +6,7 @@ import Avatar from "react-avatar";
 import { useNavigate } from "react-router-dom";
 
 
-const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
+const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const navigate = useNavigate();
     const [expandedAlertID, setExpandedAlertID] = useState(null);
     // const [editedAlert, setEditedAlert] = useState({ recipients: [], attachments: [] });
@@ -187,51 +187,54 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                     <td className="py-2 md:py-0">
                                         {isSmallScreen
                                             ? alert.alertName.length > 20
-                                            ? `${alert.alertName.slice(0, 20)}...`
-                                            : alert.alertName
-                                        : alert.alertName}
+                                                ? `${alert.alertName.slice(0, 20)}...`
+                                                : alert.alertName
+                                            : alert.alertName}
                                     </td>
                                     <td className="py-2 md:py-0">{ alert.sentAt }</td>
                                     <td className="md:flex items-center h-12 relative hidden">
-                                        {alert.recipients && JSON.parse(alert.recipients[0]).slice(0, 3).reverse().map((recipientID, idx) => {
+                                        {alert.recipients && JSON.parse(alert.recipients[0] || "[]").slice(0, 3).reverse().map((recipientID, idx) => {
                                             const id = recipientID;
                                             const employee = allEmployees.find(e => e.value === id);
                                             const label = employee ? employee.label : "Unknown";
                                             const nameInitial = label && label.includes(" - ") ? label.split(" - ")[1].charAt(0) : "?";
                                             return (
                                                 <div 
-                                                key={idx}
-                                                className="relative" 
-                                                style={{ 
-                                                    zIndex: idx,
-                                                    left: `${idx * 23}px`,
-                                                    border: "1px solid white",
-                                                    borderRadius: "50%",
-                                                    width: "32px",
-                                                    height: "32px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
-                                                    position: "absolute",
-                                                    top: "50%",
-                                                    transform: "translateY(-50%)", }}
+                                                    key={idx}
+                                                    className="relative" 
+                                                    style={{ 
+                                                        zIndex: idx,
+                                                        left: `${idx * 23}px`,
+                                                        border: "1px solid white",
+                                                        borderRadius: "50%",
+                                                        width: "32px",
+                                                        height: "32px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        position: "absolute",
+                                                        top: "50%",
+                                                        transform: "translateY(-50%)", 
+                                                    }}
                                                 >
                                                     <Avatar 
-                                                    name={nameInitial}
-                                                    round={true}
-                                                    size="30"
-                                                    textSizeRatio={2.5} 
+                                                        name={nameInitial}
+                                                        round={true}
+                                                        size="30"
+                                                        textSizeRatio={2.5} 
                                                     />
                                                 </div>
                                             );
                                         })}
-                                        {alert.recipients && JSON.parse(alert.recipients[0]).length > 3 && (
+                                        {alert.recipients && JSON.parse(alert.recipients[0] || "[]").length > 3 && (
                                             <span className="text-gray60 absolute"
-                                            style={{
-                                              left: "82px",
-                                              top: "50%",
-                                              transform: "translateY(-50%)"
-                                            }}>+{JSON.parse(alert.recipients[0]).length - 3}</span>
+                                                style={{
+                                                    left: "82px",
+                                                    top: "50%",
+                                                    transform: "translateY(-50%)"
+                                                }}>
+                                                +{JSON.parse(alert.recipients[0]).length - 3}
+                                            </span>
                                         )}
                                     </td>
                                     <td className="py-2 md:py-0">
@@ -249,19 +252,21 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                             </div>
                                             <div>
                                                 <IconButton icon={expandedAlertID === alert.alertID ? "hide" : "expand"} 
-                                                onClick={() => viewDetails(alert.alertID)} 
-                                                className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}/>
+                                                    onClick={() => viewDetails(alert.alertID)} 
+                                                    className={`icon-button ${expandedAlertID === alert.alertID ? "selected" : ""}`}
+                                                />
                                             </div>
                                             <div>
                                                 <IconButton icon="edit" 
-                                                onClick={() => editAlert(alert)}
-                                                className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} />
+                                                    onClick={() => editAlert(alert)}
+                                                    className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} 
+                                                />
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-            
-                                {expandedAlertID === alert.alertID && (
+
+                                {/* {expandedAlertID === alert.alertID && (
                                     <tr>
                                         <td colSpan={colSpan} className="px-3 py-2 lg:px-6 bg-gray20">
                                             <div className="whitespace-pre-wrap text-start">
@@ -271,17 +276,11 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                                     <ul>
                                                         {alert.recipients && alert.recipients.length > 0 ? (
                                                             alert.recipients.map((recipientID, idx) => {
-                                                                // Parse the string of IDs into an array
                                                                 const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
-                                                                // Map through each ID in the array
                                                                 return (
                                                                     <li key={idx} className="text-black">
                                                                         {ids.map((id, idIdx) => {
-                                                                            let employee = allEmployees.find(e => e.value === id);
-                                                                            if (!employee)
-                                                                            {
-                                                                                employee = allDepartments.find(e => e.value === id);
-                                                                            }
+                                                                            let employee = allEmployees.find(e => e.value === id) || allDepartments.find(e => e.value === id);
                                                                             return employee ? (
                                                                                 <span key={idIdx}>
                                                                                     {employee.label}
@@ -302,12 +301,58 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                                         )}
                                                     </ul>
                                                 </div>
+                                            </div> */}
+                                {expandedAlertID === alert.alertID && (
+                                    <tr>
+                                        <td colSpan="5" className="px-6 py-4">
+                                        <div className="bg-white rounded-lg">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                            {/* Recipients Card */}
+                                            <div className="bg-gray-50 rounded-lg p-4 text-left">
+                                                <div className="text-gray-500 text-sm">Recipients</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
+                                                {alert.recipients && alert.recipients.length > 0 ? (
+                                                    <div className="flex flex-wrap items-center justify-start gap-[0.15rem]">
+                                                    {alert.recipients.map((recipientID, idx) => {
+                                                        const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
+                                                        return ids.map((id, idIdx) => {
+                                                        let employee = allEmployees.find(e => e.value === id) || 
+                                                                    allDepartments.find(e => e.value === id);
+                                                        return (
+                                                            <span 
+                                                            key={`${idx}-${idIdx}`}
+                                                            className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200"
+                                                            >
+                                                            {employee ? employee.label : "Unknown recipient"}
+                                                            </span>
+                                                        );
+                                                        });
+                                                    })}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-500 italic text-[16px]">No recipients</span>
+                                                )}
+                                                </div>
                                             </div>
 
                                             {/* CC Recipients Card */}
-                                            <div className="bg-gray-50 rounded-lg p-4">
+                                            {/* <div className="bg-gray-50 rounded-lg p-4">
                                                 <div className="text-gray-500 mb-2">CC Recipients</div>
                                                 <div className="font-medium text-gray-900">
+                                                    {alert.cc ? (
+                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
+                                                            {alert.cc}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">No CC recipients</span>
+                                                    )}
+                                                </div>
+                                            </div> */}
+
+                                            {/* CC Recipients Card */}
+                                            <div className="bg-gray-50 rounded-lg p-4 text-left">
+                                                <div className="text-gray-500 text-sm">CC Recipients</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.cc ? (
                                                     <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
                                                     {alert.cc}
@@ -319,17 +364,23 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                             </div>
 
                                             {/* Description Card - Full Width */}
-                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                            {/* <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
                                                 <div className="text-gray-500 mb-2">Description</div>
                                                 <div className="font-medium text-gray-900">
+                                                    {alert.description || <span className="text-gray-500 italic">No description available</span>}
+                                                </div>
+                                            </div> */}
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2 text-left">
+                                                <div className="text-gray-500 text-sm">Description</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.description || <span className="text-gray-500 italic">No description available</span>}
                                                 </div>
                                             </div>
 
                                             {/* Attachments Card - Full Width */}
-                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
-                                                <div className="text-gray-500 mb-2">Attachments</div>
-                                                <div className="font-medium text-gray-900">
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2 text-left">
+                                                <div className="text-gray-500 text-sm">Attachments</div>
+                                                <div className="font-medium text-gray-900 text-[16px]">
                                                 {alert.attachments && alert.attachments.length > 0 ? (
                                                     <div className="flex gap-3 overflow-x-auto py-2">
                                                     {alert.attachments.map((imgUrl, index) => (
@@ -340,9 +391,11 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                                             className="w-16 h-16 rounded-lg object-cover border border-gray-200"
                                                         />
                                                         </div>
-                                                    ) : (
-                                                        <p>No attachments</p>
-                                                    )}
+                                                    ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-500 italic">No attachments available</span>
+                                                )}
                                                 </div>
                                             </div>
                                             </div>
@@ -350,65 +403,26 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                         </td>
                                     </tr>
                                     )}
-            
-                                {/* {editMode === alert.alertID && (
-                                    <tr>
-                                        <td colSpan="5" className="bg-gray20 p-4">
-                                            <input
-                                                type="text"
-                                                name="alertName"
-                                                value={editedAlert.alertName}
-                                                onChange={handleInputChange}
-                                                className="w-full p-2 sm:text-xs"
-                                                style={{ fontSize: "14px", padding: ".2rem .35rem", borderRadius: "6px" }}
-                                            />
-                                            <textarea
-                                                name="description"
-                                                value={editedAlert.description}
-                                                onChange={handleInputChange}
-                                                className="w-full p-2 mt-2 rounded-[6px] text-[14px] py-[0.25rem] px-[0.35rem]"
-                                            ></textarea>
-                                            
-                                            <div className="mt-4 flex gap-2 justify-end">
-                                                <button
-                                                    className="w-12 border bg-white text-black text-[12px] p-1 rounded-[6px] mt-0 border-gray20 hover-button"
-                                                    onClick={() => setEditMode(null)}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    className="w-12 border bg-brand40 text-white text-[12px] p-1 rounded-[6px] mt-0 border-brand40 hover-button"
-                                                    onClick={saveChanges}
-                                                >
-                                                    Save
-                                                </button>
-                                                
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )} */}
                             </React.Fragment>
                         ))}
                     </tbody>
                 </table>
-            
-                
             </div>
             <div className="flex gap-4 justify-between items-center mt-4">
-                    <div>
-                        <IconButton icon="previous" 
+                <div>
+                    <IconButton icon="previous" 
                         onClick={goToPreviousPage}
-                        disabled={currentPage === 1} />
-                    </div>
-                    
-                    <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
-
-                    <div>
-                        <IconButton icon="next" 
-                        onClick={goToNextPage}
-                        disabled={currentPage === totalPages} />
-                    </div>
+                        disabled={currentPage === 1} 
+                    />
                 </div>
+                <span className="text-gray60 text-[14px]">Page {currentPage} of {totalPages}</span>
+                <div>
+                    <IconButton icon="next" 
+                        onClick={goToNextPage}
+                        disabled={currentPage === totalPages} 
+                    />
+                </div>
+            </div>
         </div>
     );
 };
