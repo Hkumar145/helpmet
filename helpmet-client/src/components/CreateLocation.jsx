@@ -13,6 +13,7 @@ const CreateLocation = () => {
   const [employees, setEmployees] = useState([]);
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
+
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -28,68 +29,105 @@ const CreateLocation = () => {
     }
   }, [companyID]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+   
+  //   if (!Array.isArray(coordinates) || coordinates.length !== 2) {
+  //     alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+  //     return;
+  //   }
+  //   // Validate coordinates is an array with exactly 2 elements
+  //   if (!Array.isArray(coordinates) || coordinates.length !== 2) {
+  //     alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+  //     return;
+  //   }
+
+  //   // Ensure coordinates are valid numbers
+  //   if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
+  //     alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
+  //     return;
+  //   }
+
+  //   if(coordinates.length === 2){}
+  //   const locationData = {
+  //     locationName,
+  //     companyID,
+  //     coordinates, // Pass coordinates directly from state
+  //     managerID: parseInt(managerID)
+  //   };
+  //   console.log(managerID)
+  //   // Log coordinates and locationData to debug
+  //   console.log("Coordinates:", coordinates);
+  //   console.log("Location Data:", JSON.stringify(locationData, null, 2));
+  //   try {
+  //     // Create location
+  //     const response = await axios.post(`/companies/${companyID}/createlocations`, {
+  //       locationName,
+  //       coordinates,
+  //       managerID: parseInt(managerID)
+  //     });
+
+  //     // Update employee role to site manager
+  //     await axios.put(`/employees/${managerID}`, {
+  //       role: 'Site Manager'
+  //     });
+  //     if (response.status === 201) {
+  //       alert("Location created successfully!");
+  //       window.location.reload();
+  //       setLocationName('');
+  //       setCoordinates([0, 0]); 
+  //       setManagerID('');
+  //       shouldClose: true;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error creating location:", error.response?.data?.message || error.message);
+  //     if (error.response?.status === 400) {
+  //       alert(error.response.data.message);
+  //     } else {
+  //       alert("Failed to create location. Please try again.");
+  //     }
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
-    if (!Array.isArray(coordinates) || coordinates.length !== 2) {
-      alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+    console.log("Form submitted with:", { locationName, coordinates, managerID });
+  
+    // Ensure managerID is valid
+    const parsedManagerID = parseInt(managerID, 10);
+    if (isNaN(parsedManagerID) || parsedManagerID <= 0) {
+      alert("Invalid manager ID. Please select a valid manager.");
       return;
     }
-    // Validate coordinates is an array with exactly 2 elements
-    if (!Array.isArray(coordinates) || coordinates.length !== 2) {
-      alert("Invalid coordinates format. Please ensure coordinates are properly selected on the map.");
+  
+    // Validate coordinates
+    if (!Array.isArray(coordinates) || coordinates.length !== 2 || isNaN(coordinates[0]) || isNaN(coordinates[1])) {
+      alert("Invalid coordinates. Please select valid coordinates on the map.");
       return;
     }
-
-    // Ensure coordinates are valid numbers
-    if (isNaN(coordinates[0]) || isNaN(coordinates[1])) {
-      alert("Invalid coordinates. Please ensure valid coordinates are selected on the map.");
-      return;
-    }
-
-    if(coordinates.length === 2){}
+  
     const locationData = {
       locationName,
-      companyID,
-      coordinates, // Pass coordinates directly from state
-      managerID: parseInt(managerID)
+      coordinates,
+      managerID: parsedManagerID,
     };
-
-    // Log coordinates and locationData to debug
-    console.log("Coordinates:", coordinates);
-    console.log("Location Data:", JSON.stringify(locationData, null, 2));
+  
     try {
-      // Create location
-      const response = await axios.post(`/companies/${companyID}/createlocations`, {
-        locationName,
-        coordinates,
-        managerID: parseInt(managerID)
-      });
-
-      // Update employee role to site manager
-      await axios.put(`/employees/${managerID}`, {
-        role: 'Site Manager'
-      });
-
+      const response = await axios.post(`/companies/${companyID}/createlocations`, locationData);
+  
       if (response.status === 201) {
         alert("Location created successfully!");
-        window.location.reload();
         setLocationName('');
-        setCoordinates([0, 0]); 
+        setCoordinates([0, 0]);
         setManagerID('');
-        shouldClose: true;
-        window.location.reload(); // Reload the page
       }
     } catch (error) {
-      console.error("Error creating location:", error.response?.data?.message || error.message);
-      if (error.response?.status === 400) {
-        alert(error.response.data.message);
-      } else {
-        alert("Failed to create location. Please try again.");
-      }
+      console.error("Error creating location:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Failed to create location.");
     }
   };
-
+  
+  
   const handleMapCoordinatesChange = (newCoordinates) => {
     if (Array.isArray(newCoordinates) && newCoordinates.length === 2 &&
         !isNaN(newCoordinates[0]) && !isNaN(newCoordinates[1])) {
