@@ -14,8 +14,8 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [locations, setLocations] = useState([]);
-  const companyID = useSelector((state) => state.user.currentUser?.companyID);
-  // const companyID = 100001;
+  // const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const companyID = 100001;
 
   useEffect(() => {
     fetchEmployees();
@@ -156,6 +156,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   onChange={(e) => setInspectionDate(e.target.value)}
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
+
                 />
               </div>
               <div className="flex flex-col w-full md:w-1/2">
@@ -167,6 +168,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   placeholder="Enter interval"
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
+                  onWheel={(e) => e.target.blur()}
                 />
               </div>
             </div>
@@ -190,12 +192,12 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div>
 
             {/* Checked */}
-            <div className="flex items-start mt-4">
+            <div className="flex  mt-4 items-center">
               <input
                 type="checkbox"
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
-                className="mr-2 mt-1"
+                className="mr-2 mt-1 "
               />
               <label className="text-gray-500 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.

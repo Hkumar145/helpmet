@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import axios from "../api/axios";
 import EquipmentList from "../components/EquipmentList";
 import CreateEquipment from "../components/CreateEquipment";
 import UpdateEquipment from "../components/UpdateEquipment";
-import EquipmentDetail from "../components/EquipmentDetail";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import Loader from "../components/Loader";
 
-// const companyID = 100001;
+
+const companyID = 100001;
 
 const EquipmentCheck = () => {
   const [equipments, setEquipments] = useState([]);
@@ -15,6 +23,8 @@ const EquipmentCheck = () => {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [equipmentToDelete, setEquipmentToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
@@ -30,6 +40,7 @@ const EquipmentCheck = () => {
       console.error("Error fetching equipment:", error);
       setError("Error fetching equipment");
       setLoading(false);
+
     }
   };
 
@@ -54,13 +65,21 @@ const EquipmentCheck = () => {
         );
         setIsUpdateDialogOpen(false);
         setViewMode("list");
+        toast.success("Equipment updated successfully.", {
+          className: "custom-toast",
+          bodyClassName: "custom-toast-body",
+        });
       } else {
-        console.error("Failed to update equipment:", response.statusText);
-        setError("Error updating equipment");
+        toast.error("Error updating equipment", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
       }
     } catch (error) {
-      console.error("Error updating equipment:", error.message);
-      setError("Error updating equipment: " + error.message);
+      toast.error(`Error updating equipment: ${error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -72,27 +91,45 @@ const EquipmentCheck = () => {
   const handleSaveEquipment = () => {
     fetchEquipments();
     setIsDialogOpen(false);
+    toast.success("Equipment created successfully.", {
+      className: "custom-toast",
+      bodyClassName: "custom-toast-body",
+    });
   };
 
   const handleCancel = () => {
     setIsDialogOpen(false);
     setIsUpdateDialogOpen(false);
+    setDeleteDialogOpen(false);
   };
 
-  const handleDeleteEquipment = async (equipmentID) => {
+  const openDeleteConfirmation = (equipmentID) => {
+    setEquipmentToDelete(equipmentID);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5001/companies/${companyID}/equipments/${equipmentID}`
+      await axios.delete(
+        `http://localhost:5001/companies/${companyID}/equipments/${equipmentToDelete}`
       );
-      if (response.status === 200) {
-        fetchEquipments();
-      } else {
-        console.error("Failed to delete equipment:", response.statusText);
-        setError("Error deleting equipment");
-      }
+      setEquipments((prevEquipments) =>
+        prevEquipments.filter(
+          (equipment) => equipment.equipmentID !== equipmentToDelete
+        )
+      );
+      toast.success("Equipment deleted successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
     } catch (error) {
-      console.error("Error deleting equipment:", error);
-      setError("Error deleting equipment");
+      toast.error("Error deleting equipment", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
+    } finally {
+      setDeleteDialogOpen(false);
+      setEquipmentToDelete(null);
     }
   };
 
@@ -104,15 +141,16 @@ const EquipmentCheck = () => {
       if (response.status === 200) {
         setSelectedEquipment(response.data);
       } else {
-        console.error(
-          "Failed to fetch equipment details:",
-          response.statusText
-        );
-        setError("Error fetching equipment details");
+        toast.error("Error fetching equipment details", {
+          className: "custom-toast-error",
+          bodyClassName: "custom-toast-body",
+        });
       }
     } catch (error) {
-      console.error("Error fetching equipment details:", error);
-      setError("Error fetching equipment details");
+      toast.error("Error fetching equipment details", {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
     }
   };
 
@@ -122,16 +160,28 @@ const EquipmentCheck = () => {
   };
 
   return (
+    <div className="flex flex-col gap-4 w-full max-w-6xl mx-auto">
+      <ToastContainer position="top-right" autoClose={3000} />
     <div className="flex flex-col gap-4 w-full px-4 lg:px-7 max-w-[2700px]">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
         <h1 className="text-black text-[32px] font-bold">Equipment Check</h1>
         <button
-          className="bg-brand40 text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
+          className="bg-[#6938EF] text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
           onClick={handleAddNewEquipment}
         >
           Add New Equipment
         </button>
       </div>
+      {viewMode === "list" ? (
+        <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
+          <EquipmentList
+            equipments={equipments}
+            onUpdate={handleEditEquipment}
+            onDelete={openDeleteConfirmation} // Open confirmation dialog before delete
+            onView={handleViewEquipment}
+            striped
+          />
+
       {loading ? (
         <div className="flex justify-center items-center h-[400px]">
           <Loader />
@@ -146,13 +196,6 @@ const EquipmentCheck = () => {
               onView={handleViewEquipment}
               striped
             />
-            {selectedEquipment && (
-              <EquipmentDetail
-                equipment={selectedEquipment}
-                onClose={() => setSelectedEquipment(null)}
-                onSave={fetchEquipments}
-              />
-            )}
           </div>
         )
       )}
@@ -171,6 +214,30 @@ const EquipmentCheck = () => {
         onSave={handleUpdateEquipment}
         onCancel={handleCancel}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this equipment?
+          </DialogDescription>
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={handleCancel}
+              className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmDelete}
+              className="bg-red-600 text-white font-bold hover:bg-red-800 text-xs px-4 py-2 rounded my-0"
+            >
+              Confirm
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
