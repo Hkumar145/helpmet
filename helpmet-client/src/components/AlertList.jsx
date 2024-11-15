@@ -3,11 +3,13 @@ import axios from "../api/axios";
 import { IconButton } from "./ui/button";
 import { useSelector } from "react-redux";
 import Avatar from "react-avatar";
+import { useNavigate } from "react-router-dom";
 
 
-const AlertList = ({ alerts, companyID, fetchAlerts }) => {
+const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
+    const navigate = useNavigate();
     const [expandedAlertID, setExpandedAlertID] = useState(null);
-    const [editedAlert, setEditedAlert] = useState({ recipients: [], attachments: [] });
+    // const [editedAlert, setEditedAlert] = useState({ recipients: [], attachments: [] });
     const [allEmployees, setAllEmployees] = useState([]);
     const [allDepartments, setAllDepartments] = useState([]);
     const [editMode, setEditMode] = useState(null);
@@ -15,6 +17,20 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const itemsPerPage = 10;
     const senderEmail = useSelector((state) => state.user.email);
     const [intervals, setIntervals] = useState({});
+    const [colSpan, setColSpan] = useState(window.innerWidth >= 768 ? 5 : 4);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+    // Update colSpan and screen size status on resize
+    useEffect(() => {
+    const handleResize = () => {
+        const isSmall = window.innerWidth < 768;
+        setColSpan(isSmall ? 4 : 5);
+        setIsSmallScreen(isSmall);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // Fetch recipients (employees or departments)
     useEffect(() => {
@@ -36,7 +52,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         };
 
         fetchRecipients();
-    }, [editedAlert, editMode]);
+    }, [companyID]);
 
     // Sort alerts in descending order
     const sortedAlerts = [...alerts].sort((a, b) => {
@@ -54,51 +70,15 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         return sortedAlerts.slice(startIndex, startIndex + itemsPerPage);
     };
 
-    // Handle edit mode
+
     const editAlert = (alert) => {
-        setEditMode(alert.alertID);
-        setExpandedAlertID(null);
-        setEditedAlert({
-            ...alert,
-            recipients: alert.recipients || [],
-            attachments: alert.attachments || []
-        });
-    };
-
-    // Handle form input changes
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedAlert((prev) => ({ ...prev, [name]: value }));
-    };
-
-    // Save the edited alert
-    const saveChanges = async () => {
-        try {
-            await axios.put(`/alerts/${editedAlert.alertID}`, editedAlert);
-            alert("Alert updated successfully!");
-            setEditMode(null);
-            fetchAlerts();
-        } catch (error) {
-            console.error("Error saving alert:", error);
+        if (alert.type === "department") {
+            navigate(`/alert/${alert.alertID}/department/edit`);
+        } else {
+            navigate(`/alert/${alert.alertID}/employee/edit`);
         }
     };
     
-    // Handle file input changes
-    const handleFileChange = (e) => {
-        const selectedFiles = Array.from(e.target.files);
-        setEditedAlert((prev) => ({
-            ...prev,
-            attachments: [...prev.attachments, ...selectedFiles]
-        }));
-    };
-
-    // Remove file from attachments
-    const removeFile = (fileToRemove) => {
-        setEditedAlert((prev) => ({
-            ...prev,
-            attachments: prev.attachments.filter((file) => file !== fileToRemove),
-        }));
-    };
 
     // Handle page changes
     const goToNextPage = () => {
@@ -192,42 +172,70 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                 <table className="bg-white p-6 rounded-lg shadow-lg w-full text-left table-fixed min-w-[500px]">
                     <thead className="text-center">
                         <tr className="text-[16px] text-gray50">
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Alert ID</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "30%" }}>Alert Name</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "15%" }}>Send Date</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}>Recipients</th>
-                            <th className="py-3 px-1 md:px-3 font-bold" style={{ width: "20%" }}></th>
+                            <th className="py-2 font-bold" style={{ width: "15%" }}>Alert ID</th>
+                            <th className="py-2 font-bold" style={{ width: "30%" }}>Alert Name</th>
+                            <th className="py-2 font-bold" style={{ width: "18%" }}>Send Date</th>
+                            <th className="py-2 font-bold hidden md:table-cell" style={{ width: "12%" }}>Recipients</th>
+                            <th className="py-2 font-bold" style={{ width: "auto" }}></th>
                         </tr>
                     </thead>
                     <tbody className="text-[14px] text-center">
                         {getPaginatedAlerts().map((alert, index) => (
                             <React.Fragment key={alert.alertID}>
-                                <tr className={`border-t border-gray20 ${index % 2 === 0 ? "bg-gray10" : ""}`}>
-                                    <td className="p-2 lg:px-6">{ alert.alertID }</td>
-                                    <td className="p-2 lg:px-6">{ alert.alertName }</td>
-                                    <td className="p-2 lg:px-6">{ alert.sentAt }</td>
-                                    <td className="p-2 lg:px-6 flex flex-col md:flex-row lg:h-12 items-center gap-1">
-                                        {alert.recipients && alert.recipients[0] && JSON.parse(alert.recipients[0]).slice(0, 3).map((recipientID, idx) => {
+                                <tr className="border-t border-gray20 hover:bg-gray10">
+                                    <td className="py-2 md:py-0">{ alert.alertID }</td>
+                                    <td className="py-2 md:py-0">
+                                        {isSmallScreen
+                                            ? alert.alertName.length > 20
+                                            ? `${alert.alertName.slice(0, 20)}...`
+                                            : alert.alertName
+                                        : alert.alertName}
+                                    </td>
+                                    <td className="py-2 md:py-0">{ alert.sentAt }</td>
+                                    <td className="md:flex items-center h-12 relative hidden">
+                                        {alert.recipients && JSON.parse(alert.recipients[0]).slice(0, 3).reverse().map((recipientID, idx) => {
                                             const id = recipientID;
                                             const employee = allEmployees.find(e => e.value === id);
                                             const label = employee ? employee.label : "Unknown";
                                             const nameInitial = label && label.includes(" - ") ? label.split(" - ")[1].charAt(0) : "?";
                                             return (
-                                                <Avatar 
-                                                    key={idx}
+                                                <div 
+                                                key={idx}
+                                                className="relative" 
+                                                style={{ 
+                                                    zIndex: idx,
+                                                    left: `${idx * 23}px`,
+                                                    border: "1px solid white",
+                                                    borderRadius: "50%",
+                                                    width: "32px",
+                                                    height: "32px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    position: "absolute",
+                                                    top: "50%",
+                                                    transform: "translateY(-50%)", }}
+                                                >
+                                                    <Avatar 
                                                     name={nameInitial}
                                                     round={true}
                                                     size="30"
                                                     textSizeRatio={2.5} 
-                                                />
+                                                    />
+                                                </div>
                                             );
                                         })}
-                                        {alert.recipients && alert.recipients[0] && JSON.parse(alert.recipients[0]).length > 3 && (
-                                            <span className="text-gray60">+{JSON.parse(alert.recipients[0]).length - 3}</span>
+                                        {alert.recipients && JSON.parse(alert.recipients[0]).length > 3 && (
+                                            <span className="text-gray60 absolute"
+                                            style={{
+                                              left: "82px",
+                                              top: "50%",
+                                              transform: "translateY(-50%)"
+                                            }}>+{JSON.parse(alert.recipients[0]).length - 3}</span>
                                         )}
                                     </td>
-                                    <td className="p-2 lg:px-6">
-                                        <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
+                                    <td className="py-2 md:py-0">
+                                        <div className="flex gap-2 justify-center items-center">
                                             <div className="flex justify-center">
                                                 <IconButton
                                                     icon={alert.status === "active" ? "toggleActive" : "toggleInactive"}
@@ -246,7 +254,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </div>
                                             <div>
                                                 <IconButton icon="edit" 
-                                                onClick={() => editAlert(alert)} 
+                                                onClick={() => editAlert(alert)}
                                                 className={`icon-button ${editMode === alert.alertID ? "selected" : ""}`} />
                                             </div>
                                         </div>
@@ -255,34 +263,44 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             
                                 {expandedAlertID === alert.alertID && (
                                     <tr>
-                                        <td colSpan="5" className="px-6 py-4">
-                                        <div className="bg-white rounded-lg">
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                            {/* Recipients Card */}
-                                            <div className="bg-gray-50 rounded-lg p-4">
-                                                <div className="text-gray-500 mb-2">Recipients</div>
-                                                <div className="font-medium text-gray-900">
-                                                {alert.recipients && alert.recipients.length > 0 ? (
-                                                    <div className="flex flex-wrap items-center justify-center gap-2">
-                                                    {alert.recipients.map((recipientID, idx) => {
-                                                        const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
-                                                        return ids.map((id, idIdx) => {
-                                                        let employee = allEmployees.find(e => e.value === id) || 
-                                                                    allDepartments.find(e => e.value === id);
-                                                        return (
-                                                            <span 
-                                                            key={`${idx}-${idIdx}`}
-                                                            className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200"
-                                                            >
-                                                            {employee ? employee.label : "Unknown recipient"}
-                                                            </span>
-                                                        );
-                                                        });
-                                                    })}
-                                                    </div>
-                                                ) : (
-                                                    <span className="text-gray-500 italic">No recipients</span>
-                                                )}
+                                        <td colSpan={colSpan} className="px-3 py-2 lg:px-6 bg-gray20">
+                                            <div className="whitespace-pre-wrap text-start">
+                                                <p><strong>Alert Name:</strong> {alert.alertName}</p>
+                                                <div className="flex gap-1">
+                                                    <p><strong>Recipients:</strong></p>
+                                                    <ul>
+                                                        {alert.recipients && alert.recipients.length > 0 ? (
+                                                            alert.recipients.map((recipientID, idx) => {
+                                                                // Parse the string of IDs into an array
+                                                                const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
+                                                                // Map through each ID in the array
+                                                                return (
+                                                                    <li key={idx} className="text-black">
+                                                                        {ids.map((id, idIdx) => {
+                                                                            let employee = allEmployees.find(e => e.value === id);
+                                                                            if (!employee)
+                                                                            {
+                                                                                employee = allDepartments.find(e => e.value === id);
+                                                                            }
+                                                                            return employee ? (
+                                                                                <span key={idIdx}>
+                                                                                    {employee.label}
+                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
+                                                                                </span>
+                                                                            ) : (
+                                                                                <span key={idIdx}>
+                                                                                    Unknown recipient
+                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
+                                                                                </span>
+                                                                            );
+                                                                        })}
+                                                                    </li>
+                                                                );
+                                                            })
+                                                        ) : (
+                                                            <p>No recipients</p>
+                                                        )}
+                                                    </ul>
                                                 </div>
                                             </div>
 
@@ -322,11 +340,9 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                             className="w-16 h-16 rounded-lg object-cover border border-gray-200"
                                                         />
                                                         </div>
-                                                    ))}
-                                                    </div>
-                                                ) : (
-                                                    <span className="text-gray-500 italic">No attachments available</span>
-                                                )}
+                                                    ) : (
+                                                        <p>No attachments</p>
+                                                    )}
                                                 </div>
                                             </div>
                                             </div>
@@ -335,7 +351,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                     </tr>
                                     )}
             
-                                {editMode === alert.alertID && (
+                                {/* {editMode === alert.alertID && (
                                     <tr>
                                         <td colSpan="5" className="bg-gray20 p-4">
                                             <input
@@ -370,7 +386,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                )}
+                                )} */}
                             </React.Fragment>
                         ))}
                     </tbody>

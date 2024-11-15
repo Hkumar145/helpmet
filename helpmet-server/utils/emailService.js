@@ -37,8 +37,18 @@ const sendAlertEmail = async ({ recipient, senderEmail, alertDetails, cc, attach
     to: recipient.email,
     cc: cc || undefined,
     subject: `Alert: ${alertDetails.alertName}`,
-    text: `${alertDetails.description}`,
-    // attachments: attachments
+    text: `Hello,
+
+An important alert has been issued.
+
+Alert Details:
+- Alert Name: ${alertDetails.alertName}
+- Description: ${alertDetails.description}
+
+Please review the details and take the necessary actions.
+
+Thank you.\n\n\n`,
+    attachments: attachments
   };
 
   try {

@@ -335,7 +335,7 @@ const Dashboard = () => {
     
   return (
     <div>
-        <div className="flex flex-col text-black gap-12 items-center justify-start">
+        <div className="flex flex-col text-black gap-12 items-center justify-start px-4 lg:px-7 max-w-[2700px]">
             {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col flex-wrap md:flex-row gap-4 items-center justify-center w-full mx-auto">
             {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center w-full max-w-6xl mx-auto"> */}
