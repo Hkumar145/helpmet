@@ -6,12 +6,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import axios from "../api/axios";
+import { useSelector } from "react-redux";
 import EquipmentList from "../components/EquipmentList";
 import CreateEquipment from "../components/CreateEquipment";
 import UpdateEquipment from "../components/UpdateEquipment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
 import Loader from "../components/Loader";
 
 
@@ -26,7 +26,6 @@ const EquipmentCheck = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [equipmentToDelete, setEquipmentToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   const fetchEquipments = async () => {
@@ -38,9 +37,7 @@ const EquipmentCheck = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching equipment:", error);
-      setError("Error fetching equipment");
       setLoading(false);
-
     }
   };
 
@@ -160,9 +157,8 @@ const EquipmentCheck = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full max-w-6xl mx-auto">
+    <div className="w-full flex flex-col gap-4 px-4 lg:px-7 max-w-[2700px]">
       <ToastContainer position="top-right" autoClose={3000} />
-    <div className="flex flex-col gap-4 w-full px-4 lg:px-7 max-w-[2700px]">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
         <h1 className="text-black text-[32px] font-bold">Equipment Check</h1>
         <button
@@ -172,7 +168,12 @@ const EquipmentCheck = () => {
           Add New Equipment
         </button>
       </div>
-      {viewMode === "list" ? (
+      {loading ? (
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
+        </div>
+      ) : (
+        viewMode === "list" && (
         <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
           <EquipmentList
             equipments={equipments}
@@ -181,22 +182,7 @@ const EquipmentCheck = () => {
             onView={handleViewEquipment}
             striped
           />
-
-      {loading ? (
-        <div className="flex justify-center items-center h-[400px]">
-          <Loader />
         </div>
-      ) : (
-        viewMode === "list" && (
-          <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
-            <EquipmentList
-              equipments={equipments}
-              onUpdate={handleEditEquipment}
-              onDelete={handleDeleteEquipment}
-              onView={handleViewEquipment}
-              striped
-            />
-          </div>
         )
       )}
 
