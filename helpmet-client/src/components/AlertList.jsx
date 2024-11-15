@@ -70,51 +70,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
         return sortedAlerts.slice(startIndex, startIndex + itemsPerPage);
     };
 
-    // // Handle edit mode
-    // const editAlert = (alert) => {
-    //     setEditMode(alert.alertID);
-    //     setExpandedAlertID(null);
-    //     setEditedAlert({
-    //         ...alert,
-    //         recipients: alert.recipients || [],
-    //         attachments: alert.attachments || []
-    //     });
-    // };
 
-    // // Handle form input changes
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setEditedAlert((prev) => ({ ...prev, [name]: value }));
-    // };
-
-    // // Save the edited alert
-    // const saveChanges = async () => {
-    //     try {
-    //         await axios.put(`/alerts/${editedAlert.alertID}`, editedAlert);
-    //         alert("Alert updated successfully!");
-    //         setEditMode(null);
-    //         fetchAlerts();
-    //     } catch (error) {
-    //         console.error("Error saving alert:", error);
-    //     }
-    // };
-    
-    // // Handle file input changes
-    // const handleFileChange = (e) => {
-    //     const selectedFiles = Array.from(e.target.files);
-    //     setEditedAlert((prev) => ({
-    //         ...prev,
-    //         attachments: [...prev.attachments, ...selectedFiles]
-    //     }));
-    // };
-
-    // // Remove file from attachments
-    // const removeFile = (fileToRemove) => {
-    //     setEditedAlert((prev) => ({
-    //         ...prev,
-    //         attachments: prev.attachments.filter((file) => file !== fileToRemove),
-    //     }));
-    // };
     const editAlert = (alert) => {
         if (alert.type === "department") {
             navigate(`/alert/${alert.alertID}/department/edit`);
@@ -137,7 +93,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
     const viewDetails = (alertID) => {
         if (expandedAlertID === alertID) {
             setExpandedAlertID(null);
-            // console.log(alerts)
         } else {
             setExpandedAlertID(alertID);
             setEditMode(null);
@@ -347,41 +302,54 @@ const AlertList = ({ alerts, companyID, fetchAlerts, onEditAlert }) => {
                                                         )}
                                                     </ul>
                                                 </div>
-                                                
-                                                <div className="flex gap-1">
-                                                    <p><strong>CC:</strong></p>
-                                                    <ul>
-                                                        {alert.cc ? (
-                                                            <li className="text-black">{alert.cc}</li>
-                                                        ) : (
-                                                            <p className="text-black">No CC recipients</p>
-                                                        )}
-                                                    </ul>
+                                            </div>
+
+                                            {/* CC Recipients Card */}
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <div className="text-gray-500 mb-2">CC Recipients</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.cc ? (
+                                                    <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
+                                                    {alert.cc}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-gray-500 italic">No CC recipients</span>
+                                                )}
                                                 </div>
+                                            </div>
 
-                                                <p><strong>Description:</strong> {alert.description}</p>
+                                            {/* Description Card - Full Width */}
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                                <div className="text-gray-500 mb-2">Description</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.description || <span className="text-gray-500 italic">No description available</span>}
+                                                </div>
+                                            </div>
 
-                                                <div className="flex gap-1">
-                                                    <p><strong>Attachments:</strong></p>
-                                                    {alert.attachments && alert.attachments.length > 0 ? (
-                                                        <div className="flex overflow-x-scroll gap-4">
-                                                            {alert.attachments.map((imgUrl, index) => (
-                                                                <img
-                                                                    key={index}
-                                                                    src={imgUrl}
-                                                                    alt={`Alert Image ${index + 1}`}
-                                                                    className="w-10 h-10 rounded-md object-cover"
-                                                                />
-                                                            ))}
+                                            {/* Attachments Card - Full Width */}
+                                            <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                                <div className="text-gray-500 mb-2">Attachments</div>
+                                                <div className="font-medium text-gray-900">
+                                                {alert.attachments && alert.attachments.length > 0 ? (
+                                                    <div className="flex gap-3 overflow-x-auto py-2">
+                                                    {alert.attachments.map((imgUrl, index) => (
+                                                        <div key={index} className="flex-shrink-0">
+                                                        <img
+                                                            src={imgUrl}
+                                                            alt={`Alert Image ${index + 1}`}
+                                                            className="w-16 h-16 rounded-lg object-cover border border-gray-200"
+                                                        />
                                                         </div>
                                                     ) : (
                                                         <p>No attachments</p>
                                                     )}
                                                 </div>
                                             </div>
+                                            </div>
+                                        </div>
                                         </td>
                                     </tr>
-                                )}
+                                    )}
             
                                 {/* {editMode === alert.alertID && (
                                     <tr>

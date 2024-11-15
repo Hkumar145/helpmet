@@ -47,7 +47,7 @@ const PendingAndCompletedReports = () => {
     labels: ['Ongoing', 'On Hold', 'Completed'],
     datasets: [
       {
-        label: 'Reports Status',
+        label: 'Reports Status Projection',
         data: [ongoingReportsCount, onHoldReportsCount, completedReportsCount],
         backgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
         hoverBackgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
@@ -66,7 +66,7 @@ const PendingAndCompletedReports = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Reports Summary',
+        text: 'Reports Status Projection',
         font: {
           family: 'Fira Sans, sans-serif',
           size: 18,
@@ -111,7 +111,7 @@ const PendingAndCompletedReports = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <Doughnut data={data} options={options} style={{ maxHeight: '300px', minWidth: '396px' }} />
+      <Doughnut data={data} options={options} style={{ maxHeight: '280px', minWidth: '370px' }} />
     </div>
   );
   

@@ -47,7 +47,6 @@ const CreateLocation = () => {
       return;
     }
 
-
     if(coordinates.length === 2){}
     const locationData = {
       locationName,
@@ -60,18 +59,26 @@ const CreateLocation = () => {
     console.log("Coordinates:", coordinates);
     console.log("Location Data:", JSON.stringify(locationData, null, 2));
     try {
+      // Create location
       const response = await axios.post(`/companies/${companyID}/createlocations`, {
         locationName,
         coordinates,
         managerID: parseInt(managerID)
       });
 
+      // Update employee role to site manager
+      await axios.put(`/employees/${managerID}`, {
+        role: 'Site Manager'
+      });
+
       if (response.status === 201) {
-        alert("Location created successfully.");
+        alert("Location created successfully!");
         window.location.reload();
         setLocationName('');
         setCoordinates([0, 0]); 
         setManagerID('');
+        shouldClose: true;
+        window.location.reload(); // Reload the page
       }
     } catch (error) {
       console.error("Error creating location:", error.response?.data?.message || error.message);
@@ -112,22 +119,24 @@ const CreateLocation = () => {
           required
         >
           <option value="">Select Manager</option>
-          {employees.map((employee) => (
-            <option key={employee.employeeID} value={employee.employeeID}>
-              {employee.firstName} {employee.lastName} - ID: {employee.employeeID}
-            </option>
-          ))}
+          {employees
+            .filter(employee => employee.role !== 'Site Manager')
+            .map((employee) => (
+              <option key={employee.employeeID} value={employee.employeeID}>
+                {employee.firstName} {employee.lastName} - ID: {employee.employeeID}
+              </option>
+            ))}
         </select>
 
         <div className="w-full h-[400px] rounded-lg">
           <MapLocation onCoordinatesChange={handleMapCoordinatesChange} />
         </div>
 
-        <div className='flex flex-row justify-between gap-4'>
+        <div className='flex flex-row justify-end gap-2 mt-2'>
           <DialogClose asChild>
-            <button type="button" className="text-black border px-6 py-1">Close</button>
+          <button type="button" className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0">Cancel</button>
           </DialogClose>
-          <button type="submit" className='bg-[#6938EF] text-white px-4 py-1 rounded-lg mt-3 text-center hover:opacity-90'>Create Location</button>
+          <button className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">Add Location</button>
         </div>
       </form>
     </main>

@@ -44,7 +44,7 @@ const EquipmentStatusPieChart = ({ companyID }) => {
   };
 
   return (
-      <div className="relative h-[300px] w-[396px] mx-auto">
+      <div className="relative h-[280px] w-[370px] mx-auto">
         <Doughnut
           data={statusData}
           className='max-w-[396px]'

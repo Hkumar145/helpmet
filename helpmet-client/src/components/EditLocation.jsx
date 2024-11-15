@@ -46,11 +46,11 @@ const EditLocation = ({ locationID, onClose }) => {
           onChange={(e) => setLocationName(e.target.value)}
           required
         />
-        <div className='flex flex-row justify-between gap-4'>
+        <div className='flex flex-row justify-end gap-2'>
           <DialogClose asChild>
-            <button type="button" className="text-black border px-6" onClick={onClose}>Close</button>
+            <button type="button" className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0" onClick={onClose}>Cancel</button>
           </DialogClose>
-          <button type="submit" className='bg-slate-600 hover:opacity-80 w-full text-white'>Update Location</button>
+          <button type="submit" className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">Update Location</button>
         </div>
       </form>
     </main>
