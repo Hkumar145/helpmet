@@ -342,7 +342,7 @@ const InjuryAnalytics = () => {
       <h1 className="w-full font-bold xl:ml-1 mb-2 text-left">
         Injury Analytics - Injury Overview
       </h1>
-      <div className="flex flex-col w-full gap-4 lg:gap-2 items-center justify-center md:flex-row md:flex-wrap">
+      <div className="flex flex-col w-full gap-4 lg:gap-[0.75rem] items-center justify-center md:flex-row md:flex-wrap">
         <div className="bg-white rounded-lg border-2 max-w-72 flex flex-col items-center h-[300px] w-[386px]">
           <BarChart
             chartData={filteredWeeklyInjuryData}
@@ -410,7 +410,7 @@ const InjuryAnalytics = () => {
 
       {showTable && (
         <div className="mt-8 text-black w-full overflow-x-scroll">
-          <h3 className="text-lg font-bold">Related Injury Reports</h3>
+          <h3 className="text-lg xl:ml-1 font-bold">Related Injury Reports</h3>
           <table className="w-full bg-white text-black mt-4 rounded-lg text-sm text-nowrap">
             <thead>
               <tr>

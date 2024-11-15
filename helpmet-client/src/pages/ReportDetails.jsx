@@ -51,8 +51,8 @@ const ReportDetails = () => {
       </div>
     ) : (
       <div className="flex flex-col gap-4 max-w-6xl mx-auto w-full">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-        <div className="flex flex-row items-center justify-between w-[100%] gap-12">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs px-2">
+        <div className="flex flex-row items-center justify-between w-full gap-12 px-2">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center py-2 px-4 bg-white rounded text-xs text-black mt-0 gap-2 border text-nowrap mr-4 hover:bg-[#D9D6FE] hover:text-[#6938EF]"
@@ -93,7 +93,8 @@ const ReportDetails = () => {
             ))}
           </div>
         ) : (
-          <p>No image available</p>
+          // <p>No image available</p>
+          <div></div>
         )}
       </div>
 
