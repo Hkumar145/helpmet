@@ -179,7 +179,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
             </div>
 
             {/* Checked */}
-            <div className="flex items-start mt-4">
+            <div className="flex items-center mt-4">
               <input
                 type="checkbox"
                 checked={isChecked}
