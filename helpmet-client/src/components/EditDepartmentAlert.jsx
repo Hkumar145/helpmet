@@ -31,7 +31,6 @@ const EditDepartmentAlert = () => {
     const [allSelectedEmployees, setAllSelectedEmployees] = useState([]); 
     const [removedAttachments, setRemovedAttachments] = useState([]);
     const [tempRecipients, setTempRecipients] = useState([]);
-    const [uiAttachments, setUIAttachments] = useState([]);
 
     const onCancel = () => {
         navigate(-1);
@@ -63,22 +62,16 @@ const EditDepartmentAlert = () => {
                         label: `${employee.employeeID} - ${employee.firstName} ${employee.lastName}`
                     };
                 } catch (error) {
-                    console.error(`Error fetching details for employee ID ${id}:`, error);
                     return { employeeID: id, label: "Unknown recipient" };
                 }
             })
         );
-        console.log("Fetched recipient details:", details.flat());
         setAllSelectedEmployees(details.flat());
     };
 
     useEffect(() => {
         setTempRecipients(alertData.recipients);
-    }, [alertData.recipients]);
-    
-    useEffect(() => {
-        setUIAttachments(alertData.attachments);
-    }, [alertData.attachments]);    
+    }, [alertData.recipients]);  
 
     useEffect(() => {
         axios.get(`/alerts/${alertId}`)
@@ -91,7 +84,6 @@ const EditDepartmentAlert = () => {
                     attachments: data.attachments.map((item) => item.split("/").pop())
                 });
                 setTempRecipients(data.recipients);
-                setUIAttachments(data.attachments.map((item) => item.split("/").pop()));
                 fetchRecipientDetails(data.recipients);
             })
             .catch((error) => {
@@ -185,16 +177,11 @@ const EditDepartmentAlert = () => {
     };    
 
     const onDrop = useCallback((acceptedFiles) => {
-        const newFiles = acceptedFiles.filter(
-            (file) => !uiAttachments.some((f) => f.name === file.name)
-        );
-        if (newFiles.length === 0) return;
-        setUIAttachments((prev) => [...prev, ...newFiles]);
-        setAlertData((prev) => ({
-            ...prev,
-            attachments: [...prev.attachments, ...newFiles],
+        setAlertData((prevData) => ({
+            ...prevData,
+            attachments: [...prevData.attachments, ...acceptedFiles],
         }));
-    }, [uiAttachments]);
+    }, []);
      
     const { getRootProps, getInputProps } = useDropzone({ 
         onDrop,
@@ -203,8 +190,11 @@ const EditDepartmentAlert = () => {
     
     // Remove attachments
     const removeFile = (file) => {
-        setUIAttachments((prev) => prev.filter((f) => f !== file));
         setRemovedAttachments((prev) => [...prev, file]);
+        setAlertData((prevData) => ({
+            ...prevData,
+            attachments: prevData.attachments.filter((f) => f !== file),
+        }));
     };
     
     // Create new alert
@@ -218,20 +208,22 @@ const EditDepartmentAlert = () => {
         if (alertData.cc && alertData.cc.trim() !== "") {
             formData.append("cc", alertData.cc);
         }
-    
         formData.append("removedAttachments", JSON.stringify(removedAttachments));
+        let oldAttachments = [];
+        if (alertData.attachments.length > 0) {
+            alertData.attachments.filter(item => {
+                return typeof item === "string";
+            }).forEach((url) => {
+                oldAttachments.push(url);
+            });
+            formData.append("oldAttachments", JSON.stringify(oldAttachments));
 
-        // Filter old attachments that aren't in removedAttachments
-        const oldAttachments = uiAttachments.filter(item =>
-            typeof item === "string" && !removedAttachments.includes(item)
-        );
-        formData.append("oldAttachments", JSON.stringify(oldAttachments));
-    
-        uiAttachments
-        .filter(item => typeof item !== "string")
-        .forEach((file) => {
-            formData.append("attachments", file);
-        });
+            alertData.attachments.filter(item => {
+                return typeof item !== "string";
+            }).forEach((file) => {
+                formData.append("attachments", file);
+            });
+        }
 
         try {
             await axios.put(`/alerts/${alertId}`, formData);
@@ -286,6 +278,7 @@ const EditDepartmentAlert = () => {
                                         <span className="text-[16px]">{typeof file === "string" ? file : file.name}</span>
                                         <div>
                                             <IconButton 
+                                            type={"button"} 
                                             icon="close" 
                                             onClick={() => removeFile(file)}
                                             className="no-border p-1" 
