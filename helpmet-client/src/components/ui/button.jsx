@@ -172,7 +172,7 @@ const icons = {
       x="0.5" 
       y="0.5"
       width="39" 
-      height="23" 
+      height="22" 
       rx="12" 
       fill="#D9D6FE"
       stroke="#9B8AFB"
@@ -194,9 +194,9 @@ const icons = {
     >
       <rect 
       x="0.5" 
-        y="0.5"
+      y="0.5"
       width="39" 
-      height="23" 
+      height="22" 
       rx="12" 
       fill="#F9FAFB"
       stroke="#98A2B3"
