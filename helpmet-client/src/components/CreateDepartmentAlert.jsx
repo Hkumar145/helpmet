@@ -5,6 +5,8 @@ import axios from "../api/axios";
 import { IconButton } from "./ui/button";
 import CustomSelect from "./ui/select";
 import Avatar from "react-avatar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MAX_NOTE_LENGTH = 300;
 
@@ -178,11 +180,15 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 cc: alertData.cc,
                 attachments: alertData.attachments
             });
-            alert("Alert created successfully!");
+            toast.success("Alert created successfully!");
             fetchAlerts();
             onCancel();
         } catch (error) {
-            console.error("Error creating department alert:", error);
+            toast.error(`Failed to create department alert: ${error}`, {
+                autoClose: 3000,
+                className: "custom-toast-error",
+                bodyClassName: "custom-toast-body",
+            });
         }
     };
 
@@ -309,14 +315,14 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                     const isSelected = alertData.recipients.includes(emp.employeeID);
                                     return (
                                         <li key={emp.employeeID} onClick={() => handleRecipientSelection(emp)} 
-                                            className={`flex items-center justify-between p-2 rounded-md border text-[14px] shadow-md
+                                            className={`flex items-center justify-between p-1 pl-2 rounded-md border text-[14px]
                                                 ${isSelected ? "bg-secondary20" : "bg-secondary10"}`}>
                                             <div className="flex items-center gap-2">
                                                 <input
                                                     type="checkbox"
                                                     checked={alertData.recipients.includes(emp.employeeID)}
                                                     onChange={() => handleRecipientSelection(emp)}
-                                                    className="form-checkbox"
+                                                    className="custom-checkbox"
                                                 />
                                                 <span className="font-medium">{emp.employeeID}</span>
                                                 <span className="">{emp.firstName} {emp.lastName}</span>
@@ -329,7 +335,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                     </div>
                 
                     <div className="flex flex-row justify-end gap-2">
-                        <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button" onClick={onCancel}>Cancel</button>
+                        <button className="bg-white text-gray30 hover:text-gray40 text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20" type="button" onClick={onCancel}>Cancel</button>
                         <button className="bg-brand40 text-white text-[16px] px-4 m-0 rounded-[6px] text-center border border-brand50 hover-button" type="submit">Submit</button>
                     </div>
                 </div>

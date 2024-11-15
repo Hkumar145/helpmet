@@ -10,6 +10,8 @@ import axios from "../api/axios";
 import "../index.css";
 import { IconButton } from "./ui/button";
 import Avatar from "react-avatar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MAX_NOTE_LENGTH = 300;
 
@@ -174,15 +176,15 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 attachments: alertData.attachments,
                 scheduleTime: dateTime ? dateTime.toISOString() : null
             });
-            alert("Alert created successfully!");
+            toast.success("Alert created successfully!");
             fetchAlerts();
             onCancel();
         } catch (error) {
-            if (error.response) {
-                console.error("Error creating employee alert:", error.response.data);
-            } else {
-                console.error("Error creating employee alert:", error.message);
-            }
+            toast.error(`Failed to create employee alert: ${error}`, {
+                autoClose: 3000,
+                className: "custom-toast-error",
+                bodyClassName: "custom-toast-body",
+            });
         }
     };
 
@@ -311,7 +313,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                     </div>
 
                     <div className="flex flex-row justify-end gap-2">
-                        <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button" onClick={onCancel}>Cancel</button>
+                        <button className="bg-white text-gray30 hover:text-gray40 text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20" type="button" onClick={onCancel}>Cancel</button>
                         <button className="bg-brand40 text-white text-[16px] px-4 m-0 rounded-[6px] text-center border border-brand50 hover-button" type="submit">Submit</button>
                     </div>
                 </div>

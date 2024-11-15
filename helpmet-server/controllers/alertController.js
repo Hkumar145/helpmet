@@ -137,37 +137,55 @@ exports.getAlertByID = async (req, res) => {
 exports.updateAlertByID = async (req, res) => {
     try {
         const updateFields = req.body;
+        console.log("Initial updateFields:", updateFields);
 
-        const alertId = req.params.id;
-        const alert = await Alert.findOne({
-            alertID: alertId
-        });
-        let attachmentUrls = [];
-        
-        if (req.files) {
-            attachmentUrls = await uploadToS3(req.files);
-            console.log("Uploaded attachment URLs:", attachmentUrls);
+        const currentAlert = await Alert.findOne({ alertID: req.params.id });
+        if (!currentAlert) {
+            return res.status(404).json({ message: "Alert not found" });
         }
-        const oldAttachments = updateFields.oldAttachments ? JSON.parse(updateFields.oldAttachments) : [];
-        const newAttachments = [...oldAttachments, ...attachmentUrls];
+        
+         let currentAttachments = currentAlert.attachments || [];
+        // console.log("Current attachments from DB:", currentAttachments);
+    
+        const removedAttachments = updateFields.removedAttachments ? JSON.parse(updateFields.removedAttachments) : [];
+        // console.log("Removed attachments from frontend:", removedAttachments);
 
-        updateFields.recipients = JSON.parse(updateFields.recipients || "[]");
+        const baseUrl = "https://pika-helpmet.s3.us-west-1.amazonaws.com/";
+        const removedAttachmentUrls = removedAttachments.length > 0
+        ? removedAttachments.map(filename => `${baseUrl}${filename}`)
+        : [];
+
+        currentAttachments = currentAttachments.filter(
+            (attachment) => !removedAttachmentUrls.includes(attachment)
+        );
+
+        // console.log("Attachments after removal:", currentAttachments);
+
+        let attachmentUrls = [];
+        if (req.files && req.files.length > 0) {
+            attachmentUrls = await uploadToS3(req.files);
+            // console.log("Uploaded attachment URLs:", attachmentUrls);
+        }
+
+        const newAttachments = [...new Set([...currentAttachments, ...attachmentUrls])];
+
         updateFields.attachments = newAttachments;
-        console.log(updateFields);
-        await Alert.findOneAndUpdate({
-            alertID: alertId
-        }, {
-            $set: updateFields
-        });
 
-        // if (Object.keys(updateFields).length === 0) {
-        //     return res.status(400).json({ message: "No fields to update" });
-        // }
-        // const updatedAlert = await Alert.findOneAndUpdate(
-        //     { alertID: req.params.id },
-        //     updateFields,
-        //     { new: true }
-        // );
+        // console.log(updateFields);
+        console.log("Fields to update in backend:", updateFields);
+        console.log("req.body:", req.body);
+        
+        if (Object.keys(updateFields).length === 0) {
+                return res.status(400).json({ message: "No fields to update" });
+        }
+        const updatedAlert = await Alert.findOneAndUpdate(
+            { alertID: req.params.id },
+            // { $set: updateFields },
+            { $set: { ...updateFields, sentAt: updateFields.scheduleTime } },
+            { new: true }
+        );
+        delete updateFields.scheduleTime;
+        console.log(updatedAlert);
         if (!updatedAlert) {
             return res.status(404).json({ message: "Alert not found" });
         }
