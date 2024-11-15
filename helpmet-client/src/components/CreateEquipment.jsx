@@ -156,6 +156,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   onChange={(e) => setInspectionDate(e.target.value)}
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
+
                 />
               </div>
               <div className="flex flex-col w-full md:w-1/2">
@@ -167,6 +168,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   placeholder="Enter interval"
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
+                  onWheel={(e) => e.target.blur()}
                 />
               </div>
             </div>
@@ -190,12 +192,12 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div>
 
             {/* Checked */}
-            <div className="flex items-start mt-4">
+            <div className="flex  mt-4 items-center">
               <input
                 type="checkbox"
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
-                className="mr-2 mt-1"
+                className="mr-2 mt-1 "
               />
               <label className="text-gray-500 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.
@@ -203,17 +205,17 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-row justify-between gap-4 mt-6">
+            <div className="flex flex-row justify-end gap-2 mt-6">
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
+                className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
               >
-                Close
+                Cancel
               </button>
               <button
                 type="submit"
-                className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:cursor-not-allowed"
               >
                 Add Equipment
               </button>

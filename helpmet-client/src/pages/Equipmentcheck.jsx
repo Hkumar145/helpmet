@@ -204,7 +204,7 @@ const EquipmentCheck = () => {
             </button>
             <button
               onClick={handleConfirmDelete}
-              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0"
+              className="bg-red-600 text-white font-bold hover:bg-red-800 text-xs px-4 py-2 rounded my-0"
             >
               Confirm
             </button>

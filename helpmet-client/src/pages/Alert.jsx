@@ -10,7 +10,7 @@ const Alert = () => {
   const [alerts, setAlerts] = useState([]);
   const [viewMode, setViewMode] = useState("list");
   const [alertType, setAlertType] = useState("employee");
-  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const companyID = 100001;
 
   // Fetch all alerts
   const fetchAlerts = async () => {
