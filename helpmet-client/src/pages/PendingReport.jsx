@@ -7,6 +7,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import BackToTopButton from "../components/BackToTopButton";
 import { Button } from "@/components/ui/button";
+import Loader from "../components/Loader";
 
 const severityMapping = {
   1: "Minor",
@@ -55,8 +56,14 @@ const PendingReport = () => {
   };
 
   return (
-    <div className="w-full flex flex-col max-w-6xl mx-auto">
-      <div className="flex flex-row items-center justify-between gap-4">
+
+    loading ? (   
+      <div className="flex justify-center items-center h-[400px]">
+        <Loader />
+      </div>
+    ) : (
+      <div className="w-full flex flex-col px-4 lg:px-7 max-w-[2700px]">
+        <div className="flex flex-row items-center justify-between gap-4">
         <h1 className="text-lg font-bold text-black md:text-2xl">
           Pending Report
         </h1>
@@ -191,7 +198,8 @@ const PendingReport = () => {
         </div>
       )}
       <BackToTopButton />
-    </div>
+      </div>
+    )
   );
 };
 

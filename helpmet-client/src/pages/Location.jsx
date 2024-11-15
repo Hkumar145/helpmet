@@ -13,7 +13,7 @@ import EditLocation from "../components/EditLocation";
 import BackToTopButton from "../components/BackToTopButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Loader from "../components/Loader";
 const Location = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocationID, setSelectedLocationID] = useState(null);
@@ -22,15 +22,18 @@ const Location = () => {
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
   const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
   const [locationToDelete, setLocationToDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (companyID) {
       const fetchLocations = async () => {
         try {
           const response = await axios.get(`/companies/${companyID}/locations`);
-          setLocations(response.data);
+            setLocations(response.data);
+          setLoading(false);
         } catch (error) {
           console.error("Error fetching locations:", error);
+          setLoading(false);
         }
       };
 
@@ -91,8 +94,13 @@ const Location = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 text-black">
-      <ToastContainer position="top-right" autoClose={3000} />
+    loading ? ( 
+      <div className="flex justify-center items-center h-[400px]">
+        <Loader />
+      </div>
+    ) : (
+      <div className="flex flex-col gap-2 text-black">
+        <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-lg font-bold text-black">Locations</h1>
         <Dialog>
@@ -134,8 +142,8 @@ const Location = () => {
                     className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB] cursor-pointer"
                     onClick={() => toggleLocationDetails(location.locationID)}
                   >
-                    <td className="pl-2 py-2 md:px-4">
-                      <div className="flex items-center gap-2">
+                    <td className="px-0 py-2 md:px-4">
+                      <div className="flex items-center gap-2 pl-2">
                         <img
                           src="./images/map.svg"
                           alt="map icon"
@@ -313,7 +321,8 @@ const Location = () => {
       </Dialog>
 
       <BackToTopButton />
-    </div>
+      </div>
+    )
   );
 };
 

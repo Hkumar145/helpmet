@@ -91,7 +91,8 @@ const alertSchema = new Schema({
     recipients: [{ type: String }],
     cc: { type: String, required: false },
     scheduledTime: { type: Date },
-    attachments: { type: [String], required: false }
+    attachments: { type: [String], required: false },
+    type: { type: String, required: true }
 });
 
 // EmployeeAlert Schema

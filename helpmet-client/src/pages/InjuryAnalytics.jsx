@@ -337,7 +337,8 @@ const InjuryAnalytics = () => {
   }, [selectedBar]);
 
   return (
-    <div className="w-full flex flex-col gap-4 max-w-6xl mx-auto">
+
+    <div className="w-full flex flex-col gap-4 px-4 lg:px-7 max-w-[2700px]">
       <h1 className="w-full font-bold xl:ml-1 mb-2 text-left">
         Injury Analytics - Injury Overview
       </h1>
