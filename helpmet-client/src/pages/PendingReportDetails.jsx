@@ -277,19 +277,19 @@ const PendingReportDetails = () => {
                 <div className="flex flex-row gap-4 items-center">
                   <DialogDescription>Confirm the approval</DialogDescription>
                 </div>
-                <div className="flex flex-row justify-end gap-2">
+                <div className="flex flex-row justify-between gap-4">
                   <DialogClose asChild>
                     <button
                       type="button"
-                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+                      className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
                     >
-                      Cancel
+                      Close
                     </button>
                   </DialogClose>
                   <button
                     type="button"
                     onClick={confirmApprove}
-                    className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
                   >
                     Confirm
                   </button>
@@ -322,20 +322,20 @@ const PendingReportDetails = () => {
                   onChange={(e) => setHoldReason(e.target.value)}
                   className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
                 ></textarea>
-                <div className="flex flex-row justify-end gap-2">
+                <div className="flex flex-row justify-between gap-4">
                   <DialogClose asChild>
                     <button
                       type="button"
-                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+                      className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
                     >
-                      Cancel
+                      Close
                     </button>
                   </DialogClose>
                   <DialogClose asChild>
                     <button
                       type="button"
                       onClick={confirmOnHold}
-                      className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
                     >
                       Confirm
                     </button>

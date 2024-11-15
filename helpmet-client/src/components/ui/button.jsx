@@ -54,12 +54,14 @@ const icons = {
     viewBox="0 0 20 20" 
     fill="none">
       <g clipPath="url(#clip0_1017_1377)">
-        <path 
-        d="M6.25 17.0833L17.5 5.83333L14.1667 2.5L2.91667 13.75L1.66667 18.3333L6.25 17.0833Z" 
-        stroke="#1D2939" 
-        strokeWidth="1.66667" 
-        strokeLinecap="round" 
-        strokeLinejoin="round"/>
+        <path
+          d="M14.1666 2.49999C14.3855 2.28112 14.6453 2.1075 14.9313 1.98905C15.2173 1.8706 15.5238 1.80963 15.8333 1.80963C16.1428 1.80963 16.4493 1.8706 16.7353 1.98905C17.0213 2.1075 17.2811 2.28112 17.5 2.49999C17.7188 2.71886 17.8924 2.97869 18.0109 3.26466C18.1294 3.55063 18.1903 3.85713 18.1903 4.16665C18.1903 4.47618 18.1294 4.78268 18.0109 5.06865C17.8924 5.35461 17.7188 5.61445 17.5 5.83332L6.24996 17.0833L1.66663 18.3333L2.91663 13.75L14.1666 2.49999Z"
+          stroke="#475467"
+          strokeWidth="1.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon-path"
+        />
       </g>
       <defs>
         <clipPath id="clip0_1017_1377">
@@ -75,9 +77,8 @@ const icons = {
     height="20" 
     viewBox="0 0 20 20" 
     fill="none">
-      <path 
-      d="M5 7.5L10 12.5L15 7.5" 
-      stroke="#1D2939" 
+      <path d="M5 7.5L10 12.5L15 7.5" 
+      stroke="#475467" 
       strokeWidth="1.66667" 
       strokeLinecap="round" 
       strokeLinejoin="round"
@@ -171,7 +172,7 @@ const icons = {
       x="0.5" 
       y="0.5"
       width="39" 
-      height="22" 
+      height="23" 
       rx="12" 
       fill="#D9D6FE"
       stroke="#9B8AFB"
@@ -193,9 +194,9 @@ const icons = {
     >
       <rect 
       x="0.5" 
-      y="0.5"
+        y="0.5"
       width="39" 
-      height="22" 
+      height="23" 
       rx="12" 
       fill="#F9FAFB"
       stroke="#98A2B3"

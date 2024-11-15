@@ -11,10 +11,10 @@ const Header = () => {
   // Check if the current path matches the link path
   const isActive = (path) => location.pathname === path;
   return (
-    <div className="bg-white border-b border-gray-200">
-      <div className="flex justify-between items-center max-w-[2700px] mx-auto py-7 px-4 lg:px-7">
+    <div className="bg-white p-4 border-b border-gray-200">
+      <div className="flex justify-between items-center max-w-6xl mx-auto">
         <Link to="/">
-          <img src="/images/Group 7.svg" className="w-[140px] h-auto" />
+          <img src="./images/Group 7.svg" className="w-[140px] h-auto" />
         </Link>
         {/* Hamburger icon for mobile */}
         <div className="hamburger-menu md:hidden" onClick={toggleMenu}>
@@ -89,7 +89,7 @@ const Header = () => {
             {currentUser && (
               <li className="border-l-2 border-gray-300 pl-4 bellzy">
                 <img
-                  src="/images/gear.svg"
+                  src="./images/gear.svg"
                   alt="setting icon"
                   className="w-5 h-5"
                 />
@@ -99,7 +99,7 @@ const Header = () => {
           {/* <Link to="/pending-report" className="self-center">
             {currentUser && (
               <li className=" border-gray-300 bellzy">
-                <img src="/images/bell.svg" alt="notification icon" />
+                <img src="./images/bell.svg" alt="notification icon" />
               </li>
             )}
           </Link> */}

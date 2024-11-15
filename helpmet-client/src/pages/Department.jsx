@@ -11,7 +11,6 @@ import axios from "../api/axios";
 import CreateDepartment from "../components/CreateDepartment";
 import EditDepartment from "../components/EditDepartment";
 import BackToTopButton from "../components/BackToTopButton";
-import Loader from "../components/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,7 +22,7 @@ const Department = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [departmentToDelete, setDepartmentToDelete] = useState(null);
   const [departmentNameToDelete, setDepartmentNameToDelete] = useState(null);
-  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (companyID) {
       const fetchDepartments = async () => {
@@ -32,10 +31,8 @@ const Department = () => {
             `/companies/${companyID}/departments`
           );
           setDepartments(response.data);
-          setLoading(false);
         } catch (error) {
           console.error("Error fetching departments:", error);
-          setLoading(false);
         }
       };
 
@@ -84,12 +81,7 @@ const Department = () => {
   };
 
   return (
-    loading ? (
-      <div className="flex justify-center items-center h-[400px]">
-        <Loader />
-      </div>
-    ) : (
-      <div className="flex flex-col gap-2 text-black">
+    <div className="flex flex-col gap-2 text-black">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-lg font-bold text-black">Departments</h1>
@@ -215,8 +207,7 @@ const Department = () => {
       </Dialog>
 
       <BackToTopButton />
-      </div>
-    )
+    </div>
   );
 };
 

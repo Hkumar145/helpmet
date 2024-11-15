@@ -10,8 +10,6 @@ import axios from "../api/axios";
 import "../index.css";
 import { IconButton } from "./ui/button";
 import Avatar from "react-avatar";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const MAX_NOTE_LENGTH = 300;
 
@@ -29,7 +27,6 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
     const senderEmail = useSelector((state) => state.user.email);
     const [dateTime, setDateTime] = useState(null);
     const [selectedRecipients, setSelectedRecipients] = useState([]);
-
 
     useEffect(() => {
         // Fetch all employees
@@ -125,7 +122,8 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
 
     const handleDateTimeChange = (value) => {
         const now = new Date();
-        if (value == null) {
+        if (value && value < now) {
+            // alert("Please select a date and time in the future.");
             setDateTime(now);
         } else {
             setDateTime(value);
@@ -139,10 +137,9 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         formData.append("alertName", alertData.alertName);
         formData.append("description", alertData.description);
         formData.append("companyID", companyID);
-        formData.append("scheduleTime", dateTime ? dateTime.toISOString() : new Date().toISOString());
+        formData.append("scheduleTime", dateTime ? dateTime.toISOString() : null);
         formData.append("recipients", JSON.stringify(alertData.recipients));
         formData.append("cc", alertData.cc);
-        formData.append("type", "employee");
 
         if (alertData.attachments.length > 0) {
             alertData.attachments.forEach((file) => {
@@ -151,13 +148,9 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
         }
 
         try {
-            const create_response = await axios.post(`/companies/${companyID}/alerts`, formData);
-            toast.success("Alert created successfully!", {
-                autoClose: 3000,
-                className: "custom-toast",
-                bodyClassName: "custom-toast-body",
-              });
-            alertData.attachments = create_response.data.attachments;
+            await axios.post(`/companies/${companyID}/alerts`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
 
             /// Fetch all employees to get their emails by employee ID
             const response = await axios.get(`/companies/${companyID}/employees`);
@@ -181,24 +174,24 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 attachments: alertData.attachments,
                 scheduleTime: dateTime ? dateTime.toISOString() : null
             });
-            setTimeout(() => {
-                fetchAlerts();
-                onCancel();
-            }, 1500);
+            alert("Alert created successfully!");
+            fetchAlerts();
+            onCancel();
         } catch (error) {
-            toast.error(`Failed to create employee alert. ${error}`, {
-                autoClose: 3000,
-                className: "custom-toast-error",
-                bodyClassName: "custom-toast-body",
-            });
+            // console.error("Error creating employee alert:", error);
+            if (error.response) {
+                // Log the full error response data
+                console.error("Error creating employee alert:", error.response.data);
+            } else {
+                console.error("Error creating employee alert:", error.message);
+            }
         }
     };
 
     return (
-        <div className="w-full overflow-x-auto">
-             <ToastContainer position="top-right" />
-            <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start min-w-[500px]">
-                <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
+        <div>
+            <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
+                <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-black bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
                         <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
                         <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
@@ -273,7 +266,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                             isSearchable={true}
                             isMulti={true}
                         />
-                        <div className={`bg-gray10 border rounded-[8px] border-gray20 ${selectedRecipients.length > 3 ? "h-32 overflow-y-auto" : "h-auto"}`}>
+                        <div className={`bg-gray10 border rounded-[8px] border-gray2 ${selectedRecipients.length > 3 ? "h-32 overflow-y-auto" : "h-auto"}`}>
                             {selectedRecipients.length > 0 ? (
                                 <ul>
                                 {selectedRecipients.map((recipient) => (
@@ -296,7 +289,6 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                             }} />
                                         </div>
                                     </li>
-                                    
                                 ))}
                             </ul>
                             ) : (
@@ -320,7 +312,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                     </div>
 
                     <div className="flex flex-row justify-end gap-2">
-                        <button className="bg-white text-gray30 hover:text-gray40 text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20" type="button" onClick={onCancel}>Cancel</button>
+                        <button className="bg-white text-black text-[16px] px-4 m-0 rounded-[6px] text-center border border-gray20 hover-button" type="button" onClick={onCancel}>Cancel</button>
                         <button className="bg-brand40 text-white text-[16px] px-4 m-0 rounded-[6px] text-center border border-brand50 hover-button" type="submit">Submit</button>
                     </div>
                 </div>

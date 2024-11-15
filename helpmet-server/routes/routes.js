@@ -151,7 +151,7 @@ router.get("/companies/:id/alerts", getAlertsByCompany);
 router.get("/alerts/:id", getAlertByID);
 
 // Update alert details by alert ID
-router.put("/alerts/:id", upload.array("attachments"), updateAlertByID);
+router.put("/alerts/:id", updateAlertByID);
 
 // // Delete alert by alert ID
 // router.delete("/alerts/:id", deleteAlertByID);

@@ -1,26 +1,23 @@
 import React from "react";
 import Select from "react-select";
 
-const customStyles = (alignRight) => ({
+const customStyles = {
   control: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused ? "#F4F3FF" : "#F9FAFB",
     borderColor: state.isFocused ? "#6938EF" : "#E4E7EC",
     borderRadius: "8px",
     fontSize: "14px",
-    "&:hover": {
-      backgroundColor: "#D9D6FE",
-      color: "#3E1C96",
-      borderColor: "#D9D6FE",
-    },
   }),
   placeholder: (provided) => ({
     ...provided,
-    color: "#000",
+    color: "#98A2B3",
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: "#000",
+    "&:hover": {
+      color: "#6938EF",
+    },
   }),
   menu: (provided) => ({
     ...provided,
@@ -29,12 +26,6 @@ const customStyles = (alignRight) => ({
     borderRadius: "12px",
     marginTop: "8px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    ...(alignRight ? { right: 0, left: "auto" } : { left: 0 }),
-  }),
-  menuList: (provided) => ({
-    ...provided,
-    maxHeight: "220px",
-    overflowY: "auto",
   }),
   option: (provided, state) => ({
     ...provided,
@@ -48,7 +39,7 @@ const customStyles = (alignRight) => ({
       color: "#4A1FB8",
     },
   }),
-});
+};
 
 const CustomSelect = ({
   options,
@@ -58,7 +49,6 @@ const CustomSelect = ({
   placeholder = "Select...",
   isSearchable = true,
   isMulti = false,
-  alignRight = false,
 }) => {
   return (
     <Select
@@ -69,7 +59,7 @@ const CustomSelect = ({
       placeholder={placeholder}
       isSearchable={isSearchable}
       isMulti={isMulti}
-      styles={customStyles(alignRight)}
+      styles={customStyles}
     />
   );
 };

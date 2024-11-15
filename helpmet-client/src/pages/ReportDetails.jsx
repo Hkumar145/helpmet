@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import Loader from "../components/Loader";
 
 const severityMapping = {
   1: "Minor",
@@ -28,30 +27,23 @@ const ReportDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [reportDetails, setReportDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`/reports/${id}`)
       .then((response) => {
         setReportDetails(response.data);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching report details:", error);
-        setLoading(false);
       });
   }, [id]);
 
+  if (!reportDetails) return <div>Loading...</div>;
 
   return (
-    loading ? ( 
-      <div className="flex justify-center items-center h-[400px]">
-        <Loader />
-      </div>
-    ) : (
-      <div className="flex flex-col gap-4 max-w-6xl mx-auto w-full">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+    <div className="flex flex-col gap-4 max-w-6xl mx-auto w-full">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
         <div className="flex flex-row items-center justify-between w-[100%] gap-12">
           <button
             onClick={() => navigate(-1)}
@@ -167,8 +159,7 @@ const ReportDetails = () => {
           </span>
         </div>
       </div>
-      </div>
-    )
+    </div>
   );
 };
 

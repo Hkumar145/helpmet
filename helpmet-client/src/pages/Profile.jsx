@@ -51,16 +51,10 @@ const Profile = () => {
         { username, email, password, companyID, profilePicture: uploadedImageUrl },
         { withCredentials: true }
       )
-      toast.success('Profile updated successfully!', {
-        className: "custom-toast",
-        bodyClassName: "custom-toast-body",
-      })
+      toast.success('Profile updated successfully!')
       dispatch(updateProfile(response.data))
     } catch (error) {
-      toast.error(`Error updating profile: ${error}`, {
-        className: "custom-toast-error",
-        bodyClassName: "custom-toast-body",
-      })
+      toast.error(`Error updating profile: ${error}`)
     }
   }
 
@@ -142,8 +136,7 @@ const Profile = () => {
 
           <button 
             onClick={handleUpdate}
-            disabled={!username || !email || !password}
-            className="w-full bg-[#6938EF] text-white py-2 mt-2 text-sm rounded-lg hover:bg-[#5925D9] transition-colors disabled:cursor-not-allowed"
+            className="w-full bg-[#6938EF] text-white py-2 mt-2 text-sm rounded-lg hover:bg-[#5925D9] transition-colors"
           >
             Update Profile
           </button>

@@ -309,10 +309,6 @@ const Dashboard = () => {
         navigate(`/report/${reportID}`);
     };
 
-    const handleViewCompletedReports = () => {
-        navigate(`/report`);
-    };
-
     // const handleSeverityBarClick = async (severityLevel) => {
     //     try {
     //         const params = { severity: severityLevel };
@@ -339,8 +335,7 @@ const Dashboard = () => {
     
   return (
     <div>
-        {injuryTypeData.labels.length > 0 ? (
-        <div className="flex flex-col text-black gap-12 items-center justify-start px-4 lg:px-7 max-w-[2700px]">
+        <div className="flex flex-col text-black gap-12 items-center justify-start">
             {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col flex-wrap md:flex-row gap-4 items-center justify-center w-full mx-auto">
             {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center w-full max-w-6xl mx-auto"> */}
@@ -433,19 +428,6 @@ const Dashboard = () => {
                 </div>
             </div>
         </div>
-        ) : (
-            <div className='text-center mt-6 bg-white rounded-lg py-[120px] xl:px-[618px]'>
-                <p className='font-bold text-nowrap'>No Report Available</p>
-                <p className='text-sm text-gray-500 text-nowrap'>Start by creating the first incident report</p>
-                <button
-                    className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-4"
-                    onClick={handleViewCompletedReports}
-                >
-                    Get Started
-                </button>
-            </div>
-        )}
-        
         <BackToTopButton />
     </div>
   );

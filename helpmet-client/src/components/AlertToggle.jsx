@@ -2,25 +2,16 @@ import React from "react";
 
 const AlertToggle = ({ viewMode, setViewMode }) => {
     return (
-        <div className="w-full sm:w-auto items-center px-0 justify-end border border-gray-200 rounded-md overflow-hidden lg:flex">
-           
+        <div className="flex items-center p-2 rounded-full w-full justify-end">
             <button
                 onClick={() => setViewMode("employee")}
-                className={`w-1/2 sm:w-36 mt-0 text-[16px] rounded-none ${
-                    viewMode === "employee"
-                        ? "bg-white text-black border-b-4 border-brand40 font-medium "
-                        : "bg-gray-100 text-gray-700 border-b-4 border-gray-50/0"
-                }`}
+                className={`w-1/2 md:w-36 border font-semibold text-black mt-0 text-[16px] rounded-tl-sm rounded-bl-sm rounded-none ${viewMode === "employee" ? "bg-brand40 text-white border-brand40" : "bg-brand20 text-black border-brand30"}`}
             >
                 Employee Alert
             </button>
             <button
                 onClick={() => setViewMode("department")}
-                className={`w-1/2 sm:w-36 mt-0 text-[16px] rounded-none ${
-                    viewMode === "department"
-                        ? "bg-white text-black border-b-4 border-brand40 font-medium "
-                        : "bg-gray-100 text-gray-700 border-b-4 border-gray-50/0"
-                }`}
+                className={`w-1/2 md:w-36 border font-semibold text-black mt-0 text-[16px] rounded-tr-sm rounded-br-sm rounded-none ${viewMode === "department" ? "bg-brand40 text-white border-brand40" : "bg-brand20 text-black border-brand30"}`}
             >
                 Department Alert
             </button>

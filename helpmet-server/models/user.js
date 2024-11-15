@@ -23,7 +23,7 @@ const userSchema = new Schema({
     },
     profilePicture: {
         type: String,
-        default: 'https://img.freepik.com/premium-vector/user-icon-icon_1076610-59410.jpg'
+        default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/9-94702_user-outline-icon-clipart-png-download-profile-icon.png/593px-9-94702_user-outline-icon-clipart-png-download-profile-icon.png?20230806044655'
     }
 });
 
