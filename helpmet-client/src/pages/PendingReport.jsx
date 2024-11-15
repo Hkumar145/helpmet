@@ -68,7 +68,7 @@ const PendingReport = () => {
           Pending Report
         </h1>
 
-        <div className="flex items-center px-0 justify-end border border-gray-200 rounded-md overflow-hidden">
+        <div className="items-center px-0 justify-end border border-gray-200 rounded-md overflow-hidden hidden lg:flex">
           <button
             className={`w-1/2 md:w-36 border text-gray-700 mt-0 text-[16px] rounded-none bg-gray-100 border-b-4 border-gray-50/0`}
             onClick={handleViewCompletedReports}
@@ -82,6 +82,20 @@ const PendingReport = () => {
           </button>
         </div>
       </div>
+
+      <div className="mt-4 flex lg:hidden items-center px-0 justify-end border border-gray-200 rounded-md overflow-hidden">
+          <button
+            className={`w-1/2 md:w-full border text-gray-700 mt-0 text-[16px] rounded-none bg-gray-100 border-b-4 border-gray-50/0`}
+            onClick={handleViewCompletedReports}
+          >
+            Completed Report
+          </button>
+          <button
+            className={`w-1/2 md:w-full font-medium mt-0 text-[16px] rounded-none bg-white text-black border-b-4 border-brand40 rounded-r-sm`}
+          >
+            Pending Report
+          </button>
+        </div>
 
       {loading ? (
         <p className="text-center mt-6 max-w-[710px] min-w-full">Loading...</p>

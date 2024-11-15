@@ -203,17 +203,17 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-row justify-between gap-4 mt-6">
+            <div className="flex flex-row justify-end gap-2 mt-6">
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-4 py-2 text-xs rounded mb-4 border hover:bg-[#D9D6FE] hover:text-[#6938EF]"
+                className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
               >
-                Close
+                Cancel
               </button>
               <button
                 type="submit"
-                className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:opacity-40 disabled:cursor-not-allowed w-full"
+                className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:cursor-not-allowed"
               >
                 Add Equipment
               </button>

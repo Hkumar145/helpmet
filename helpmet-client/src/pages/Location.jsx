@@ -131,7 +131,7 @@ const Location = () => {
           <table className="min-w-full bg-white text-black rounded-lg text-sm">
             <thead className="bg-[#f8f8f8] text-left">
               <tr>
-                <th className="px-0 py-2 md:px-4">Name</th>
+                <th className="pl-2 py-2 md:px-4">Name</th>
                 <th className="pr-2 py-2 md:px-4"></th>
               </tr>
             </thead>
