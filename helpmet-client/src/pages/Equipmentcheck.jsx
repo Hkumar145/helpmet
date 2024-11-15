@@ -5,6 +5,7 @@ import CreateEquipment from "../components/CreateEquipment";
 import UpdateEquipment from "../components/UpdateEquipment";
 import EquipmentDetail from "../components/EquipmentDetail";
 import { useSelector } from "react-redux";
+import Loader from "../components/Loader";
 
 // const companyID = 100001;
 
@@ -14,6 +15,7 @@ const EquipmentCheck = () => {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
@@ -23,9 +25,11 @@ const EquipmentCheck = () => {
         `http://localhost:5001/companies/${companyID}/equipments`
       );
       setEquipments(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching equipment:", error);
       setError("Error fetching equipment");
+      setLoading(false);
     }
   };
 
@@ -128,24 +132,30 @@ const EquipmentCheck = () => {
           Add New Equipment
         </button>
       </div>
-      {viewMode === "list" ? (
-        <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
-          <EquipmentList
-            equipments={equipments}
-            onUpdate={handleEditEquipment}
-            onDelete={handleDeleteEquipment}
-            onView={handleViewEquipment}
-            striped
-          />
-          {selectedEquipment && (
-            <EquipmentDetail
-              equipment={selectedEquipment}
-              onClose={() => setSelectedEquipment(null)}
-              onSave={fetchEquipments}
-            />
-          )}
+      {loading ? (
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
         </div>
-      ) : null}
+      ) : (
+        viewMode === "list" && (
+          <div className="max-w-full bg-white rounded-lg overflow-hidden shadow-md">
+            <EquipmentList
+              equipments={equipments}
+              onUpdate={handleEditEquipment}
+              onDelete={handleDeleteEquipment}
+              onView={handleViewEquipment}
+              striped
+            />
+            {selectedEquipment && (
+              <EquipmentDetail
+                equipment={selectedEquipment}
+                onClose={() => setSelectedEquipment(null)}
+                onSave={fetchEquipments}
+              />
+            )}
+          </div>
+        )
+      )}
 
       {/* Create Equipment Dialog */}
       <CreateEquipment

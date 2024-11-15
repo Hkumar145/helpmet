@@ -16,11 +16,12 @@ import "react-tooltip/dist/react-tooltip.css";
 import BackToTopButton from "../components/BackToTopButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../components/Loader";
 
 const severityMapping = {
   1: "Minor",
   2: "Moderate",
-  3: "Severe",
+  3: "Severe", 
   4: "Significant",
   5: "Fatal",
 };
@@ -132,7 +133,9 @@ const Report = () => {
       </div>
 
       {loading ? (
-        <p className="text-center mt-6 max-w-[710px] min-w-full">Loading...</p>
+        <div className="flex justify-center items-center h-[400px]">
+          <Loader />
+        </div>
       ) : report.length === 0 ? (
         <div className="text-center mt-6 bg-white rounded-lg py-[120px] sm:px-auto lg:px-[350px]">
           <p className="font-bold text-nowrap">No Report Available</p>
