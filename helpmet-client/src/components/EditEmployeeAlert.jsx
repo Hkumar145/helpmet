@@ -102,10 +102,6 @@ const EditEmployeeAlert = () => {
         fetchRecipients();
     }, [companyID]);
 
-    useEffect(() => {
-        console.log(alertData.recipients);
-    }, [alertData]);
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name === "description" && value.length > MAX_NOTE_LENGTH) {
@@ -178,8 +174,6 @@ const EditEmployeeAlert = () => {
             ...prevData,
             attachments: prevData.attachments.filter((f) => f !== file),
         }));
-        console.log("Updated removedAttachments:", removedAttachments);
-        console.log("Updated attachments:", alertData.attachments);
     };
 
     const handleDateTimeChange = (value) => {
@@ -220,13 +214,9 @@ const EditEmployeeAlert = () => {
                 formData.append("attachments", file);
             });
         }
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-        console.log("Form data before submitting:", Array.from(formData.entries()));
+    
         try {
             await axios.put(`/alerts/${alertId}`, formData);
-            console.log("Update fields in front-end:", alertData);
             toast.success("Alert updated successfully!");
             navigate(-1);
             return;
@@ -277,7 +267,9 @@ const EditEmployeeAlert = () => {
                                     <li key={index} className="flex justify-between items-center p-2 text-[14px]">
                                         <span>{typeof file === "string" ? file : file.name}</span>
                                         <div>
-                                            <IconButton type={"button"} icon="close"
+                                            <IconButton 
+                                            type={"button"} 
+                                            icon="close"
                                             onClick={() => removeFile(file)}
                                             className="no-border" 
                                             style={{

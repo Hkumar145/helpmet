@@ -320,6 +320,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                                             <div className="flex items-center gap-2">
                                                 <input
                                                     type="checkbox"
+                                                    onClick={(e) => e.stopPropagation()}
                                                     checked={alertData.recipients.includes(emp.employeeID)}
                                                     onChange={() => handleRecipientSelection(emp)}
                                                     className="custom-checkbox"
