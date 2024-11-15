@@ -56,8 +56,15 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
+    // Basic validation
+    if (!equipmentName || equipmentName.trim() === '') {
+      console.error("Equipment Name is required");
+      return;
+    }
+  
     const newEquipment = {
-      equipmentName,
+      equipmentName: equipmentName.trim(),
       description,
       locationID,
       inspectionDate,
@@ -66,8 +73,11 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
       status,
       isChecked,
     };
+  
+    console.log("Submitting equipment:", newEquipment); // Log data for debugging
     handleCreateEquipment(newEquipment);
   };
+  
 
   const handleCreateEquipment = async (equipment) => {
     try {
@@ -147,7 +157,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div> */}
 
             {/* Inspection Date and Interval */}
-            {/* <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
               <div className="flex flex-col w-full md:w-1/2">
                 <label className="text-gray-600">Inspection Date</label>
                 <input
@@ -157,8 +167,8 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
 
-                /> */}
-              {/* </div>
+                />
+              </div>
               <div className="flex flex-col w-full md:w-1/2">
                 <label className="text-gray-600">Inspection Interval (Days)</label>
                 <input
@@ -171,7 +181,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                   onWheel={(e) => e.target.blur()}
                 />
               </div>
-            </div> */}
+            </div>
 
             {/* Inspected By */}
             {/* <div className="flex flex-col">
@@ -256,13 +266,14 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 </div>
 
             {/* Checked */}
-            <div className="flex  mt-4 items-center">
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={(e) => setIsChecked(e.target.checked)}
-                className="mr-2 mt-1 "
-              />
+            <div className="flex mt-4 items-center">
+  <input
+    type="checkbox"
+    checked={isChecked}
+    onChange={(e) => setIsChecked(e.target.checked)}
+    className="mr-2 mt-1 accent-[#4A1FB8]"
+    style={{ width: '2rem', height: '2rem' }}
+  />
               <label className="text-gray-500 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.
               </label>

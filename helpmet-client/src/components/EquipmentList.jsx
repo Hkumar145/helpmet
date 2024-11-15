@@ -86,7 +86,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
             className="equipment-table"
           > */}
            <table className="w-full bg-white text-black mt-0 rounded-lg text-xs">
-            <thead>
+            {/* <thead>
               <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center', }}>
               <th style={{ padding: '16px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>
   <div style={{ marginLeft: '5vw' }}>Equipment Name</div>
@@ -99,16 +99,26 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                 <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd' }} className="hide-on-mobile">Inspected By</th>
                 <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd' }}></th>
               </tr>
-            </thead>
+            </thead> */}
+
+<thead>
+  <tr style={{ backgroundColor: '#f8f8f8', textAlign: 'center' }}>
+    <th style={{ padding: '16px', textAlign: 'left', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      <div style={{ marginLeft: '5vw' }}>Equipment Name</div>
+    </th>
+    <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Equipment ID</th>
+    <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">Status</th>
+    <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">Inspection Date</th>
+    <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">Inspection Interval</th>
+    <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">Inspected By</th>
+    <th style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #ddd', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}></th>
+  </tr>
+</thead>
             <tbody>
               {updatedEquipments.map((equipment) => (
                 <React.Fragment key={equipment.equipmentID}>
                  <tr className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]">
-                    <td style={{
-                        padding: '16px',
-                        verticalAlign: 'middle',
-                        textAlign: 'left'
-                      }}>
+                 {/* <td style={{ padding: '16px', verticalAlign: 'middle', textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -117,21 +127,42 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                       >
                         {equipment.equipmentName}
                         {equipment.isInspectionDue && (
-                          <FaExclamationTriangle color="red" style={{ marginLeft: '8px' }} title="Inspection overdue" />
+                          <FaExclamationTriangle color="red" style={{ marginLeft: '8px', justifyse:'right'}} title="Inspection overdue" />
                         )}
                       </div>
+                    </td> */}
+                    <td style={{
+    padding: '16px',
+    verticalAlign: 'middle',
+    textAlign: 'left',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  }}>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginLeft: '5vw'
+    }}
+  >
+    <span>{equipment.equipmentName}</span>
+    {equipment.isInspectionDue && (
+      <FaExclamationTriangle color="red" style={{ marginLeft: 'auto', marginRight:'3rem'}} title="Inspection overdue" />
+    )}
+  </div>
+</td>
+                    <td style={{ padding: '16px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{equipment.equipmentID}</td>
+                    <td style={{ padding: '16px', textAlign: 'center', color: equipment.status === 'Out of Service' ? 'red' : 'green', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
+                        {equipment.status}
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'center' }}>{equipment.equipmentID}</td>
-                    <td style={{ padding: '16px', textAlign: 'center', color: equipment.status === 'Out of Service' ? 'red' : 'green' }} className="hide-on-mobile">
-                      {equipment.status}
-                    </td>
-                    <td style={{ padding: '16px', textAlign: 'center' }} className="hide-on-mobile">
+                    <td style={{ padding: '16px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                       {formatDate(equipment.inspectionDate)}
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'center' }} className="hide-on-mobile">
+                    <td style={{ padding: '16px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                       {equipment.inspectionInterval} days
                     </td>
-                    <td style={{ padding: '16px', textAlign: 'center' }} className="hide-on-mobile">
+                    <td style={{ padding: '16px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                       <Avatar
                         name={employeeNames[equipment.inspectedBy] || ''}
                         round={true}
