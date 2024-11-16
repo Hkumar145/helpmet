@@ -456,6 +456,7 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 0px;
+  padding: 10px;
 }
 
 .icon-button.no-border {
@@ -498,7 +499,6 @@ input::-webkit-inner-spin-button {
   background-position: center;
   background-size: 20px 20px;
 }
-
 
 /**************** Toast ****************/
 .custom-toast {

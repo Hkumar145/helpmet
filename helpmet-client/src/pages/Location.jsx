@@ -23,33 +23,61 @@ const Location = () => {
   const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
   const [locationToDelete, setLocationToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const fetchLocations = async () => {
+    if (!companyID) return;
+    try {
+      setLoading(true);
+      const response = await axios.get(`/companies/${companyID}/locations`);
+      setLocations(response.data);
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyID}/employees`);
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
 
   useEffect(() => {
-    if (companyID) {
-      const fetchLocations = async () => {
-        try {
-          const response = await axios.get(`/companies/${companyID}/locations`);
-            setLocations(response.data);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching locations:", error);
-          setLoading(false);
-        }
-      };
-
-      const fetchEmployees = async () => {
-        try {
-          const response = await axios.get(`/companies/${companyID}/employees`);
-          setEmployees(response.data);
-        } catch (error) {
-          console.error("Error fetching employees:", error);
-        }
-      };
-
-      fetchLocations();
-      fetchEmployees();
-    }
+    fetchLocations();
+    fetchEmployees();
   }, [companyID]);
+
+  // useEffect(() => {
+  //   if (companyID) {
+  //     const fetchLocations = async () => {
+  //       try {
+  //         const response = await axios.get(`/companies/${companyID}/locations`);
+  //           setLocations(response.data);
+  //         setLoading(false);
+  //       } catch (error) {
+  //         console.error("Error fetching locations:", error);
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     const fetchEmployees = async () => {
+  //       try {
+  //         const response = await axios.get(`/companies/${companyID}/employees`);
+  //         setEmployees(response.data);
+  //       } catch (error) {
+  //         console.error("Error fetching employees:", error);
+  //       }
+  //     };
+
+  //     fetchLocations();
+  //     fetchEmployees();
+  //   }
+  // }, [companyID]);
 
   const handleEditLocation = (locationID) => {
     setSelectedLocationID(locationID);
@@ -116,7 +144,7 @@ const Location = () => {
         <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-lg font-bold text-black">Locations</h1>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <button className="flex flex-row gap-2 items-center text-nowrap bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4">
               Add New Location
@@ -127,7 +155,13 @@ const Location = () => {
             <DialogDescription>
               Add a new location to the system.
             </DialogDescription>
-            <CreateLocation />
+            <CreateLocation onClose={() => setDialogOpen(false)}
+              onSuccess={() => {
+                setTimeout(() => {
+                  fetchLocations();
+                  fetchEmployees();
+                }, 3000);
+              }}/>
           </DialogContent>
         </Dialog>
       </div>
@@ -195,6 +229,12 @@ const Location = () => {
                             <EditLocation
                               locationID={selectedLocationID}
                               onClose={() => setSelectedLocationID(null)}
+                              onSuccess={() => {
+                                setTimeout(() => {
+                                  fetchLocations();
+                                  fetchEmployees();
+                                }, 3000);
+                              }}
                             />
                           )}
                         </DialogContent>

@@ -24,24 +24,42 @@ const Department = () => {
   const [departmentToDelete, setDepartmentToDelete] = useState(null);
   const [departmentNameToDelete, setDepartmentNameToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (companyID) {
-      const fetchDepartments = async () => {
-        try {
-          const response = await axios.get(
-            `/companies/${companyID}/departments`
-          );
-          setDepartments(response.data);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching departments:", error);
-          setLoading(false);
-        }
-      };
 
-      fetchDepartments();
+  const fetchDepartments = async () => {
+    if (!companyID) return;
+    try {
+      setLoading(true);
+      const response = await axios.get(`/companies/${companyID}/departments`);
+      setDepartments(response.data);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchDepartments();
   }, [companyID]);
+
+  // useEffect(() => {
+  //   if (companyID) {
+  //     const fetchDepartments = async () => {
+  //       try {
+  //         const response = await axios.get(
+  //           `/companies/${companyID}/departments`
+  //         );
+  //         setDepartments(response.data);
+  //         setLoading(false);
+  //       } catch (error) {
+  //         console.error("Error fetching departments:", error);
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     fetchDepartments();
+  //   }
+  // }, [companyID]);
 
   const handleEditDepartment = (departmentID) => {
     setSelectedDepartmentID(departmentID);
@@ -104,7 +122,12 @@ const Department = () => {
             <DialogDescription>
               Add a new department to the system.
             </DialogDescription>
-            <CreateDepartment onClose={() => setDialogOpen(false)} />
+            <CreateDepartment onClose={() => setDialogOpen(false)}
+              onSuccess={() => {
+                setTimeout(() => {
+                  fetchDepartments();
+                }, 3000);
+              }}/>
           </DialogContent>
         </Dialog>
       </div>
@@ -167,6 +190,11 @@ const Department = () => {
                           <EditDepartment
                             departmentID={selectedDepartmentID}
                             onClose={() => setSelectedDepartmentID(null)}
+                            onSuccess={() => {
+                              setTimeout(() => {
+                                fetchDepartments();
+                              }, 3000);
+                            }}
                           />
                         )}
                       </DialogContent>

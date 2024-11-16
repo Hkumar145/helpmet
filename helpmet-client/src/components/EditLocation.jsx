@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const EditLocation = ({ locationID, onClose }) => {
+const EditLocation = ({ locationID, onClose, onSuccess }) => {
   const [locationName, setLocationName] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
@@ -34,6 +34,7 @@ const EditLocation = ({ locationID, onClose }) => {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
+      if (onSuccess) onSuccess();
       onClose();
     } catch (error) {
       toast.error(`Error updating location: ${error.response?.data?.message || error.message}`, {

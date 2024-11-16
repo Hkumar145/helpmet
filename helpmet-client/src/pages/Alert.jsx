@@ -63,9 +63,9 @@ const Alert = () => {
 
     if (error || alerts.length === 0) {
         return (
-            <div className="text-center bg-white rounded-lg py-[120px] px-6">
+            <div className="text-center bg-white rounded-lg py-[120px] px-3 lg:px-6">
                 <p className="font-bold">No Alerts Available</p>
-                <p className="text-gray40 mt-2 mb-2">Start by creating the first incident alert</p>
+                <p className="text-gray-500 text-sm">Start by creating the first incident alert</p>
             </div>
         );
     }

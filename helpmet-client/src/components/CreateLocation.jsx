@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const DialogClose = DialogPrimitive.Close;
 
-const CreateLocation = () => {
+const CreateLocation = ({ onClose, onSuccess }) => {
   const [locationName, setLocationName] = useState('');
   const [coordinates, setCoordinates] = useState([0, 0]); // [longitude, latitude]
   const [managerID, setManagerID] = useState('');
@@ -72,9 +72,11 @@ const CreateLocation = () => {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3200);
+      if (onSuccess) onSuccess();
+      onClose();
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3200);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.message || "Failed to create location. Please try again.", {

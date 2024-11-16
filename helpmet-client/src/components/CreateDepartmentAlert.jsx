@@ -28,7 +28,6 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
 
     useEffect(() => {
         const fetchDepartments = async () => {
-            
             try {
                 const response = await axios.get(`/companies/${companyID}/departments`);
                 const departmentOptions = response.data.map((department) => ({

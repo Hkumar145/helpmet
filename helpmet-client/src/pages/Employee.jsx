@@ -25,22 +25,39 @@ const Employee = () => {
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (companyID) {
-      const fetchEmployees = async () => {
-        try {
-          const response = await axios.get(`/companies/${companyID}/employees`);
-          setEmployees(response.data);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching employees:", error);
-          setLoading(false);
-        }
-      };
-
-      fetchEmployees();
+  const fetchEmployees = async () => {
+    if (!companyID) return;
+    try {
+      setLoading(true);
+      const response = await axios.get(`/companies/${companyID}/employees`);
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
   }, [companyID]);
+
+  // useEffect(() => {
+  //   if (companyID) {
+  //     const fetchEmployees = async () => {
+  //       try {
+  //         const response = await axios.get(`/companies/${companyID}/employees`);
+  //         setEmployees(response.data);
+  //         setLoading(false);
+  //       } catch (error) {
+  //         console.error("Error fetching employees:", error);
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     fetchEmployees();
+  //   }
+  // }, [companyID]);
 
   const handleEditEmployee = (employeeID) => {
     setSelectedEmployeeID(employeeID);
@@ -107,7 +124,12 @@ const Employee = () => {
             <DialogDescription>
               Add a new employee to the system.
             </DialogDescription>
-            <CreateEmployee onClose={() => setDialogOpen(false)} />
+            <CreateEmployee onClose={() => setDialogOpen(false)} 
+              onSuccess={() => {
+                setTimeout(() => {
+                  fetchEmployees();
+                }, 3000);
+              }}/>
           </DialogContent>
         </Dialog>
       </div>
@@ -174,6 +196,11 @@ const Employee = () => {
                           <EditEmployee
                             employeeID={selectedEmployeeID}
                             onClose={() => setSelectedEmployeeID(null)}
+                            onSuccess={() => {
+                              setTimeout(() => {
+                                fetchEmployees();
+                              }, 3000);
+                            }}
                           />
                         )}
                       </DialogContent>

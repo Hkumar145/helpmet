@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const EditDepartment = ({ departmentID, onClose }) => {
+const EditDepartment = ({ departmentID, onClose, onSuccess }) => {
   const [departmentName, setDepartmentName] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
@@ -34,6 +34,7 @@ const EditDepartment = ({ departmentID, onClose }) => {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
+      if (onSuccess) onSuccess();
       onClose();
     } catch (error) {
       toast.error(`Error updating department: ${error.response?.data?.message || error.message}`, {
