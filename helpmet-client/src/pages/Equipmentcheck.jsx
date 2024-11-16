@@ -14,8 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../components/Loader";
 
-
-const companyID = 100001;
+// const companyID = 100001;
 
 const EquipmentCheck = () => {
   const [equipments, setEquipments] = useState([]);

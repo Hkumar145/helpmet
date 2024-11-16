@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const EditEmployee = ({ employeeID, onClose }) => {
+const EditEmployee = ({ employeeID, onClose, onSuccess }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -67,6 +67,7 @@ const EditEmployee = ({ employeeID, onClose }) => {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
+      if (onSuccess) onSuccess();
       onClose();
     } catch (error) {
       toast.error(`Error updating employee: ${error.response?.data?.message || error.message}`, {

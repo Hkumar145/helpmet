@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const CreateEmployee = ({ onClose }) => {
+const CreateEmployee = ({ onClose, onSuccess }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -52,6 +52,7 @@ const CreateEmployee = ({ onClose }) => {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
+      if (onSuccess) onSuccess();
       setFirstName('');
       setLastName('');
       setDateOfBirth('');

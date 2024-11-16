@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const DialogClose = DialogPrimitive.Close;
 
-const CreateDepartment = ({ onClose }) => {
+const CreateDepartment = ({ onClose, onSuccess }) => {
   const [departmentName, setDepartmentName] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
@@ -21,6 +21,7 @@ const CreateDepartment = ({ onClose }) => {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });
+      if (onSuccess) onSuccess();
       setDepartmentName('');
       onClose();
     } catch (error) {

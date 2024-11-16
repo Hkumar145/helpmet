@@ -137,9 +137,9 @@ const Report = () => {
           <Loader />
         </div>
       ) : report.length === 0 ? (
-        <div className="text-center mt-6 bg-white rounded-lg py-[120px] sm:px-auto lg:px-[350px]">
-          <p className="font-bold text-nowrap">No Report Available</p>
-          <p className="text-sm text-gray-500 text-nowrap">
+        <div className="text-center mt-6 bg-white rounded-lg py-[120px] px-3">
+          <p className="font-bold">No Report Available</p>
+          <p className="text-sm text-gray-500">
             Start by creating the first incident report
           </p>
           <button

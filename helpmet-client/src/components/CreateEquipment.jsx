@@ -14,8 +14,8 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [locations, setLocations] = useState([]);
-  // const companyID = useSelector((state) => state.user.currentUser?.companyID);
-  const companyID = 100001;
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  // const companyID = 100001;
 
   useEffect(() => {
     fetchEmployees();

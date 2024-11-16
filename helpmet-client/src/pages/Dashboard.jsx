@@ -352,13 +352,13 @@ const Dashboard = () => {
     }, [selectedBar]);
     
   return (
-    <div>
+    <div className="w-full px-4 lg:px-7 max-w-[2700px]">
         {loading ? (
         <div className="flex justify-center items-center h-[400px]">
           <Loader />
         </div>
       ) : injuryTypeData.labels.length > 0 ? (
-        <div className="flex flex-col text-black gap-12 items-center justify-start px-4 lg:px-7 max-w-[2700px]">
+        <div className="flex flex-col text-black gap-12 items-center justify-start">
             {/* <p>Hi, {username}!</p> */}
             <div className="flex flex-col flex-wrap md:flex-row gap-4 items-center justify-center w-full mx-auto">
             {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center w-full max-w-6xl mx-auto"> */}
@@ -452,9 +452,9 @@ const Dashboard = () => {
             </div>
         </div>
         ) : (
-            <div className='text-center mt-6 bg-white rounded-lg py-[120px] xl:px-[618px]'>
-                <p className='font-bold text-nowrap'>No Report Available</p>
-                <p className='text-sm text-gray-500 text-nowrap'>Start by creating the first incident report</p>
+            <div className='text-center mt-6 bg-white rounded-lg py-[120px] px-3'>
+                <p className='font-bold'>No Report Available</p>
+                <p className='text-sm text-gray-500'>Start by creating the first incident report</p>
                 <button
                     className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-4"
                     onClick={handleViewCompletedReports}

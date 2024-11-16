@@ -75,7 +75,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
       {loading ? (
         <p className='text-center mt-6 max-w-[710px] min-w-full'>Loading...</p>
       ) : updatedEquipments.length === 0 ? (
-        <div className="text-center bg-white rounded-lg py-[120px]">
+        <div className="text-center bg-white rounded-lg py-[120px] px-3">
           <p className="font-bold">No Equipment Available</p>
           <p className="text-sm text-gray-500">Start by adding new equipment to the list</p>
         </div>

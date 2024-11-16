@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     const navigate = useNavigate();
     const [expandedAlertID, setExpandedAlertID] = useState(null);
-    // const [editedAlert, setEditedAlert] = useState({ recipients: [], attachments: [] });
     const [allEmployees, setAllEmployees] = useState([]);
     const [allDepartments, setAllDepartments] = useState([]);
     const [editMode, setEditMode] = useState(null);
@@ -72,7 +71,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         return sortedAlerts.slice(startIndex, startIndex + itemsPerPage);
     };
 
-
     const editAlert = (alert) => {
         if (alert.type === "department") {
             navigate(`/alert/${alert.alertID}/department/edit`);
@@ -81,7 +79,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         }
     };
     
-
     // Handle page changes
     const goToNextPage = () => {
         setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
@@ -151,7 +148,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                     } catch (error) {
                         console.error("Error in repeated email sending:", error);
                     }
-                }, 7 * 24 * 60 * 60 * 1000); // Repeat sending alert in 7 days  7 * 24 * 60 * 60 * 1000
+                }, 7 * 24 * 60 * 60 * 1000); // Repeat sending alert in 7 days
 
                 // Store interval ID for clearing later
                 setIntervals((prev) => ({ ...prev, [alertID]: intervalId }));
@@ -277,45 +274,9 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                     </td>
                                 </tr>
 
-                                {/* {expandedAlertID === alert.alertID && (
-                                    <tr>
-                                        <td colSpan={colSpan} className="px-3 py-2 lg:px-6 bg-gray20">
-                                            <div className="whitespace-pre-wrap text-start">
-                                                <p><strong>Alert Name:</strong> {alert.alertName}</p>
-                                                <div className="flex gap-1">
-                                                    <p><strong>Recipients:</strong></p>
-                                                    <ul>
-                                                        {alert.recipients && alert.recipients.length > 0 ? (
-                                                            alert.recipients.map((recipientID, idx) => {
-                                                                const ids = recipientID[0] === "[" ? JSON.parse(recipientID) : [recipientID];
-                                                                return (
-                                                                    <li key={idx} className="text-black">
-                                                                        {ids.map((id, idIdx) => {
-                                                                            let employee = allEmployees.find(e => e.value === id) || allDepartments.find(e => e.value === id);
-                                                                            return employee ? (
-                                                                                <span key={idIdx}>
-                                                                                    {employee.label}
-                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
-                                                                                </span>
-                                                                            ) : (
-                                                                                <span key={idIdx}>
-                                                                                    Unknown recipient
-                                                                                    {idIdx < ids.length - 1 ? ", " : ""}
-                                                                                </span>
-                                                                            );
-                                                                        })}
-                                                                    </li>
-                                                                );
-                                                            })
-                                                        ) : (
-                                                            <p>No recipients</p>
-                                                        )}
-                                                    </ul>
-                                                </div>
-                                            </div> */}
                                 {expandedAlertID === alert.alertID && (
                                     <tr>
-                                        <td colSpan="5" className="px-6 py-4">
+                                        <td colSpan={colSpan} className="px-6 py-4">
                                         <div className="bg-white rounded-lg">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                             {/* Recipients Card */}
@@ -347,20 +308,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </div>
 
                                             {/* CC Recipients Card */}
-                                            {/* <div className="bg-gray-50 rounded-lg p-4">
-                                                <div className="text-gray-500 mb-2">CC Recipients</div>
-                                                <div className="font-medium text-gray-900">
-                                                    {alert.cc ? (
-                                                        <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-gray-200">
-                                                            {alert.cc}
-                                                        </span>
-                                                    ) : (
-                                                        <span className="text-gray-500 italic">No CC recipients</span>
-                                                    )}
-                                                </div>
-                                            </div> */}
-
-                                            {/* CC Recipients Card */}
                                             <div className="bg-gray-50 rounded-lg p-4 text-left">
                                                 <div className="text-gray-500 text-sm">CC Recipients</div>
                                                 <div className="font-medium text-gray-900 text-[16px]">
@@ -375,12 +322,6 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             </div>
 
                                             {/* Description Card - Full Width */}
-                                            {/* <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
-                                                <div className="text-gray-500 mb-2">Description</div>
-                                                <div className="font-medium text-gray-900">
-                                                    {alert.description || <span className="text-gray-500 italic">No description available</span>}
-                                                </div>
-                                            </div> */}
                                             <div className="bg-gray-50 rounded-lg p-4 md:col-span-2 text-left">
                                                 <div className="text-gray-500 text-sm">Description</div>
                                                 <div className="font-medium text-gray-900 text-[16px]">
