@@ -108,7 +108,11 @@ const ReportDetails = () => {
 
         <div>
           <p>Location</p>
-          <span className="report-info">{reportDetails.locationID}</span>
+          <span className="report-info">
+            {reportDetails.locationName
+            ? `${reportDetails.locationName} (${reportDetails.locationID})`
+            : reportDetails.locationID}
+          </span>
         </div>
 
         <div className="line-spacer"></div>
