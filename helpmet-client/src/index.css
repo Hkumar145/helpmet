@@ -518,6 +518,9 @@ input::-webkit-inner-spin-button {
 .Toastify__close-button {
   color: #ffffff !important;
   opacity: 1;
+  position: relative;
+  top: -0.4rem;
+  right: 0.2rem;
 }
 
 .Toastify__close-button:hover,

@@ -5,14 +5,14 @@ import Location from "./Location";
 import SettingToggle from "../components/SettingToggle";
 
 const Setting = () => {
-  const [activeTab, setActiveTab] = useState("Employees");
+  const [activeTab, setActiveTab] = useState("Departments");
 
   const renderContent = () => {
     switch (activeTab) {
-      case "Employees":
-        return <Employee />;
       case "Departments":
         return <Department />;
+      case "Employees":
+        return <Employee />;
       case "Locations":
         return <Location />;
       default:

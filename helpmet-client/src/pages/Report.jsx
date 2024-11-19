@@ -142,12 +142,12 @@ const Report = () => {
           <p className="text-sm text-gray-500">
             Start by creating the first incident report
           </p>
-          <button
+          {/* <button
             className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-4"
             onClick={handleCreateInjuryReport}
           >
             Create Incident Report
-          </button>
+          </button> */}
         </div>
       ) : (
         <div className="w-full overflow-x-scroll">

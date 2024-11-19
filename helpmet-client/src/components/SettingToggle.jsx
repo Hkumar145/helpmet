@@ -4,24 +4,24 @@ const SettingToggle = ({ activeTab, setActiveTab }) => {
   return (
     <div className="items-center px-0 justify-end border border-gray-200 rounded-md lg:flex text-nowrap min-w-[21rem]">
       <button
-        onClick={() => setActiveTab("Employees")}
+        onClick={() => setActiveTab("Departments")}
         className={`w-1/3 md:w-36 font-medium mt-0 text-[16px] rounded-none text-black border-b-4 ${
-          activeTab === "Employees"
+          activeTab === "Departments"
             ? "bg-white border-brand40 rounded-l-md"
             : "bg-gray-100 text-gray-700 border-b-4 border-gray-50/0"
         }`}
       >
-        Employees
+        Departments
       </button>
       <button
-        onClick={() => setActiveTab("Departments")}
+        onClick={() => setActiveTab("Employees")}
         className={`w-1/3 md:w-36 font-medium mt-0 text-[16px] rounded-none  ${
-          activeTab === "Departments"
+          activeTab === "Employees"
             ? "bg-white text-black border-b-4 border-brand40"
             : "bg-gray-100 text-gray-700 border-b-4 border-gray-50/0"
         }`}
       >
-        Departments
+        Employees
       </button>
       <button
         onClick={() => setActiveTab("Locations")}
