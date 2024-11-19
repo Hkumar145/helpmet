@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const UpdateReport = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const UpdateReport = () => {
   const [injuredEmployeeID, setInjuredEmployeeID] = useState('');
   const [dateOfInjury, setDateOfInjury] = useState('');
   const [locationID, setLocationID] = useState('');
+  const [locations, setLocations] = useState([]);
   const [injuryTypeID, setInjuryTypeID] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
@@ -19,6 +21,7 @@ const UpdateReport = () => {
   const [witnessID, setWitnessID] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
   const [success, setSuccess] = useState(false);
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
     const fetchReportDetails = async () => {
@@ -42,6 +45,20 @@ const UpdateReport = () => {
 
     fetchReportDetails();
   }, [id]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get(`/companies/${companyID}/locations`);
+        setLocations(response.data || []);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+        toast.error("Failed to fetch locations.");
+      }
+    };
+
+    fetchLocations();
+  }, [companyID]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -165,16 +182,21 @@ const UpdateReport = () => {
             className="p-2 rounded border"
           />
 
-          <label>Location ID</label>
-          <input
-            type="text"
+          <label>Location</label>
+          <select
             name="locationID"
             value={locationID}
             onChange={handleChange}
-            placeholder="Enter Location ID"
             required
             className="p-2 rounded border"
-          />
+          >
+            <option value="" disabled>- select location -</option>
+            {locations.map((location) => (
+              <option key={location.locationID} value={location.locationID}>
+                {location.locationName}
+              </option>
+            ))}
+          </select>
 
           <label>Injury Type ID</label>
           <select
