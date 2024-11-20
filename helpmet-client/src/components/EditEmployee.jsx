@@ -4,6 +4,9 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import { DateTime } from 'luxon';
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -25,7 +28,7 @@ const EditEmployee = ({ employeeID, onClose, onSuccess }) => {
         const { firstName, lastName, dateOfBirth, departmentID, role, email } = response.data;
         setFirstName(firstName);
         setLastName(lastName);
-        const formattedDateOfBirth = new Date(dateOfBirth).toISOString().split('T')[0];
+        const formattedDateOfBirth = DateTime.fromISO(dateOfBirth, { zone: 'America/Vancouver' }).toJSDate();
         setDateOfBirth(formattedDateOfBirth);
         setDepartment(departmentID);
         setRole(role);
@@ -96,13 +99,16 @@ const EditEmployee = ({ employeeID, onClose, onSuccess }) => {
           onChange={(e) => setLastName(e.target.value)}
           required
         />
-        <input
-          type="date"
-          placeholder="Date of Birth"
-          className="border p-2"
+        <DateTimePicker
+          className="injury-datetime-picker"
           value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
+          onChange={setDateOfBirth}
           required
+          disableClock={true}
+          clearIcon={null}
+          calendarIcon={null}
+          format='y-MM-dd'
+          maxDate={new Date()}
         />
         <select
           className="border p-2"

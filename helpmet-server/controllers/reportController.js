@@ -3,7 +3,8 @@ const {
     Employee,
     Report,
     EmployeeReport,
-    PendingReport
+    PendingReport,
+    Location
 } = require("../models/schemas");
 const { uploadToS3 } = require('../utils/s3Upload');
 
@@ -19,7 +20,7 @@ exports.submitReport = async (req, res) => {
         }
         const companyID = employee.companyID;
 
-        const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO();
+        const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).startOf('day').toISO();
 
         // Upload the image file to S3
         let imageUrls = [];
@@ -198,10 +199,11 @@ exports.getReportByID = async (req, res) => {
             return res.status(404).json({ message: "Report not found" });
         }
 
-        const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
+        const [reportByEmployee, injuredEmployee, witnessEmployee, location] = await Promise.all([
             Employee.findOne({ employeeID: report.reportBy }, 'firstName role'),
             Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName role'),
-            Employee.findOne({ employeeID: report.witnessID }, 'firstName role')
+            Employee.findOne({ employeeID: report.witnessID }, 'firstName role'),
+            Location.findOne({ locationID: report.locationID }, 'locationName')
         ]);
 
         const reportWithDetails = {
@@ -212,6 +214,7 @@ exports.getReportByID = async (req, res) => {
             injuredEmployeeRole: injuredEmployee ? injuredEmployee.role : null,
             witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null,
             witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null,
+            locationName: location ? location.locationName : null,
         };
 
         res.json(reportWithDetails);
@@ -270,10 +273,11 @@ exports.getPendingReportByID = async (req, res) => {
             return res.status(404).json({ message: "Report is approved" });
         }
 
-        const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
+        const [reportByEmployee, injuredEmployee, witnessEmployee, location] = await Promise.all([
             Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName role'),
             Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName role'),
-            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName role')
+            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName role'),
+            Location.findOne({ locationID: pendingReport.locationID }, 'locationName')
         ]);
 
         const pendingReportWithDetails = {
@@ -283,7 +287,8 @@ exports.getPendingReportByID = async (req, res) => {
             injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
             injuredEmployeeRole: injuredEmployee ? injuredEmployee.role : null,
             witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null,
-            witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null
+            witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null,
+            locationName: location ? location.locationName : null,
         };
 
         res.json(pendingReportWithDetails);

@@ -3,6 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import { DateTime } from 'luxon';
 
 const UpdateReport = () => {
   const { id } = useParams();
@@ -12,6 +16,7 @@ const UpdateReport = () => {
   const [injuredEmployeeID, setInjuredEmployeeID] = useState('');
   const [dateOfInjury, setDateOfInjury] = useState('');
   const [locationID, setLocationID] = useState('');
+  const [locations, setLocations] = useState([]);
   const [injuryTypeID, setInjuryTypeID] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
@@ -19,16 +24,18 @@ const UpdateReport = () => {
   const [witnessID, setWitnessID] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
   const [success, setSuccess] = useState(false);
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
     const fetchReportDetails = async () => {
       try {
         const response = await axios.get(`/update-report/${id}`);
         const report = response.data;
+        const formattedDate = DateTime.fromISO(report.dateOfInjury, { zone: 'America/Vancouver' }).toJSDate();
         setReportDetails(report);
         setReportBy(report.reportBy);
         setInjuredEmployeeID(report.injuredEmployeeID);
-        setDateOfInjury(report.dateOfInjury.split('T')[0]);
+        setDateOfInjury(formattedDate);
         setLocationID(report.locationID);
         setInjuryTypeID(report.injuryTypeID);
         setSeverity(report.severity);
@@ -42,6 +49,20 @@ const UpdateReport = () => {
 
     fetchReportDetails();
   }, [id]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get(`/companies/${companyID}/locations`);
+        setLocations(response.data || []);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+        toast.error("Failed to fetch locations.");
+      }
+    };
+
+    fetchLocations();
+  }, [companyID]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -72,9 +93,10 @@ const UpdateReport = () => {
 
     const formData = new FormData();
     image.forEach((img) => formData.append('image', img));
+    const formattedDate = DateTime.fromJSDate(dateOfInjury, { zone: 'America/Vancouver' }).toISO();
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
-    formData.append('dateOfInjury', dateOfInjury);
+    formData.append('dateOfInjury', formattedDate);
     formData.append('locationID', locationID);
     formData.append('injuryTypeID', injuryTypeID);
     formData.append('severity', severity);
@@ -156,25 +178,33 @@ const UpdateReport = () => {
           />
 
           <label>Date of Injury</label>
-          <input
-            type="date"
-            name="dateOfInjury"
+          <DateTimePicker
+            className="injury-datetime-picker"
+            onChange={setDateOfInjury}
             value={dateOfInjury}
-            onChange={handleChange}
             required
-            className="p-2 rounded border"
+            disableClock={true}
+            clearIcon={null}
+            calendarIcon={null}
+            format='y-MM-dd'
+            maxDate={new Date()}
           />
 
-          <label>Location ID</label>
-          <input
-            type="text"
+          <label>Location</label>
+          <select
             name="locationID"
             value={locationID}
             onChange={handleChange}
-            placeholder="Enter Location ID"
             required
             className="p-2 rounded border"
-          />
+          >
+            <option value="" disabled>- select location -</option>
+            {locations.map((location) => (
+              <option key={location.locationID} value={location.locationID}>
+                {location.locationName}
+              </option>
+            ))}
+          </select>
 
           <label>Injury Type ID</label>
           <select
