@@ -4,6 +4,8 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
 
 const DialogClose = DialogPrimitive.Close;
 
@@ -87,13 +89,16 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
           onChange={(e) => setLastName(e.target.value)}
           required
         />
-        <input
-          type="date"
-          placeholder="Date of Birth"
-          className="border p-2"
+        <DateTimePicker
+          className="injury-datetime-picker"
           value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
+          onChange={setDateOfBirth}
           required
+          disableClock={true}
+          clearIcon={null}
+          calendarIcon={null}
+          format='y-MM-dd'
+          maxDate={new Date()}
         />
         <select
           className="border p-2"
