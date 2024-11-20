@@ -4,6 +4,9 @@ import axios from '../api/axios';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import { DateTime } from 'luxon';
 
 const UpdateReport = () => {
   const { id } = useParams();
@@ -28,10 +31,11 @@ const UpdateReport = () => {
       try {
         const response = await axios.get(`/update-report/${id}`);
         const report = response.data;
+        const formattedDate = DateTime.fromISO(report.dateOfInjury, { zone: 'America/Vancouver' }).toJSDate();
         setReportDetails(report);
         setReportBy(report.reportBy);
         setInjuredEmployeeID(report.injuredEmployeeID);
-        setDateOfInjury(report.dateOfInjury.split('T')[0]);
+        setDateOfInjury(formattedDate);
         setLocationID(report.locationID);
         setInjuryTypeID(report.injuryTypeID);
         setSeverity(report.severity);
@@ -89,9 +93,10 @@ const UpdateReport = () => {
 
     const formData = new FormData();
     image.forEach((img) => formData.append('image', img));
+    const formattedDate = DateTime.fromJSDate(dateOfInjury, { zone: 'America/Vancouver' }).toISO();
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
-    formData.append('dateOfInjury', dateOfInjury);
+    formData.append('dateOfInjury', formattedDate);
     formData.append('locationID', locationID);
     formData.append('injuryTypeID', injuryTypeID);
     formData.append('severity', severity);
@@ -173,13 +178,16 @@ const UpdateReport = () => {
           />
 
           <label>Date of Injury</label>
-          <input
-            type="date"
-            name="dateOfInjury"
+          <DateTimePicker
+            className="injury-datetime-picker"
+            onChange={setDateOfInjury}
             value={dateOfInjury}
-            onChange={handleChange}
             required
-            className="p-2 rounded border"
+            disableClock={true}
+            clearIcon={null}
+            calendarIcon={null}
+            format='y-MM-dd'
+            maxDate={new Date()}
           />
 
           <label>Location</label>
