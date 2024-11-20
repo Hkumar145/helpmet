@@ -445,6 +445,11 @@ input::-webkit-inner-spin-button {
   background-color: #4a1fb8;
 }
 
+.injury-datetime-picker .react-datetime-picker__wrapper {
+  font-size: 22px;
+  height: 50px;
+}
+
 /**************** Icon buttons style ****************/
 .icon-button {
   display: flex;
