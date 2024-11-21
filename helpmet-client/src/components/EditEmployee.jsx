@@ -1,0 +1,169 @@
+import React, { useEffect, useState } from 'react';
+import axios from '../api/axios';
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import { DateTime } from 'luxon';
+
+const DialogClose = DialogPrimitive.Close;
+
+const EditEmployee = ({ employeeID, onClose, onSuccess }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [department, setDepartment] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [role, setRole] = useState('');
+  const [email, setEmail] = useState('');
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const roleOptions = ["Site Manager", "Safety Officer", "Employee"];
+
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        const response = await axios.get(`/employees/${employeeID}`);
+        const { firstName, lastName, dateOfBirth, departmentID, role, email } = response.data;
+        setFirstName(firstName);
+        setLastName(lastName);
+        const formattedDateOfBirth = DateTime.fromISO(dateOfBirth, { zone: 'America/Vancouver' }).toJSDate();
+        setDateOfBirth(formattedDateOfBirth);
+        setDepartment(departmentID);
+        setRole(role);
+        setEmail(email);
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      }
+    };
+
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get(`/companies/${companyID}/departments`);
+        setDepartments(response.data);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
+
+    fetchEmployeeData();
+    fetchDepartments();
+  }, [employeeID]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const employeeData = {
+      firstName,
+      lastName,
+      dateOfBirth,
+      departmentID: department,
+      role,
+      companyID,
+      email,
+    };
+
+    try {
+      await axios.put(`/employees/${employeeID}`, employeeData);
+      toast.success("Employee updated successfully.", {
+        className: "custom-toast",
+        bodyClassName: "custom-toast-body",
+      });
+      if (onSuccess) onSuccess();
+      onClose();
+    } catch (error) {
+      toast.error(`Error updating employee: ${error.response?.data?.message || error.message}`, {
+        className: "custom-toast-error",
+        bodyClassName: "custom-toast-body",
+      });
+    }
+  };
+
+  return (
+    <main>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="First Name"
+          className="border p-2"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          className="border p-2"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+        />
+        <DateTimePicker
+          className="injury-datetime-picker"
+          value={dateOfBirth}
+          onChange={setDateOfBirth}
+          required
+          disableClock={true}
+          clearIcon={null}
+          calendarIcon={null}
+          format='y-MM-dd'
+          maxDate={new Date()}
+        />
+        <select
+          className="border p-2"
+          value={department}
+          onChange={(e) => setDepartment(e.target.value)}
+          required
+        >
+          <option value="" disabled>- Select Department -</option>
+          {departments.map((dept) => (
+            <option key={dept.departmentID} value={dept.departmentID}>
+              {dept.departmentName}
+            </option>
+          ))}
+        </select>
+        <select
+          className="border p-2"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          required
+        >
+          <option value="" disabled>- Select Role -</option>
+          {roleOptions.map((roleOption) => (
+            <option key={roleOption} value={roleOption}>
+              {roleOption}
+            </option>
+          ))}
+        </select>
+        <input
+          type="email"
+          placeholder="Email"
+          className="border p-2"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <div className='flex flex-row justify-end gap-2'>
+          <DialogClose asChild>
+            <button
+              type="button"
+              className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+          </DialogClose>
+          <DialogClose asChild>
+            <button type="submit" className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0">
+              Update Employee
+            </button>
+          </DialogClose>
+        </div>
+      </form>
+    </main>
+  );
+};
+
+export default EditEmployee;
