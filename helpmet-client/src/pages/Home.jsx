@@ -16,13 +16,14 @@ const Home = () => {
         </div>
         <div className='slimages'>
         <img src="../../images/GroupEverything.svg" alt="" style={{height:'100vh'}}/>
+        
         {/* <img src="../../images/Clocklan.svg" alt="" />
         <img src="../../images/Heatmaplan.svg" alt="" />
         <img src="../../images/Rectangle 1 lan.svg" alt="" />
         <img src="../../images/Rectangle 1-1 lan.svg" alt="" /> */}
       </div>
       </div>
-      
+      <div className="except"><img src="../../images/HelloWorld.svg" alt="" /></div>
       <div className='slogansec'>
       <div className="firstb inv">
         <h1 className='lightsl'>One platform</h1>
@@ -119,8 +120,92 @@ const Home = () => {
         <div className="slimages landscape lanepor"><img src="../../images/notiflan.svg" alt="" /></div>
         </div>
       </div>
-      <img src="../../images/Harshdeep kaur.svg" alt="" />
-      
+      {/* <img src="../../images/Harshdeep kaur.svg" alt="" /> */}
+      <section>
+        <div className="coverpho"><img src="../../images/grp.png" alt="" /></div>
+        <h1 className='tops'>OUR TEAM</h1>
+        <div className="teams">
+          <div className="images1">
+            <img src="../../images/Roy.png" alt="" />
+            <div className="fdeets">
+              <h1>Roy Yeung</h1>
+              <p>PM & Full-Stack Developer</p>
+              <div className="socials"><a href="http://www.twitter.com/"><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/roy-y"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+          <div className="images">
+            <img src="../../images/Rooben.png" alt="" />
+            <div className="otherdeets">
+              <h1>Rooben</h1>
+              <p>UX Engineer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="https://www.linkedin.com/in/rooben-me"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+          <div className="images">
+            <img src="../../images/Kisaja.png" alt="" />
+            <div className="otherdeets">
+              <h1>Kisaja (Riveen)</h1>
+              <p>Junior Designer</p>
+              <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/kisaja-riveen"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+          <div className="images">
+            <img src="" alt="" />
+            <h1>Harshdeep Kaur</h1>
+            <p>Junior UI/UX Designer</p>
+                      <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href=""><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+
+          <div className="images">
+            <img src="../../images/Gurleen.png" alt="" />
+            <div className="otherdeets">
+              <h1>Gurleen Kaur</h1>
+              <p>UI/UX Designer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="https://www.linkedin.com/in/gurleen-designer/"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+          <div className="images">
+            <img src="../../images/Hemant.png" alt="" />
+            <div className="otherdeets">
+              <h1>Hemant Kumar</h1>
+              <p>Lead Full-Stack Developer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/hemant-e"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+          <div className="images">
+            <img src="../../images/Mohit.png" alt="" />
+            <div className="otherdeets">
+              <h1>Mohit</h1>
+              <p>Full-Stack Developer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/mohit-duggar"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+          <div className="images">
+            <img src="../../images/Promise.png" alt="" />
+            <div className="otherdeets">
+              <h1>Promise</h1>
+              <p>Front-End Developer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="https://www.linkedin.com/in/promise-olajide-0ab17718b/"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+          <div className="images">
+            <img src="../../images/XueHui.png" alt="" />
+            <div className="otherdeets">
+              <h1>Xuehui Lan</h1>
+              <p>Full-Stack Developer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/xuehui-lan"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+            </div>
+
+        </div>
+
+      </section>
 
 
     <p className='text-center'>© 2024 PIKA PRODUCTIONS</p>
