@@ -279,6 +279,19 @@ input::-webkit-inner-spin-button {
   display: none;
 }
 
+.expanded-header {
+  padding-bottom: 310px;
+  transition: padding-bottom 0.3s ease;
+}
+
+.nav-links.block {
+  display: block;
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
 /**************** Buttons ****************/
 .return-button {
   background: #f9fafb;

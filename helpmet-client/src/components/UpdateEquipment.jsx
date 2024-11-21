@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useSelector } from 'react-redux'
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
 
 const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
   const [equipmentName, setEquipmentName] = useState('');
@@ -139,12 +141,23 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
             <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
               <div className="flex flex-col md:w-1/2">
                 <label className="text-gray-600">Inspection Date</label>
-                <input
+                {/* <input
                   type="date"
                   value={inspectionDate}
                   onChange={(e) => setInspectionDate(e.target.value)}
                   className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
                   required
+                /> */}
+                <DateTimePicker
+                  className="injury-datetime-picker"
+                  onChange={setInspectionDate}
+                  value={inspectionDate}
+                  required
+                  disableClock={true}
+                  clearIcon={null}
+                  calendarIcon={null}
+                  format='y-MM-dd'
+                  maxDate={new Date()}
                 />
               </div>
               <div className="flex flex-col md:w-1/2">
