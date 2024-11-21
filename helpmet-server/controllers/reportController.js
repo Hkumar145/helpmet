@@ -22,9 +22,9 @@ exports.submitReport = async (req, res) => {
         const dateOfInjuryWithTime = DateTime.fromISO(dateOfInjury, { zone: 'America/Vancouver' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISO();
 
         // Upload the image file to S3
-        let imageUrl = null;
-        if (req.file) {
-            imageUrl = await uploadToS3(req.file);
+        let imageUrls = [];
+        if (req.files) {
+            imageUrls = await uploadToS3(req.files);
         }
 
         const newPendingReport = new PendingReport({
@@ -36,7 +36,7 @@ exports.submitReport = async (req, res) => {
             injuryTypeID,
             severity,
             description,
-            image: imageUrl,
+            image: imageUrls,
             witnessID,
             status: "On going"
         });
@@ -199,19 +199,22 @@ exports.getReportByID = async (req, res) => {
         }
 
         const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
-            Employee.findOne({ employeeID: report.reportBy }, 'firstName'),
-            Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName'),
-            Employee.findOne({ employeeID: report.witnessID }, 'firstName')
+            Employee.findOne({ employeeID: report.reportBy }, 'firstName role'),
+            Employee.findOne({ employeeID: report.injuredEmployeeID }, 'firstName role'),
+            Employee.findOne({ employeeID: report.witnessID }, 'firstName role')
         ]);
 
-        const reportWithNames = {
+        const reportWithDetails = {
             ...report._doc,
             reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            reportByRole: reportByEmployee ? reportByEmployee.role : null,
             injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
-            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+            injuredEmployeeRole: injuredEmployee ? injuredEmployee.role : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null,
+            witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null,
         };
 
-        res.json(reportWithNames);
+        res.json(reportWithDetails);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -268,19 +271,22 @@ exports.getPendingReportByID = async (req, res) => {
         }
 
         const [reportByEmployee, injuredEmployee, witnessEmployee] = await Promise.all([
-            Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName'),
-            Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName'),
-            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName')
+            Employee.findOne({ employeeID: pendingReport.reportBy }, 'firstName role'),
+            Employee.findOne({ employeeID: pendingReport.injuredEmployeeID }, 'firstName role'),
+            Employee.findOne({ employeeID: pendingReport.witnessID }, 'firstName role')
         ]);
 
-        const pendingReportWithNames = {
+        const pendingReportWithDetails = {
             ...pendingReport._doc,
             reportByFirstName: reportByEmployee ? reportByEmployee.firstName : null,
+            reportByRole: reportByEmployee ? reportByEmployee.role : null,
             injuredEmployeeFirstName: injuredEmployee ? injuredEmployee.firstName : null,
-            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null
+            injuredEmployeeRole: injuredEmployee ? injuredEmployee.role : null,
+            witnessEmployeeFirstName: witnessEmployee ? witnessEmployee.firstName : null,
+            witnessEmployeeRole: witnessEmployee ? witnessEmployee.role : null
         };
 
-        res.json(pendingReportWithNames);
+        res.json(pendingReportWithDetails);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -308,10 +314,10 @@ exports.updatePendingReportByID = async (req, res) => {
     const { _id } = req.params;
     const updateFields = req.body;
 
-    if (req.file) {
+    if (req.files && req.files.length > 0) {
         try {
-            const imageUrl = await uploadToS3(req.file);
-            updateFields.image = imageUrl;
+            const imageUrls = await uploadToS3(req.files);
+            updateFields.image = imageUrls;
         } catch (error) {
             return res.status(500).json({ message: "Failed to upload image" });
         }
@@ -393,8 +399,8 @@ exports.getWeeklyInjuryStats = async (req, res) => {
         const { companyID } = req.query;
 
         // Adjust by subtracting 1 day to account for the offset
-        const startOfWeek = DateTime.now().startOf('week').minus({ days: 1 }).toJSDate();    // const startOfWeek = DateTime.now().startOf('week').toJSDate();
-        const endOfWeek = DateTime.now().endOf('week').toJSDate();
+        const startOfWeek = DateTime.now().setZone('UTC').startOf('week').toJSDate();
+        const endOfWeek = DateTime.now().setZone('UTC').endOf('week').toJSDate();
 
         const weeklyReports = await Report.aggregate([
             {
@@ -458,8 +464,8 @@ exports.getMonthlyEpidemicData = async (req, res) => {
         const { companyID } = req.query;
 
         // Get the start and end of the current month
-        const startOfMonth = DateTime.now().startOf("month").toJSDate();
-        const endOfMonth = DateTime.now().endOf("month").toJSDate();
+        const startOfMonth = DateTime.now().minus({ months: 1 }).startOf("month").toJSDate();   // .minus({ months: 1 }) to last month
+        const endOfMonth = DateTime.now().minus({ months: 1 }).endOf("month").toJSDate();       // .minus({ months: 1 }) to last month
 
         const reports = await Report.aggregate([
             {

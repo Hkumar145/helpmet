@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from '../api/axios';
+import { useDropzone } from 'react-dropzone';
 
 const InjuryReport = () => {
   const [reportBy, setReportBy] = useState('');
@@ -9,15 +10,14 @@ const InjuryReport = () => {
   const [injuryTypeID, setInjuryTypeID] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+  const [image, setImage] = useState([]);
   const [witnessID, setWitnessID] = useState('');
-  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
   
     if (type === 'file' && files.length > 0) {
-        setFile(files[0]); // Set the file state without uploading
+        setImage(Array.from(files)); // Set the file state without uploading
     } else {
         const stateUpdateFunctions = {
             reportBy: setReportBy,
@@ -35,13 +35,33 @@ const InjuryReport = () => {
             updateFunction(value);
         }
     }
-  };  
+  };
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const imageFiles = acceptedFiles.filter((file) => file.type.startsWith("image/"));
+    const nonImageFiles = acceptedFiles.filter((file) => !file.type.startsWith("image/"));
+
+    if (nonImageFiles.length > 0) {
+        alert("Only image files (e.g., .jpg, .jpeg, .png) are allowed.");
+    }
+
+    setImage((prevImages) => [...prevImages, ...imageFiles]);
+}, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: "image/*",
+  });
+
+  const removeFile = (file) => {
+    setImage((prevImages) => prevImages.filter((img) => img !== file));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('image', file);
+    image.forEach((img) => formData.append('image', img));
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
     formData.append('dateOfInjury', dateOfInjury);
@@ -66,17 +86,27 @@ const InjuryReport = () => {
         setInjuryTypeID('');
         setSeverity('');
         setDescription('');
-        setImage('https://upload.wikimedia.org/wikipedia/commons/c/c1/Caution_wet_floor_sign_at_the_doorway.jpg');
+        setImage([]);
         setWitnessID('');
     } catch (error) {
         console.error("Error submitting report:", error);
         alert("Failed to submit report. Please try again.");
     }
 };
+  const demoAutoFill = () => {
+    setReportBy('100410616');
+    setInjuredEmployeeID('100411864');
+    setDateOfInjury('2024-11-05');
+    setLocationID('L0016');
+    setInjuryTypeID('T0002');
+    setSeverity('2');
+    setDescription('Falling from scaffolding results in a broken bone in right leg');
+    setWitnessID('100410616');
+  };
 
   return (
-    <div className="bg-white p-6 rounded-lg max-w-lg mx-auto text-black">
-      <h1 className="text-2xl font-bold mb-4">Injury Report</h1>
+    <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black md:min-w-[700px]">
+      <h1 className="text-2xl font-bold mb-4" onClick={demoAutoFill}>Injury Report</h1>
       <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
         <label>Reported By (Employee ID)</label>
         <input
@@ -87,6 +117,7 @@ const InjuryReport = () => {
           placeholder="Enter your employee ID"
           required
           className="p-2 rounded border"
+          onWheel={(e) => e.target.blur()}
         />
 
         <label>Injured Employee's ID</label>
@@ -98,6 +129,7 @@ const InjuryReport = () => {
           placeholder="Enter injured employee's ID"
           required
           className="p-2 rounded border"
+          onWheel={(e) => e.target.blur()}
         />
 
         <label>Date of Injury</label>
@@ -170,12 +202,31 @@ const InjuryReport = () => {
         ></textarea>
 
         <label>Incident Photos (Optional)</label>
-        <input
+        {/* <input
           type="file"
           name="image"
           onChange={handleChange}
+          multiple
           className="p-2 rounded border text-black"
-        />
+        /> */}
+        <div {...getRootProps()} className="p-4 border-dashed border-2 rounded text-center cursor-pointer">
+          <input {...getInputProps()} />
+          <p><span className='text-[#6938EF]'>Click here to upload</span> or drag and drop</p>
+        </div>
+        <div className="mt-2">
+          {image.map((file, index) => (
+            <div key={index} className="flex items-center justify-between p-2 border rounded mt-1">
+              <p className="truncate">{file.name}</p>
+              <button
+                type="button"
+                className="text-red-500 hover:underline mt-0"
+                onClick={() => removeFile(file)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
 
         <label>Witnesses ID (Optional)</label>
         <input
@@ -185,6 +236,7 @@ const InjuryReport = () => {
           onChange={handleChange}
           placeholder="Enter witness ID"
           className="p-2 rounded border"
+          onWheel={(e) => e.target.blur()}
         />
 
         <button

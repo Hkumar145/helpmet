@@ -13,6 +13,7 @@ const EditEmployee = ({ employeeID, onClose }) => {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
+  const roleOptions = ["Site Manager", "Safety Officer", "Employee"];
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
@@ -91,14 +92,19 @@ const EditEmployee = ({ employeeID, onClose }) => {
           onChange={(e) => setDepartment(e.target.value)}
           required
         />
-        <input
-          type="text"
-          placeholder="Role"
+        <select
           className="border p-2"
           value={role}
           onChange={(e) => setRole(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>- Select Role -</option>
+          {roleOptions.map((roleOption) => (
+            <option key={roleOption} value={roleOption}>
+              {roleOption}
+            </option>
+          ))}
+        </select>
         <input
           type="email"
           placeholder="Email"

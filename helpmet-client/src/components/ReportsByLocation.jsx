@@ -79,13 +79,14 @@ const PendingAndCompletedReports = () => {
     <div className='flex flex-col gap-4'>
        
       <div className='flex flex-row items-center justify-between'>
-        <p className='text-white'>Reports By Location Summary</p>
+        <p className='text-black'>Reports By Location Summary</p>
       </div>
 
       <div className='mt-4'>
         <Line data={lineChartData} options={lineChartOptions} />
       </div>
     </div>
+    
   );
 };
 
