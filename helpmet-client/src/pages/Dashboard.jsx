@@ -413,7 +413,7 @@ const Dashboard = () => {
                     <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
                         <p className="text-[#039855]">{epidemicPercentage}%</p>
                         <p className="text-[14px] text-left">
-                            The major injury type is epidemic related, it accounts for {epidemicPercentage}% of the injuries.
+                            Epidemic related injury accounts for {epidemicPercentage}% of the injuries.
                         </p>
                     </div>
                 </div>
@@ -446,7 +446,7 @@ const Dashboard = () => {
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
 
-    {/* 8 */}   <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[384px] md:w-[770px] 2xl:w-[785px]">
+    {/* 8 */}   <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[384px] md:w-[770px] 2xl:w-[1580px]">
                     <SiteAgentTable/>
                 </div>
             </div>

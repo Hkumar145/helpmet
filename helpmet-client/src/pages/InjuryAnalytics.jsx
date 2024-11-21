@@ -397,8 +397,7 @@ const InjuryAnalytics = () => {
           <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
             <p className="text-[#039855]">{epidemicPercentage}%</p>
             <p className="text-[14px] text-left">
-              The major injury type is epidemic related, it accounts for{" "}
-              {epidemicPercentage}% of the injuries.
+              Epidemic related injury accounts for {epidemicPercentage}% of the injuries.
             </p>
           </div>
         </div>

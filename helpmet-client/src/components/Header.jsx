@@ -33,7 +33,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/dashboard")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
@@ -46,7 +46,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/report")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
@@ -59,7 +59,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/equipmentcheck")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
@@ -72,7 +72,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/alert")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
