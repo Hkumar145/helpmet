@@ -339,7 +339,7 @@ const InjuryAnalytics = () => {
   return (
 
     <div className="w-full flex flex-col gap-4 px-4 lg:px-7 max-w-[2700px]">
-      <h1 className="w-full font-bold xl:ml-1 mb-2 text-left">
+      <h1 className="text-lg w-full font-bold xl:ml-1 mb-2 text-left">
         Injury Analytics - Injury Overview
       </h1>
       <div className="flex flex-col w-full gap-4 lg:gap-[0.75rem] items-center justify-center md:flex-row md:flex-wrap">
@@ -408,79 +408,81 @@ const InjuryAnalytics = () => {
       </div>
 
       {showTable && (
-        <div className="mt-8 text-black w-full overflow-x-scroll">
+        <div className="mt-8 text-black w-full">
           <h3 className="text-lg xl:ml-1 font-bold">Related Injury Reports</h3>
-          <table className="w-full bg-white text-black mt-4 rounded-lg text-sm text-nowrap">
-            <thead>
-              <tr>
-                <th className="px-2 py-2 md:px-8">Injury Type</th>
-                <th className="px-0 py-2 md:px-8">Severity</th>
-                {/* <th className="px-0 py-2 md:px-4">Status</th> */}
-                {/* <th className="px-4 py-2">Location</th> */}
-                <th className="px-0 py-2 md:px-8">Date of Injury</th>
-                {/* <th className="px-4 py-2">Injured Employee</th> */}
-                {/* <th className="px-4 py-2">Report Date</th> */}
-                <th className="px-4 py-2">Reported By</th>
-                <th className="px-2 py-2 md:px-8"></th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {selectedInjuryReports.map((report) => (
-                <tr
-                  key={report._id}
-                  className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]"
-                >
-                  <td className="px-2 py-2 md:px-8 text-left">
-                    {injuryTypeMapping[report.injuryTypeID]}
-                  </td>
-                  <td className="px-0 py-2 md:px-8">
-                    <span className={`label label-severity-${report.severity}`}>
-                      {severityMapping[report.severity]}
-                    </span>
-                  </td>
-                  {/* <td className="px-0 py-2 md:px-4"><span className={`text-nowrap label ${report.status === "Completed" ? "label-completed" : (report.status === "On going" ? "label-ongoing" : "label-onhold")}`}>{report.status}</span></td> */}
-                  {/* <td className="px-4 py-2">{report.locationID}</td> */}
-                  <td className="px-0 py-2 md:px-8">
-                    {new Date(report.dateOfInjury).toLocaleDateString()}
-                  </td>
-                  {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
-                  {/* <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td> */}
-                  <td className="px-0 py-2 md:px-4">
-                    <Avatar
-                      name={report.reportByFirstName}
-                      round={true}
-                      size="30"
-                      textSizeRatio={1.75}
-                      data-tooltip-id={`tooltip-${report.reportID}`}
-                      data-tooltip-content={`${report.reportByFirstName}`}
-                      style={{ cursor: "default" }}
-                      color="#05603A"
-                    />
-                    <ReactTooltip
-                      id={`tooltip-${report.reportID}`}
-                      place="top"
-                      effect="solid"
-                    />
-                  </td>
-                  <td className="px-2 py-2 md:px-8 flex items-center justify-center">
-                    <button
-                      onClick={() => handleViewDetails(report.reportID)}
-                      className="p-1 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8] flex items-center gap-1"
-                    >
-                      <img
-                        className="min-w-[16px] min-h-[16px]"
-                        src="./images/right-arrow.svg"
-                        alt="details icon"
-                      />
-                      <span className="text-xs text-gray-700">
-                        More Details
-                      </span>
-                    </button>
-                  </td>
+          <div className="overflow-x-scroll">
+            <table className="w-full bg-white text-black mt-4 rounded-lg text-sm text-nowrap">
+              <thead>
+                <tr>
+                  <th className="px-2 py-2 md:px-8">Injury Type</th>
+                  <th className="px-0 py-2 md:px-8">Severity</th>
+                  {/* <th className="px-0 py-2 md:px-4">Status</th> */}
+                  {/* <th className="px-4 py-2">Location</th> */}
+                  <th className="px-0 py-2 md:px-8">Date of Injury</th>
+                  {/* <th className="px-4 py-2">Injured Employee</th> */}
+                  {/* <th className="px-4 py-2">Report Date</th> */}
+                  <th className="px-4 py-2">Reported By</th>
+                  <th className="px-2 py-2 md:px-8"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-center">
+                {selectedInjuryReports.map((report) => (
+                  <tr
+                    key={report._id}
+                    className="border-t border-[#E4E7EC] hover:bg-[#F9FAFB]"
+                  >
+                    <td className="px-2 py-2 md:px-8 text-left">
+                      {injuryTypeMapping[report.injuryTypeID]}
+                    </td>
+                    <td className="px-0 py-2 md:px-8">
+                      <span className={`label label-severity-${report.severity}`}>
+                        {severityMapping[report.severity]}
+                      </span>
+                    </td>
+                    {/* <td className="px-0 py-2 md:px-4"><span className={`text-nowrap label ${report.status === "Completed" ? "label-completed" : (report.status === "On going" ? "label-ongoing" : "label-onhold")}`}>{report.status}</span></td> */}
+                    {/* <td className="px-4 py-2">{report.locationID}</td> */}
+                    <td className="px-0 py-2 md:px-8">
+                      {new Date(report.dateOfInjury).toLocaleDateString()}
+                    </td>
+                    {/* <td className="px-4 py-2">{report.injuredEmployeeFirstName}<br />({report.injuredEmployeeID})</td> */}
+                    {/* <td className="px-4 py-2">{new Date(report.reportDate).toLocaleDateString()}</td> */}
+                    <td className="px-0 py-2 md:px-4">
+                      <Avatar
+                        name={report.reportByFirstName}
+                        round={true}
+                        size="30"
+                        textSizeRatio={1.75}
+                        data-tooltip-id={`tooltip-${report.reportID}`}
+                        data-tooltip-content={`${report.reportByFirstName}`}
+                        style={{ cursor: "default" }}
+                        color="#05603A"
+                      />
+                      <ReactTooltip
+                        id={`tooltip-${report.reportID}`}
+                        place="top"
+                        effect="solid"
+                      />
+                    </td>
+                    <td className="px-2 py-2 md:px-8 flex items-center justify-center">
+                      <button
+                        onClick={() => handleViewDetails(report.reportID)}
+                        className="p-1 rounded m-0 border-2 hover:cursor-pointer hover:border-[#4A1FB8] flex items-center gap-1"
+                      >
+                        <span className="pl-2 text-xs text-gray-700">
+                          More Details
+                        </span>
+                        <img
+                          className="min-w-[16px] min-h-[16px]"
+                          src="./images/right-arrow.svg"
+                          alt="details icon"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
       <BackToTopButton />
