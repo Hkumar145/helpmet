@@ -275,6 +275,10 @@ input::-webkit-inner-spin-button {
   background-color: #6938ef;
 }
 
+.nav-links.block .active-link::after {
+  display: none;
+}
+
 /**************** Buttons ****************/
 .return-button {
   background: #f9fafb;

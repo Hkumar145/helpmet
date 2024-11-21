@@ -262,7 +262,8 @@ const PendingReportDetails = () => {
                 <Dialog>
                   <DialogTrigger asChild>
                     <button
-                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-sm px-4 py-2 mb-0 disabled:cursor-not-allowed"
+                      // className="text-[#6938EF] border border-[#6938EF] hover:bg-[#D9D6FE] hover:text-[#6938EF] rounded text-sm px-4 py-2 mb-0 disabled:cursor-not-allowed"
+                      className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-sm px-4 py-2 rounded mb-0 disabled:cursor-not-allowed"
                       disabled={reportDetails.status === "On hold"}
                       title={
                         reportDetails.status === "On hold"
