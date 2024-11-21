@@ -56,7 +56,7 @@ const ReportTable = () => {
       <table className='table-auto w-full border text-xs'>
         <thead>
           <tr className='bg-FFFFFF-100 rounded-lg'>
-            <td className='px-4 py-2 text-center first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
+            <td className='px-12 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
             <td className='px-4 py-2 text-center'>From Date</td>
             <td className='px-4 py-2 text-center'>To Date</td>
             <td className='px-4 py-2 text-center'>Site Manager</td>
@@ -72,7 +72,7 @@ const ReportTable = () => {
         locationReportCounts[location.locationID] > 20 ? 'bg-[#FFF3F4]' : 'bg-[#D9FFEC]'
       }`}
     >
-      <td className='px-4 py-2 text-center'>{location.locationName || 'N/A'}</td>
+      <td className='px-12 py-2 text-left'>{location.locationName || 'N/A'}</td>
       {/* Get the first report for the current location and extract dateOfInjury */}
       <td className='px-4 py-2 text-center'>{
         (() => {

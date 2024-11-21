@@ -38,7 +38,7 @@ exports.submitReport = async (req, res) => {
             severity,
             description,
             image: imageUrls,
-            witnessID,
+            witnessID: witnessID || null,
             status: "On going"
         });
 

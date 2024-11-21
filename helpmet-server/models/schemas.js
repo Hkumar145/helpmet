@@ -38,7 +38,7 @@ const pendingReportSchema = new Schema({
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
     image: { type: [String], required: false },
-    witnessID: { type: Number, trim: true, ref: "Employee" },
+    witnessID: { type: Number, required: false, trim: true, ref: "Employee" },
     status: {
         type: String,
         enum: ["On going", "On hold", "Completed"],
@@ -64,7 +64,7 @@ const reportSchema = new Schema({
     },
     description: { type: String, required: true, trim: true, maxlength: 500 },
     image: { type: [String], required: false },
-    witnessID: { type: Number, trim: true, ref: "Employee" },
+    witnessID: { type: Number, required: false, trim: true, ref: "Employee" },
     status: { 
         type: String,
         default: "Completed",

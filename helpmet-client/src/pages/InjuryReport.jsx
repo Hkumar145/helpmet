@@ -100,7 +100,9 @@ const InjuryReport = () => {
     formData.append('injuryTypeID', injuryTypeID);
     formData.append('severity', severity);
     formData.append('description', description);
-    formData.append('witnessID', witnessID ? witnessID : null);
+    if (witnessID) {
+      formData.append('witnessID', witnessID);
+    }
     formData.append('status', "On going");
 
     try {
@@ -141,10 +143,10 @@ const InjuryReport = () => {
   const demoAutoFill = () => {
     setReportBy('');
     setInjuredEmployeeID('');
-    setDateOfInjury('2024-11-22');
+    setDateOfInjury('');
     setLocationID('L0001');
     setInjuryTypeID('T0002');
-    setSeverity('2');
+    setSeverity('3');
     setDescription('Falling from scaffolding results in a broken bone in right leg');
     setWitnessID('');
   };
