@@ -100,7 +100,9 @@ const InjuryReport = () => {
     formData.append('injuryTypeID', injuryTypeID);
     formData.append('severity', severity);
     formData.append('description', description);
-    formData.append('witnessID', witnessID ? witnessID : null);
+    if (witnessID) {
+      formData.append('witnessID', witnessID);
+    }
     formData.append('status', "On going");
 
     try {

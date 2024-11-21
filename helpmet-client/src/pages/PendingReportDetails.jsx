@@ -258,97 +258,97 @@ const PendingReportDetails = () => {
                     : "No witness"}
                 </span>
               </div>
+              <div className="flex justify-evenly mt-0 gap-4 self-end">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button
+                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-sm px-4 py-2 mb-0 disabled:cursor-not-allowed"
+                      disabled={reportDetails.status === "On hold"}
+                      title={
+                        reportDetails.status === "On hold"
+                          ? "This report is on hold"
+                          : ""
+                      }
+                    >
+                      On Hold
+                    </button>
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogTitle>Put Report On Hold</DialogTitle>
+                    <DialogDescription>
+                      Reason for putting this report on hold:
+                    </DialogDescription>
+                    <textarea
+                      placeholder="Message"
+                      value={holdReason}
+                      onChange={(e) => setHoldReason(e.target.value)}
+                      className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
+                    ></textarea>
+                    <div className="flex flex-row justify-end gap-2">
+                      <DialogClose asChild>
+                        <button
+                          type="button"
+                          className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+                        >
+                          Cancel
+                        </button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <button
+                          type="button"
+                          onClick={confirmOnHold}
+                          className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          Confirm
+                        </button>
+                      </DialogClose>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button
+                      className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-sm px-4 py-2 rounded mb-0 disabled:cursor-not-allowed"
+                      disabled={reportDetails.status === "On hold"}
+                      title={
+                        reportDetails.status === "On hold"
+                          ? "This report is on hold"
+                          : ""
+                      }
+                    >
+                      Approve
+                    </button>
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogTitle>Approve Injury Report</DialogTitle>
+                    <div className="flex flex-row gap-4 items-center">
+                      <DialogDescription>Confirm the approval</DialogDescription>
+                    </div>
+                    <div className="flex flex-row justify-end gap-2">
+                      <DialogClose asChild>
+                        <button
+                          type="button"
+                          className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
+                        >
+                          Cancel
+                        </button>
+                      </DialogClose>
+                      <button
+                        type="button"
+                        onClick={confirmApprove}
+                        className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
           </div>
 
-          <div className="flex justify-evenly mt-6 gap-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <button
-                  className="bg-[#039855] text-white hover:bg-[#A6F4C5] hover:text-[#039855] text-xs px-4 py-2 rounded mb-4 disabled:cursor-not-allowed"
-                  disabled={reportDetails.status === "On hold"}
-                  title={
-                    reportDetails.status === "On hold"
-                      ? "This report is on hold"
-                      : ""
-                  }
-                >
-                  Approve
-                </button>
-              </DialogTrigger>
-
-              <DialogContent>
-                <DialogTitle>Approve Injury Report</DialogTitle>
-                <div className="flex flex-row gap-4 items-center">
-                  <DialogDescription>Confirm the approval</DialogDescription>
-                </div>
-                <div className="flex flex-row justify-end gap-2">
-                  <DialogClose asChild>
-                    <button
-                      type="button"
-                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
-                    >
-                      Cancel
-                    </button>
-                  </DialogClose>
-                  <button
-                    type="button"
-                    onClick={confirmApprove}
-                    className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </DialogContent>
-            </Dialog>
-            <Dialog>
-              <DialogTrigger asChild>
-                <button
-                  className="bg-[#6938EF] text-white hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded mb-4 disabled:cursor-not-allowed"
-                  disabled={reportDetails.status === "On hold"}
-                  title={
-                    reportDetails.status === "On hold"
-                      ? "This report is on hold"
-                      : ""
-                  }
-                >
-                  On Hold
-                </button>
-              </DialogTrigger>
-
-              <DialogContent>
-                <DialogTitle>Put Report On Hold</DialogTitle>
-                <DialogDescription>
-                  Reason for putting this report on hold:
-                </DialogDescription>
-                <textarea
-                  placeholder="Message"
-                  value={holdReason}
-                  onChange={(e) => setHoldReason(e.target.value)}
-                  className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
-                ></textarea>
-                <div className="flex flex-row justify-end gap-2">
-                  <DialogClose asChild>
-                    <button
-                      type="button"
-                      className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
-                    >
-                      Cancel
-                    </button>
-                  </DialogClose>
-                  <DialogClose asChild>
-                    <button
-                      type="button"
-                      onClick={confirmOnHold}
-                      className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:opacity-40 disabled:cursor-not-allowed"
-                    >
-                      Confirm
-                    </button>
-                  </DialogClose>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
         </>
       )}
     </>
