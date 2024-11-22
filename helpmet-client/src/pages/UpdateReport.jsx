@@ -156,7 +156,7 @@ const UpdateReport = () => {
       <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black lg:min-w-[1024px]">
         <ToastContainer position="top-right" autoClose={3000} />
         <h1 className="text-2xl font-bold mb-4">Update Injury Report</h1>
-        <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4 text-black injury-form" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>
           <input
             type="number"

@@ -395,6 +395,16 @@ input::-webkit-inner-spin-button {
 .dot-ls::before {
   color: #9b8afb;
 }
+
+.injury-form label {
+  font-size: 1.1rem;
+}
+
+.injury-form input,
+.injury-form select,
+.injury-form textarea {
+  font-size: 0.95rem;
+}
 /**************** DateTime picker style ****************/
 .react-datetime-picker__wrapper {
   background-color: #fff;
