@@ -15,5 +15,6 @@ authRouter.get('/logout', authController.logout);
 authRouter.get('/companies', verifyToken, authController.getCompanies);
 authRouter.put('/updateProfile', verifyToken, authController.updateProfile);
 authRouter.post('/uploadProfilePicture', verifyToken, upload.single('profilePicture'), authController.uploadProfilePicture);
+authRouter.post('/forgot-password', authController.forgotPassword);
 
 module.exports = authRouter;
