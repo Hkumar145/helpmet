@@ -86,7 +86,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 type="text"
                 value={equipmentName}
                 onChange={(e) => setEquipmentName(e.target.value)}
-                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="border border-gray-300 p-2 rounded-lg"
                 placeholder="Enter equipment name"
                 required
               />
@@ -98,7 +98,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="border border-gray-300 p-2 rounded-lg"
                 placeholder="Enter equipment description"
                 rows="2"
                 required
@@ -112,7 +112,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 <select
                   value={locationID}
                   onChange={(e) => setLocationID(e.target.value)}
-                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                  className="border border-gray-300 p-2 rounded-lg w-full"
                   required
                 >
                   <option value="">Select Location</option>
@@ -128,7 +128,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                  className="border border-gray-300 p-2 rounded-lg w-full"
                 >
                   <option value="Good">Good</option>
                   <option value="Needs Maintenance">Needs Maintenance</option>
@@ -167,7 +167,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                   value={inspectionInterval}
                   onChange={(e) => setInspectionInterval(e.target.value)}
                   placeholder="Enter interval"
-                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                  className="border border-gray-300 p-2 rounded-lg w-full"
                   required
                 />
               </div>
@@ -179,7 +179,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
               <select
                 value={inspectedBy}
                 onChange={(e) => setInspectedBy(e.target.value)}
-                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                className="border border-gray-300 p-2 rounded-lg w-full"
                 required
               >
                 <option value="">Select Employee</option>
