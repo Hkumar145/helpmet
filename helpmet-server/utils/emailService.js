@@ -126,4 +126,27 @@ Thank you.`,
   }
 };
 
-module.exports = { sendInjuryReportEmail, sendAlertEmail, sendHoldEmail, sendApprovalEmail };
+const sendForgotPasswordEmail = async (recipientEmail, newPassword) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: recipientEmail,
+    subject: "Password Reset Request",
+    text: `Hello,
+
+Your password has been reset. Please use the temporary password below to log in and change your password immediately.
+
+Temporary Password: ${newPassword}
+
+Thank you.`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Password reset email sent successfully to:", recipientEmail);
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+    throw new Error("Could not send password reset email");
+  }
+};
+
+module.exports = { sendInjuryReportEmail, sendAlertEmail, sendHoldEmail, sendApprovalEmail, sendForgotPasswordEmail };
