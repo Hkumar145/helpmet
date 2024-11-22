@@ -205,7 +205,10 @@ const InjuryReport = () => {
             value={locationID}
             onChange={handleChange}
             required
-            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border appearance-none focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            style={{
+              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+            }}
           >
             <option value="" disabled>- select location -</option>
             {locations.map((location) => (
@@ -221,7 +224,10 @@ const InjuryReport = () => {
             value={injuryTypeID}
             onChange={handleChange}
             required
-            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border appearance-none focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            style={{
+              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+            }}
           >
             <option value="" disabled>- select injury type -</option>
             <option value="T0001">Overexertion</option>
@@ -242,7 +248,10 @@ const InjuryReport = () => {
             value={severity}
             onChange={handleChange}
             required
-            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border appearance-none focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            style={{
+              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+            }}
           >
             <option value="" disabled>- select severity -</option>
             <option value={1}>Minor</option>
