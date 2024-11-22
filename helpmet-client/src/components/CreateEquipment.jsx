@@ -80,6 +80,14 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
     }
   };
 
+  const demoAutoFill = () => {
+    setEquipmentName('Fire Extinguisher');
+      setDescription('Fire Extinguisher is expired');
+      setLocationID('L0001');
+      setInspectionInterval('180');
+      setStatus('Good');
+  };
+
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={onCancel}>
       {/* Overlay with a dark background */}
@@ -88,7 +96,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
       {/* Dialog Content */}
       <DialogPrimitive.Content className="fixed inset-0 flex items-center justify-center p-6">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg md:w-2/3 lg:w-1/2 h-[80vh] overflow-y-auto">
-          <h2 className="text-2xl font-semibold mb-4 text-center">Add New Equipment</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center" onClick={demoAutoFill}>Add New Equipment</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Equipment Name */}
             <div className="flex flex-col">
@@ -211,6 +219,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                 onChange={(e) => setIsChecked(e.target.checked)}
                 className="mr-2 mt-1 accent-[#4A1FB8]"
                 style={{ width: '2rem', height: '2rem' }}
+                required
               />
               <label className="text-gray-500 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.
