@@ -110,10 +110,13 @@ const CreateLocation = ({ onClose, onSuccess }) => {
         />
 
         <select
-          className="border p-2"
+          className="border p-2 appearance-none rounded-lg"
           value={managerID}
           onChange={(e) => setManagerID(e.target.value)}
           required
+          style={{
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+          }}
         >
           <option value="">Select Manager</option>
           {employees

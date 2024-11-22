@@ -111,10 +111,13 @@ const EditEmployee = ({ employeeID, onClose, onSuccess }) => {
           maxDate={new Date()}
         />
         <select
-          className="border p-2"
+          className="border p-2 appearance-none rounded-lg"
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
           required
+          style={{
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+          }}
         >
           <option value="" disabled>- Select Department -</option>
           {departments.map((dept) => (
@@ -124,10 +127,13 @@ const EditEmployee = ({ employeeID, onClose, onSuccess }) => {
           ))}
         </select>
         <select
-          className="border p-2"
+          className="border p-2 appearance-none rounded-lg"
           value={role}
           onChange={(e) => setRole(e.target.value)}
           required
+          style={{
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+          }}
         >
           <option value="" disabled>- Select Role -</option>
           {roleOptions.map((roleOption) => (
