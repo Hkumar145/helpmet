@@ -284,7 +284,7 @@ const PendingReportDetails = () => {
                       placeholder="Message"
                       value={holdReason}
                       onChange={(e) => setHoldReason(e.target.value)}
-                      className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2"
+                      className="min-h-[6rem] max-h-[12rem] border w-full p-2 rounded-lg mt-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
                     ></textarea>
                     <div className="flex flex-row justify-end gap-2">
                       <DialogClose asChild>

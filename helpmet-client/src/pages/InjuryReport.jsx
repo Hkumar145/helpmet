@@ -170,7 +170,7 @@ const InjuryReport = () => {
             onChange={handleChange}
             placeholder="Enter your employee ID"
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
             onWheel={(e) => e.target.blur()}
           />
 
@@ -182,7 +182,7 @@ const InjuryReport = () => {
             onChange={handleChange}
             placeholder="Enter injured employee's ID"
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
             onWheel={(e) => e.target.blur()}
           />
 
@@ -205,7 +205,7 @@ const InjuryReport = () => {
             value={locationID}
             onChange={handleChange}
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           >
             <option value="" disabled>- select location -</option>
             {locations.map((location) => (
@@ -221,7 +221,7 @@ const InjuryReport = () => {
             value={injuryTypeID}
             onChange={handleChange}
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           >
             <option value="" disabled>- select injury type -</option>
             <option value="T0001">Overexertion</option>
@@ -242,7 +242,7 @@ const InjuryReport = () => {
             value={severity}
             onChange={handleChange}
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           >
             <option value="" disabled>- select severity -</option>
             <option value={1}>Minor</option>
@@ -259,7 +259,7 @@ const InjuryReport = () => {
             onChange={handleChange}
             placeholder="Include key details about the event, actions taken, and any immediate effects."
             required
-            className="p-2 rounded border min-h-[6rem] max-h-[12rem]"
+            className="p-2 rounded border min-h-[6rem] max-h-[12rem] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
             rows="4"
           ></textarea>
 
@@ -297,7 +297,7 @@ const InjuryReport = () => {
             value={witnessID}
             onChange={handleChange}
             placeholder="Enter witness ID"
-            className="p-2 rounded border"
+            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
             onWheel={(e) => e.target.blur()}
           />
 

@@ -38,7 +38,7 @@ const CreateDepartment = ({ onClose, onSuccess }) => {
         <input
           type="text"
           placeholder="Department Name"
-          className="border p-2"
+          className="border p-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           value={departmentName}
           onChange={(e) => setDepartmentName(e.target.value)}
           required

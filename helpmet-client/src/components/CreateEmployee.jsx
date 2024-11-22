@@ -76,7 +76,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
         <input
           type="text"
           placeholder="First Name"
-          className="border p-2"
+          className="border p-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           required
@@ -84,7 +84,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
         <input
           type="text"
           placeholder="Last Name"
-          className="border p-2"
+          className="border p-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           required
@@ -101,7 +101,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
           maxDate={new Date()}
         />
         <select
-          className="border p-2"
+          className="border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
           required
@@ -114,7 +114,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
           ))}
         </select>
         <select
-          className="border p-2"
+          className="border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           value={role}
           onChange={(e) => setRole(e.target.value)}
           required
@@ -129,7 +129,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
         <input
           type="email"
           placeholder="Email"
-          className="border p-2"
+          className="border p-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
