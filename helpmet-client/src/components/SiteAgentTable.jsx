@@ -10,6 +10,7 @@ const ReportTable = () => {
   const [employees, setEmployees]= useState([]);
   const [reports, setReports]= useState([]);
   const [locationReportCounts, setLocationReportCounts] = useState({});
+  const [highSeverityCounts, setHighSeverityCounts] = useState({});
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
@@ -32,7 +33,14 @@ const ReportTable = () => {
               acc[report.locationID] = (acc[report.locationID] || 0) + 1;
               return acc;
             }, {});
+            const highSeverityCountByLocation = completedReports.reduce((acc, report) => {
+              if (report.severity === 1) {
+                acc[report.locationID] = (acc[report.locationID] || 0) + 1;
+              }
+              return acc;
+            }, {});
             setLocationReportCounts(countsByLocation);
+            setHighSeverityCounts(highSeverityCountByLocation);
             setReports(response.data);
           })
           .catch(error => console.error("Error fetching completed reports:", error));
@@ -60,7 +68,8 @@ const ReportTable = () => {
             <td className='px-4 py-2 text-center'>From Date</td>
             <td className='px-4 py-2 text-center'>To Date</td>
             <td className='px-4 py-2 text-center'>Site Manager</td>
-            <td className='px-4 py-2 text-center'>No.</td>
+            <td className='px-4 py-2 text-center'>High Severity</td>
+            <td className='px-4 py-2 text-center'>Total</td>
             <td className='px-4 py-2 text-center'>Injury Severity</td>
           </tr>
         </thead>
@@ -80,8 +89,8 @@ const ReportTable = () => {
           return report ? new Date(report.dateOfInjury).toLocaleDateString() : 'N/A';
         })()
       }</td>
-      <td className='px-4 py-2 text-center'>{new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString() || 'N/A'}</td>
-
+      <td className='px-4 py-2 text-center'>{new Date(new Date().setDate(new Date().getDate())).toLocaleDateString() || 'N/A'}</td>
+   
       <td className='px-4 py-2 text-center'>{
         (() => {
           const employee = employees.find(e => e.employeeID === location.managerID);
@@ -99,6 +108,7 @@ const ReportTable = () => {
           ) : 'N/A';
         })()
       }</td>
+      <td className='px-4 py-2 text-center'>{highSeverityCounts[location.locationID] || 0}</td>
       <td className='px-4 py-2 text-center'>{locationReportCounts[location.locationID] || 0}</td>
       <td className='px-4 py-2 text-center'>
         <div className="flex justify-center">

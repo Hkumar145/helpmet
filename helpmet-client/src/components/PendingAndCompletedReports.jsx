@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Doughnut } from 'react-chartjs-2';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import MapComponent from './MapComponent';
 
-Chart.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PendingAndCompletedReports = () => {
   const [onHoldReportsCount, setOnHoldReportsCount] = useState(0);
@@ -47,10 +47,10 @@ const PendingAndCompletedReports = () => {
     labels: ['Ongoing', 'On Hold', 'Completed'],
     datasets: [
       {
-        label: 'Reports Status Projection',
         data: [ongoingReportsCount, onHoldReportsCount, completedReportsCount],
-        backgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
-        hoverBackgroundColor: ['#9B8AFB', '#D9D6FE', '#4A1FB8'],
+        backgroundColor: ['#D9D6FE', '#9B8AFB', '#4A1FB8'], // Rotated colors for 3
+        hoverBackgroundColor: ['#D9D6FE', '#9B8AFB', '#4A1FB8'], // Slightly darker versions for hover
+        borderWidth: 0, // No border to create a flat modern look
       },
     ],
   };
@@ -61,8 +61,11 @@ const PendingAndCompletedReports = () => {
       padding: {
         top: 20,
         bottom: 20,
+        right: 20,
       },
     },
+    maintainAspectRatio: false,
+    cutout: '50%', // Makes it look like a ring/doughnut
     plugins: {
       title: {
         display: true,
@@ -74,18 +77,21 @@ const PendingAndCompletedReports = () => {
         color: '#000000',
       },
       legend: {
+        display: true,
         position: 'bottom',
         labels: {
+          boxWidth: 15,
           font: {
+            size: 14,
             family: 'Fira Sans, sans-serif',
           },
         },
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem) {
-            return `${tooltipItem.label}: ${tooltipItem.raw}`;
-          }
+          label: (tooltipItem) => {
+            return `${tooltipItem.label}: ${tooltipItem.raw} reports`;
+          },
         },
         titleFont: {
           family: 'Fira Sans, sans-serif',
@@ -93,7 +99,7 @@ const PendingAndCompletedReports = () => {
         bodyFont: {
           family: 'Fira Sans, sans-serif',
         },
-      }
+      },
     },
     onClick: (e, elements) => {
       if (elements.length > 0) {
@@ -110,12 +116,14 @@ const PendingAndCompletedReports = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4'>
-      <Doughnut data={data} options={options} style={{ maxHeight: '280px', minWidth: '370px' }} />
-    </div>
+      <div className="relative h-[280px] w-[370px] mx-auto">
+        <Doughnut
+          data={data}
+          className='max-w-[396px]'
+          options={options}
+        />
+      </div>
   );
-  
-  
 };
 
 export default PendingAndCompletedReports;
