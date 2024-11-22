@@ -23,6 +23,8 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
           isInspectionDue: currentDate > nextInspectionDate,
         };
       });
+      
+      
       setUpdatedEquipments(updatedList);
       setLoading(false);
     };
@@ -153,9 +155,13 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
   </div>
 </td>
                     <td style={{ padding: '16px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{equipment.equipmentID}</td>
-                    <td style={{ padding: '16px', textAlign: 'center', color: equipment.status === 'Out of Service' ? 'red' : 'green', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
+                    {/* <td style={{ padding: '16px', textAlign: 'center', color: equipment.status === 'Out of Service' ? 'red' : 'green', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                         {equipment.status}
-                    </td>
+                    </td> */}
+                    <td style={{ padding: '16px', textAlign: 'center', color: equipment.isInspectionDue ? 'grey' : (equipment.status === 'Out of Service' ? 'red' : 'green'), whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
+  {equipment.isInspectionDue ? 'TBC' : equipment.status}
+</td>
+
                     <td style={{ padding: '16px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                       {formatDate(equipment.inspectionDate)}
                     </td>
@@ -216,10 +222,15 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                             </div>
                             <div className="bg-gray-50 rounded-lg p-3">
                               <div className="text-sm text-gray-500">Status</div>
-                              <div className="font-semibold text-gray-900 flex items-center">
+                              {/* <div className="font-semibold text-gray-900 flex items-center">
                                 <span className={`w-2 h-2 rounded-full mr-2 ${equipment.status.toLowerCase() === 'good' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                                 {equipment.status}
+                              </div> */}
+                               <div className="font-semibold text-gray-900 flex items-center">
+                                <span className={`w-2 h-2 rounded-full mr-2 ${equipment.isInspectionDue ? 'bg-gray-500' : (equipment.status.toLowerCase() === 'good' ? 'bg-green-500' : 'bg-red-500')}`}></span>
+                                {equipment.isInspectionDue ? 'TBC' : equipment.status}
                               </div>
+
                             </div>
                             <div className="bg-gray-50 rounded-lg p-3">
                               <div className="text-sm text-gray-500">Inspection Date</div>

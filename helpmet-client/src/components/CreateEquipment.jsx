@@ -618,6 +618,8 @@ import axios from "../api/axios";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { useSelector } from "react-redux";
 import Select from "react-select";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
 
 const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
   const [equipmentName, setEquipmentName] = useState("");
@@ -812,34 +814,70 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
             </div>
 
             {/* Inspection Date and Interval */}
-            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
-              <div className="flex flex-col w-full md:w-1/2">
-                <label className="text-gray-700 font-medium mb-1">
-                  Inspection Date
-                </label>
-                <input
-                  type="date"
+            {/* <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+              <div className="flex flex-col w-full p-2 md:w-1/2" >
+                <label className="text-gray-600">Inspection Date</label>
+                <DateTimePicker
+                  className="injury-datetime-picker "
+                  onChange={setInspectionDate}
                   value={inspectionDate}
-                  onChange={(e) => setInspectionDate(e.target.value)}
-                  className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700"
                   required
+                  disableClock={true}
+                  clearIcon={null}
+                  calendarIcon={null}
+                  format='y-MM-dd'
+                  maxDate={new Date()}
                 />
               </div>
               <div className="flex flex-col w-full md:w-1/2">
-                <label className="text-gray-700 font-medium mb-1">
-                  Inspection Interval (Days)
-                </label>
+                <label className="text-gray-600">Inspection Interval (Days)</label>
                 <input
                   type="number"
                   value={inspectionInterval}
                   onChange={(e) => setInspectionInterval(e.target.value)}
                   placeholder="Enter interval"
-                  className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700"
+                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
                   onWheel={(e) => e.target.blur()}
                 />
               </div>
-            </div>
+            </div> */}
+{/* Inspection Date and Interval */}
+<div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+  {/* Inspection Date */}
+  <div className="flex flex-col w-full md:w-1/2">
+    <label className="text-gray-700 font-medium mb-1">Inspection Date</label>
+    <div className="relative">
+      <DateTimePicker
+        onChange={setInspectionDate}
+        value={inspectionDate}
+        required
+        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700"
+        format="y-MM-dd"
+        disableClock={true}
+        maxDate={new Date()}
+        calendarClassName="rounded-lg shadow-lg"
+        clearIcon={null}
+        calendarIcon={null}
+      />
+    </div>
+  </div>
+
+  {/* Inspection Interval */}
+  <div className="flex flex-col w-full md:w-1/2">
+    <label className="text-gray-700 font-medium mb-1">Inspection Interval (Days)</label>
+    <input
+      type="number"
+      value={inspectionInterval}
+      onChange={(e) => setInspectionInterval(e.target.value)}
+      placeholder="Enter interval"
+      className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700"
+      required
+      onWheel={(e) => e.target.blur()}
+    />
+  </div>
+</div>
+
 
             {/* Inspected By */}
             <div className="flex flex-col">
@@ -906,3 +944,4 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 };
 
 export default CreateEquipment;
+
