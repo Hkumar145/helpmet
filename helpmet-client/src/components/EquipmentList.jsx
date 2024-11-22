@@ -155,7 +155,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
                     {/* <td style={{ padding: '16px', textAlign: 'center', color: equipment.status === 'Out of Service' ? 'red' : 'green', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                         {equipment.status}
                     </td> */}
-                    <td style={{ padding: '16px', textAlign: 'center', color: equipment.isInspectionDue ? 'grey' : (equipment.status === 'Out of Service' ? 'red' : 'green'), whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
+                    <td style={{ padding: '16px', textAlign: 'center', color: equipment.isInspectionDue ? 'grey' : (equipment.status === 'Out of Service' || equipment.status === 'Needs Maintenance'? 'red' : 'green'), whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="hide-on-mobile">
                       {equipment.isInspectionDue ? 'TBC' : equipment.status}
                     </td>
 

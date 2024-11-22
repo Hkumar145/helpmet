@@ -197,7 +197,8 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 type="checkbox"
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
-                className="mr-2 mt-1"
+                className="mr-2 mt-1 accent-[#4A1FB8]"
+                style={{ width: '2rem', height: '2rem' }}
               />
               <label className="text-gray-600 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.
