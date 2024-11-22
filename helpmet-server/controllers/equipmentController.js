@@ -1,6 +1,6 @@
 const {
     Equipment,
-    EmployeeEquipment
+    // EmployeeEquipment
 } = require("../models/schemas");
 
 // Create a new equipment
@@ -39,13 +39,13 @@ exports.createEquipment = async (req, res) => {
         await newEquipment.save();
 
         // Update EmployeeEquipment table
-        if (inspectedBy) {
-            const employeeEquipmentEntry = {
-                equipmentID: newEquipment.equipmentID,
-                employeeID: inspectedBy
-            };
-            await EmployeeEquipment.create(employeeEquipmentEntry);
-        }
+        // if (inspectedBy) {
+        //     const employeeEquipmentEntry = {
+        //         equipmentID: newEquipment.equipmentID,
+        //         employeeID: inspectedBy
+        //     };
+        //     await EmployeeEquipment.create(employeeEquipmentEntry);
+        // }
 
         res.json({ message: "Equipment created successfully" });
     } catch (error) {

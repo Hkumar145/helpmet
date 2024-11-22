@@ -157,12 +157,12 @@ const EquipmentCheck = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 px-4 lg:px-7 max-w-[2700px]">
+    <div className="w-full flex flex-col gap-0 px-4 lg:px-7 max-w-[2700px]">
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between sm:gap-6 mb-4">
         <h1 className="text-black text-[32px] font-bold">Equipment Check</h1>
         <button
-          className="bg-[#6938EF] text-white px-5 rounded text-[16px] font-semibold mt-0 hover-button"
+          className="bg-[#6938EF] text-white px-5 rounded text-[16px] font-semibold mt-0 mb hover-button"
           onClick={handleAddNewEquipment}
         >
           Add New Equipment

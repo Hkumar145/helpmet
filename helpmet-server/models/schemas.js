@@ -105,7 +105,7 @@ employeeAlertSchema.index({ employeeID: 1, alertID: 1 }, { unique: true });
 // Equipment Schema
 const equipmentSchema = new Schema({
     equipmentID: { type: String, required: true, unique: true, trim: true, maxlength: 10 },
-    equipmentName: { type: String, trim: true, required: true, maxlength: 30 },
+    equipmentName: { type: String, trim: true, required: true, maxlength: 50 },
     companyID: { type: Number, required: true, ref: "Company", trim: true, maxlength: 10 },
     locationID: { type: String, required: true, ref: "Location", trim: true, maxlength: 10 },
     inspectionDate: { type: Date, required: true },
@@ -119,15 +119,15 @@ const equipmentSchema = new Schema({
         required: true 
     },
     description: { type: String, trim: true, required: true, maxlength: 500 },
-    image: { type: String }
+    // image: { type: String }
 });
 
 // EmployeeEquipment Schema
-const employeeEquipmentSchema = new Schema({
-    employeeID: { type: Number, ref: "Employee", trim: true, required: true },
-    equipmentID: { type: String, ref: "Equipment", trim: true, required: true }
-});
-employeeEquipmentSchema.index({ employeeID: 1, equipmentID: 1 }, { unique: true });
+// const employeeEquipmentSchema = new Schema({
+//     employeeID: { type: Number, ref: "Employee", trim: true, required: true },
+//     equipmentID: { type: String, ref: "Equipment", trim: true, required: true }
+// });
+// employeeEquipmentSchema.index({ employeeID: 1, equipmentID: 1 }, { unique: false });
 
 // Company Schema
 const companySchema = new Schema({
@@ -208,7 +208,7 @@ const EmployeeReport = mongoose.model("EmployeeReport", employeeReportSchema);
 const Alert = mongoose.model("Alert", alertSchema);
 const EmployeeAlert = mongoose.model("EmployeeAlert", employeeAlertSchema);
 const Equipment = mongoose.model("Equipment", equipmentSchema);
-const EmployeeEquipment = mongoose.model("EmployeeEquipment", employeeEquipmentSchema);
+// const EmployeeEquipment = mongoose.model("EmployeeEquipment", employeeEquipmentSchema);
 const Company = mongoose.model("Company", companySchema);
 const Department = mongoose.model("Department", departmentSchema);
 const DepartmentAlert = mongoose.model("DepartmentAlert", departmentAlertSchema);
@@ -224,7 +224,7 @@ module.exports = {
     Alert,
     EmployeeAlert,
     Equipment,
-    EmployeeEquipment,
+    // EmployeeEquipment,
     Company,
     Department,
     DepartmentAlert,
