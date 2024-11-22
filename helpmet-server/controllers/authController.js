@@ -6,6 +6,7 @@ const { uploadToS3 } = require('../utils/s3Upload');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const { sendForgotPasswordEmail } = require('../utils/emailService');
 
 // Errors handling
 const handleErrors = (err) => {
@@ -157,5 +158,26 @@ exports.updateProfile = async (req, res) => {
     } catch (err) {
         console.error("Error updating profile:", err);
         res.status(500).json({ error: "An error occurred while updating the profile." });
+    }
+};
+
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: 'Email is required' });
+  
+    try {
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: 'No account found with the provided email.' });
+  
+      const newPassword = '1234';
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await User.updateOne({ email }, { password: hashedPassword });
+  
+      await sendForgotPasswordEmail(email, newPassword);
+  
+      res.status(200).json({ message: 'Password reset email has been sent.' });
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      res.status(500).json({ error: 'Failed to reset password.' });
     }
 };
