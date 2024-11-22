@@ -21,6 +21,10 @@
   grid-template-columns: repeat(2, 1fr);
 } */
 
+.text-center{
+  font-size: .8rem;
+}
+
 .lightsl{
   font-family: "Fira Sans", sans-serif;
   font-weight: 300;
