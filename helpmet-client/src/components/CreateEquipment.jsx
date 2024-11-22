@@ -209,7 +209,8 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                 type="checkbox"
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
-                className="mr-2 mt-1 "
+                className="mr-2 mt-1 accent-[#4A1FB8]"
+                style={{ width: '2rem', height: '2rem' }}
               />
               <label className="text-gray-500 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.
@@ -221,13 +222,13 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
               <button
                 type="button"
                 onClick={onCancel}
-                className="text-[#98A2B3] hover:text-[#475467] border rounded-lg text-xs px-4 py-2 my-0"
+                className="text-[#98A2B3] hover:text-[#475467] border rounded text-xs px-4 py-2 my-0"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded-lg my-0 disabled:cursor-not-allowed"
+                className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-0 disabled:cursor-not-allowed"
               >
                 Add Equipment
               </button>
