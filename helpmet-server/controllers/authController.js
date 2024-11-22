@@ -169,7 +169,7 @@ exports.forgotPassword = async (req, res) => {
       const user = await User.findOne({ email });
       if (!user) return res.status(404).json({ message: 'No account found with the provided email.' });
   
-      const newPassword = '1234'; // Generate or use a random password
+      const newPassword = '1234';
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       await User.updateOne({ email }, { password: hashedPassword });
   
