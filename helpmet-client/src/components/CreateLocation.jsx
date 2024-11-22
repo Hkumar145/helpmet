@@ -103,14 +103,14 @@ const CreateLocation = ({ onClose, onSuccess }) => {
         <input
           type="text"
           placeholder="Location Name"
-          className="border p-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+          className="border p-2"
           value={locationName}
           onChange={(e) => setLocationName(e.target.value)}
           required
         />
 
         <select
-          className="border p-2 appearance-none rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+          className="border p-2 appearance-none rounded-lg"
           value={managerID}
           onChange={(e) => setManagerID(e.target.value)}
           required

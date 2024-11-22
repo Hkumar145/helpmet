@@ -125,7 +125,7 @@ const CreateReport = ({ onSubmitSuccess }) => {
           placeholder="Add a note..."
           id="remark"
           cols="30"
-          className="min-h-[6rem] p-2 max-h-[12rem] border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+          className="min-h-[6rem] p-2 max-h-[12rem] border border-gray-200"
           value={remark}
           onChange={(e) => setRemark(e.target.value)}
         ></textarea>

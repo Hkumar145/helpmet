@@ -201,12 +201,12 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
                         <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
-                        <input type="text" className="bg-gray10 border border-gray20 focus:outline-none focus:ring-2 focus:ring-[#6938EF]" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
+                        <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
                     </div>
 
                     <div className="flex flex-col gap-1">
                         <label className="text-gray60 text-[14px] mt-0">Note</label>
-                        <textarea name="description" value={alertData.description} onChange={handleInputChange} maxLength={MAX_NOTE_LENGTH} className="text-[14px] px-2 py-1 h-[200px] bg-gray10 border border-gray20 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"/>
+                        <textarea name="description" value={alertData.description} onChange={handleInputChange} maxLength={MAX_NOTE_LENGTH} className="text-[14px] px-2 py-1 h-[200px] bg-gray10 border border-gray20 rounded-[8px]"/>
                         <span className="text-gray30 text-xs">{MAX_NOTE_LENGTH - alertData.description.length} characters left</span>
                     </div>
 
@@ -256,7 +256,7 @@ const CreateEmployeeAlert = ({ companyID, fetchAlerts, onCancel }) => {
                         value={alertData.cc || ""}
                         onChange={handleCCChange}
                         onBlur={validateEmailFormat}
-                        className="bg-gray10 border border-gray20 placeholder-text focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+                        className="bg-gray10 border border-gray20 placeholder-text"
                         style={{ fontSize: "14px", padding: ".3rem .45rem", borderRadius: "8px" }}
                     />
                 </div>

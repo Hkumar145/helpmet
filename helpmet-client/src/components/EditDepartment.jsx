@@ -50,7 +50,7 @@ const EditDepartment = ({ departmentID, onClose, onSuccess }) => {
         <input
           type="text"
           placeholder="Department Name"
-          className="border p-2 focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+          className="border p-2"
           value={departmentName}
           onChange={(e) => setDepartmentName(e.target.value)}
           required

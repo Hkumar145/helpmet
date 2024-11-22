@@ -170,7 +170,7 @@ const InjuryReport = () => {
             onChange={handleChange}
             placeholder="Enter your employee ID"
             required
-            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border"
             onWheel={(e) => e.target.blur()}
           />
 
@@ -182,7 +182,7 @@ const InjuryReport = () => {
             onChange={handleChange}
             placeholder="Enter injured employee's ID"
             required
-            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border"
             onWheel={(e) => e.target.blur()}
           />
 
@@ -205,7 +205,7 @@ const InjuryReport = () => {
             value={locationID}
             onChange={handleChange}
             required
-            className="p-2 rounded border appearance-none focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border appearance-none"
             style={{
               backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
             }}
@@ -224,7 +224,7 @@ const InjuryReport = () => {
             value={injuryTypeID}
             onChange={handleChange}
             required
-            className="p-2 rounded border appearance-none focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border appearance-none"
             style={{
               backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
             }}
@@ -248,7 +248,7 @@ const InjuryReport = () => {
             value={severity}
             onChange={handleChange}
             required
-            className="p-2 rounded border appearance-none focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border appearance-none"
             style={{
               backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
             }}
@@ -268,7 +268,7 @@ const InjuryReport = () => {
             onChange={handleChange}
             placeholder="Include key details about the event, actions taken, and any immediate effects."
             required
-            className="p-2 rounded border min-h-[6rem] max-h-[12rem] focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border min-h-[6rem] max-h-[12rem]"
             rows="4"
           ></textarea>
 
@@ -306,7 +306,7 @@ const InjuryReport = () => {
             value={witnessID}
             onChange={handleChange}
             placeholder="Enter witness ID"
-            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#6938EF]"
+            className="p-2 rounded border"
             onWheel={(e) => e.target.blur()}
           />
 
