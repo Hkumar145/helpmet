@@ -152,10 +152,12 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="" alt="" />
-            <h1>Harshdeep Kaur</h1>
-            <p>Junior UI/UX Designer</p>
-                      <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href=""><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            <img src="../../images/Gurleen.png" alt="" />
+            <div className="otherdeets">
+              <h1>Harshdeep Kaur</h1>
+              <p>Junior UI/UX Designer</p>
+                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href=""><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
             </div>
 
           <div className="images">
