@@ -203,12 +203,12 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
             <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start min-w-[500px]">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
+                        <label className="text-gray60 text-[16px] mt-0">Alert Name</label>
                         <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
                     </div>
                     
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">Note</label>
+                        <label className="text-gray60 text-[16px] mt-0">Note</label>
                         <textarea name="description" maxLength={MAX_NOTE_LENGTH} value={alertData.description} onChange={handleInputChange} className="text-[14px] px-2 py-1 h-[200px] bg-gray10 border border-gray20 rounded-[8px]"/>
                         <span className="text-gray30 text-xs">{MAX_NOTE_LENGTH - alertData.description.length} characters left</span>
                     </div>
@@ -251,7 +251,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                 
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 w-full">
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px]">CC</label>
+                        <label className="text-gray60 text-[16px]">CC</label>
                         <input
                             type="text"
                             name="cc"
@@ -265,7 +265,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                     </div>
                 
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">To</label>
+                        <label className="text-gray60 text-[16px] mt-0">To</label>
                         <div className={`bg-gray10 border rounded-[8px] border-gray20 ${allSelectedEmployees.length > 3 ? "h-32 overflow-y-auto" : "h-auto"}`}>
                             {allSelectedEmployees.length > 0 ? (
                                 <ul>
@@ -297,7 +297,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                         </div>          
 
                         <div className="bg-white p-2 flex flex-col gap-2 border border-gray20 rounded-[10px] mt-1">
-                            <h3 className="text-gray60 text-center text-[14px] font-bold">Members</h3>
+                            <h3 className="text-gray60 text-center text-[16px] font-bold">Members</h3>
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
                                 <input
                                     type="text"

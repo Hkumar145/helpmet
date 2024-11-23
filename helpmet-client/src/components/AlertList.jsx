@@ -179,15 +179,15 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
             <div className="w-full overflow-x-auto rounded-lg shadow-md">
                 <table className="bg-white p-6 w-full text-left table-fixed min-w-[500px]">
                     <thead className="text-center">
-                        <tr className="text-[16px] text-gray50 bg-[#f8f8f8]">
-                            <th className="py-2 font-bold" style={{ width: window.innerWidth >= 1024 ? "20%" : "15%" }}>Alert ID</th>
-                            <th className="py-2 font-bold text-left" style={{ width: "30%" }}>Alert Name</th>
-                            <th className="py-2 font-bold" style={{ width: "18%" }}>Send Date</th>
-                            <th className="py-2 font-bold text-left hidden md:table-cell" style={{ width: "12%" }}>Recipients</th>
-                            <th className="py-2 font-bold" style={{ width: "auto" }}></th>
+                        <tr className="text-gray50 bg-[#f8f8f8]">
+                            <th className="py-4 font-bold" style={{ width: window.innerWidth >= 1024 ? "20%" : "15%" }}>Alert ID</th>
+                            <th className="py-4 font-bold text-left" style={{ width: "30%" }}>Alert Name</th>
+                            <th className="py-4 font-bold" style={{ width: "18%" }}>Send Date</th>
+                            <th className="py-4 font-bold text-left hidden md:table-cell" style={{ width: "12%" }}>Recipients</th>
+                            <th className="py-4 font-bold" style={{ width: "auto" }}></th>
                         </tr>
                     </thead>
-                    <tbody className="text-[14px] text-center">
+                    <tbody className="text-center">
                         {getPaginatedAlerts().map((alert, index) => (
                             <React.Fragment key={alert.alertID}>
                                 <tr className="border-t border-gray20 hover:bg-gray10">
@@ -229,7 +229,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                                         name={nameInitial}
                                                         round={true}
                                                         size="30"
-                                                        textSizeRatio={2.5} 
+                                                        textSizeRatio={2} 
                                                     />
                                                 </div>
                                             );

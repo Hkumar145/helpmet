@@ -242,12 +242,12 @@ const EditEmployeeAlert = () => {
             <form onSubmit={updateAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">Alert Name</label>
+                        <label className="text-gray60 text-[16px] mt-0">Alert Name</label>
                         <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
                     </div>
 
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">Note</label>
+                        <label className="text-gray60 text-[16px] mt-0">Note</label>
                         <textarea name="description" value={alertData.description} onChange={handleInputChange} maxLength={MAX_NOTE_LENGTH} className="text-[14px] px-2 py-1 h-[200px] bg-gray10 border border-gray20 rounded-[8px]"/>
                         <span className="text-gray30 text-xs">{MAX_NOTE_LENGTH - alertData.description.length} characters left</span>
                     </div>
@@ -292,7 +292,7 @@ const EditEmployeeAlert = () => {
 
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 w-full">
                 <div className="flex flex-col gap-1">
-                    <label className="text-gray60 text-[14px]">CC</label>
+                    <label className="text-gray60 text-[16px]">CC</label>
                     <input
                         type="text"
                         name="cc"
@@ -305,8 +305,8 @@ const EditEmployeeAlert = () => {
                     />
                 </div>
   
-                    <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">To</label>
+                    <div className="flex flex-col gap-1 p-0.5">
+                        <label className="text-gray60 text-[16px] mt-0">To</label>
                         <CustomSelect
                             options={recipients}
                             onChange={handleRecipientsChange}
@@ -350,7 +350,7 @@ const EditEmployeeAlert = () => {
                     </div>
                     
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0">Schedule Alert</label>
+                        <label className="text-gray60 text-[16px] mt-0">Schedule Alert</label>
                         <DateTimePicker
                             onChange={handleDateTimeChange}   
                             value={dateTime}         
