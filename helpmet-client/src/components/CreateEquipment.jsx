@@ -81,11 +81,13 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
   };
 
   const demoAutoFill = () => {
-    setEquipmentName('Fire Extinguisher');
-      setDescription('A brand new fire extinguisher.');
-      setLocationID('L0001');
-      setInspectionInterval('180');
-      setStatus('Good');
+    // setEquipmentName('Fire Extinguisher');
+    // setDescription('A brand new fire extinguisher.');
+    // setLocationID('L0001');
+    // setStatus('Good');
+    // setInspectionDate(new Date('2024-11-23'));
+    // setInspectionInterval('180');
+    // setInspectedBy('100417438');
   };
 
   return (
