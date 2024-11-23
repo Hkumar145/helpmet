@@ -141,9 +141,9 @@ const InjuryReport = () => {
   }, [success, navigate]);
 
   const demoAutoFill = () => {
-    setReportBy('');
-    setInjuredEmployeeID('');
-    setDateOfInjury('');
+    setReportBy('100440680');
+    setInjuredEmployeeID('100443628');
+    setDateOfInjury(new Date('2024-11-23'));
     setLocationID('L0001');
     setInjuryTypeID('T0002');
     setSeverity('3');
