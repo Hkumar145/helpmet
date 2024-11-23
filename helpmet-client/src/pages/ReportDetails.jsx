@@ -98,7 +98,7 @@ const ReportDetails = () => {
         )}
       </div>
 
-      <div className="flex flex-col text-black max-w-lg min-w-full p-6 bg-white rounded-lg text-sm gap-4 border">
+      <div className="flex flex-col text-black max-w-lg min-w-full p-6 bg-white rounded-lg text-sm gap-4 border shadow-md">
         <div>
           <p>Description</p>
           <span className="report-info">{reportDetails.description}</span>
@@ -108,7 +108,11 @@ const ReportDetails = () => {
 
         <div>
           <p>Location</p>
-          <span className="report-info">{reportDetails.locationID}</span>
+          <span className="report-info">
+            {reportDetails.locationName
+            ? `${reportDetails.locationName} (${reportDetails.locationID})`
+            : reportDetails.locationID}
+          </span>
         </div>
 
         <div className="line-spacer"></div>

@@ -365,7 +365,7 @@ const Dashboard = () => {
 
                 {/* Update */}
 
-    {/* 1 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 flex flex-col items-center h-[280px] w-[384px]">
+    {/* 1 */}   <div className="bg-white rounded-lg border shadow-md max-w-72 flex flex-col items-center h-[280px] w-[384px]">
                     <BarChart
                         chartData={filteredWeeklyInjuryData}
                         barName={dayTypeName}
@@ -379,7 +379,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-    {/* 2 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[280px] w-[384px]">
+    {/* 2 */}   <div className="bg-white rounded-lg border shadow-md max-w-72 h-[280px] w-[384px]">
                     <BarChart
                         chartData={filteredInjuryTypeData}
                         barName={injuryTypeMapping}
@@ -397,12 +397,12 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-    {/* 3 */}   <div className="bg-white rounded-lg border-2 shadow-md h-[280px] w-[384px] md:w-[790px] 2xl:w-[770px]">
+    {/* 3 */}   <div className="bg-white rounded-lg border shadow-md h-[280px] w-[384px] md:w-[790px] 2xl:w-[770px]">
                     <p className="text-center w-full text-sm font-bold mt-4">Injury Heat Map</p>
                     <MapComponent/>
                 </div>
 
-    {/* 4 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[280px] w-[384px]">
+    {/* 4 */}   <div className="bg-white rounded-lg border shadow-md max-w-72 h-[280px] w-[384px]">
                     <LineChart
                         chartData={monthlyEpidemicData}
                         lineName={{ T0006: "Epidemic Injury Type" }}
@@ -413,12 +413,12 @@ const Dashboard = () => {
                     <div className="flex flex-row items-center justify-center my-3 gap-2 max-w-[100%] ml-8 mr-6">
                         <p className="text-[#039855]">{epidemicPercentage}%</p>
                         <p className="text-[14px] text-left">
-                            The major injury type is epidemic related, it accounts for {epidemicPercentage}% of the injuries.
+                            Epidemic related injury accounts for {epidemicPercentage}% of the injuries.
                         </p>
                     </div>
                 </div>
 
-    {/* 5 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72 h-[280px] w-[384px]">
+    {/* 5 */}   <div className="bg-white rounded-lg border shadow-md max-w-72 h-[280px] w-[384px]">
                     {severityData && (
                         <div className="max-w-min">
                             <BarChart
@@ -437,16 +437,16 @@ const Dashboard = () => {
                     )}
                 </div>
 
-    {/* 6 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
+    {/* 6 */}   <div className="bg-white rounded-lg border shadow-md max-w-72">
                     <PendingAndCompletedReports/>
                 </div>
     
 
-    {/* 7 */}   <div className="bg-white rounded-lg border-2 shadow-md max-w-72">
+    {/* 7 */}   <div className="bg-white rounded-lg border shadow-md max-w-72">
                     <EquipmentStatusPieChart companyID={companyID} />
                 </div>
 
-    {/* 8 */}   <div className="bg-white rounded-lg border-2 shadow-md h-auto w-[384px] md:w-[770px] 2xl:w-[785px]">
+    {/* 8 */}   <div className="bg-white rounded-lg border shadow-md h-auto w-[384px] md:w-[770px] 2xl:w-[1580px]">
                     <SiteAgentTable/>
                 </div>
             </div>

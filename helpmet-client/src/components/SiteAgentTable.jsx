@@ -10,6 +10,7 @@ const ReportTable = () => {
   const [employees, setEmployees]= useState([]);
   const [reports, setReports]= useState([]);
   const [locationReportCounts, setLocationReportCounts] = useState({});
+  const [highSeverityCounts, setHighSeverityCounts] = useState({});
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   useEffect(() => {
@@ -32,7 +33,14 @@ const ReportTable = () => {
               acc[report.locationID] = (acc[report.locationID] || 0) + 1;
               return acc;
             }, {});
+            const highSeverityCountByLocation = completedReports.reduce((acc, report) => {
+              if (report.severity === 1) {
+                acc[report.locationID] = (acc[report.locationID] || 0) + 1;
+              }
+              return acc;
+            }, {});
             setLocationReportCounts(countsByLocation);
+            setHighSeverityCounts(highSeverityCountByLocation);
             setReports(response.data);
           })
           .catch(error => console.error("Error fetching completed reports:", error));
@@ -56,11 +64,12 @@ const ReportTable = () => {
       <table className='table-auto w-full border text-xs'>
         <thead>
           <tr className='bg-FFFFFF-100 rounded-lg'>
-            <td className='px-4 py-2 text-center first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
+            <td className='px-12 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
             <td className='px-4 py-2 text-center'>From Date</td>
             <td className='px-4 py-2 text-center'>To Date</td>
             <td className='px-4 py-2 text-center'>Site Manager</td>
-            <td className='px-4 py-2 text-center'>No.</td>
+            <td className='px-4 py-2 text-center'>High Severity</td>
+            <td className='px-4 py-2 text-center'>Total</td>
             <td className='px-4 py-2 text-center'>Injury Severity</td>
           </tr>
         </thead>
@@ -72,7 +81,7 @@ const ReportTable = () => {
         locationReportCounts[location.locationID] > 20 ? 'bg-[#FFF3F4]' : 'bg-[#D9FFEC]'
       }`}
     >
-      <td className='px-4 py-2 text-center'>{location.locationName || 'N/A'}</td>
+      <td className='px-12 py-2 text-left'>{location.locationName || 'N/A'}</td>
       {/* Get the first report for the current location and extract dateOfInjury */}
       <td className='px-4 py-2 text-center'>{
         (() => {
@@ -80,8 +89,8 @@ const ReportTable = () => {
           return report ? new Date(report.dateOfInjury).toLocaleDateString() : 'N/A';
         })()
       }</td>
-      <td className='px-4 py-2 text-center'>{new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString() || 'N/A'}</td>
-
+      <td className='px-4 py-2 text-center'>{new Date(new Date().setDate(new Date().getDate())).toLocaleDateString() || 'N/A'}</td>
+   
       <td className='px-4 py-2 text-center'>{
         (() => {
           const employee = employees.find(e => e.employeeID === location.managerID);
@@ -99,6 +108,7 @@ const ReportTable = () => {
           ) : 'N/A';
         })()
       }</td>
+      <td className='px-4 py-2 text-center'>{highSeverityCounts[location.locationID] || 0}</td>
       <td className='px-4 py-2 text-center'>{locationReportCounts[location.locationID] || 0}</td>
       <td className='px-4 py-2 text-center'>
         <div className="flex justify-center">

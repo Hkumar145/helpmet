@@ -166,7 +166,7 @@ const Location = () => {
         </Dialog>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-lg shadow-md">
         {locations.length === 0 ? (
           <div className="text-center bg-white rounded-lg py-[120px]">
             <p className="font-bold">No Location Available</p>

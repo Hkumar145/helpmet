@@ -11,7 +11,7 @@ const Header = () => {
   // Check if the current path matches the link path
   const isActive = (path) => location.pathname === path;
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className={`bg-white border-b border-gray-200 ${isOpen ? "expanded-header" : ""}`}>
       <div className="flex justify-between items-center max-w-[2700px] mx-auto py-7 px-4 lg:px-7">
         <Link to="/">
           <img src="/images/Group 7.svg" className="w-[140px] h-auto" />
@@ -33,7 +33,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/dashboard")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
@@ -46,7 +46,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/report")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
@@ -59,7 +59,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/equipmentcheck")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >
@@ -72,7 +72,7 @@ const Header = () => {
               <li
                 className={`${
                   isActive("/alert")
-                    ? "underline text-[#6938EF]"
+                    ? "active-link"
                     : "text-black hover:text-[#6938EF]"
                 } transition-colors`}
               >

@@ -4,12 +4,17 @@ import { useDropzone } from 'react-dropzone';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import { DateTime } from 'luxon';
 
 const InjuryReport = () => {
   const [reportBy, setReportBy] = useState('');
   const [injuredEmployeeID, setInjuredEmployeeID] = useState('');
   const [dateOfInjury, setDateOfInjury] = useState('');
   const [locationID, setLocationID] = useState('');
+  const [locations, setLocations] = useState([]);
   const [injuryTypeID, setInjuryTypeID] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
@@ -17,6 +22,7 @@ const InjuryReport = () => {
   const [witnessID, setWitnessID] = useState('');
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
+  const companyID = useSelector((state) => state.user.currentUser?.companyID);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -41,6 +47,25 @@ const InjuryReport = () => {
         }
     }
   };
+
+  useEffect(() => {
+    if (companyID) {
+      const fetchLocations = async () => {
+        try {
+          const response = await axios.get(`/companies/${companyID}/locations`);
+          setLocations(response.data);
+        } catch (error) {
+          console.error("Error fetching locations:", error);
+          toast.error("Failed to fetch locations. Please try again later.", {
+            className: "custom-toast-error",
+            bodyClassName: "custom-toast-body",
+        });
+        }
+      };
+
+      fetchLocations();
+    }
+  }, [companyID]);
 
   const onDrop = useCallback((acceptedFiles) => {
     const imageFiles = acceptedFiles.filter((file) => file.type.startsWith("image/"));
@@ -67,14 +92,17 @@ const InjuryReport = () => {
 
     const formData = new FormData();
     image.forEach((img) => formData.append('image', img));
+    const formattedDate = DateTime.fromJSDate(dateOfInjury, { zone: 'America/Vancouver' }).toISODate();
     formData.append('reportBy', reportBy);
     formData.append('injuredEmployeeID', injuredEmployeeID);
-    formData.append('dateOfInjury', dateOfInjury);
+    formData.append('dateOfInjury', formattedDate);
     formData.append('locationID', locationID);
     formData.append('injuryTypeID', injuryTypeID);
     formData.append('severity', severity);
     formData.append('description', description);
-    formData.append('witnessID', witnessID ? witnessID : null);
+    if (witnessID) {
+      formData.append('witnessID', witnessID);
+    }
     formData.append('status', "On going");
 
     try {
@@ -113,14 +141,14 @@ const InjuryReport = () => {
   }, [success, navigate]);
 
   const demoAutoFill = () => {
-    setReportBy('100410616');
-    setInjuredEmployeeID('100411864');
-    setDateOfInjury('2024-11-12');
-    setLocationID('L0016');
+    setReportBy('');
+    setInjuredEmployeeID('');
+    setDateOfInjury('');
+    setLocationID('L0001');
     setInjuryTypeID('T0002');
-    setSeverity('2');
+    setSeverity('3');
     setDescription('Falling from scaffolding results in a broken bone in right leg');
-    setWitnessID('100410616');
+    setWitnessID('');
   };
 
   return (
@@ -159,25 +187,33 @@ const InjuryReport = () => {
           />
 
           <label>Date of Injury</label>
-          <input
-            type="date"
-            name="dateOfInjury"
+          <DateTimePicker
+            className="injury-datetime-picker"
+            onChange={setDateOfInjury}
             value={dateOfInjury}
-            onChange={handleChange}
             required
-            className="p-2 rounded border"
+            disableClock={true}
+            clearIcon={null}
+            calendarIcon={null}
+            format='y-MM-dd'
+            maxDate={new Date()}
           />
 
-          <label>Location ID</label>
-          <input
-            type="text"
+          <label>Location</label>
+          <select
             name="locationID"
             value={locationID}
             onChange={handleChange}
-            placeholder="Enter Location ID"
             required
             className="p-2 rounded border"
-          />
+          >
+            <option value="" disabled>- select location -</option>
+            {locations.map((location) => (
+              <option key={location.locationID} value={location.locationID}>
+                {location.locationName}
+              </option>
+            ))}
+          </select>
 
           <label>Injury Type ID</label>
           <select

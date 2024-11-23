@@ -98,6 +98,7 @@ const CreateLocation = ({ onClose, onSuccess }) => {
   
   return (
     <main>
+      <ToastContainer position="top-right" autoClose={3000} />
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="text"

@@ -176,8 +176,8 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
     return (
         <div className="flex flex-col items-center justify-center">
             <ToastContainer position="top-right" />
-            <div className="w-full overflow-x-auto rounded-lg">
-                <table className="bg-white p-6 shadow-lg w-full text-left table-fixed min-w-[500px]">
+            <div className="w-full overflow-x-auto rounded-lg shadow-md">
+                <table className="bg-white p-6 w-full text-left table-fixed min-w-[500px]">
                     <thead className="text-center">
                         <tr className="text-[16px] text-gray50 bg-[#f8f8f8]">
                             <th className="py-2 font-bold" style={{ width: window.innerWidth >= 1024 ? "20%" : "15%" }}>Alert ID</th>
