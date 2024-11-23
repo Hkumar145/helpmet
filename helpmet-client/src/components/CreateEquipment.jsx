@@ -82,7 +82,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const demoAutoFill = () => {
     setEquipmentName('Fire Extinguisher');
-      setDescription('Fire Extinguisher is expired');
+      setDescription('A brand new fire extinguisher.');
       setLocationID('L0001');
       setInspectionInterval('180');
       setStatus('Good');
