@@ -156,7 +156,7 @@ const UpdateReport = () => {
       <div className="bg-white p-6 rounded-lg min-w-full mx-auto text-black lg:min-w-[1024px]">
         <ToastContainer position="top-right" autoClose={3000} />
         <h1 className="text-2xl font-bold mb-4">Update Injury Report</h1>
-        <form className="flex flex-col gap-4 text-black" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4 text-black injury-form" onSubmit={handleSubmit}>
           <label>Reported By (Employee ID)</label>
           <input
             type="number"
@@ -198,7 +198,10 @@ const UpdateReport = () => {
             value={locationID}
             onChange={handleChange}
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border appearance-none"
+            style={{
+              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+            }}
           >
             <option value="" disabled>- select location -</option>
             {locations.map((location) => (
@@ -214,7 +217,10 @@ const UpdateReport = () => {
             value={injuryTypeID}
             onChange={handleChange}
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border appearance-none"
+            style={{
+              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+            }}
           >
             <option value="" disabled>- select injury type -</option>
             <option value="T0001">Overexertion</option>
@@ -235,7 +241,10 @@ const UpdateReport = () => {
             value={severity}
             onChange={handleChange}
             required
-            className="p-2 rounded border"
+            className="p-2 rounded border appearance-none"
+            style={{
+              backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+            }}
           >
             <option value="" disabled>- select severity -</option>
             <option value={1}>Minor</option>

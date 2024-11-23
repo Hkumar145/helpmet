@@ -108,7 +108,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="flex flex-col">
           <div>
             <label className="block text-sm  text-gray-600 mb-1">Username</label>
             <input
@@ -143,16 +143,16 @@ const Profile = () => {
           <button 
             onClick={handleUpdate}
             disabled={!username || !email || !password}
-            className="w-full bg-[#6938EF] text-white py-2 mt-2 text-sm rounded-lg hover:bg-[#5925D9] transition-colors disabled:cursor-not-allowed"
+            className="w-full bg-[#6938EF] text-white py-2 mt-[2.5rem] text-sm rounded-lg hover:bg-[#5925D9] transition-colors disabled:cursor-not-allowed"
           >
             Update Profile
           </button>
 
-          <div className="my-2 h-px bg-gray-200"></div>
+          {/* <div className="my-2 h-px bg-gray-200"></div> */}
 
           <button
             onClick={handleLogout}
-            className="w-full text-red-700 mt-4 bg-red-100 text-sm py-2"
+            className="w-full text-red-700 mt-4 bg-red-100 text-sm py-2 mb-4"
           >
             Logout
           </button>

@@ -28,7 +28,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
       setInspectionInterval(equipment.inspectionInterval);
       setInspectedBy(equipment.inspectedBy);
       setStatus(equipment.status);
-      setIsChecked(equipment.isChecked);
+      setIsChecked(equipment.isChecked ?? false);
     }
 
     fetchEmployees();
@@ -86,7 +86,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 type="text"
                 value={equipmentName}
                 onChange={(e) => setEquipmentName(e.target.value)}
-                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="border border-gray-300 p-2 rounded-lg"
                 placeholder="Enter equipment name"
                 required
               />
@@ -98,7 +98,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="border border-gray-300 p-2 rounded-lg"
                 placeholder="Enter equipment description"
                 rows="2"
                 required
@@ -112,7 +112,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 <select
                   value={locationID}
                   onChange={(e) => setLocationID(e.target.value)}
-                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                  className="border border-gray-300 p-2 rounded-lg w-full"
                   required
                 >
                   <option value="">Select Location</option>
@@ -128,7 +128,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                  className="border border-gray-300 p-2 rounded-lg w-full"
                 >
                   <option value="Good">Good</option>
                   <option value="Needs Maintenance">Needs Maintenance</option>
@@ -167,7 +167,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                   value={inspectionInterval}
                   onChange={(e) => setInspectionInterval(e.target.value)}
                   placeholder="Enter interval"
-                  className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                  className="border border-gray-300 p-2 rounded-lg w-full"
                   required
                 />
               </div>
@@ -179,7 +179,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
               <select
                 value={inspectedBy}
                 onChange={(e) => setInspectedBy(e.target.value)}
-                className="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                className="border border-gray-300 p-2 rounded-lg w-full"
                 required
               >
                 <option value="">Select Employee</option>
@@ -197,7 +197,9 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                 type="checkbox"
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
-                className="mr-2 mt-1"
+                className="mr-2 mt-1 accent-[#4A1FB8]"
+                style={{ width: '2rem', height: '2rem' }}
+                required
               />
               <label className="text-gray-600 text-xs">
                 By checking this box, I confirm that the information entered is accurate. I understand that any inaccuracies could impact safety and have serious consequences.

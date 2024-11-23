@@ -63,7 +63,7 @@ const ReportTable = () => {
       {/* Table: Full Location Collection */}
       <table className='table-auto w-full border text-xs'>
         <thead>
-          <tr className='bg-FFFFFF-100 rounded-lg'>
+          <tr className='bg-FFFFFF-100 rounded-lg font-bold'>
             <td className='px-12 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg'>Location Name</td>
             <td className='px-4 py-2 text-center'>From Date</td>
             <td className='px-4 py-2 text-center'>To Date</td>

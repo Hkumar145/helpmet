@@ -13,6 +13,7 @@ import UpdateEquipment from "../components/UpdateEquipment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../components/Loader";
+import BackToTopButton from "../components/BackToTopButton";
 
 // const companyID = 100001;
 
@@ -223,6 +224,7 @@ const EquipmentCheck = () => {
           </div>
         </DialogContent>
       </Dialog>
+      <BackToTopButton />
     </div>
   );
 };
