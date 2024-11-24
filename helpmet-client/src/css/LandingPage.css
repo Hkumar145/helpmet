@@ -21,10 +21,6 @@
   grid-template-columns: repeat(2, 1fr);
 } */
 
-.text-center{
-  font-size: .8rem;
-}
-
 .lightsl{
   font-family: "Fira Sans", sans-serif;
   font-weight: 300;
@@ -123,9 +119,7 @@ font-size: 16px;
   width: 100vw;
 }
 /*  */
-.slogansec .firstb, .sloganfour .thirdb{
-  /* padding-left: 2rem; */
-}
+
 
 .sloganthir{
   grid-column: 1/-1;
@@ -185,18 +179,7 @@ img{
   }
 }
 
-.gr2{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10rem;
-  img{
-    width: 100%;
-    padding-bottom: 2rem;
-  }
-  p{
-    text-align: center;
-  }
-}
+
 
 .six{
   background-color: #3E1C96;
@@ -297,20 +280,21 @@ section h1{
 
     h1{
       font-size: 20px;
+      text-align: center;
     }
-
     p{
-      font-size: 11px;
+      text-align: center;
     }
 }
 
 .otherdeets{
   margin: 0;
-  h1{
-    font-size: 14px;
-  }
-}
+  text-align: center;
 
+}
+.except img{
+  margin: auto;
+}
 .images img{
   padding: 10px;
 }
@@ -320,12 +304,81 @@ section h1{
 }
 
 
+.teams .socials{
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
 
 /* @media screen and (max-width:1094px) {
   .lightsl, .boldsl{
     font-size: 32px;
   }
 } */
+@media screen and (min-width:530px) and (max-width:930px){
+
+.teams{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 45px;
+}
+.gr2{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  img{
+    width: 100%;
+    padding-bottom: 2rem;
+  }
+  p{
+    text-align: center;
+  }
+}
+.images1{
+  grid-column: span 2;
+  /* img{
+    width: 140px;
+    height: 141.3px;
+  } */
+   .socials{
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+   }
+}
+
+.teams h1, .teams p{
+  text-align: center;
+}
+
+.teams{
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+.images1{
+  margin-left: 56px;
+  margin-right: 55px;
+  .socials img{
+   padding: 0; 
+  }
+}
+
+
+.images{
+  padding: 11px;
+}
+
+.teams h1{
+  font-size: 1.25rem;
+}
+
+.teams p{
+  font-size: 1rem;
+}
+
+}
 
 @media screen and (max-width:929.5px) {
 
@@ -455,7 +508,7 @@ section h1{
 
 .sloganfif{
   display: block;
-  .gr1, .gr2{
+  .gr1{
     display: block;
     p{
       text-align: left;
@@ -620,61 +673,6 @@ h1{
   display: none;
 }
 
-.teams{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0 45px;
-}
-
-.images1{
-  grid-column: span 2;
-  /* img{
-    width: 140px;
-    height: 141.3px;
-  } */
-   .socials{
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-   }
-}
-
-.teams .socials{
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-}
-
-.teams h1, .teams p{
-  text-align: center;
-}
-
-.teams{
-  padding-left: 23px;
-  padding-right: 23px;
-}
-
-.images1{
-  margin-left: 56px;
-  margin-right: 55px;
-  .socials img{
-   padding: 0; 
-  }
-}
-
-
-.images{
-  padding: 11px;
-}
-
-.teams h1{
-  font-size: 1.25rem;
-}
-
-.teams p{
-  font-size: 1rem;
-}
-
 .tops{
   font-size: 1.2rem;
 }
@@ -708,13 +706,25 @@ h1{
   z-index: 2;
   color: white;
 }
+
 }
 
 @media screen and (min-width: 930px) {
 .firstb h1{
   font-size: 64px;
 }
-
+.gr2{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.gr2 img{
+  margin: auto;
+  margin-bottom: 15px;
+}
+.gr2 p{
+text-align: center;
+}
 .firstb p{
   font-size: 20px;
 } 
@@ -817,8 +827,8 @@ h1{
   padding-bottom: 80px;
 }
 .gr2{
-  padding-left: 32px;
-  padding-right: 33px;
+  /* padding-left: 32px;
+  padding-right: 33px; */
   padding-bottom: 79px;
 }
 
@@ -930,7 +940,7 @@ h1{
 
 .except{
   padding-left: 100px;
-  padding-right: 51px;
+  margin-right: 0;
   padding-bottom: 59px;
 }
 
@@ -943,9 +953,9 @@ h1{
 .teams{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 100px;
-  padding-left: 109px;
-  padding-right: 120px;
+  gap: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .teams h1{
