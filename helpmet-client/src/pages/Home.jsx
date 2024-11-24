@@ -117,7 +117,7 @@ const Home = () => {
           <h1 className='boldsl'>Alerts</h1>
           <p className='data'>Tailor alerts to reach the right people at the right time, enhancing safety and responsiveness across your team.</p>
         </div>
-        <div className="slimages landscape lanepor"><img src="../../images/notiflan.svg" alt="" /></div>
+        <div className="slimages landscape lanepor"><img src="../../images/LandingpageImages/notiflan.svg" alt="" /></div>
         </div>
       </div>
       {/* <img src="../../images/Harshdeep kaur.svg" alt="" /> */}
@@ -126,7 +126,7 @@ const Home = () => {
         <h1 className='tops'>OUR TEAM</h1>
         <div className="teams">
           <div className="images1">
-            <img src="../../images/team/Roy.png" alt="" />
+            <img src="../../images/team/Roy.jpg" alt="" />
             <div className="fdeets">
               <h1>Roy Yeung</h1>
               <p>PM & Full-Stack Developer</p>
@@ -134,7 +134,7 @@ const Home = () => {
             </div>
             </div>
           <div className="images">
-            <img src="../../images/team/Rooben.png" alt="" />
+            <img src="../../images/team/Rooben.jpg" alt="" />
             <div className="otherdeets">
               <h1>Rooben</h1>
               <p>UX Engineer</p>
@@ -143,7 +143,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../images/team/Kisaja.png" alt="" />
+            <img src="../../images/team/Kisaja.jpg" alt="" />
             <div className="otherdeets">
               <h1>Kisaja (Riveen)</h1>
               <p>Junior Designer</p>
@@ -152,7 +152,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../images/team/Gurleen.png" alt="" />
+            <img src="../../images/team/Harshdeep.jpg" alt="" />
             <div className="otherdeets">
               <h1>Harshdeep Kaur</h1>
               <p>Junior UI/UX Designer</p>
@@ -161,7 +161,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../images/team/Gurleen.png" alt="" />
+            <img src="../../images/team/Harshdeep.jpg" alt="" />
             <div className="otherdeets">
               <h1>Gurleen Kaur</h1>
               <p>UI/UX Designer</p>
@@ -170,7 +170,8 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../images/team/Hemant.png" alt="" />
+            <img src="../../images/team/Hemant.jpg" alt="" />
+            {/* <img src="../../images/team/Hemant1.jpg" alt="" /> */}
             <div className="otherdeets">
               <h1>Hemant Kumar</h1>
               <p>Lead Full-Stack Developer</p>
@@ -179,16 +180,16 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../images/team/Mohit.png" alt="" />
+            <img src="../../images/team/Mohit.jpg" alt="" />
             <div className="otherdeets">
-              <h1>Mohit</h1>
+              <h1>Mohit Duggar</h1>
               <p>Full-Stack Developer</p>
                         <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/mohit-duggar"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
           <div className="images">
-            <img src="../../images/team/Promise.png" alt="" />
+            <img src="../../images/team/Promise.jpg" alt="" />
             <div className="otherdeets">
               <h1>Promise</h1>
               <p>Front-End Developer</p>
@@ -197,7 +198,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../images/team/XueHui.png" alt="" />
+            <img src="../../images/team/XueHui.jpg" alt="" />
             <div className="otherdeets">
               <h1>Xuehui Lan</h1>
               <p>Full-Stack Developer</p>
