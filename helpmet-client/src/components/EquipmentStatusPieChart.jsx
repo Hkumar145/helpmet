@@ -14,7 +14,7 @@ const EquipmentStatusPieChart = ({ companyID }) => {
 
   const fetchEquipmentData = async () => {
     try {
-      const response = await axios.get(`http://54.193.185.124:5001/companies/${companyID}/equipments`);
+      const response = await axios.get(`http://localhost:5001/companies/${companyID}/equipments`);
       processStatusData(response.data);
     } catch (error) {
       console.error('Error fetching equipment data:', error);
