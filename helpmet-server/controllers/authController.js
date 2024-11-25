@@ -86,7 +86,7 @@ exports.login_post = async (req, res, next) => {
         );
 
         const { password: pwd, ...rest } = validUser._doc;
-        res.cookie('access_token', accessToken, { httpOnly: true })
+        res.cookie('access_token', accessToken, { httpOnly: true, sameSite: 'None', })
             .status(200)
             .json({ ...rest, companyID: company ? company._id : null });     // Adding SameSite='None' to enable proper cookie handling across frontend and backend running on different ports
         // const expiryDate = new Date(Date.now() + 3600000);  // 1 hour
