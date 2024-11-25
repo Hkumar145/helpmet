@@ -40,7 +40,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get(`http://54.193.185.124:5001/companies/${companyID}/employees`);
+      const response = await axios.get(`http://localhost:5001/companies/${companyID}/employees`);
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -49,7 +49,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(`http://54.193.185.124:5001/companies/${companyID}/locations`);
+      const response = await axios.get(`http://localhost:5001/companies/${companyID}/locations`);
       setLocations(response.data);
     } catch (error) {
       console.error('Error fetching locations:', error);
@@ -73,7 +73,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const handleCreateEquipment = async (equipment) => {
     try {
-      await axios.post(`http://54.193.185.124:5001/companies/${companyID}/equipments`, equipment);
+      await axios.post(`http://localhost:5001/companies/${companyID}/equipments`, equipment);
       onSave();
     } catch (error) {
       console.error("Error creating equipment:", error.response ? error.response.data : error.message);
