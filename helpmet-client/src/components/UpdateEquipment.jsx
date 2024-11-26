@@ -37,7 +37,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get(`http://localhost:5001/companies/${companyID}/employees`);
+      const response = await axios.get(`http://54.215.231.235:5001/companies/${companyID}/employees`);
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -46,7 +46,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(`http://localhost:5001/companies/${companyID}/locations`);
+      const response = await axios.get(`http://54.215.231.235:5001/companies/${companyID}/locations`);
       setLocations(response.data);
     } catch (error) {
       console.error('Error fetching locations:', error);
