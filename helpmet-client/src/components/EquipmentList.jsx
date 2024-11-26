@@ -37,7 +37,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
 
       try {
         for (const employeeId of uniqueEmployeeIds) {
-          const response = await axios.get(`http://54.215.231.235:5001/employees/${employeeId}`);
+          const response = await axios.get(`http://localhost:5001/employees/${employeeId}`);
           if (response.status === 200) {
             employeeData[employeeId] = response.data.firstName;
           }
