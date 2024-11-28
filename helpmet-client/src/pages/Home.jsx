@@ -23,7 +23,10 @@ const Home = () => {
         <img src="../../images/Rectangle 1-1 lan.svg" alt="" /> */}
       </div>
       </div>
-      <div className="except"><img src="../../images/LandingpageImages/HelloWorld.svg" alt="" /></div>
+      <div className="except">
+      <img src="../../images/LandingpageImages/HelloWorld.svg" alt="" /></div>
+
+      
       <div className='slogansec'>
       <div className="firstb inv">
         <h1 className='lightsl'>One platform</h1>
@@ -38,7 +41,7 @@ const Home = () => {
          <h1 className='lightsl'>Track {/*<span className='boldsl'>Safety</span>*/}</h1> 
         <h1 className='boldsl'>Safety equipment check</h1>
       </div>
-        <div className="slimages lanepor"><img src="../../images/LandingpageImages/safetyequiplan.svg" alt="" /></div>
+      <div className="slimages lanepor"><img src="../../images/LandingpageImages/safetyequiplan.svg" alt="" /></div>
       
       </div>
       

@@ -37,7 +37,7 @@ const EquipmentList = ({ equipments, onView, onUpdate, onDelete }) => {
 
       try {
         for (const employeeId of uniqueEmployeeIds) {
-          const response = await axios.get(`http://localhost:5001/employees/${employeeId}`);
+          const response = await axios.get(`https://helpmet-back-end.onrender.com/employees/${employeeId}`);
           if (response.status === 200) {
             employeeData[employeeId] = response.data.firstName;
           }
