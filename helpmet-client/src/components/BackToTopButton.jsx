@@ -22,7 +22,7 @@ const BackToTopButton = () => {
         className="fixed bottom-8 right-12 bg-[#6938EF] text-white p-2 rounded-full shadow-lg hover:bg-[#3E1C96]"
         aria-label="Back to top"
       >
-        <img src="../../images/up-arrow.svg" alt="up arrow icon" />
+        <img src="images/up-arrow.svg" alt="up arrow icon" />
       </button>
     )
   );

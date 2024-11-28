@@ -5,7 +5,7 @@ import axios from '../api/axios';
 import { loginStart, loginSuccess, loginFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const LOGIN_URL = 'http://54.193.185.124:5001/auth/login';
+const LOGIN_URL = 'https://helpmet-backend.onrender.com/auth/login';
 
 const login = () => {
   const { setAuth } = useContext(AuthContext);
@@ -52,6 +52,8 @@ const login = () => {
 
       const accessToken = response?.data?.accessToken;
 
+      // const companyResponse = await axios.get('/auth/companies', {
+      //   params: { contactEmail: email },
       const companyResponse = await axios.get(`/auth/companies?contactEmail=${email}`, {
         withCredentials: true
       });
