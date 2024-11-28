@@ -213,7 +213,7 @@ const IconButton = ({ icon, onClick, className, ...props }) => {
   const IconComponent = icons[icon];
 
   return (
-    <button onClick={onClick} className={`icon-button ${className}`} {...props}>
+    <button type="button" onClick={onClick} className={`icon-button ${className}`} {...props}>
       {IconComponent ? IconComponent : null}
     </button>
   );

@@ -98,41 +98,54 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         }
     };
 
-    const toggleStatus = async (alertID, currentStatus, alertItem) => {
+    const toggleStatus = async (alertID, currentStatus, alertItem, event) => {
+        if (event) {
+            event.preventDefault();
+        }
         const newStatus = currentStatus === "active" ? "deactive" : "active";
+    
         try {
             await axios.put(`/alerts/${alertID}`, { status: newStatus });
-            fetchAlerts(); 
-
+            await fetchAlerts();
+    
             if (newStatus === "active") {
                 toast.success("Alert activated successfully! Alert will be sent every 7 days.", {
                     autoClose: 3000,
                     className: "custom-toast",
                     bodyClassName: "custom-toast-body",
                 });
+            } else {
+                toast.success("Alert deactivated successfully!", {
+                    autoClose: 3000,
+                    className: "custom-toast",
+                    bodyClassName: "custom-toast-body",
+                });
+            }
+
+            if (newStatus === "active") {
                 console.log(`Setting up interval for alert ID: ${alertID}`);
                 const intervalId = setInterval(async () => {
                     try {
                         const recipientsResponse = await axios.get(`/companies/${companyID}/employees`);
                         const allEmployees = recipientsResponse.data;
                         console.log("Fetched employees:", allEmployees);
-                        const recipientEmails = allEmployees.filter((employee) => {
-                            return alertItem.recipients.some((recipientID) => {
+    
+                        const recipientEmails = allEmployees
+                            .filter((employee) => alertItem.recipients.some((recipientID) => {
                                 try {
                                     const ids = Array.isArray(JSON.parse(recipientID)) ? JSON.parse(recipientID) : [recipientID];
                                     return ids.includes(employee.employeeID);
                                 } catch (error) {
                                     return recipientID === employee.employeeID;
                                 }
-                            });
-                        })
-                        .map((employee) => employee.email);
-
+                            }))
+                            .map((employee) => employee.email);
+    
                         if (recipientEmails.length === 0) {
                             console.warn("No valid recipient emails found for alert:", alertID);
                             return;
                         }
-
+    
                         await axios.post("/email/send-alert-email", {
                             recipients: recipientEmails,
                             senderEmail,
@@ -149,25 +162,17 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                         console.error("Error in repeated email sending:", error);
                     }
                 }, 7 * 24 * 60 * 60 * 1000); // Repeat sending alert in 7 days
-
-                // Store interval ID for clearing later
+    
                 setIntervals((prev) => ({ ...prev, [alertID]: intervalId }));
             } else {
-                // Clear interval
                 clearInterval(intervals[alertID]);
                 setIntervals((prev) => {
                     const newIntervals = { ...prev };
                     delete newIntervals[alertID];
                     return newIntervals;
                 });
-                toast.success("Alert deactivated successfully!", {
-                    autoClose: 3000,
-                    className: "custom-toast",
-                    bodyClassName: "custom-toast-body",
-                });
                 console.log(`Cleared interval for alert ID: ${alertID}`);
             }
-            
         } catch (error) {
             console.error("Error updating status:", error);
         }
@@ -177,7 +182,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
         <div className="flex flex-col items-center justify-center">
             <ToastContainer position="top-right" />
             <div className="w-full overflow-x-auto rounded-lg shadow-md">
-                <table className="bg-white p-6 w-full text-left table-fixed min-w-[500px]">
+                <table className="bg-white p-6 w-full text-left table-fixed min-w-[500px] text-xs">
                     <thead className="text-center">
                         <tr className="text-gray50 bg-[#f8f8f8]">
                             <th className="py-4 font-bold" style={{ width: window.innerWidth >= 1024 ? "20%" : "15%" }}>Alert ID</th>
@@ -194,8 +199,8 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                     <td className="py-2 md:py-0">{ alert.alertID }</td>
                                     <td className="py-2 md:py-0 text-left">
                                         {isSmallScreen
-                                            ? alert.alertName.length > 20
-                                                ? `${alert.alertName.slice(0, 20)}...`
+                                            ? alert.alertName.length > 40
+                                                ? `${alert.alertName.slice(0, 40)}...`
                                                 : alert.alertName
                                             : alert.alertName}
                                     </td>
@@ -250,7 +255,7 @@ const AlertList = ({ alerts, companyID, fetchAlerts }) => {
                                             <div className="flex justify-center">
                                                 <IconButton
                                                     icon={alert.status === "active" ? "toggleActive" : "toggleInactive"}
-                                                    onClick={() => toggleStatus(alert.alertID, alert.status, alert)}
+                                                    onClick={(e) => toggleStatus(alert.alertID, alert.status, alert, e)}
                                                     style={{
                                                         backgroundColor: "transparent",
                                                         border: "none",
