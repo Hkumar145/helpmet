@@ -16,7 +16,7 @@ const sendInjuryReportEmail = async (recipient, senderEmail, remark) => {
     text: `Hello,
 
 Please fill in this Injury Report.
-Here is the link to the injury report: http://localhost:3000/injury-report
+Here is the link to the injury report: https://helpmet-frontend.onrender.com/injury-report
 Remarks: ${remark}
 
 Thank you.`,
@@ -61,7 +61,7 @@ Thank you.\n\n\n`,
 };
 
 const sendHoldEmail = async (recipient, senderEmail, reportDetails, holdReason) => {
-  const pendingReportLink = `http://localhost:3000/update-report/${reportDetails._id}`;
+  const pendingReportLink = `https://helpmet-frontend.onrender.com/update-report/${reportDetails._id}`;
   const mailOptions = {
     from: senderEmail,
     to: recipient.email,

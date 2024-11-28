@@ -18,7 +18,7 @@ const CreateEmployee = ({ onClose, onSuccess }) => {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const companyID = useSelector((state) => state.user.currentUser?.companyID);
-  const roleOptions = ["Site Manager", "Safety Officer", "Employee"];
+  const roleOptions = ["Safety Officer", "Employee"];
 
   useEffect(() => {
     const fetchDepartments = async () => {
