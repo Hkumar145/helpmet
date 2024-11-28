@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 
 const app = express();
-const port = 5001;
+const port = process.env.port || 5001;
 
 // Middleware
 const corsOptions = {
