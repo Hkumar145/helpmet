@@ -212,7 +212,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
             <form onSubmit={createAlert} className="flex flex-col gap-2 lg:grid lg:grid-cols-2 lg:gap-4 items-start min-w-[500px]">
                 <div className="col-span-2 lg:col-span-1 flex flex-col gap-3 border p-4 border-gray20 bg-white rounded-[10px] w-full">
                     <div className="flex flex-col gap-1">
-                        <label className="text-gray60 text-[14px] mt-0" onClick={demoAutoFill}>Alert Name</label>
+                        <label className="text-gray60 text-[16px] mt-0" onClick={demoAutoFill}>Alert Name</label>
                         <input type="text" className="bg-gray10 border border-gray20" style={{ fontSize: "14px", padding: ".3rem .35rem", borderRadius: "8px" }} name="alertName" value={alertData.alertName} onChange={handleInputChange} />
                     </div>
                     
@@ -273,7 +273,7 @@ const CreateDepartmentAlert = ({ companyID, fetchAlerts, onCancel }) => {
                         />
                     </div>
                 
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 p-0.5">
                         <label className="text-gray60 text-[16px] mt-0">To</label>
                         <div className={`bg-gray10 border rounded-[8px] border-gray20 ${allSelectedEmployees.length > 3 ? "h-32 overflow-y-auto" : "h-auto"}`}>
                             {allSelectedEmployees.length > 0 ? (

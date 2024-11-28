@@ -14,7 +14,7 @@ const port = process.env.PORT || 5001;
 
 // Middleware
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://helpmet-backend.onrender.com', 'https://helpmet-frontend.onrender.com'],
+  origin: ['http://localhost:3000', 'https://helpmet-back-end.onrender.com', 'https://helpmet-frontend.onrender.com'],
   credentials: true,
 };
 
@@ -55,7 +55,7 @@ const startServer = async () => {
     console.log("Connected to Database");
 
     app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`);
+      console.log(`Server is running on Port:${port}`);
     });
   } catch (error) {
     console.error("Failed to connect to the database", error);

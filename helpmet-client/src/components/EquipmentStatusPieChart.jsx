@@ -14,7 +14,7 @@ const EquipmentStatusPieChart = ({ companyID }) => {
 
   const fetchEquipmentData = async () => {
     try {
-      const response = await axios.get(`https://helpmet-backend.onrender.com/companies/${companyID}/equipments`);
+      const response = await axios.get(`https://helpmet-back-end.onrender.com/companies/${companyID}/equipments`);
       processStatusData(response.data);
     } catch (error) {
       console.error('Error fetching equipment data:', error);
