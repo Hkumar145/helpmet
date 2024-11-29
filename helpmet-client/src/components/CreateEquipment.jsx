@@ -133,8 +133,11 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                 <select
                   value={locationID}
                   onChange={(e) => setLocationID(e.target.value)}
-                  className="border border-gray-300 p-2 rounded-lg"
+                  className="border border-gray-300 p-2 rounded-lg appearance-none"
                   required
+                  style={{
+                    backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+                  }}
                 >
                   <option value="">Select Location</option>
                   {locations.map((location) => (
@@ -149,7 +152,10 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="border border-gray-300 p-2 rounded-lg"
+                  className="border border-gray-300 p-2 rounded-lg appearance-none"
+                  style={{
+                    backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+                  }}
                 >
                   <option value="Good">Good</option>
                   <option value="Needs Maintenance">Needs Maintenance</option>
@@ -201,8 +207,11 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
               <select
                 value={inspectedBy}
                 onChange={(e) => setInspectedBy(e.target.value)}
-                className="border border-gray-300 p-2 rounded-lg"
+                className="border border-gray-300 p-2 rounded-lg appearance-none"
                 required
+                style={{
+                  backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>')`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat'
+                }}
               >
                 <option value="">Select Employee</option>
                 {employees.map((employee) => (
