@@ -130,7 +130,7 @@ const Home = () => {
             <div className="fdeets">
               <h1>Roy Yeung</h1>
               <p>PM & Full-Stack Developer</p>
-              <div className="socials"><a href="http://www.twitter.com/"><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/roy-y"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+              <div className="socials"><a href="http://www.linkedin.com/in/roy-y"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
           <div className="images">
@@ -138,7 +138,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Rooben</h1>
               <p>UX Engineer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="https://www.linkedin.com/in/rooben-me"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href="https://www.linkedin.com/in/rooben-me"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -147,7 +147,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Kisaja (Riveen)</h1>
               <p>Junior Designer</p>
-              <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/kisaja-riveen"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+              <div className="socials"><a href="http://www.linkedin.com/in/kisaja-riveen"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -156,7 +156,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Harshdeep Kaur</h1>
               <p>Junior UI/UX Designer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href=""><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href=""><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -165,7 +165,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Gurleen Kaur</h1>
               <p>UI/UX Designer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="https://www.linkedin.com/in/gurleen-designer/"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href="https://www.linkedin.com/in/gurleen-designer/"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -175,7 +175,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Hemant Kumar</h1>
               <p>Lead Full-Stack Developer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/hemant-e"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href="http://www.linkedin.com/in/hemant-e"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -184,7 +184,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Mohit Duggar</h1>
               <p>Full-Stack Developer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/mohit-duggar"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href="http://www.linkedin.com/in/mohit-duggar"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -193,7 +193,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Promise</h1>
               <p>Front-End Developer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="https://www.linkedin.com/in/promise-olajide-0ab17718b/"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href="https://www.linkedin.com/in/promise-olajide-0ab17718b/"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
@@ -202,7 +202,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Xuehui Lan</h1>
               <p>Full-Stack Developer</p>
-                        <div className="socials"><a href=""><img src="../../images/twitWF Badge.svg" alt="" /></a><a href="http://www.linkedin.com/in/xuehui-lan"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+                        <div className="socials"><a href="http://www.linkedin.com/in/xuehui-lan"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
             </div>
 
