@@ -40,7 +40,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get(`https://helpmet-backend-jcc0.onrender.com/m/companies/${companyID}/employees`);
+      const response = await axios.get(`https://helpmet-backend-jcc0.onrender.com/companies/${companyID}/employees`);
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -49,7 +49,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(`https://helpmet-backend-jcc0.onrender.com/m/companies/${companyID}/locations`);
+      const response = await axios.get(`https://helpmet-backend-jcc0.onrender.com/companies/${companyID}/locations`);
       setLocations(response.data);
     } catch (error) {
       console.error('Error fetching locations:', error);
@@ -73,7 +73,7 @@ const CreateEquipment = ({ isOpen, onSave, onCancel }) => {
 
   const handleCreateEquipment = async (equipment) => {
     try {
-      await axios.post(`https://helpmet-backend-jcc0.onrender.com/m/companies/${companyID}/equipments`, equipment);
+      await axios.post(`https://helpmet-backend-jcc0.onrender.com/companies/${companyID}/equipments`, equipment);
       onSave();
     } catch (error) {
       console.error("Error creating equipment:", error.response ? error.response.data : error.message);

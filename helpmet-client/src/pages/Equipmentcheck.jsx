@@ -31,7 +31,7 @@ const EquipmentCheck = () => {
   const fetchEquipments = async () => {
     try {
       const response = await axios.get(
-        `https://helpmet-backend-jcc0.onrender.com/m/companies/${companyID}/equipments`
+        `https://helpmet-backend-jcc0.onrender.com/companies/${companyID}/equipments`
       );
       setEquipments(response.data);
       setLoading(false);
@@ -48,7 +48,7 @@ const EquipmentCheck = () => {
   const handleUpdateEquipment = async (updatedEquipment) => {
     try {
       const response = await axios.put(
-        `https://helpmet-backend-jcc0.onrender.com/m/equipments/${updatedEquipment.equipmentID}`,
+        `https://helpmet-backend-jcc0.onrender.com/equipments/${updatedEquipment.equipmentID}`,
         updatedEquipment
       );
 
@@ -108,7 +108,7 @@ const EquipmentCheck = () => {
   const handleConfirmDelete = async () => {
     try {
       await axios.delete(
-        `https://helpmet-backend-jcc0.onrender.com/m/companies/${companyID}/equipments/${equipmentToDelete}`
+        `https://helpmet-backend-jcc0.onrender.com/companies/${companyID}/equipments/${equipmentToDelete}`
       );
       setEquipments((prevEquipments) =>
         prevEquipments.filter(
@@ -133,7 +133,7 @@ const EquipmentCheck = () => {
   const handleViewEquipment = async (equipmentID) => {
     try {
       const response = await axios.get(
-        `https://helpmet-backend-jcc0.onrender.com/m/equipments/${equipmentID}`
+        `https://helpmet-backend-jcc0.onrender.com/equipments/${equipmentID}`
       );
       if (response.status === 200) {
         setSelectedEquipment(response.data);

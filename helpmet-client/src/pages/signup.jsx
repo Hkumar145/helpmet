@@ -30,7 +30,7 @@ const signup = () => {
   const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
   const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-  const SIGNUP_URL = 'https://helpmet-backend-jcc0.onrender.com/m/auth/signup';
+  const SIGNUP_URL = 'https://helpmet-backend-jcc0.onrender.com/auth/signup';
 
   useEffect(() => {
     usernameRef.current.focus();
