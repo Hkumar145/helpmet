@@ -5,7 +5,7 @@ import axios from '../api/axios';
 import { loginStart, loginSuccess, loginFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const LOGIN_URL = 'https://helpmet-back-end.onrender.com/auth/login';
+const LOGIN_URL = 'https://helpmet-backend-jcc0.onrender.com/m/auth/login';
 
 const login = () => {
   const { setAuth } = useContext(AuthContext);
