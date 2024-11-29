@@ -143,10 +143,10 @@ const InjuryReport = () => {
   const demoAutoFill = () => {
     setReportBy('100440680');
     setInjuredEmployeeID('100443628');
-    setDateOfInjury(new Date('2024-11-23'));
+    setDateOfInjury(new Date('2024-11-27'));
     setLocationID('L0001');
     setInjuryTypeID('T0002');
-    setSeverity('3');
+    setSeverity('2');
     setDescription('Falling from scaffolding results in a broken bone in right leg');
     setWitnessID('');
   };
