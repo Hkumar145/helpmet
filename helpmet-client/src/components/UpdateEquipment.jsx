@@ -169,6 +169,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                   placeholder="Enter interval"
                   className="border border-gray-300 p-2 rounded-lg w-full"
                   required
+                  onWheel={(e) => e.target.blur()}
                 />
               </div>
             </div>
