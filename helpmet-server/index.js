@@ -1,3 +1,70 @@
+// require("dotenv").config();
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const cors = require("cors");
+// const router = require("./routes/routes");
+// const authRouter = require("./routes/authRoutes");
+// const reportRouter = require("./routes/reportRoutes");
+// const emailRouter = require('./routes/emailRoutes');
+// const cookieParser = require("cookie-parser");
+// const nodemailer = require("nodemailer");
+
+// const app = express();
+// const port = process.env.PORT || 5001;
+
+// // Middleware
+// const corsOptions = {
+//   origin: ['http://localhost:3000', 'https://helpmet-backend-jcc0.onrender.com/m', 'https://helpmet.onrender.com/'],
+//   credentials: true,
+// };
+
+// app.use(cors(corsOptions));
+// app.use(express.json());
+// app.use(cookieParser());
+
+// // Define the root route
+// app.get("/", (req, res) => {
+//   res.send("Welcome to the Injury Tracker API");
+// });
+
+// // Define a test route to check server status
+// app.get("/api", (req, res) => {
+//   res.status(200).send({ message: "API is running" });
+// });
+
+// // Use API routes defined in the router
+// app.use("/", router);
+
+// // User authentication routes
+// app.use("/auth", authRouter);
+
+// app.use("/report", reportRouter);
+
+// app.use("/email", emailRouter);
+
+// // Custom error handler
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({ error: "An internal server error occurred" });
+// });
+
+// // Database connection and server start
+// const startServer = async () => {
+//   try {
+//     await mongoose.connect(process.env.DATABASE_URL);
+//     console.log("Connected to Database");
+
+//     app.listen(port, () => {
+//       console.log(`Server is running on Port:${port}`);
+//     });
+//   } catch (error) {
+//     console.error("Failed to connect to the database", error);
+//   }
+// };
+
+// startServer();
+
+
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -5,22 +72,22 @@ const cors = require("cors");
 const router = require("./routes/routes");
 const authRouter = require("./routes/authRoutes");
 const reportRouter = require("./routes/reportRoutes");
-const emailRouter = require('./routes/emailRoutes');
+const emailRouter = require("./routes/emailRoutes");
 const cookieParser = require("cookie-parser");
-const nodemailer = require("nodemailer");
 
 const app = express();
 const port = process.env.PORT || 5001;
 
 // Middleware
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://helpmet-backend-jcc0.onrender.com/m', 'https://helpmet.onrender.com/'],
-  credentials: true,
+  origin: ['http://localhost:3000', 'https://helpmet.onrender.com'], // Allow frontend domains
+  credentials: true, // Enable sending cookies with requests
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Allowed methods
 };
 
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(cookieParser());
+app.use(cors(corsOptions)); // Enable CORS
+app.use(express.json()); // Parse JSON payloads
+app.use(cookieParser()); // Parse cookies
 
 // Define the root route
 app.get("/", (req, res) => {
@@ -38,9 +105,14 @@ app.use("/", router);
 // User authentication routes
 app.use("/auth", authRouter);
 
+// Report management routes
 app.use("/report", reportRouter);
 
+// Email management routes
 app.use("/email", emailRouter);
+
+// Handle preflight OPTIONS requests
+app.options('*', cors(corsOptions)); // Preflight request support
 
 // Custom error handler
 app.use((err, req, res, next) => {
@@ -51,14 +123,20 @@ app.use((err, req, res, next) => {
 // Database connection and server start
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL);
+    // Connect to MongoDB
+    await mongoose.connect(process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("Connected to Database");
 
+    // Start the server
     app.listen(port, () => {
-      console.log(`Server is running on Port:${port}`);
+      console.log(`Server is running on Port: ${port}`);
     });
   } catch (error) {
     console.error("Failed to connect to the database", error);
+    process.exit(1); // Exit the process if the database connection fails
   }
 };
 
