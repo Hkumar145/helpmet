@@ -126,7 +126,7 @@ const Home = () => {
         <h1 className='tops'>OUR TEAM</h1>
         <div className="teams">
           <div className="images1">
-            <img src="/images/team/Roy.jpg" alt="" />
+            <img src="/images/Team/Roy.jpg" alt="" />
             <div className="fdeets">
               <h1>Roy Yeung</h1>
               <p>PM & Full-Stack Developer</p>
