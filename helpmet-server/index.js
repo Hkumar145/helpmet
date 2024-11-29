@@ -13,10 +13,19 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 // Middleware
+// const corsOptions = {
+//   origin: ['http://localhost:3000', 'https://helpmet-backend-jcc0.onrender.com', 'https://helpmet.onrender.com/'],
+//   credentials: true,
+// };
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://helpmet-backend-jcc0.onrender.com', 'https://helpmet.onrender.com/'],
-  credentials: true,
+  origin: 'https://helpmet.onrender.com', // Allow your frontend domain
+  credentials: true, // Allow credentials like cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Allow necessary headers
 };
+
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
