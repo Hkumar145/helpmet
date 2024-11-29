@@ -4,16 +4,26 @@ import { useState } from "react";
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false); // State for hamburger menu
+  const [isSettingOpen, setIsSettingOpen] = useState(false);
   const location = useLocation(); // Hook to get the current path
   const toggleMenu = () => {
     setIsOpen(!isOpen); // Toggle menu open/close state
   };
+
+  const handleLinkClick = () => {
+    setIsSettingOpen(false); // Reset settings icon state when other link is clicked
+  };
+
+  const toggleSetting = () => {
+    setIsSettingOpen(!isSettingOpen); // Toggle setting state
+  };
+
   // Check if the current path matches the link path
   const isActive = (path) => location.pathname === path;
   return (
     <div className={`bg-white border-b border-gray-200 ${isOpen ? "expanded-header" : ""}`}>
       <div className="flex justify-between items-center max-w-[2700px] mx-auto py-7 px-4 lg:px-7">
-        <Link to="/">
+        <Link to="/" onClick={handleLinkClick}>
           <img src="/images/Group 7.svg" className="w-[140px] h-auto" />
         </Link>
         {/* Hamburger icon for mobile */}
@@ -28,7 +38,7 @@ const Header = () => {
             isOpen ? "block" : "hidden"
           } md:flex gap-4 ml-4`}
         >
-          <Link to="/dashboard" className="flex items-center">
+          <Link to="/dashboard" className="flex items-center" onClick={handleLinkClick}>
             {currentUser && (
               <li
                 className={`${
@@ -41,7 +51,7 @@ const Header = () => {
               </li>
             )}
           </Link>
-          <Link to="/report" className="flex items-center">
+          <Link to="/report" className="flex items-center" onClick={handleLinkClick}>
             {currentUser && (
               <li
                 className={`${
@@ -54,7 +64,7 @@ const Header = () => {
               </li>
             )}
           </Link>
-          <Link to="/equipmentcheck" className="flex items-center">
+          <Link to="/equipmentcheck" className="flex items-center" onClick={handleLinkClick}>
             {currentUser && (
               <li
                 className={`${
@@ -67,7 +77,7 @@ const Header = () => {
               </li>
             )}
           </Link>
-          <Link to="/alert" className="flex items-center">
+          <Link to="/alert" className="flex items-center" onClick={handleLinkClick}>
             {currentUser && (
               <li
                 className={`${
@@ -85,11 +95,11 @@ const Header = () => {
                 isActive('/setting') ? 'underline text-[#6938EF]' : 'text-black hover:text-[#6938EF]'
               } transition-colors`}>Setting</li> }
           </Link> */}
-          <Link to="/setting" className="self-center">
+          <Link to="/setting" className="self-center" onClick={toggleSetting}>
             {currentUser && (
               <li className="border-l-2 border-gray-300 pl-4">
                 <img
-                  src="/images/gear.svg"
+                  src={isSettingOpen ? "/images/gear-active.svg" : "/images/gear.svg"}
                   alt="setting icon"
                   className="w-5 h-5"
                 />
@@ -103,7 +113,7 @@ const Header = () => {
               </li>
             )}
           </Link> */}
-          <Link to="/profile">
+          <Link to="/profile" onClick={handleLinkClick}>
             {currentUser ? (
               <img
                 src={currentUser.profilePicture}
