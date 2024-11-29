@@ -198,7 +198,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/XueHui.jpg" alt="" />
+            <img src="../../public/images/Team/XueHui.jpg" alt="" />
             <div className="otherdeets">
               <h1>Xuehui Lan</h1>
               <p>Full-Stack Developer</p>
