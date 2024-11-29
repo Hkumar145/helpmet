@@ -126,7 +126,7 @@ const Home = () => {
         <h1 className='tops'>OUR TEAM</h1>
         <div className="teams">
           <div className="images1">
-            <img src="../../public/images/team/Roy.jpg" alt="" />
+            <img src="../../images/team/Roy.jpg" alt="" />
             <div className="fdeets">
               <h1>Roy Yeung</h1>
               <p>PM & Full-Stack Developer</p>
@@ -134,7 +134,7 @@ const Home = () => {
             </div>
             </div>
           <div className="images">
-            <img src="../../public/images/team/Rooben.jpg" alt="" />
+            <img src="../../images/team/Rooben.jpg" alt="" />
             <div className="otherdeets">
               <h1>Rooben</h1>
               <p>UX Engineer</p>
@@ -143,7 +143,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/Kisaja.jpg" alt="" />
+            <img src="../../images/team/Kisaja.jpg" alt="" />
             <div className="otherdeets">
               <h1>Kisaja (Riveen)</h1>
               <p>Junior Designer</p>
@@ -152,7 +152,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/Harshdeep.jpg" alt="" />
+            <img src="../../images/team/Harshdeep.jpg" alt="" />
             <div className="otherdeets">
               <h1>Harshdeep Kaur</h1>
               <p>Junior UI/UX Designer</p>
@@ -161,7 +161,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/Harshdeep.jpg" alt="" />
+            <img src="../../images/team/Harshdeep.jpg" alt="" />
             <div className="otherdeets">
               <h1>Gurleen Kaur</h1>
               <p>UI/UX Designer</p>
@@ -170,7 +170,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/Hemant.jpg" alt="" />
+            <img src="../../images/team/Hemant.jpg" alt="" />
             {/* <img src="../../images/team/Hemant1.jpg" alt="" /> */}
             <div className="otherdeets">
               <h1>Hemant Kumar</h1>
@@ -180,7 +180,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/Mohit.jpg" alt="" />
+            <img src="../../images/team/Mohit.jpg" alt="" />
             <div className="otherdeets">
               <h1>Mohit Duggar</h1>
               <p>Full-Stack Developer</p>
@@ -189,7 +189,7 @@ const Home = () => {
             </div>
 
           <div className="images">
-            <img src="../../public/images/team/Promise.jpg" alt="" />
+            <img src="../../images/team/Promise.jpg" alt="" />
             <div className="otherdeets">
               <h1>Promise</h1>
               <p>Front-End Developer</p>
