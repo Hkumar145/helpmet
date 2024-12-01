@@ -14,15 +14,21 @@ const port = process.env.PORT || 5001;
 
 // Middleware
 const corsOptions = {
-  origin: 'https://helpmet.onrender.com',
+  origin: (origin, callback) => {
+    const allowedOrigins = ['https://helpmet.onrender.com', 'https://helpmet.ca'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS')); // Block the request
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 
+// Handle preflight requests
 app.options('*', cors(corsOptions));
-
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
@@ -43,8 +49,10 @@ app.use("/", router);
 // User authentication routes
 app.use("/auth", authRouter);
 
+// Report-related routes
 app.use("/report", reportRouter);
 
+// Email-related routes
 app.use("/email", emailRouter);
 
 // Custom error handler
