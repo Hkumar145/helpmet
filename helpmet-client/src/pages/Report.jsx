@@ -150,8 +150,8 @@ const Report = () => {
           </button> */}
         </div>
       ) : (
-        <div className="w-full overflow-x-scroll rounded-lg shadow-md">
-          <table className="w-full bg-white text-black mt-4 rounded-lg text-xs">
+        <div className="w-full overflow-x-scroll rounded-lg shadow-md mt-4">
+          <table className="w-full bg-white text-black rounded-lg text-xs">
             <thead>
               <tr className="bg-[#f8f8f8]">
                 <th className="px-2 py-4 md:px-4">Report ID</th>
