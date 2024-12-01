@@ -38,7 +38,7 @@ const Home = () => {
          <h1 className='lightsl'>Track {/*<span className='boldsl'>Safety</span>*/}</h1> 
         <h1 className='boldsl'>Safety equipment check</h1>
       </div>
-        <div className="slimages lanepor"><img src="/images/LandingpageImages/safetyequiplan.svg" alt="" /></div>
+        <div className="slimages lanepor"><img src="../../public/images/LandingpageImages/safetyequiplan.png" alt="" /></div>
       
       </div>
       
