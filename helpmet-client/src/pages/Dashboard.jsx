@@ -406,7 +406,7 @@ const Dashboard = () => {
                     <LineChart
                         chartData={monthlyEpidemicData}
                         lineName={{ T0006: "Epidemic Injury Type" }}
-                        title="Epidemic Projection (Nov)"
+                        title="Epidemic Projection (Dec)"
                         onLineClick={handleDateClick}
                         indexAxis="x"
                     />
