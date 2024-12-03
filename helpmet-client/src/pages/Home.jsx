@@ -38,7 +38,7 @@ const Home = () => {
          <h1 className='lightsl'>Track {/*<span className='boldsl'>Safety</span>*/}</h1> 
         <h1 className='boldsl'>Safety equipment check</h1>
       </div>
-        <div className="slimages lanepor"><img src="../../public/images/LandingpageImages/safetyequiplan.png" alt="" /></div>
+        <div className="slimages lanepor"><img src="../../public/images/LandingpageImages/eqcheck.webp" alt="" /></div>
       
       </div>
       
@@ -55,7 +55,7 @@ const Home = () => {
       <h1 className='lightsl'>Analyze</h1>
       <div className="gr1">
         <div className="anal1">
-          <img src="/images/LandingpageImages/Heatmaplan.svg" alt="" />
+          <img src="/public/images/LandingpageImages/Heatmaplan.svg" alt="" />
             <p className='data'>Injury Heat Maps provide a real-time geographical view of incident hotspots, helping you allocate resources effectively.</p>
             </div>
           <div className="anal2">
