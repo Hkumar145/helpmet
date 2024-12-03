@@ -30,7 +30,7 @@ const Home = () => {
         <h1 className='boldsl'>Incident Report</h1>
         <p className='data'>Safety reporting has never been easier or more efficient. Our inbuilt incident report form allows you to submit and access critical information directly through your email, ensuring every detail is at your fingertips whenever and wherever you need it.</p>
       </div>
-      <div className="slimages landscape lanepor"><img src="/images/LandingpageImages/incidentReportlan.png" alt="" /></div>
+      <div className="slimages landscape lanepor"><img src="/images/LandingpageImages/incidentReportlan.webp" alt="" /></div>
       </div>
       
       <div className='sloganthir'>
