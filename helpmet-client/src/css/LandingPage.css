@@ -146,7 +146,8 @@ p.text-center {
   gap: 53px;
   img{
     width: 100%;
-    padding-bottom: 2rem;
+    height: 70%;
+    margin-bottom: 10px;
   }
   p{
     text-align: center;
