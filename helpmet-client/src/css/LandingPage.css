@@ -14,6 +14,7 @@
 
 .slimages{
   display: grid;
+  animation: fadeIn 2s ease-in-out;
 }    
 
 /* .mainLand{
@@ -25,41 +26,44 @@
   font-family: "Fira Sans", sans-serif;
   font-weight: 300;
   font-style: normal;
+  transition: all 0.5s ease-in-out;
 }
 
 .boldsl{
   font-family: "Fira Sans", sans-serif;
   font-weight: 500;
   font-style: normal;
+  transition: all 0.5s ease-in-out;
 
 }
 
 .lightsl, .boldsl{
   color: #3E1C96;
-  font-size: 32px;
+  font-size: 20px;
 }
 .slogan{
   padding: 3rem 13px;
+  transition: all 0.5s ease-in-out;
 }
 
 .data{
 color: #52575C;
 font-size: 16px;
+transition: all 0.5s ease-in-out;
 }
 
-.slogansec{
-  display: none;
-}
 
 .slimages{
   grid-column: -1;
   grid-row: 1;
+  transition: all 0.5s ease-in-out;
 }
 
 .slogan{
   grid-column: 1/-1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  transition: all 0.5s ease-in-out;
 }
 /* .slogan{
   grid-column: 1/3;
@@ -71,8 +75,6 @@ font-size: 16px;
 
 
 .slogansec{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   background-color: #3E1C96;
   gap: 0.5rem;
   h1, span{
@@ -80,11 +82,12 @@ font-size: 16px;
   }
   p{
     color: #F4F3FF;
-    padding-bottom: 4rem;
   }
+  transition: all 0.5s ease-in-out;
 }
 
-.sloganthir, .sloganfour{
+
+.sloganthir, .slogansec{
   background-color: #3E1C96;
   h1, span{
     color: #D9D6FE;
@@ -92,70 +95,31 @@ font-size: 16px;
   p{
     color: #F4F3FF;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .island{
   grid-column: -1;
+  transition: all 0.5s ease-in-out;
 }
 .landscape{
   grid-column: 1;
-}
-.firstb, .thirdb{
-  grid-column: span 2;
-  width: 54vw;
+  transition: all 0.5s ease-in-out;
 }
 
-.inv{
-  grid-column: -1;
-}
 
-.landscape{
-  grid-column: span 2;
-  img{
-    width: 100%;
-    height: auto;
-  }
-}
+
+
 /* ALIGNMENT */
 .slogansec, .slogan, .sloganthir, .sloganfour, .sloganfif{
   padding: 3rem;
   width: 100vw;
+  transition: all 0.5s ease-in-out;
 }
 /*  */
 
 
-.sloganthir{
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  .secondb{
-    grid-column: 1;
-  }
-  .slimages{
-    grid-column: -1;
-  }
-}
 
-.sloganfour{
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  .thirdb{
-    grid-column: -1 ;
-  }
-}
-
-
-
-.sloganthir{ 
-.secondb{
-  grid-column: span 2 ;
-}
-
-img{
-  width: 54vw;
-}
-}
 
 .sloganfif{
   background-color: #D9D6FE;
@@ -166,6 +130,7 @@ img{
     padding-bottom: 5rem;
     font-size: 50px;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .gr1{
@@ -180,6 +145,7 @@ img{
   p{
     text-align: center;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 
@@ -192,6 +158,7 @@ img{
   h1, .lightsl{
     color: #F4F3FF;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .sev{
@@ -203,6 +170,7 @@ section h1{
   font-weight: 500;
   font-family: 'Fira Sans';
   text-align: center;
+  transition: all 0.5s ease-in-out;
 }
 
 .tops{
@@ -213,6 +181,7 @@ section h1{
   box-shadow: 8px -27px 22px 29px rgba(244, 243, 255, 0.85);
   z-index: 20;
   padding-bottom: 93.85px;
+  transition: all 0.5s ease-in-out;
 
 }
 
@@ -226,6 +195,7 @@ section h1{
   z-index: -10;
   background: inherit;
   filter: blur(15px);
+  transition: all 0.5s ease-in-out;
 
 }
 
@@ -233,11 +203,13 @@ section h1{
   font-weight: 600;
   color: #3E1C96;
   font-family: 'Fira Sans';
+  transition: all 0.5s ease-in-out;
 }
 .teams p{
   font-weight: 500;
   color: rgba(000, 000, 000, 20%) rgba(000, 000, 000, 20%) rgba(000, 000, 000, 20%) #475467;
   font-family: 'Fira Sans';
+  transition: all 0.5s ease-in-out;
 }
 
 .coverpho{
@@ -247,6 +219,7 @@ section h1{
     border-top: rgba(000, 000, 000, 60%) ;
     border-bottom: rgba(000, 000, 000, 20%);
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .images1 img, .images img{
@@ -254,6 +227,7 @@ section h1{
   padding: 14px 15px;
   padding-bottom: 2.5px;
   border: 2px solid #E4E7EC;
+  transition: all 0.5s ease-in-out;
 
 }
 
@@ -262,6 +236,7 @@ section h1{
   /* border: 2px solid blue; */
   padding: 20px ;
   border-top: none;
+  transition: all 0.5s ease-in-out;
 }
 
 .images1::before, .images::before{
@@ -273,6 +248,7 @@ section h1{
   right: -1px;
   top: 24px;
   border-top: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .fdeets, .otherdeets{
@@ -288,22 +264,27 @@ section h1{
     p{
       text-align: center;
     }
+    transition: all 0.5s ease-in-out;
 }
 
 .otherdeets{
   margin: 0;
   text-align: center;
+  transition: all 0.5s ease-in-out;
 
 }
 .except img{
   margin: auto;
+  transition: all 0.5s ease-in-out;
 }
 .images img{
   padding: 10px;
+  transition: all 0.5s ease-in-out;
 }
 
 .socials img{
   border: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 
@@ -311,20 +292,16 @@ section h1{
   display: flex;
   gap: 16px;
   justify-content: center;
+  transition: all 0.5s ease-in-out;
 }
 
-
-/* @media screen and (max-width:1094px) {
-  .lightsl, .boldsl{
-    font-size: 32px;
-  }
-} */
 @media screen and (min-width:530px) and (max-width:930px){
 
 .teams{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0 45px;
+  transition: all 0.5s ease-in-out;
 }
 .gr2{
   display: grid;
@@ -337,6 +314,7 @@ section h1{
   p{
     text-align: center;
   }
+  transition: all 0.5s ease-in-out;
 }
 .images1{
   grid-column: span 2;
@@ -349,15 +327,18 @@ section h1{
     gap: 16px;
     justify-content: center;
    }
+   transition: all 0.5s ease-in-out;
 }
 
 .teams h1, .teams p{
   text-align: center;
+  transition: all 0.5s ease-in-out;
 }
 
 .teams{
   padding-left: 23px;
   padding-right: 23px;
+  transition: all 0.5s ease-in-out;
 }
 
 .images1{
@@ -366,65 +347,77 @@ section h1{
   .socials img{
    padding: 0; 
   }
+  transition: all 0.5s ease-in-out;
 }
 
 
 .images{
   padding: 11px;
+  transition: all 0.5s ease-in-out;
 }
 
 .teams h1{
   font-size: 1.25rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .teams p{
   font-size: 1rem;
+  transition: all 0.5s ease-in-out;
 }
 
 }
 
-@media screen and (max-width:929.5px) {
+@media screen and (max-width:930px) {
 
 .firstb, .lanepor, .secondb, .thirdb{
   width: 100%;
-  /* padding: 2rem; */
   padding-bottom: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .lightsl, .boldsl{
   font-size: 32px;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif{
   .lightsl{
     font-size: 50px;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .data{
   color: #52575C;
   font-size: 16px;
+  transition: all 0.5s ease-in-out;
   }
 
 .slogan h1, .sloganfif h1{
   color: black;
+  transition: all 0.5s ease-in-out;
 }
 
 .slimages{
   display: none;
+  transition: all 0.5s ease-in-out;
 }
 .slogan{
   display: block;
+  transition: all 0.5s ease-in-out;
 }
 
 .mainLand{
   display: block;
+  transition: all 0.5s ease-in-out;
 }
-.slogan, .slogansec, .sloganthir, .sloganfour, .sloganfif{
+.slogan, .slogansec, .sloganthir,.sloganfif{
   padding: 3rem 30px;
+  transition: all 0.5s ease-in-out;
 }
 
-.slogansec, .sloganthir, .sloganfour{
+.slogansec, .sloganthir{
   display: block;
   background-color: #3E1C96;
   width: 100vw;
@@ -433,52 +426,56 @@ section h1{
   }
   p{
     color: #F4F3FF;
-    padding-bottom: 4rem;
   }
   img{
     width: 100%;
     height: auto;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .data{
   font-weight: 400;
+  transition: all 0.5s ease-in-out;
 }
 
 .boldsl{
   padding-bottom: 1rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganthir img{
   padding-top: 4rem;
-}
-
-.sloganfour img{
-  padding-bottom: 2rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif h1{
   font-size: 32px;
   text-align: center;
   padding-bottom: 2rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif img{
   padding-bottom: 2rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif{
   background-color: #D9D6FE;
+  transition: all 0.5s ease-in-out;
 }
 
 .slofifimg{
   width: 100%;
   height: auto;
   padding-top: 2rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .keep{
   text-align: center;
+  transition: all 0.5s ease-in-out;
 }
 
 .six{
@@ -493,16 +490,19 @@ section h1{
     position: relative;
     bottom: 27px;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif img{
   width: 100%;
   height: auto;
+  transition: all 0.5s ease-in-out;
 }
 
 .lanepor{
   display: block;
   padding-top: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif{
@@ -513,15 +513,18 @@ section h1{
       text-align: left;
     }
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif .gr2 p{
   text-align: center;
+  transition: all 0.5s ease-in-out;
   
 }
 
 .six .lightsl{
   padding-bottom: .3rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .sev, .sevspesh{
@@ -529,74 +532,81 @@ section h1{
   h1,p{
     color: #101828;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .sevspesh{
   padding-bottom: 7rem;
+  transition: all 0.5s ease-in-out;
 }
 
 .firstb .data{
   padding-bottom: 40px;
+  transition: all 0.5s ease-in-out;
 }
 
 .slogan .data{
   padding-bottom: 0px;
+  transition: all 0.5s ease-in-out;
 }
 
-.sloganthir, .sloganfour{
+.sloganthir{
   padding-top: 9px;
   img{
     padding-top: 23px;
   }
+  transition: all 0.5s ease-in-out;
 }
 
-.sloganfour p{
-  padding-bottom: 40px ;
-}
 
-.sloganfour img{
-  padding: 0;
-  padding-bottom: 4px;
-}
 
 .sloganfif{
   padding-top: 34px;
   .lightsl{
     padding-bottom: 28px;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .anal1 img{
   padding-bottom: 20px;
+  transition: all 0.5s ease-in-out;
 }
 
 .anal1 p{
   padding-bottom: 6px;
+  transition: all 0.5s ease-in-out;
 }
 
 .anal2 img{
   padding-bottom: 20px;
+  transition: all 0.5s ease-in-out;
 }
 
 .anal2 p{
   padding-bottom: 40px;
+  transition: all 0.5s ease-in-out;
 }
 
 .gr1{
   padding-bottom: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .gr2 .slofifimg {
   padding-top: 0;
   padding-bottom: 20px;
+  transition: all 0.5s ease-in-out;
 }
 
 .gr2 p{
   padding-bottom: 40px;
+  transition: all 0.5s ease-in-out;
 }
 
 .sloganfif{
   padding-bottom: 2px;
+  transition: all 0.5s ease-in-out;
 }
 
 .six{
@@ -607,6 +617,7 @@ section h1{
   h1{
     font-size: 50px;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .sev{
@@ -627,6 +638,7 @@ h1{
 }
 .sevspesh{
   padding-top: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .eig{
@@ -647,10 +659,12 @@ h1{
   padding-left: 30px;
   padding-right: 45px;
   padding-bottom: 80px;
+  transition: all 0.5s ease-in-out;
 }
 
 .not{
   padding-top: 50px;
+  transition: all 0.5s ease-in-out;
 }
 
 .nine{
@@ -666,6 +680,7 @@ h1{
     padding-right: -6px;
     padding-bottom: 49px ;
   }
+  transition: all 0.5s ease-in-out;
 }
 
 .except{
@@ -710,8 +725,9 @@ h1{
 
 @media screen and (min-width: 930px) {
 .firstb h1{
-  font-size: clamp(32px,5vw,64px);
+  font-size: clamp(32px,4vw,64px);
 }
+
 .gr2{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -745,9 +761,7 @@ text-align: center;
   display: flex;
   gap: 1rem;
 }
-.slogansec .landscape{
-  width: 500px;
-}
+
 
  .except img{
  padding-right: 20px;
@@ -762,33 +776,33 @@ text-align: center;
   padding-top: 0;
   padding-bottom: 78px ;
 }
-
+.sloganthir{
+  align-items: center;
+}
 .slogansec{
   padding-top: 142px;
   padding-left: 100px;
   gap: 0;
 }
-.firstb{
-  padding-right: 49px;
-}
-
-.slogansec .firstb{
-  padding-left: 137px;
-}
 
 .sloganthir h1{
-  font-size: 64px;
+  font-size: clamp(32px,4vw,64px);
 }
 
+.slogansec h1{
+  font-size: clamp(32px,4vw,64px);
+}
+.slogansec img{
+  width: 40vw;
+  margin-right: 1rem;
+}
 .sloganthir{
   padding-left: 100px;
   padding-right: 100px;
   .secondb{
     width: 37vw;
   }
-  .slimages{
-    padding-left: 150px;
-  }
+ 
 }
 
 .sloganfour{
@@ -949,6 +963,13 @@ text-align: center;
   font-weight: 500;
   padding-bottom: 9px;
 }
+.slogansec{
+  gap:1rem;
+}
+
+.slogansec img{
+  width: 600px;
+}
 
 .teams{
   display: grid;
@@ -975,40 +996,76 @@ text-align: center;
 /* .sevspesh{
   grid-column: 1;
 } */
-}
-/* @media screen and (min-width:1330px) {
-.mainLand{
-  width: 96vw;
-}
+
+
+.sloganthir{
+  grid-column: -1/1;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(2, 1fr);
+  .secondb{
+    grid-column: 1;
+  }
+  .slimages{
+    grid-column: -1;
+  }
 }
 
-@media screen and (min-width:1350px) {
-  .mainLand{
-    width: 92vw;
-  }
-  }
-  
-  @media screen and (min-width:1400px) {
-    .mainLand{
-      width: 93vw;
-    }
-    }
+.sloganthir{ 
+.secondb{
+  grid-column: span 2 ;
+}
 
-    @media screen and (min-width:1410px) {
-      .mainLand{
-        width: 90vw;
-      }
-      }
-      @media screen and (min-width:1500px) {
-        .mainLand{
-          width: 92vw;
+img{
+  width: 54vw;
+}
+}
+.slogansec{
+  grid-column: -1/1;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  .secondb{
+    grid-column: 1;
+  }
+  .slimages{
+    grid-column: -1;
+  }
+}
+.oneness{
+  display: grid;
+  grid-column: span 2;
+}
+.slogansec{ 
+.secondb{
+  grid-column: span 2 ;
+}
+
+img{
+  width: 54vw;
+}
+}
+.slogansec {
+  display: flex;
+  flex-direction: row-reverse; /* Reverses the order of children */
+  align-items:center;
+  justify-content: space-between;
+  gap: 5rem;
+}
+
+
+}
+
+@media only screen and (min-width:1200px){
+
+    .sloganthir {
+        img {
+            width: 44vw;
         }
-        }
-      
-        @media screen and (min-width:1920px) {
-          .mainLand{
-            width: 64vw;
-          }
-          } */
-        
-  
+    }
+    .slogansec {
+      img {
+          width: 44vw;
+      }
+  }
+}
