@@ -294,7 +294,9 @@ section h1{
   justify-content: center;
   transition: all 0.5s ease-in-out;
 }
-
+.sloganthir.sev {
+  display: block;
+}
 @media screen and (min-width:530px) and (max-width:930px){
 
 .teams{
