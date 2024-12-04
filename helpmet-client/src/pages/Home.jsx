@@ -31,7 +31,7 @@ const Home = () => {
           <h1 className='boldsl'>Incident Report</h1>
           <p className='data'>Safety reporting has never been easier or more efficient. Our inbuilt incident report form allows you to submit and access critical information directly through your email, ensuring every detail is at your fingertips whenever and wherever you need it.</p>
         </div>
-          <div className="slimages lanepor"><img src="../../public/images/LandingpageImages/form.webp" alt="" />
+          <div className="slimages lanepor"><img src="/images/LandingpageImages/form.webp" alt="" />
           
         </div>
         
@@ -42,7 +42,7 @@ const Home = () => {
           <h1 className='lightsl'>Track {/*<span className='boldsl'>Safety</span>*/}</h1>
           <h1 className='boldsl'>Safety equipment check</h1>
         </div>
-        <div className="slimages lanepor"><img src="../../public/images/LandingpageImages/eqcheck.webp" alt="" /></div>
+        <div className="slimages lanepor"><img src="/images/LandingpageImages/eqcheck.webp" alt="" /></div>
        
       </div>
 
@@ -52,34 +52,34 @@ const Home = () => {
           <h1 className='boldsl'>Injury Analytics</h1>
           <p className='data'>Take a proactive approach to workplace safety with Helpmet’s advanced Injury Analytics Dashboard. This dashboard transforms data into actionable insights, giving you a clear view of trends, high-risk areas, and potential hazards across your organization.</p>
         </div>
-        <div className="slimages  lanepor"><img src="../../public/images/LandingpageImages/Dashboard.webp" alt="" /></div>
+        <div className="slimages  lanepor"><img src="/images/LandingpageImages/Dashboard.webp" alt="" /></div>
       </div>
 
       <div className="sloganfif">
         <h1 className='lightsl'>Analyze</h1>
         <div className="gr1">
           <div className="anal1">
-            <img src="/public/images/LandingpageImages/Heatmaplan.svg" alt="" />
+            <img src="/images/LandingpageImages/Heatmaplan.svg" alt="" />
             <p className='data'>Injury Heat Maps provide a real-time geographical view of incident hotspots, helping you allocate resources effectively.</p>
           </div>
           <div className="anal2">
-            <img src="../../public/images/LandingpageImages/analyseDeep.webp" alt="" className='slofifimg' style={{ borderRadius: '8px 8px 8px 8px' }} />
+            <img src="/images/LandingpageImages/analyseDeep.webp" alt="" className='slofifimg' style={{ borderRadius: '8px 8px 8px 8px' }} />
             <p className="data">Status and Severity Indicators to prioritize response based on injury severity and location, ensuring timely action for high-risk incidents.</p>
           </div>
         </div>
 
         <div className="gr2">
           <div className="anal3">
-            <img src="../../public/images/LandingpageImages/Weekly.webp" alt="" className='slofifimg' />
+            <img src="/images/LandingpageImages/Weekly.webp" alt="" className='slofifimg' />
             <p className="data keep">Look into the statistics of your weekly data</p>
           </div>
           <div className="anal4">
-            <img src="../../public/images/LandingpageImages/equipmentProj.png" alt="" className='slofifimg' />
+            <img src="/images/LandingpageImages/equipmentProj.png" alt="" className='slofifimg' />
             <p className="data keep">Ensures compliance by monitoring scheduled checks to avoid missed inspections.</p>
           </div>
 
           <div className="anal5">
-            <img src="../../public/images/LandingpageImages/EpidamicProj.png" alt="" className='slofifimg' />
+            <img src="/images/LandingpageImages/EpidamicProj.png" alt="" className='slofifimg' />
             <p className="data keep">Anticipates risk patterns, enabling preventative measures before escalation.</p>
           </div>
         </div>
@@ -100,7 +100,7 @@ const Home = () => {
               </div>
             <p className='data'>This dashboard provides a quick view of weekly injury trends, category projections, and detailed incident logs with filtering through graph, helping you prioritize safety actions and reduce future risks effectively.</p>
           </div>
-          <div className="slimages landscape lanepor sev sevspesh"><img src="../../public/images/LandingpageImages/analyseDeep.webp" alt="" /></div>
+          <div className="slimages landscape lanepor sev sevspesh"><img src="/images/LandingpageImages/analyseDeep.webp" alt="" /></div>
         </div>
 
         <div className="sam2">
@@ -111,7 +111,7 @@ const Home = () => {
             </div>
             <p className='data'>This dashboard provides a clear overview of scheduled vs. completed checks, locations, and responsible personnel, ensuring compliance and maintaining a safe work environment effortlessly.</p>
           </div>
-          <div className="slimages landscape lanepor sevspesh seveig"><img src="../../public/images/LandingpageImages/eqcheck.webp" alt="" /></div>
+          <div className="slimages landscape lanepor sevspesh seveig"><img src="/images/LandingpageImages/eqcheck.webp" alt="" /></div>
         </div>
       </div>
 
@@ -125,7 +125,7 @@ const Home = () => {
             <h1 className='boldsl'>Alerts</h1>
             <p className='data'>Tailor alerts to reach the right people at the right time, enhancing safety and responsiveness across your team.</p>
           </div>
-          <div className="slimages landscape lanepor"><img src="../../public/images/LandingpageImages/Alerts.webp" alt="" /></div>
+          <div className="slimages landscape lanepor"><img src="/images/LandingpageImages/Alerts.webp" alt="" /></div>
         </div>
       </div>
       {/* <img src="../../images/Harshdeep kaur.svg" alt="" /> */}
