@@ -141,6 +141,7 @@ const Home = () => {
               <div className="socials"><a href="http://www.linkedin.com/in/roy-y"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
           </div>
+
           <div className="images">
             <img src="/images/Team/Rooben.jpg" alt="" />
             <div className="otherdeets">
@@ -149,13 +150,30 @@ const Home = () => {
               <div className="socials"><a href="https://www.linkedin.com/in/rooben-me"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
           </div>
-
+          <div className="images">
+            <img src="/images/Team/Hemant.jpg" alt="" />
+            {/* <img src="../../images/team/Hemant1.jpg" alt="" /> */}
+            <div className="otherdeets">
+              <h1>Hemant Kumar</h1>
+              <p>Lead Full-Stack Developer</p>
+              <div className="socials"><a href="http://www.linkedin.com/in/hemant-e"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+          </div>
+          
           <div className="images">
             <img src="/images/Team/Kisaja.jpg" alt="" />
             <div className="otherdeets">
               <h1>Kisaja (Riveen)</h1>
               <p>Junior Designer</p>
               <div className="socials"><a href="http://www.linkedin.com/in/kisaja-riveen"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+          </div>
+          <div className="images">
+            <img src="/images/Team/Mohit.jpg" alt="" />
+            <div className="otherdeets">
+              <h1>Mohit Duggar</h1>
+              <p>Full-Stack Developer</p>
+              <div className="socials"><a href="http://www.linkedin.com/in/mohit-duggar"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
           </div>
 
@@ -169,6 +187,15 @@ const Home = () => {
           </div>
 
           <div className="images">
+            <img src="/images/Team/XueHui.jpg" alt="" />
+            <div className="otherdeets">
+              <h1>Xuehui Lan</h1>
+              <p>Full-Stack Developer</p>
+              <div className="socials"><a href="http://www.linkedin.com/in/xuehui-lan"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+            </div>
+          </div>
+
+          <div className="images">
             <img src="/images/Team/Harshdeep.jpg" alt="" />
             <div className="otherdeets">
               <h1>Gurleen Kaur</h1>
@@ -177,24 +204,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="images">
-            <img src="/images/Team/Hemant.jpg" alt="" />
-            {/* <img src="../../images/team/Hemant1.jpg" alt="" /> */}
-            <div className="otherdeets">
-              <h1>Hemant Kumar</h1>
-              <p>Lead Full-Stack Developer</p>
-              <div className="socials"><a href="http://www.linkedin.com/in/hemant-e"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
-            </div>
-          </div>
 
-          <div className="images">
-            <img src="/images/Team/Mohit.jpg" alt="" />
-            <div className="otherdeets">
-              <h1>Mohit Duggar</h1>
-              <p>Full-Stack Developer</p>
-              <div className="socials"><a href="http://www.linkedin.com/in/mohit-duggar"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
-            </div>
-          </div>
+         
 
           <div className="images">
             <img src="/images/Team/Promise.jpg" alt="" />
@@ -205,14 +216,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="images">
-            <img src="/images/Team/XueHui.jpg" alt="" />
-            <div className="otherdeets">
-              <h1>Xuehui Lan</h1>
-              <p>Full-Stack Developer</p>
-              <div className="socials"><a href="http://www.linkedin.com/in/xuehui-lan"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
-            </div>
-          </div>
+         
 
         </div>
 
