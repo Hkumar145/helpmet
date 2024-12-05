@@ -63,7 +63,7 @@ const Home = () => {
             <p className='data'>Injury Heat Maps provide a real-time geographical view of incident hotspots, helping you allocate resources effectively.</p>
           </div>
           <div className="anal2">
-            <img src="/images/LandingpageImages/analyseDeep.webp" alt="" className='slofifimg' style={{ borderRadius: '8px 8px 8px 8px' }} />
+            <img src="/images/LandingpageImages/analyseDeepc.webp" alt="" className='slofifimg' style={{ borderRadius: '8px 8px 8px 8px' }} />
             <p className="data">Status and Severity Indicators to prioritize response based on injury severity and location, ensuring timely action for high-risk incidents.</p>
           </div>
         </div>
