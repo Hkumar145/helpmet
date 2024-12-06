@@ -1060,7 +1060,7 @@ img{
   flex-direction: row-reverse; /* Reverses the order of children */
   align-items:center;
   justify-content: space-between;
-  gap: 5rem;
+  gap: clamp(1rem,3vw,5rem);
 }
 
 
