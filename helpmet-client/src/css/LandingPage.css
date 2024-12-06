@@ -788,9 +788,11 @@ text-align: center;
 }
 .sloganthir{
   align-items: center;
+   padding-top: 100px;
+  padding-bottom: 100px;
 }
 .slogansec{
-  padding-top: 142px;
+  padding-bottom: 100px;
   padding-left: 100px;
   gap: 0;
 }
