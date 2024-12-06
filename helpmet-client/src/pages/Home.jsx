@@ -151,8 +151,8 @@ const Home = () => {
             </div>
           </div>
           <div className="images">
-            <img src="/images/Team/Hemant.jpg" alt="" />
-            {/* <img src="../../images/team/Hemant1.jpg" alt="" /> */}
+            {/* <img src="/images/Team/Hemant.jpg" alt="" /> */}
+            <img src="../../images/team/Hemant1.jpg" alt="" />
             <div className="otherdeets">
               <h1>Hemant Kumar</h1>
               <p>Lead Full-Stack Developer</p>
