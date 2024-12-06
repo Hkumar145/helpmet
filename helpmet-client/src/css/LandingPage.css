@@ -270,7 +270,7 @@ section h1{
     }
     p{
       text-align: center;
-      font-size: clamp(13px,3vw,14px);
+      font-size: clamp(13px,3vw,16px);
     }
     transition: all 0.5s ease-in-out;
 }
@@ -400,7 +400,7 @@ section h1{
 
 .data{
   color: #52575C;
-  font-size: 14px;
+  font-size: 16px;
   transition: all 0.5s ease-in-out;
   }
 
@@ -876,7 +876,7 @@ text-align: center;
 }
 
 .sev p{
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .sev{
