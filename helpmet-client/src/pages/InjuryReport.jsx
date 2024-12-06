@@ -143,7 +143,7 @@ const InjuryReport = () => {
   const demoAutoFill = () => {
     setReportBy('100440680');
     setInjuredEmployeeID('100443628');
-    setDateOfInjury(new Date('2024-11-27'));
+    setDateOfInjury(new Date('2024-12-06'));
     setLocationID('L0001');
     setInjuryTypeID('T0002');
     setSeverity('2');
