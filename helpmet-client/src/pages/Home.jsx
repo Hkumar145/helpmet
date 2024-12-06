@@ -182,7 +182,7 @@ const Home = () => {
             <div className="otherdeets">
               <h1>Harshdeep Kaur</h1>
               <p>Junior UI/UX Designer</p>
-              <div className="socials"><a href=""><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
+              <div className="socials"><a href="http://www.linkedin.com/in/harshdeep-designer"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
           </div>
 
