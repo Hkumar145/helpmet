@@ -234,7 +234,7 @@ const Home = () => {
       </section>
 
 
-      <p className='text-center mt-8'>© 2024 PIKA PRODUCTIONS</p>
+      <p className='text-center mt-8'>© 2024 Helpmet</p>
     </div>
   )
 }
