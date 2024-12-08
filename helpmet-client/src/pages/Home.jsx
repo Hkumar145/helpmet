@@ -216,7 +216,11 @@ const Home = () => {
             </div>
           </div>
 
-          <div className='flex flex-col items-center mt-12'>
+          
+
+        </div>
+
+        <div className='flex flex-col items-center mt-12'>
             <h1 className='tops pb-0'>PROJECT PROPOSAL</h1>
             <p className='data mb-4 text-center px-6'>Download our project proposal and see how we build a safer work environment.</p>
             <a
@@ -226,8 +230,6 @@ const Home = () => {
             Download Proposal
             </a>
           </div>
-
-        </div>
 
       </section>
 
