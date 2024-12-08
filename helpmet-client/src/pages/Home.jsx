@@ -216,7 +216,16 @@ const Home = () => {
             </div>
           </div>
 
-         
+          <div className='flex flex-col items-center mt-12'>
+            <h1 className='tops pb-0'>PROJECT PROPOSAL</h1>
+            <p className='data mb-4 text-center px-6'>Download our project proposal and see how we build a safer work environment.</p>
+            <a
+              href="/Helpmet - Proposal.pdf" 
+              download 
+              className="bg-[#6938EF] text-white font-bold hover:bg-[#D9D6FE] hover:text-[#6938EF] text-xs px-4 py-2 rounded my-[0.2rem]">
+            Download Proposal
+            </a>
+          </div>
 
         </div>
 
