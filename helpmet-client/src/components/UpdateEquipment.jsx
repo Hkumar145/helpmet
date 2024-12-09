@@ -163,7 +163,7 @@ const UpdateEquipment = ({ isOpen, equipment, onSave, onCancel }) => {
                   clearIcon={null}
                   calendarIcon={null}
                   format='y-MM-dd'
-                  maxDate={new Date()}
+                  maxDate={new Date(new Date().setDate(new Date().getDate() - 2))}
                 />
               </div>
               <div className="flex flex-col md:w-1/2">
