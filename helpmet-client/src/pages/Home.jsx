@@ -130,7 +130,7 @@ const Home = () => {
       </div>
       {/* <img src="../../images/Harshdeep kaur.svg" alt="" /> */}
       <section>
-        <div className="coverpho"><img src="/images/Team/grp_n.jpg" alt="" /></div>
+        {/* <div className="coverpho"><img src="/images/Team/grp_n.jpg" alt="" /></div> */}
         <h1 className='tops'>OUR TEAM</h1>
         <div className="teams">
           <div className="images1">

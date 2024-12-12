@@ -182,10 +182,11 @@ section h1{
 
 .tops{
   /* padding-top: 138.71px; */
-  background-color: #F4F3FF;
+  /* background-color: #F4F3FF; */
+  padding-top: 40px;
   position: relative;
   bottom: 20px;
-  box-shadow: 8px -27px 22px 29px rgba(244, 243, 255, 0.85);
+  /* box-shadow: 8px -27px 22px 29px rgba(244, 243, 255, 0.85); */
   z-index: 20;
   padding-bottom: 93.85px;
   transition: all 0.5s ease-in-out;
