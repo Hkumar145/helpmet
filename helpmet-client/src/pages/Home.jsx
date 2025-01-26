@@ -163,7 +163,7 @@ const Home = () => {
           <div className="images">
             <img src="/images/Team/Kisaja.jpg" alt="" />
             <div className="otherdeets">
-              <h1>Kisaja (Riveen)</h1>
+              <h1>Kisaja Riveen</h1>
               <p>Junior Designer</p>
               <div className="socials"><a href="http://www.linkedin.com/in/kisaja-riveen"><img src="../../images/LinkedWF Badge.svg" alt="" /></a></div>
             </div>
